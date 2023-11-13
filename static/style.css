@@ -1,0 +1,126 @@
+body {
+    margin: 0px;
+    padding: 0px;
+}
+
+.contact-container {
+    display: flex;
+    align-items: center; /* Vertically center the child elements */
+    justify-content: center; /* Horizontally center the child elements */
+    padding: 30px; /* Add 100px of padding on all sides for the desired gap */
+    font-size: 18px;
+}
+
+.contact-info {
+    text-align: center; /* Center text within the contact info div */
+}
+
+#map {
+    width: 600px;
+    height: 300px;
+    margin-left: 100px;
+}
+
+/* Style the navbar */
+.navbar {
+  background: transparent;
+  justify-content: center; /* Center content horizontally */
+  display: flex;
+  align-items: center;
+  padding: 10px 20px; /* Adjust the padding as needed */
+  margin-right: 100px;
+}
+
+.navbar img {
+    width: 150px;
+}
+
+/* Style the navigation links */
+.nav-links {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-button {
+  text-decoration: none;
+  color: black; /* Set your preferred text color */
+  margin-right: 20px; /* Adjust the spacing between links */
+  font-size: 20px;
+}
+
+/* Style the image in the middle */
+.navbar img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Style the social icons and phone info on the right side */
+.nav-contact {
+  display: flex;
+  align-items: center;
+}
+
+.social-icons {
+  display: flex;
+  align-items: center;
+}
+
+.social-icons a {
+  text-decoration: none;
+  color: black; /* Set your preferred icon color */
+  margin-right: 10px; /* Adjust the spacing between icons */
+  font-size: 30px;
+}
+
+#prices {
+  text-align: center;
+  padding: 20px;
+}
+
+#prices h1{
+    font-size: 40px;
+    font-weight: bold;
+    padding: 30px;
+}
+
+.price-segment {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.image1,
+.image2 {
+  flex: 2;
+}
+
+.image1 img,
+.image2 img {
+  width: 600px;
+  border-radius: 40%;
+}
+
+.summary {
+  flex: 1;
+  text-align: left;
+  margin: 10px;
+}
+
+.summary2 {
+  flex: 1;
+  text-align: right;
+    margin: 10px;
+}
+
+.summary h2, .summary2 h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.summary p, .summary2 p {
+  font-size: 20px;
+  margin: 0;
+}

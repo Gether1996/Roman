@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <title>Roman Zelník</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.png' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.css' %}">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB1jZc0JFKGXd2WJixTh492p8FwElxgIu0"></script>
+</head>
+
+<body>
+    {% include 'navbar.html' %}
+    <script src="{% static 'scripts.js' %}"></script>
+
+   <section id="prices">
+       <h1>Cenník</h1>
+
+      <div class="price-segment">
+        <div class="image1">
+          <img src="static/regular.jpg" alt="Image 1">
+        </div>
+        <div class="summary">
+          <h2>Klasická masáž</h2>
+          <p>Product description goes here.</p>
+          <p>Cena: 30€ / 1hod.</p>
+        </div>
+      </div>
+
+      <div class="price-segment">
+
+        <div class="summary2">
+          <h2>Bankovanie</h2>
+          <p>Product description goes here.</p>
+          <p>Cena: 30€ / 1hod.</p>
+        </div>
+        <div class="image2">
+          <img src="static/banky.png" alt="Image 2">
+        </div>
+      </div>
+
+      <div class="price-segment">
+        <div class="image1">
+          <img src="static/lava-stones.jpg" alt="Image 3">
+        </div>
+        <div class="summary">
+          <h2>Lávové kamene</h2>
+          <p>Product description goes here.</p>
+          <p>Cena: 30€ / 1hod.</p>
+        </div>
+      </div>
+
+      <div class="price-segment">
+
+        <div class="summary2">
+          <h2>Športová masáž</h2>
+          <p>Product description goes here.</p>
+          <p>Cena: 30€ / 1hod.</p>
+        </div>
+        <div class="image2">
+          <img src="static/sport.jpg" alt="Image 4">
+        </div>
+      </div>
+    </section>
+
+
+    <section id="gallery">
+
+    </section>
+
+    <section id="contact">
+    <hr>
+        <div class="contact-container">
+            <div class="contact-info">
+                <p>Roman Zelník</p>
+                <p>Popradská 4, 010 08 Žilina</p>
+                <p><i class="fa-duotone fa-phone"></i> +421 902 442 280</p>
+                <p><i class="fa-duotone fa-envelope"></i> rzelnik@gmail.com</p>
+                <p><i class="fa-solid fa-registered"></i> romko a.s.</p>
+            </div>
+            <div id="map"></div>
+        </div>
+    </section>
+
+</body>
+</html>
