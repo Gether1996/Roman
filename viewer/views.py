@@ -4,6 +4,7 @@ from django.http import JsonResponse
 
 def homepage(request):
     language_code = request.session.get('django_language', 'sk')
+
     activate(language_code)
     return render(request, 'homepage.html')
 
