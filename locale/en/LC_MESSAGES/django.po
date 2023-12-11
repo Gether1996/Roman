@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-11 16:15+0100\n"
+"POT-Creation-Date: 2023-12-11 17:36+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\viewer\templates\homepage.html:20 .\viewer\templates\navbar.html:6
+#: .\viewer\templates\homepage.html:20 .\viewer\templates\navbar.html:7
 msgid "Cenník"
 msgstr "Price list"
 
@@ -26,35 +26,54 @@ msgstr "Price list"
 msgid "Klasická masáž"
 msgstr "Classic massage"
 
-#: .\viewer\templates\homepage.html:29 .\viewer\templates\homepage.html:38
-#: .\viewer\templates\homepage.html:52 .\viewer\templates\homepage.html:61
-msgid "Cena: 30€ / 1hod."
-msgstr "Price: 30€ / 1h."
+#: .\viewer\templates\homepage.html:28
+msgid ""
+"Ovplyvňuje krvný a lymfatický systém, vyplavuje z tela škodlivé látky, "
+"zlepšuje prekrvenie pokožky, pomáha uvoľneniu stuhnutým a bolestivým svalom. "
+"Pozitívny vplyv má aj na depresie, nespavosť a pozitívne ovplyvňuje "
+"psychickú rovnováhu. Vhodná po športovom alebo pracovnom výkone, pri "
+"rekonvalescencii, regenerácii, po úraze, pri problémoch s nespavosťou."
+msgstr "It influences the blood and lymphatic system, flushes harmful substances from the body, improves skin circulation, helps release tense and painful muscles. It also has a positive impact on depression, insomnia, and promotes mental balance. It is suitable after sports or work performance, during convalescence, recovery, after an injury, and for sleep problems."
 
-#: .\viewer\templates\homepage.html:36
-msgid "Bankovanie"
-msgstr "Banking"
+#: .\viewer\templates\homepage.html:29
+msgid "Cena:"
+msgstr "Price"
 
-#: .\viewer\templates\homepage.html:50
-msgid "Lávové kamene"
-msgstr "Lava stones"
+#: .\viewer\templates\homepage.html:31
+msgid "20€ / 30 minút"
+msgstr "20€ / 30 minutes"
 
-#: .\viewer\templates\homepage.html:59
-msgid "Športová masáž"
-msgstr "Sport massage"
+#: .\viewer\templates\homepage.html:32
+#, fuzzy
+#| msgid "Cena: 30€ / 1hod."
+msgid "35€ / 1 hodina"
+msgstr "35€ / 1h"
 
-#: .\viewer\templates\navbar.html:7
+#: .\viewer\templates\homepage.html:33
+msgid "50€ / 90 minút"
+msgstr "50€ / 90 minutes"
+
+#: .\viewer\templates\navbar.html:8
 msgid "Galéria"
 msgstr "Gallery"
 
-#: .\viewer\templates\navbar.html:8
+#: .\viewer\templates\navbar.html:9
 msgid "Kontakt"
 msgstr "Contact"
 
-#: .\viewer\templates\navbar.html:22
+#: .\viewer\templates\navbar.html:21
 msgid "Slovenčina"
 msgstr "Slovak"
 
-#: .\viewer\templates\navbar.html:24
+#: .\viewer\templates\navbar.html:23
 msgid "Angličtina"
 msgstr "English"
+
+#~ msgid "Bankovanie"
+#~ msgstr "Banking"
+
+#~ msgid "Lávové kamene"
+#~ msgstr "Lava stones"
+
+#~ msgid "Športová masáž"
+#~ msgstr "Sport massage"

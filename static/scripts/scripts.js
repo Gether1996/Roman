@@ -64,14 +64,14 @@ function scrollToTop() {
 
 function initMap() {
     var mapOptions = {
-        center: { lat: 49.209475, lng: 18.769308 },
+        center: { lat: 49.20977030063486, lng: 18.76346778294583 },
         zoom: 15, // Set the initial zoom level
     };
 
     var map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
     var marker = new google.maps.Marker({
-    position: { lat: 49.209475, lng: 18.769308 }, // Set the marker's position
+    position: { lat: 49.20977030063486, lng: 18.76346778294583 }, // Set the marker's position
     map: map, // Set the map to display the marker
     title: "My Marker", // Set a title for the marker (optional)
 });
