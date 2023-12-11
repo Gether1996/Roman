@@ -16,9 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from viewer.views import homepage
+from viewer.views import homepage, switch_language
 
 urlpatterns = [
     path('', homepage, name='homepage'),
     path('admin/', admin.site.urls),
+    path('switch_language/<str:language_code>/', switch_language, name='switch_language'),
 ]

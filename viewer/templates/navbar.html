@@ -1,8 +1,11 @@
+{% load i18n %}
+{% load static %}
+
 <nav class="navbar">
     <div class="nav-links">
-      <a href="#" class="navbar-button" onclick="smoothScroll('prices')">Cenník</a>
-      <a href="#" class="navbar-button" onclick="smoothScroll('gallery')">Galéria</a>
-      <a href="#" class="navbar-button" onclick="smoothScroll('contact')">Kontakt</a>
+      <a href="#" class="navbar-button" onclick="smoothScroll('prices')">{% trans 'Cenník' %}</a>
+      <a href="#" class="navbar-button" onclick="smoothScroll('gallery')">{% trans 'Galéria' %}</a>
+      <a href="#" class="navbar-button" onclick="smoothScroll('contact')">{% trans 'Kontakt' %}</a>
     </div>
     <div>
       <img src="static/romko.jpg" alt="fasdf">
@@ -13,5 +16,12 @@
         <a href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
         <a href="https://www.tiktok.com" target="_blank"><i class="fab fa-tiktok"></i></a>
       </div>
+    </div>
+    <div class="navbar-languages">
+        {% if language_code == 'en' %}
+            <button class="switch-language-button" onclick="switchLanguage('sk')"><img src="{% static 'images/slovakia.png' %}" alt="" title="{% trans 'Slovenčina' %}"></button>
+        {% else %}
+            <button class="switch-language-button" onclick="switchLanguage('en')"><img src="{% static 'images/united-kingdom.png' %}" alt="" title="{% trans 'Angličtina' %}"></button>
+        {% endif %}
     </div>
 </nav>

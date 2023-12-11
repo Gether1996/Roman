@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8188c9f5-6e45-4569-81c6-bb3ae98b4a23" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Roman/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/Roman/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Roman/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Roman/urls.py" afterDir="false" />
-    </list>
+    <list default="true" id="8188c9f5-6e45-4569-81c6-bb3ae98b4a23" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -31,12 +28,12 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "RunOnceActivity.ShowReadmeOnStart": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Patrik\Desktop\Roman\static" />
