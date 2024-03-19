@@ -1,7 +1,7 @@
 function smoothScroll(targetId) {
     var target = document.getElementById(targetId);
     if (target) {
-      var targetPosition = target.offsetTop; // Get the target element's position
+      var targetPosition = target.offsetTop - 120; // Get the target element's position with an additional 100px offset from the top
       var startPosition = window.pageYOffset; // Get current position
       var distance = targetPosition - startPosition;
       var duration = 1000; // Set the duration of the scroll in milliseconds
@@ -33,12 +33,11 @@ function smoothScroll(targetId) {
 }
 
 function scrollToTop() {
-  const startPosition = window.pageYOffset; // Get current position
-  const distance = -startPosition; // Calculate the distance to scroll to the top
-  const duration = 1000; // Set the duration of the scroll in milliseconds
+  const startPosition = window.pageYOffset;
+  const distance = -startPosition;
+  const duration = 1000;
   let start = null;
 
-  // Function to perform the scrolling animation
   function animation(currentTime) {
     if (start === null) {
       start = currentTime;
@@ -61,25 +60,6 @@ function scrollToTop() {
 
   requestAnimationFrame(animation);
 }
-
-function initMap() {
-    var mapOptions = {
-        center: { lat: 49.20977030063486, lng: 18.76346778294583 },
-        zoom: 15, // Set the initial zoom level
-    };
-
-    var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-
-    var marker = new google.maps.Marker({
-    position: { lat: 49.20977030063486, lng: 18.76346778294583 }, // Set the marker's position
-    map: map, // Set the map to display the marker
-    title: "My Marker", // Set a title for the marker (optional)
-});
-}
-
-// Call the initMap function when the page loads
-google.maps.event.addDomListener(window, "load", initMap);
-
 
 function switchLanguage(language_code) {
   fetch("/switch_language/" + String(language_code) + '/', {
@@ -106,4 +86,41 @@ function switchLanguage(language_code) {
     .catch(error => {
       console.error("Error switching language:", error);
     });
+}
+
+  function showP(number) {
+    var pElement = document.getElementById('p' + number);
+    if (pElement.classList.contains('visible')) {
+      pElement.style.opacity = '0';
+      setTimeout(function() {
+        pElement.style.display = 'none';
+      }, 10); // Delay display after opacity transition (300ms)
+      pElement.classList.remove('visible');
+    } else {
+      pElement.style.display = 'block';
+      setTimeout(function() {
+        pElement.style.opacity = '1';
+      }, 10); // Ensure display before opacity transition (10ms)
+      pElement.classList.add('visible');
+    }
+  }
+
+var modal = document.getElementById("myModal");
+
+var img = document.getElementById("img01");
+var modalImg = document.getElementById("img01");
+
+document.getElementsByClassName("close")[0].onclick = function() {
+    modal.style.display = "none";
+}
+
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+function openBiggerImage(photoSrc) {
+    modal.style.display = "block";
+    modalImg.src = photoSrc;
 }
