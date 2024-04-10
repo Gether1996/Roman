@@ -1,7 +1,7 @@
 function smoothScroll(targetId) {
     var target = document.getElementById(targetId);
     if (target) {
-      var targetPosition = target.offsetTop - 120; // Get the target element's position with an additional 100px offset from the top
+      var targetPosition = target.offsetTop - 220; // Get the target element's position with an additional 100px offset from the top
       var startPosition = window.pageYOffset; // Get current position
       var distance = targetPosition - startPosition;
       var duration = 1000; // Set the duration of the scroll in milliseconds
@@ -106,9 +106,9 @@ function switchLanguage(language_code) {
   }
 
 var modal = document.getElementById("myModal");
-
 var img = document.getElementById("img01");
 var modalImg = document.getElementById("img01");
+var downloadLink = document.getElementById("downloadLink");
 
 document.getElementsByClassName("close")[0].onclick = function() {
     modal.style.display = "none";
@@ -123,4 +123,5 @@ window.onclick = function(event) {
 function openBiggerImage(photoSrc) {
     modal.style.display = "block";
     modalImg.src = photoSrc;
+    downloadLink.href = photoSrc;
 }

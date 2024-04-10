@@ -1,8 +1,13 @@
 body {
     margin: 0px;
     padding: 0px;
-    margin-top: 120px;
+    margin-top: 220px;
     font-family: 'Roboto', sans-serif;
+    background-color: #e5e5e5;
+}
+
+.logo-image {
+    width: 200px;
 }
 
 .contact-container {
@@ -10,7 +15,7 @@ body {
     align-items: center; /* Vertically center the child elements */
     justify-content: center; /* Horizontally center the child elements */
     font-size: 18px;
-    background-color: #e7e7e7;
+    background-color: white;
     width: 100%;
     height: 200px;
     margin: 0;
@@ -18,14 +23,15 @@ body {
 
 .contact-info {
     text-align: center;
+    max-width: 90%;
 }
 
 .navbar {
   position: fixed;
   top: 0;
   width: 100%;
-  height: 90px;
-  background: #e7e7e7;
+  height: 150px;
+  background: white;
   font-weight: bold;
   justify-content: center;
   display: flex;
@@ -66,10 +72,12 @@ body {
   align-items: center;
 }
 
+.fa-facebook,
 .fa-instagram {
     transition: 0.3s;
 }
 
+.fa-facebook:hover,
 .fa-instagram:hover {
     scale: 1.3;
 }
@@ -116,10 +124,31 @@ body {
 
 #about-us h1,
 #gallery h1,
-#technique h1{
+#technique h1,
+#poukazka h1{
     text-align: center;
     font-size: 35px;
     font-family: 'Luminari', fantasy;
+}
+
+.name-surname {
+    font-family: 'Luminari', fantasy;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+}
+
+.name-surname .social-icons {
+    font-size: 40px;
+    margin-left: 15px;
+    text-decoration: none;
+    color: black;
+}
+
+.technique-list {
+    font-family: 'Roboto', sans-serif;
+    margin-left: 80px;
+    font-size: 18px;
 }
 
 .technique-segment {
@@ -155,7 +184,6 @@ body {
 
 .about-us-container {
     display: flex;
-    flex-direction: row;
     margin: auto;
     width: 90%;
 }
@@ -244,6 +272,10 @@ body {
         margin: 5px;
     }
 
+    .logo-image {
+        width: 100px;
+    }
+
     .social-icons a {
       text-decoration: none;
       color: black; /* Set your preferred icon color */
@@ -301,7 +333,7 @@ body {
       top: 0;
       width: 100%; /* Adjust as needed */
       min-height: 90px; /* Changed height to min-height for flexibility */
-      background: #e7e7e7;
+      background: white;
       font-weight: bold;
       justify-content: center;
       display: flex;
