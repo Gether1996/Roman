@@ -1,7 +1,7 @@
 function smoothScroll(targetId) {
     var target = document.getElementById(targetId);
     if (target) {
-      var targetPosition = target.offsetTop - 220; // Get the target element's position with an additional 100px offset from the top
+      var targetPosition = target.offsetTop - 170; // Get the target element's position with an additional 100px offset from the top
       var startPosition = window.pageYOffset; // Get current position
       var distance = targetPosition - startPosition;
       var duration = 1000; // Set the duration of the scroll in milliseconds
@@ -100,7 +100,7 @@ function switchLanguage(language_code) {
       pElement.style.display = 'block';
       setTimeout(function() {
         pElement.style.opacity = '1';
-      }, 10); // Ensure display before opacity transition (10ms)
+      }, 10);
       pElement.classList.add('visible');
     }
   }
@@ -108,7 +108,6 @@ function switchLanguage(language_code) {
 var modal = document.getElementById("myModal");
 var img = document.getElementById("img01");
 var modalImg = document.getElementById("img01");
-var downloadLink = document.getElementById("downloadLink");
 
 document.getElementsByClassName("close")[0].onclick = function() {
     modal.style.display = "none";
@@ -123,5 +122,42 @@ window.onclick = function(event) {
 function openBiggerImage(photoSrc) {
     modal.style.display = "block";
     modalImg.src = photoSrc;
-    downloadLink.href = photoSrc;
 }
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    var languageButton = document.querySelector('.navbar-language-button');
+    var dropdownMenuLanguages = document.getElementById('dropdown-menu-languages');
+
+    function toggleDropdown(dropdown, menu) {
+        if (dropdown.opacity === '1') {
+            dropdown.opacity = '0';
+            setTimeout(function() {
+                dropdown.display = 'none';
+            }, 300);
+        } else {
+            dropdown.display = 'block';
+            setTimeout(function() {
+                dropdown.opacity = '1';
+            }, 10);
+        }
+    }
+
+    function closeDropdownOnClickOutside(event, dropdown, menu) {
+        if (!event.target.matches(menu) && dropdown.opacity === '1') {
+            dropdown.opacity = '0';
+            setTimeout(function() {
+                dropdown.display = 'none';
+            }, 300);
+        }
+    }
+
+    languageButton.addEventListener('click', function(event) {
+        toggleDropdown(dropdownMenuLanguages.style, dropdownMenuLanguages);
+        event.stopPropagation();
+    });
+
+    window.addEventListener('click', function(event) {
+        closeDropdownOnClickOutside(event, dropdownMenuLanguages.style, '.navbar-language-button');
+    });
+});

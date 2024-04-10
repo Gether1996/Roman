@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-11 17:36+0100\n"
+"POT-Creation-Date: 2024-04-10 14:01+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,62 +18,136 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\viewer\templates\homepage.html:20 .\viewer\templates\navbar.html:7
-msgid "Cenník"
-msgstr "Price list"
+#: .\viewer\templates\homepage.html:9
+msgid "Masáže AMINA"
+msgstr "Massages AMINA"
 
-#: .\viewer\templates\homepage.html:27
+#: .\viewer\templates\homepage.html:30 .\viewer\templates\homepage.html:40
+#: .\viewer\templates\homepage.html:56
 msgid "Klasická masáž"
 msgstr "Classic massage"
 
-#: .\viewer\templates\homepage.html:28
+#: .\viewer\templates\homepage.html:31 .\viewer\templates\homepage.html:41
+#: .\viewer\templates\homepage.html:64
+msgid "Športová masáž"
+msgstr "Sport massage"
+
+#: .\viewer\templates\homepage.html:32 .\viewer\templates\homepage.html:42
+#: .\viewer\templates\homepage.html:60
+msgid "Mäkké a myofasciálne techniky"
+msgstr "Soft and myofascial techniques"
+
+#: .\viewer\templates\homepage.html:33 .\viewer\templates\homepage.html:43
+#: .\viewer\templates\homepage.html:71
+msgid "Bankovanie"
+msgstr "Banking"
+
+#: .\viewer\templates\homepage.html:44 .\viewer\templates\homepage.html:75
+msgid "Lávové kamene"
+msgstr "Lava stones"
+
+#: .\viewer\templates\homepage.html:45 .\viewer\templates\homepage.html:79
+msgid "Prístrojová lymfodrenáž"
+msgstr "Device lymphatic drainage"
+
+#: .\viewer\templates\homepage.html:52 .\viewer\templates\navbar.html:12
+msgid "Techniky"
+msgstr "Techniques"
+
+#: .\viewer\templates\homepage.html:57
 msgid ""
-"Ovplyvňuje krvný a lymfatický systém, vyplavuje z tela škodlivé látky, "
-"zlepšuje prekrvenie pokožky, pomáha uvoľneniu stuhnutým a bolestivým svalom. "
-"Pozitívny vplyv má aj na depresie, nespavosť a pozitívne ovplyvňuje "
-"psychickú rovnováhu. Vhodná po športovom alebo pracovnom výkone, pri "
-"rekonvalescencii, regenerácii, po úraze, pri problémoch s nespavosťou."
-msgstr "It influences the blood and lymphatic system, flushes harmful substances from the body, improves skin circulation, helps release tense and painful muscles. It also has a positive impact on depression, insomnia, and promotes mental balance. It is suitable after sports or work performance, during convalescence, recovery, after an injury, and for sleep problems."
+"Klasická masáž aktivuje celkový krvný a lymfatický obeh, ktorý následne "
+"zlepšuje okysličenie organizmu a odlev škodlivých látok z tela. Zlepšuje "
+"prekrvenie pokožky, podkožia a svalov, pomáha uvoľňovať stuhnuté a bolestivé "
+"svaly a podieľa sa na lepšom vyplavovaní odpadových látok z organizmu. "
+"Pomáha aj pri emocionálnom napätí a prináša úľavu telu aj duši. Je vhodná "
+"takmer pre každého či už na uvoľnenie stresu, odstránenie bolesti alebo pri "
+"prevencií či regenerácií."
+msgstr ""
 
-#: .\viewer\templates\homepage.html:29
-msgid "Cena:"
-msgstr "Price"
+#: .\viewer\templates\homepage.html:61
+msgid ""
+"Mäkké a myofasciálne techniky sú masážne techniky, ktoré primárne uvoľnujú "
+"mäkké tkanivá – svaly. <br><br>V porovnaní s klasickou masážou môže byť "
+"mierne bolestivejšia a vykonáva sa bez oleja. Najprv sa uvoľnuje krčná "
+"chrbtica v sede a následne sa v ľahu pokračuje dole až ku kostrči. Je "
+"výborným doplnkom športovej alebo klasickej masáže. Taktiež je výbornou "
+"metódou na zastavenie procesu stuhnutia alebo uvoľňovania svalov."
+msgstr ""
 
-#: .\viewer\templates\homepage.html:31
-msgid "20€ / 30 minút"
-msgstr "20€ / 30 minutes"
+#: .\viewer\templates\homepage.html:65
+msgid ""
+"Športová masáž je veľmi podobná klasickej masáži, keďže využíva väčšinu "
+"hmatov klasickej relaxačnej masáže, je však prispôsobená špeciálne pre "
+"športovcov, ktorí podávajú náročnejšie fyzické výkony, a to na základe typu "
+"športu a tým, či sa vykonáva pred alebo po výkone. Od klasickej masáže sa "
+"líši najmä v rytme a intenzite masážnych hmatov. Slúži v prvom rade na "
+"zvýšenie kondície a uvoľnenie po náročnej fyzickej záťaži. Zároveň je "
+"skvelou voľbou ako prevencia pred úrazmi. Samotná masáž vplýva aj na "
+"psychickú stránku, uvoľňuje stres pred pretekmi a pozitívne vplýva na podané "
+"výkony."
+msgstr ""
 
-#: .\viewer\templates\homepage.html:32
-#, fuzzy
-#| msgid "Cena: 30€ / 1hod."
-msgid "35€ / 1 hodina"
-msgstr "35€ / 1h"
+#: .\viewer\templates\homepage.html:72
+msgid ""
+"Pri bankovaní prikladáme sklenné banky s nahriatym vzduchom, v tých sa "
+"ochladzovaním vytvorí podtlak a banka sa na kožu prisaje. Podtlak vtiahne "
+"časť kože aj podkožia do banky, čím sa prekrvia, no môže nastať aj "
+"popraskanie drobných cievok. Okysličia sa kritické body a odplavia sa "
+"škodlivé látky. <br><br> Po bankovaní môžu na mieste priloženia ostať "
+"farebné stopy (bezbolestné), ktoré však v priebehu pár dní zmiznú."
+msgstr ""
 
-#: .\viewer\templates\homepage.html:33
-msgid "50€ / 90 minút"
-msgstr "50€ / 90 minutes"
+#: .\viewer\templates\homepage.html:76
+msgid ""
+"Lávové kamene z čadiča absorbujú, udržiavajú a následne odovzdávajú teplo, "
+"čo pozitívne pôsobí nielen na pokožku, podkožie a svaly, ale zlepšujú aj "
+"prekrvenie ciev, cirkuláciu, stimulujú lymfatický systém, urýchľujú "
+"metabolizmus a detoxikujú telo. Výrazným benefitom tejto masáže je priaznivý "
+"vplyv na psychiku, pôsobí antistresovo až antidepresívne. Kamene sú istým "
+"prepojením človeka so Zemou, harmóniou s prírodou. Ich účinkom sa teda "
+"harmonizuje a regeneruje nielen telo ale aj myseľ."
+msgstr ""
 
-#: .\viewer\templates\navbar.html:8
+#: .\viewer\templates\homepage.html:80
+msgid ""
+"Prístrojová lymfodrenáž alebo presoterapia využíva tlakovú vlnu prístroja. "
+"Princíp spočíva v postupnom nafukovaní jednotlivých komôr drenážneho "
+"návleku. Rytmické tlakové vlny povoľujú a opäť nafukujú drenážny návlek. "
+"Presoterapia je výborná na aktiváciu lymfatického systému, čím sa odvádza z "
+"tela tkaninová tekutina obsahujúca splodiny látkovej výmeny. Pomáha pri "
+"opuchoch dolných končatín, pocite ťažkých nôh, únave, posilňuje imunitný "
+"system, zmierňuje prejavy celulitídy, odvodňuje a zoštíhľuje."
+msgstr ""
+
+#: .\viewer\templates\homepage.html:87 .\viewer\templates\navbar.html:13
 msgid "Galéria"
 msgstr "Gallery"
 
-#: .\viewer\templates\navbar.html:9
+#: .\viewer\templates\homepage.html:100 .\viewer\templates\navbar.html:14
+msgid "Poukážky"
+msgstr "Vouchers"
+
+#: .\viewer\templates\navbar.html:11
+msgid "My"
+msgstr "Us"
+
+#: .\viewer\templates\navbar.html:15
+msgid "Rezervácia"
+msgstr "Reservation"
+
+#: .\viewer\templates\navbar.html:16
 msgid "Kontakt"
 msgstr "Contact"
 
-#: .\viewer\templates\navbar.html:21
+#: .\viewer\templates\navbar.html:28 .\viewer\templates\navbar.html:30
+msgid "Prepnúť jazyk"
+msgstr "Switch language"
+
+#: .\viewer\templates\navbar.html:34
 msgid "Slovenčina"
 msgstr "Slovak"
 
-#: .\viewer\templates\navbar.html:23
+#: .\viewer\templates\navbar.html:36
 msgid "Angličtina"
 msgstr "English"
-
-#~ msgid "Bankovanie"
-#~ msgstr "Banking"
-
-#~ msgid "Lávové kamene"
-#~ msgstr "Lava stones"
-
-#~ msgid "Športová masáž"
-#~ msgstr "Sport massage"

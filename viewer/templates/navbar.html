@@ -20,15 +20,22 @@
             <a href="https://www.instagram.com/salonaminask/" target="_blank"><i class="fab fa-instagram" title="Instagram"></i></a>
           </div>
           <div class="social-icons">
-            <a href="https://www.facebook.com/salonAminaSK" target="_blank"><i class="fa-brands fa-facebook" title="Facebook"></i></a>
+            <a href="https://www.facebook.com/salonAminaSK" target="_blank"><i class="fa-brands fa-square-facebook" title="Facebook"></i></a>
           </div>
         </div>
-        <div class="navbar-languages">
-            {% if language_code == 'en' %}
-                <button class="switch-language-button" onclick="switchLanguage('sk')"><img src="{% static 'images/slovakia.png' %}" alt="" title="{% trans 'Slovenčina' %}"></button>
-            {% else %}
-                <button class="switch-language-button" onclick="switchLanguage('en')"><img src="{% static 'images/united-kingdom.png' %}" alt="" title="{% trans 'Angličtina' %}"></button>
-            {% endif %}
+        <div class="navbar-language-button">
+        {% if language_code == 'en' %}
+            <button class="switch-language-button"><img src="{% static 'images/united-kingdom.png' %}" alt="" title="{% trans 'Prepnúť jazyk' %}"></button>
+        {% else %}
+            <button class="switch-language-button"><img src="{% static 'images/slovakia.png' %}" alt="" title="{% trans 'Prepnúť jazyk' %}"></button>
+        {% endif %}
+            <div class="dropdown" id="dropdown-menu-languages">
+                {% if language_code == 'en' %}
+                    <button class="switch-language-button dropdown-item" onclick="switchLanguage('sk')"><img src="{% static 'images/slovakia.png' %}" alt="" title="{% trans 'Slovenčina' %}"></button>
+                {% else %}
+                    <button class="switch-language-button dropdown-item" onclick="switchLanguage('en')"><img src="{% static 'images/united-kingdom.png' %}" alt="" title="{% trans 'Angličtina' %}"></button>
+                {% endif %}
+            </div>
         </div>
     </div>
 </nav>

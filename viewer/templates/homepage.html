@@ -24,7 +24,7 @@
                <img src="{% static 'images/banky.png' %}">
                <h3 class="name-surname">
                    Roman Zelník
-                    <a class="social-icons" href="https://l.facebook.com/l.php?u=https%3A%2F%2Finstagram.com%2Froman_zelnik_masaze%3Figshid%3DOGQ5ZDc2ODk2ZA%253D%253D%26utm_source%3Dqr%26fbclid%3DIwAR2jr_9c7zZRw4uuB7x0y7O7IZMpySC2Hxb6E6FCH79HDQg-GZBoER7QcqI&h=AT0oomkdGFaKdBo5IbA0qfIVQ5LiWzTKq3LF43t2eU8IrfBmTgXiSM-kdLrCtGT7u8aFt2s6xplmVThynSJx_EdOA7bHI2vdPTLW6ssCBFug3_2U4p-QlSmCa7LiJb4EsQXBXFDJ3D5AlTUcPFw" target="_blank"><i class="fab fa-instagram" title="Instagram"></i></a>
+                   <a class="social-icons" href="https://l.facebook.com/l.php?u=https%3A%2F%2Finstagram.com%2Froman_zelnik_masaze%3Figshid%3DOGQ5ZDc2ODk2ZA%253D%253D%26utm_source%3Dqr%26fbclid%3DIwAR2jr_9c7zZRw4uuB7x0y7O7IZMpySC2Hxb6E6FCH79HDQg-GZBoER7QcqI&h=AT0oomkdGFaKdBo5IbA0qfIVQ5LiWzTKq3LF43t2eU8IrfBmTgXiSM-kdLrCtGT7u8aFt2s6xplmVThynSJx_EdOA7bHI2vdPTLW6ssCBFug3_2U4p-QlSmCa7LiJb4EsQXBXFDJ3D5AlTUcPFw" target="_blank"><i class="fab fa-instagram" title="Instagram"></i></a>
                </h3>
                <ul class="technique-list">
                    <li>{% trans 'Klasická masáž' %}</li>
@@ -96,14 +96,18 @@
             </div>
     </section>
 
-    <section id="poukazka">
+    <section id="poukazka" style="margin-bottom: 100px;">
         <h1>{% trans 'Poukážky' %}</h1>
-        <div class="gallery-container">
-            <img src="{% static 'images/poukaz.jpg' %}" onclick="openBiggerImage('{% static 'images/poukaz.jpg' %}')">
+        <div class="gallery-container-poukazka">
+            {% for voucher in vouchers %}
+                <div class="voucher-download-container">
+                <img src="{{ voucher.photo }}" onclick="openBiggerImage('{{ voucher.photo }}')">
+                <a class="download-button" href="{{ voucher.photo }}" download>{% trans 'Stiahnúť' %}<i class="fa-duotone fa-arrow-down-to-line"></i></a>
+                </div>
+            {% endfor %}
         </div>
         <div id="myModal" class="modal">
             <span class="close">&times;</span>
-            <a id="downloadLink" href="#" download><i class="fas fa-download"></i></a>
             <img class="modal-content" id="img01">
         </div>
     </section>
@@ -111,7 +115,7 @@
     <section id="contact">
         <div class="contact-container">
             <div class="contact-info">
-                <p>Masáže AMINA</p>
+                <p>{% trans 'Masáže AMINA' %}</p>
                 <p><i class="fa-regular fa-map-location-dot"></i> Dobšinského 1614/8, 010 08 Žilina-Vlčince (OC Kocka)</p>
                 <p><i class="fa-duotone fa-phone"></i> +421 948 953 841, +421 902 442 280</p>
                 <p><i class="fa-duotone fa-envelope"></i> rzelnik@gmail.com</p>

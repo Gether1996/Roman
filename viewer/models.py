@@ -1,4 +1,8 @@
 from django.db.models import *
 
-class Photo(Model):
+class GalleryPhoto(Model):
+    photo = ImageField(upload_to='static/images/')
+
+
+class VoucherPhoto(Model):
     photo = ImageField(upload_to='static/images/')
