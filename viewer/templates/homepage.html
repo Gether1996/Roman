@@ -19,9 +19,12 @@
     {% include 'navbar.html' %}
 
    <section id="about-us">
+
+       <h1 style="margin-bottom: 50px;" class="h1-slogan">"{% trans 'Priateľský a individuálny prístup pre naších klientov' %}"</h1>
+
        <div class="about-us-container">
            <div class="person-container">
-               <img src="{% static 'images/banky.png' %}">
+               <img class="roman-image" src="{% static 'images/roman.jpg' %}">
                <h3 class="name-surname">
                    Roman Zelník
                    <a class="social-icons" href="https://l.facebook.com/l.php?u=https%3A%2F%2Finstagram.com%2Froman_zelnik_masaze%3Figshid%3DOGQ5ZDc2ODk2ZA%253D%253D%26utm_source%3Dqr%26fbclid%3DIwAR2jr_9c7zZRw4uuB7x0y7O7IZMpySC2Hxb6E6FCH79HDQg-GZBoER7QcqI&h=AT0oomkdGFaKdBo5IbA0qfIVQ5LiWzTKq3LF43t2eU8IrfBmTgXiSM-kdLrCtGT7u8aFt2s6xplmVThynSJx_EdOA7bHI2vdPTLW6ssCBFug3_2U4p-QlSmCa7LiJb4EsQXBXFDJ3D5AlTUcPFw" target="_blank"><i class="fab fa-instagram" title="Instagram"></i></a>
@@ -34,7 +37,7 @@
                </ul>
            </div>
            <div class="person-container">
-               <img src="{% static 'images/banky.png' %}">
+               <img class="evka-image" src="{% static 'images/evka.jpg' %}">
                <h3 class="name-surname">Evka Koribská</h3>
                <ul class="technique-list">
                    <li>{% trans 'Klasická masáž' %}</li>
@@ -112,13 +115,22 @@
         </div>
     </section>
 
+    <section id="spolupraca">
+        <h1>{% trans 'Pre firmy' %}</h1>
+        <h3>{% trans 'Jedinečná príležitosť dopriať svojim zamestnancom relax od práce' %}</h3>
+        <h3>{% trans 'prostredníctvom poukážok upravených pre Vašu firmu na mieru.' %}</h3>
+        <h3>{% trans 'Spolupracujte s nami a prineste do svojho pracovného prostredia novú úroveň pohody.' %}</h3>
+        <h3>{% trans 'Pre viac informácii nás kontaktujte.' %}</h3>
+    </section>
+
     <section id="contact">
         <div class="contact-container">
             <div class="contact-info">
                 <p>{% trans 'Masáže AMINA' %}</p>
                 <p><i class="fa-regular fa-map-location-dot"></i> Dobšinského 1614/8, 010 08 Žilina-Vlčince (OC Kocka)</p>
-                <p><i class="fa-duotone fa-phone"></i> +421 948 953 841, +421 902 442 280</p>
-                <p><i class="fa-duotone fa-envelope"></i> rzelnik@gmail.com</p>
+                <p><strong>Roman </strong><i class="fa-duotone fa-phone"></i> +421 902 442 280</p>
+                <p><strong>Evka </strong><i class="fa-duotone fa-phone"></i> +421 948 953 841</p>
+                <p><i class="fa-duotone fa-envelope"></i> salonaminask@gmail.com</p>
             </div>
         </div>
     </section>

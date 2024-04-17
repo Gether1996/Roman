@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-10 14:01+0200\n"
+"POT-Creation-Date: 2024-04-17 11:07+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,43 +18,47 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\viewer\templates\homepage.html:9
+#: .\viewer\templates\homepage.html:9 .\viewer\templates\homepage.html:129
 msgid "Masáže AMINA"
 msgstr "Massages AMINA"
 
-#: .\viewer\templates\homepage.html:30 .\viewer\templates\homepage.html:40
-#: .\viewer\templates\homepage.html:56
+#: .\viewer\templates\homepage.html:23
+msgid "Priateľský a individuálny prístup pre naších klientov"
+msgstr "Friendly and individual approach for our clients"
+
+#: .\viewer\templates\homepage.html:33 .\viewer\templates\homepage.html:43
+#: .\viewer\templates\homepage.html:59
 msgid "Klasická masáž"
 msgstr "Classic massage"
 
-#: .\viewer\templates\homepage.html:31 .\viewer\templates\homepage.html:41
-#: .\viewer\templates\homepage.html:64
+#: .\viewer\templates\homepage.html:34 .\viewer\templates\homepage.html:44
+#: .\viewer\templates\homepage.html:67
 msgid "Športová masáž"
 msgstr "Sport massage"
 
-#: .\viewer\templates\homepage.html:32 .\viewer\templates\homepage.html:42
-#: .\viewer\templates\homepage.html:60
+#: .\viewer\templates\homepage.html:35 .\viewer\templates\homepage.html:45
+#: .\viewer\templates\homepage.html:63
 msgid "Mäkké a myofasciálne techniky"
 msgstr "Soft and myofascial techniques"
 
-#: .\viewer\templates\homepage.html:33 .\viewer\templates\homepage.html:43
-#: .\viewer\templates\homepage.html:71
+#: .\viewer\templates\homepage.html:36 .\viewer\templates\homepage.html:46
+#: .\viewer\templates\homepage.html:74
 msgid "Bankovanie"
 msgstr "Banking"
 
-#: .\viewer\templates\homepage.html:44 .\viewer\templates\homepage.html:75
+#: .\viewer\templates\homepage.html:47 .\viewer\templates\homepage.html:78
 msgid "Lávové kamene"
 msgstr "Lava stones"
 
-#: .\viewer\templates\homepage.html:45 .\viewer\templates\homepage.html:79
+#: .\viewer\templates\homepage.html:48 .\viewer\templates\homepage.html:82
 msgid "Prístrojová lymfodrenáž"
 msgstr "Device lymphatic drainage"
 
-#: .\viewer\templates\homepage.html:52 .\viewer\templates\navbar.html:12
+#: .\viewer\templates\homepage.html:55 .\viewer\templates\navbar.html:12
 msgid "Techniky"
 msgstr "Techniques"
 
-#: .\viewer\templates\homepage.html:57
+#: .\viewer\templates\homepage.html:60
 msgid ""
 "Klasická masáž aktivuje celkový krvný a lymfatický obeh, ktorý následne "
 "zlepšuje okysličenie organizmu a odlev škodlivých látok z tela. Zlepšuje "
@@ -64,8 +68,9 @@ msgid ""
 "takmer pre každého či už na uvoľnenie stresu, odstránenie bolesti alebo pri "
 "prevencií či regenerácií."
 msgstr ""
+"The classic massage activates the overall blood and lymphatic circulation, which subsequently improves the oxygenation of the body and the removal of harmful substances from the body. It enhances the circulation of the skin, subcutaneous tissue, and muscles, helps to release stiff and painful muscles, and contributes to better elimination of waste materials from the body. It also helps with emotional tension and brings relief to both body and soul. It is suitable for almost everyone, whether for stress relief, pain relief, or prevention and regeneration"
 
-#: .\viewer\templates\homepage.html:61
+#: .\viewer\templates\homepage.html:64
 msgid ""
 "Mäkké a myofasciálne techniky sú masážne techniky, ktoré primárne uvoľnujú "
 "mäkké tkanivá – svaly. <br><br>V porovnaní s klasickou masážou môže byť "
@@ -74,8 +79,9 @@ msgid ""
 "výborným doplnkom športovej alebo klasickej masáže. Taktiež je výbornou "
 "metódou na zastavenie procesu stuhnutia alebo uvoľňovania svalov."
 msgstr ""
+"Soft and myofascial techniques are massage techniques that primarily release soft tissues - muscles. <br><br>Compared to classic massage, it may be slightly more painful and is performed without oil. First, the cervical spine is loosened in a seated position, and then it continues lying down to the coccyx. It is an excellent complement to sports or classic massage. It is also an excellent method for stopping the process of muscle stiffness or tension release."
 
-#: .\viewer\templates\homepage.html:65
+#: .\viewer\templates\homepage.html:68
 msgid ""
 "Športová masáž je veľmi podobná klasickej masáži, keďže využíva väčšinu "
 "hmatov klasickej relaxačnej masáže, je však prispôsobená špeciálne pre "
@@ -87,8 +93,9 @@ msgid ""
 "psychickú stránku, uvoľňuje stres pred pretekmi a pozitívne vplýva na podané "
 "výkony."
 msgstr ""
+"Sports massage is very similar to classic massage, as it utilizes most of the techniques of a classic relaxation massage, but it is specifically tailored for athletes who undergo more demanding physical performances, based on the type of sport and whether it is performed before or after the activity. It differs from classic massage mainly in the rhythm and intensity of massage strokes. Its primary purpose is to improve conditioning and relaxation after strenuous physical exertion. Additionally, it is an excellent choice for injury prevention. The massage itself also affects the psychological aspect, relieving pre-competition stress and positively impacting performance."
 
-#: .\viewer\templates\homepage.html:72
+#: .\viewer\templates\homepage.html:75
 msgid ""
 "Pri bankovaní prikladáme sklenné banky s nahriatym vzduchom, v tých sa "
 "ochladzovaním vytvorí podtlak a banka sa na kožu prisaje. Podtlak vtiahne "
@@ -97,8 +104,9 @@ msgid ""
 "škodlivé látky. <br><br> Po bankovaní môžu na mieste priloženia ostať "
 "farebné stopy (bezbolestné), ktoré však v priebehu pár dní zmiznú."
 msgstr ""
+"When cupping, we apply glass cups with heated air, creating a vacuum by cooling, causing the cup to adhere to the skin. The vacuum draws a portion of the skin and subcutaneous tissue into the cup, increasing blood flow, but it may also cause minor capillary ruptures. Critical points are oxygenated, and harmful substances are flushed out. <br><br> After cupping, there may be residual color marks at the application site (painless), which will disappear within a few days."
 
-#: .\viewer\templates\homepage.html:76
+#: .\viewer\templates\homepage.html:79
 msgid ""
 "Lávové kamene z čadiča absorbujú, udržiavajú a následne odovzdávajú teplo, "
 "čo pozitívne pôsobí nielen na pokožku, podkožie a svaly, ale zlepšujú aj "
@@ -108,8 +116,9 @@ msgid ""
 "prepojením človeka so Zemou, harmóniou s prírodou. Ich účinkom sa teda "
 "harmonizuje a regeneruje nielen telo ale aj myseľ."
 msgstr ""
+"Lava stones made of basalt absorb, retain, and then release heat, which has a positive effect not only on the skin, subcutaneous tissue, and muscles but also improves blood vessel circulation, circulation, stimulates the lymphatic system, accelerates metabolism, and detoxifies the body. A significant benefit of this massage is its favorable effect on the psyche, acting anti-stress and even antidepressant. The stones serve as a connection between humans and the Earth, harmonizing with nature. Thus, their effect harmonizes and regenerates not only the body but also the mind."
 
-#: .\viewer\templates\homepage.html:80
+#: .\viewer\templates\homepage.html:83
 msgid ""
 "Prístrojová lymfodrenáž alebo presoterapia využíva tlakovú vlnu prístroja. "
 "Princíp spočíva v postupnom nafukovaní jednotlivých komôr drenážneho "
@@ -119,14 +128,42 @@ msgid ""
 "opuchoch dolných končatín, pocite ťažkých nôh, únave, posilňuje imunitný "
 "system, zmierňuje prejavy celulitídy, odvodňuje a zoštíhľuje."
 msgstr ""
+"Instrumental lymphatic drainage or pressotherapy utilizes the pressure wave of the device. The principle involves gradually inflating individual chambers of the drainage sleeve. Rhythmic pressure waves allow the drainage sleeve to relax and inflate again. Pressotherapy is excellent for activating the lymphatic system, thereby removing tissue fluid containing metabolic waste from the body. It helps with swelling of the lower limbs, the sensation of heavy legs, fatigue, strengthens the immune system, alleviates cellulite symptoms, promotes drainage, and slims."
 
-#: .\viewer\templates\homepage.html:87 .\viewer\templates\navbar.html:13
+#: .\viewer\templates\homepage.html:90 .\viewer\templates\navbar.html:13
 msgid "Galéria"
 msgstr "Gallery"
 
-#: .\viewer\templates\homepage.html:100 .\viewer\templates\navbar.html:14
+#: .\viewer\templates\homepage.html:103 .\viewer\templates\navbar.html:14
 msgid "Poukážky"
 msgstr "Vouchers"
+
+#: .\viewer\templates\homepage.html:108
+msgid "Stiahnúť"
+msgstr "Download"
+
+#: .\viewer\templates\homepage.html:119 .\viewer\templates\navbar.html:16
+msgid "Pre firmy"
+msgstr "For companies"
+
+#: .\viewer\templates\homepage.html:120
+msgid "Jedinečná príležitosť dopriať svojim zamestnancom relax od práce"
+msgstr "A unique opportunity to provide your employees with relaxation from work"
+
+#: .\viewer\templates\homepage.html:121
+msgid "prostredníctvom poukážok upravených pre Vašu firmu na mieru."
+msgstr "through vouchers tailored specifically for your company."
+
+#: .\viewer\templates\homepage.html:122
+msgid ""
+"Spolupracujte s nami a prineste do svojho pracovného prostredia novú úroveň "
+"pohody."
+msgstr ""
+"Collaborate with us and bring a new level of comfort to your work environment."
+
+#: .\viewer\templates\homepage.html:123
+msgid "Pre viac informácii nás kontaktujte."
+msgstr "Contact us for more informations."
 
 #: .\viewer\templates\navbar.html:11
 msgid "My"
@@ -136,18 +173,18 @@ msgstr "Us"
 msgid "Rezervácia"
 msgstr "Reservation"
 
-#: .\viewer\templates\navbar.html:16
+#: .\viewer\templates\navbar.html:17
 msgid "Kontakt"
 msgstr "Contact"
 
-#: .\viewer\templates\navbar.html:28 .\viewer\templates\navbar.html:30
+#: .\viewer\templates\navbar.html:29 .\viewer\templates\navbar.html:31
 msgid "Prepnúť jazyk"
 msgstr "Switch language"
 
-#: .\viewer\templates\navbar.html:34
+#: .\viewer\templates\navbar.html:35
 msgid "Slovenčina"
 msgstr "Slovak"
 
-#: .\viewer\templates\navbar.html:36
+#: .\viewer\templates\navbar.html:37
 msgid "Angličtina"
 msgstr "English"

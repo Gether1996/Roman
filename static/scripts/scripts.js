@@ -71,17 +71,7 @@ function switchLanguage(language_code) {
   })
     .then(response => response.json())
     .then(data => {
-      Swal.fire({
-        position: 'top',
-        title: (language_code === 'sk') ? 'Switching to slovak.' : 'Prepínam na angličtinu.',
-        icon: 'info',
-        iconColor: 'rgba(0, 0, 40, 0.9)',
-        showConfirmButton: false,
-        timer: 900
-      });
-      setTimeout(function () {
         location.reload();
-      }, 900);
     })
     .catch(error => {
       console.error("Error switching language:", error);
