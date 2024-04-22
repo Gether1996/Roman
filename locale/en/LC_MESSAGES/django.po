@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-22 09:22+0200\n"
+"POT-Creation-Date: 2024-04-22 12:33+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1404,7 +1404,7 @@ msgstr "Vouchers"
 msgid "Stiahnúť"
 msgstr "Download"
 
-#: .\viewer\templates\homepage.html:119 .\viewer\templates\navbar.html:16
+#: .\viewer\templates\homepage.html:119
 msgid "Pre firmy"
 msgstr "For companies"
 
@@ -1437,6 +1437,10 @@ msgstr "Us"
 msgid "Rezervácia"
 msgstr "Reservation"
 
+#: .\viewer\templates\navbar.html:16
+msgid "Firmy"
+msgstr "Companies"
+
 #: .\viewer\templates\navbar.html:17
 msgid "Kontakt"
 msgstr "Contact"
@@ -1452,6 +1456,3 @@ msgstr "Slovak"
 #: .\viewer\templates\navbar.html:37
 msgid "Angličtina"
 msgstr "English"
-
-#~ msgid "Masáže AMINA"
-#~ msgstr "Massages AMINA"
