@@ -160,7 +160,6 @@ body {
 #poukazka h1{
     text-align: center;
     font-size: 35px;
-    font-family: 'Lucida Handwriting', cursive;
 }
 
 .h1-slogan {
@@ -238,7 +237,6 @@ body {
 }
 
 #spolupraca h3 {
-    font-family: 'Lucida Handwriting', cursive;
     font-weight: normal;
 }
 
@@ -414,7 +412,6 @@ body {
     }
 
     #spolupraca h3 {
-        font-family: 'Lucida Handwriting', cursive;
         font-weight: normal;
         font-size: 13px;
     }
