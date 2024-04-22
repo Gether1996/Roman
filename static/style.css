@@ -200,6 +200,25 @@ body {
     width: 70%;
 }
 
+.reservation-button-about-us {
+    padding: 15px 30px;
+    border: 2px solid black;
+    border-radius: 3px;
+    transition: 0.3s;
+    background-color: #e5e5e5;
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
+    font-size: 30px;
+    width: 40%;
+    text-align: center;
+    margin: 40px;
+}
+
+.reservation-button-about-us:hover {
+    background-color: #c9c9c9;
+}
+
 .summary {
     display: flex;
     flex-direction: column;
@@ -486,6 +505,14 @@ body {
 
     .social-icons img {
         font-size: 18px;
+    }
+
+    .reservation-button-about-us {
+        padding: 10px 20px;
+        font-size: 20px;
+        width: 60%;
+        text-align: center;
+        margin: 20px;
     }
 
     .switch-language-button {
