@@ -568,3 +568,32 @@ body {
         margin-left: 10px;
     }
 }
+
+
+@media screen and (max-width: 1500px) {
+    .gallery-container img,
+    .voucher-download-container img{
+        height: 400px;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .gallery-container img,
+    .voucher-download-container img{
+        height: 300px;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .gallery-container img,
+    .voucher-download-container img {
+        height: 250px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .gallery-container img,
+    .voucher-download-container img {
+        height: 150px;
+    }
+}
