@@ -570,7 +570,7 @@ body {
         display: flex;
         flex-direction: column;
         align-items: center;
-        width: calc(45% - 5px);
+        width: calc(70% - 5px);
     }
 
     .voucher-download-container img {

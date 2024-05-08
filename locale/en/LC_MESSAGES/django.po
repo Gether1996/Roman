@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-22 12:33+0200\n"
+"POT-Creation-Date: 2024-05-08 20:30+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1238,47 +1238,47 @@ msgstr ""
 msgid "Connect, get help, or contribute"
 msgstr ""
 
-#: .\viewer\templates\homepage.html:9 .\viewer\templates\homepage.html:129
+#: .\viewer\templates\homepage.html:9 .\viewer\templates\homepage.html:130
 msgid "Masáže Vlčince"
 msgstr "Massages Vlčince"
 
-#: .\viewer\templates\homepage.html:23
+#: .\viewer\templates\homepage.html:24
 msgid "Priateľský a individuálny prístup pre naších klientov"
 msgstr "Friendly and individual approach for our clients"
 
-#: .\viewer\templates\homepage.html:33 .\viewer\templates\homepage.html:43
-#: .\viewer\templates\homepage.html:59
+#: .\viewer\templates\homepage.html:34 .\viewer\templates\homepage.html:44
+#: .\viewer\templates\homepage.html:64
 msgid "Klasická masáž"
 msgstr "Classic massage"
 
-#: .\viewer\templates\homepage.html:34 .\viewer\templates\homepage.html:44
-#: .\viewer\templates\homepage.html:67
+#: .\viewer\templates\homepage.html:35 .\viewer\templates\homepage.html:45
+#: .\viewer\templates\homepage.html:72
 msgid "Športová masáž"
 msgstr "Sport massage"
 
-#: .\viewer\templates\homepage.html:35 .\viewer\templates\homepage.html:45
-#: .\viewer\templates\homepage.html:63
+#: .\viewer\templates\homepage.html:36 .\viewer\templates\homepage.html:46
+#: .\viewer\templates\homepage.html:68
 msgid "Mäkké a myofasciálne techniky"
 msgstr "Soft and myofascial techniques"
 
-#: .\viewer\templates\homepage.html:36 .\viewer\templates\homepage.html:46
-#: .\viewer\templates\homepage.html:74
+#: .\viewer\templates\homepage.html:37 .\viewer\templates\homepage.html:47
+#: .\viewer\templates\homepage.html:79
 msgid "Bankovanie"
 msgstr "Banking"
 
-#: .\viewer\templates\homepage.html:47 .\viewer\templates\homepage.html:78
+#: .\viewer\templates\homepage.html:48 .\viewer\templates\homepage.html:83
 msgid "Lávové kamene"
 msgstr "Lava stones"
 
-#: .\viewer\templates\homepage.html:48 .\viewer\templates\homepage.html:82
-msgid "Prístrojová lymfodrenáž"
-msgstr "Device lymphatic drainage"
+#: .\viewer\templates\homepage.html:54
+msgid "Rezervovať termín"
+msgstr ""
 
-#: .\viewer\templates\homepage.html:55 .\viewer\templates\navbar.html:12
+#: .\viewer\templates\homepage.html:60 .\viewer\templates\navbar.html:12
 msgid "Techniky"
 msgstr "Techniques"
 
-#: .\viewer\templates\homepage.html:60
+#: .\viewer\templates\homepage.html:65
 msgid ""
 "Klasická masáž aktivuje celkový krvný a lymfatický obeh, ktorý následne "
 "zlepšuje okysličenie organizmu a odlev škodlivých látok z tela. Zlepšuje "
@@ -1297,7 +1297,7 @@ msgstr ""
 "and soul. It is suitable for almost everyone, whether for stress relief, "
 "pain relief, or prevention and regeneration"
 
-#: .\viewer\templates\homepage.html:64
+#: .\viewer\templates\homepage.html:69
 msgid ""
 "Mäkké a myofasciálne techniky sú masážne techniky, ktoré primárne uvoľnujú "
 "mäkké tkanivá – svaly. <br><br>V porovnaní s klasickou masážou môže byť "
@@ -1314,7 +1314,7 @@ msgstr ""
 "is also an excellent method for stopping the process of muscle stiffness or "
 "tension release."
 
-#: .\viewer\templates\homepage.html:68
+#: .\viewer\templates\homepage.html:73
 msgid ""
 "Športová masáž je veľmi podobná klasickej masáži, keďže využíva väčšinu "
 "hmatov klasickej relaxačnej masáže, je však prispôsobená špeciálne pre "
@@ -1337,7 +1337,7 @@ msgstr ""
 "psychological aspect, relieving pre-competition stress and positively "
 "impacting performance."
 
-#: .\viewer\templates\homepage.html:75
+#: .\viewer\templates\homepage.html:80
 msgid ""
 "Pri bankovaní prikladáme sklenné banky s nahriatym vzduchom, v tých sa "
 "ochladzovaním vytvorí podtlak a banka sa na kožu prisaje. Podtlak vtiahne "
@@ -1354,7 +1354,7 @@ msgstr ""
 "residual color marks at the application site (painless), which will "
 "disappear within a few days."
 
-#: .\viewer\templates\homepage.html:79
+#: .\viewer\templates\homepage.html:84
 msgid ""
 "Lávové kamene z čadiča absorbujú, udržiavajú a následne odovzdávajú teplo, "
 "čo pozitívne pôsobí nielen na pokožku, podkožie a svaly, ale zlepšujú aj "
@@ -1373,51 +1373,32 @@ msgstr ""
 "between humans and the Earth, harmonizing with nature. Thus, their effect "
 "harmonizes and regenerates not only the body but also the mind."
 
-#: .\viewer\templates\homepage.html:83
-msgid ""
-"Prístrojová lymfodrenáž alebo presoterapia využíva tlakovú vlnu prístroja. "
-"Princíp spočíva v postupnom nafukovaní jednotlivých komôr drenážneho "
-"návleku. Rytmické tlakové vlny povoľujú a opäť nafukujú drenážny návlek. "
-"Presoterapia je výborná na aktiváciu lymfatického systému, čím sa odvádza z "
-"tela tkaninová tekutina obsahujúca splodiny látkovej výmeny. Pomáha pri "
-"opuchoch dolných končatín, pocite ťažkých nôh, únave, posilňuje imunitný "
-"system, zmierňuje prejavy celulitídy, odvodňuje a zoštíhľuje."
-msgstr ""
-"Instrumental lymphatic drainage or pressotherapy utilizes the pressure wave "
-"of the device. The principle involves gradually inflating individual "
-"chambers of the drainage sleeve. Rhythmic pressure waves allow the drainage "
-"sleeve to relax and inflate again. Pressotherapy is excellent for activating "
-"the lymphatic system, thereby removing tissue fluid containing metabolic "
-"waste from the body. It helps with swelling of the lower limbs, the "
-"sensation of heavy legs, fatigue, strengthens the immune system, alleviates "
-"cellulite symptoms, promotes drainage, and slims."
-
-#: .\viewer\templates\homepage.html:90 .\viewer\templates\navbar.html:13
+#: .\viewer\templates\homepage.html:91 .\viewer\templates\navbar.html:13
 msgid "Galéria"
 msgstr "Gallery"
 
-#: .\viewer\templates\homepage.html:103 .\viewer\templates\navbar.html:14
+#: .\viewer\templates\homepage.html:104 .\viewer\templates\navbar.html:14
 msgid "Poukážky"
 msgstr "Vouchers"
 
-#: .\viewer\templates\homepage.html:108
+#: .\viewer\templates\homepage.html:109
 msgid "Stiahnúť"
 msgstr "Download"
 
-#: .\viewer\templates\homepage.html:119
+#: .\viewer\templates\homepage.html:120
 msgid "Pre firmy"
 msgstr "For companies"
 
-#: .\viewer\templates\homepage.html:120
+#: .\viewer\templates\homepage.html:121
 msgid "Jedinečná príležitosť dopriať svojim zamestnancom relax od práce"
 msgstr ""
 "A unique opportunity to provide your employees with relaxation from work"
 
-#: .\viewer\templates\homepage.html:121
+#: .\viewer\templates\homepage.html:122
 msgid "prostredníctvom poukážok upravených pre Vašu firmu na mieru."
 msgstr "through vouchers tailored specifically for your company."
 
-#: .\viewer\templates\homepage.html:122
+#: .\viewer\templates\homepage.html:123
 msgid ""
 "Spolupracujte s nami a prineste do svojho pracovného prostredia novú úroveň "
 "pohody."
@@ -1425,7 +1406,7 @@ msgstr ""
 "Collaborate with us and bring a new level of comfort to your work "
 "environment."
 
-#: .\viewer\templates\homepage.html:123
+#: .\viewer\templates\homepage.html:124
 msgid "Pre viac informácii nás kontaktujte."
 msgstr "Contact us for more informations."
 
@@ -1434,8 +1415,8 @@ msgid "My"
 msgstr "Us"
 
 #: .\viewer\templates\navbar.html:15
-msgid "Rezervácia"
-msgstr "Reservation"
+msgid "Rezervácia/Cenník"
+msgstr "Reservation/Prices"
 
 #: .\viewer\templates\navbar.html:16
 msgid "Firmy"
@@ -1456,3 +1437,25 @@ msgstr "Slovak"
 #: .\viewer\templates\navbar.html:37
 msgid "Angličtina"
 msgstr "English"
+
+#~ msgid "Prístrojová lymfodrenáž"
+#~ msgstr "Device lymphatic drainage"
+
+#~ msgid ""
+#~ "Prístrojová lymfodrenáž alebo presoterapia využíva tlakovú vlnu "
+#~ "prístroja. Princíp spočíva v postupnom nafukovaní jednotlivých komôr "
+#~ "drenážneho návleku. Rytmické tlakové vlny povoľujú a opäť nafukujú "
+#~ "drenážny návlek. Presoterapia je výborná na aktiváciu lymfatického "
+#~ "systému, čím sa odvádza z tela tkaninová tekutina obsahujúca splodiny "
+#~ "látkovej výmeny. Pomáha pri opuchoch dolných končatín, pocite ťažkých "
+#~ "nôh, únave, posilňuje imunitný system, zmierňuje prejavy celulitídy, "
+#~ "odvodňuje a zoštíhľuje."
+#~ msgstr ""
+#~ "Instrumental lymphatic drainage or pressotherapy utilizes the pressure "
+#~ "wave of the device. The principle involves gradually inflating individual "
+#~ "chambers of the drainage sleeve. Rhythmic pressure waves allow the "
+#~ "drainage sleeve to relax and inflate again. Pressotherapy is excellent "
+#~ "for activating the lymphatic system, thereby removing tissue fluid "
+#~ "containing metabolic waste from the body. It helps with swelling of the "
+#~ "lower limbs, the sensation of heavy legs, fatigue, strengthens the immune "
+#~ "system, alleviates cellulite symptoms, promotes drainage, and slims."
