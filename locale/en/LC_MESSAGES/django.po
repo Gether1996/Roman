@@ -1264,7 +1264,7 @@ msgstr "Soft and myofascial techniques"
 #: .\viewer\templates\homepage.html:37 .\viewer\templates\homepage.html:47
 #: .\viewer\templates\homepage.html:79
 msgid "Bankovanie"
-msgstr "Banking"
+msgstr "Cupping"
 
 #: .\viewer\templates\homepage.html:48 .\viewer\templates\homepage.html:83
 msgid "Lávové kamene"
@@ -1272,7 +1272,7 @@ msgstr "Lava stones"
 
 #: .\viewer\templates\homepage.html:54
 msgid "Rezervovať termín"
-msgstr ""
+msgstr "Make reservation"
 
 #: .\viewer\templates\homepage.html:60 .\viewer\templates\navbar.html:12
 msgid "Techniky"
