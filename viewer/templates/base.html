@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.css' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.png' %}">
+    <script src="{% static 'scripts/jquery-3.6.0.min.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body>
+    {% block content %}{% endblock %}
+    <script>
+        var language_code = '{{ language_code }}';
+        var isEnglish = (language_code === 'en');
+        var csrf_token = "{{ csrf_token }}";
+    </script>
+    <script src="{% static 'scripts/sweetalert2@11.js' %}"></script>
+    <script src="{% static 'scripts/scripts.js' %}"></script>
+    <script src="{% static 'scripts/users.js' %}"></script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

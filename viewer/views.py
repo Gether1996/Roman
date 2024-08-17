@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.utils.translation import activate
 from django.http import JsonResponse
 from viewer.models import GalleryPhoto, VoucherPhoto
+from accounts.models import CustomUser
+from django.utils.translation import gettext_lazy as _
 
 
 def homepage(request):
@@ -11,6 +13,15 @@ def homepage(request):
 
     activate(language_code)
     return render(request, 'homepage.html', {'photos': photos, 'vouchers': vouchers})
+
+
+def profile(request, email):
+    try:
+        CustomUser.objects.get(email=email)
+        return render(request, 'profile.html')
+    except CustomUser.DoesNotExist:
+        message = _('Najskôr sa prihláste.')
+        return render(request, 'error.html', {'message': message})
 
 
 def switch_language(request, language_code):

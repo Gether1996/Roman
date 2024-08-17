@@ -5,10 +5,9 @@
 <nav class="navbar">
     <div class="navbar-content">
         <div>
-          <img class="logo-image" src="{% static 'images/logo1.png' %}" alt="fasdf">
+          <img class="logo-image" onclick="smoothScroll('about-us')" src="{% static 'images/logo1.png' %}" alt="fasdf">
         </div>
         <div class="nav-links">
-          <a href="#" class="navbar-button" onclick="smoothScroll('about-us')">{% trans 'My' %}</a>
           <a href="#" class="navbar-button" onclick="smoothScroll('technique')">{% trans 'Techniky' %}</a>
           <a href="#" class="navbar-button" onclick="smoothScroll('gallery')">{% trans 'Galéria' %}</a>
           <a href="#" class="navbar-button" onclick="smoothScroll('poukazka')">{% trans 'Poukážky' %}</a>
@@ -38,5 +37,22 @@
                 {% endif %}
             </div>
         </div>
+    {% if request.user.is_authenticated %}
+        <div class="navbar-user-info">
+            <b>{{ user.email }} <i class="fa-duotone fa-user avatar-user-icon" id="avatar-user-icon"></i></b>
+            <div style="background-color: white;" class="dropdown" id="dropdown-menu">
+                <a class="dropdown-link" href="{% url 'profile' email=user.email %}">{% trans 'Môj profil' %}</a>
+                <a class="dropdown-link" href="#" onclick="logoutConfirmation()"><i class="fas fa-sign-out-alt"></i> {% trans 'Odhlásiť sa' %}</a>
+            </div>
+        </div>
+    {% else %}
+        <div class="navbar-user-info">
+            <b><i class="fa-duotone fa-user avatar-user-icon" id="avatar-user-icon"></i></b>
+                <div style="background-color: white; border:" class="dropdown" id="dropdown-menu">
+                    <a class="dropdown-link" href="#" onclick="login()"><i class="fa-duotone fa-right-to-bracket"></i> {% trans 'Prihlásiť sa' %}</a>
+                    <a class="dropdown-link" href="#" onclick="registration()"><i class="fa-duotone fa-user-plus"></i> {% trans 'Registrácia' %}</a>
+                </div>
+        </div>
+    {% endif %}
     </div>
 </nav>

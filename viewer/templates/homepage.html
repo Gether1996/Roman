@@ -1,23 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-
+{% extends 'base.html' %}
 {% load static %}
 {% load i18n %}
 
-<head>
-    <meta charset="UTF-8">
+{% block extra_head %}
     <title>{% trans 'Masáže Vlčince' %}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.png' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
-    <link rel="stylesheet" href="{% static 'fontawesome/css/all.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Brush+Script+MT&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Luminari&display=swap">
     <meta name="google-site-verification" content="RBYjh0_gAGhqf_K4wPSsz79kxLVAUMPng7TD-a0jQcY" />
-</head>
+{% endblock %}
 
-<body>
-    {% include 'navbar.html' %}
+{% block content %}
+
+{% include 'navbar.html' %}
 
    <section id="about-us">
 
@@ -136,12 +130,8 @@
         </div>
     </section>
 
-    <script src="{% static 'scripts/scripts.js' %}"></script>
-    <script src="{% static 'scripts/sweetalert2@11.js' %}"></script>
-    <script>
-        var language_code = '{{ language_code }}';
-        var csrf_token = "{{ csrf_token }}";
-    </script>
+{% endblock %}
 
-</body>
-</html>
+{% block extra_scripts %}
+    <script src="{% static 'scripts/homepage.js' %}"></script>
+{% endblock %}

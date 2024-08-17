@@ -8,6 +8,7 @@ body {
 
 .logo-image {
     width: 150px;
+    cursor: pointer;
 }
 
 #spolupraca {
@@ -58,11 +59,59 @@ body {
   margin-right: 50px;
 }
 
+.navbar-user-info {
+    position: absolute;
+    top: 35px;
+    right: 130px;
+    font-size: 19px;
+    background-color: transparent;
+    border: none;
+    margin-bottom: 0;
+    padding: 0px;
+}
+
+.avatar-user-icon {
+    font-size: 20px;
+    border: none;
+    background-color: #e5e5e5;
+    padding: 14px;
+    border-radius: 50%;
+    margin-bottom: 0;
+    margin-left: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.avatar-user-icon:hover {
+    scale: 1.15;
+}
+
+#dropdown-menu {
+    position: absolute;
+    top: 85px;
+    right: 3px;
+    width: 200px;
+    font-size: 18px;
+    transition: 0.3s;
+    text-align: right;
+}
+
+.toggle-password {
+    cursor: pointer;
+    font-size: 20px;
+    transition: 0.3s;
+    margin-top: 15px;
+}
+
+.navbar-user-info:hover #dropdown-menu {
+    display: block; /* Show dropdown on hover */
+}
+
 .navbar-button {
   text-decoration: none;
   color: black;
-  margin: 20px;
-  font-size: 20px;
+  margin: 12px;
+  font-size: 18px;
   transition: 0.3s;
   display: flex;
 }
@@ -121,7 +170,7 @@ body {
     display: none;
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
-    border-radius: 0px 0px 10px 10px;
+    border-radius: 5px;
     z-index: 999;
 }
 
@@ -140,16 +189,29 @@ body {
     background-color: #ddd;
 }
 
-.dropdown-link-last:hover {
-    background-color: #ddd;
-    border-radius: 0px 0px 10px 10px;
-}
-
 #technique {
     margin-top: 100px;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
+}
+
+.swal2-popup {
+    width: auto;
+    padding: 30px 60px;
+    max-width: 95%;
+}
+
+.swal-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.swal-group {
+    display: flex;
+    flex-direction: row;
     align-items: center;
 }
 

@@ -1,0 +1,621 @@
+body {
+    margin: 0px;
+    padding: 0px;
+    margin-top: 170px;
+    font-family: 'Roboto', sans-serif;
+    background-color: #e5e5e5;
+}
+
+.logo-image {
+    width: 150px;
+}
+
+#spolupraca {
+    width: 80%;
+    margin: auto;
+}
+
+.contact-container {
+    display: flex;
+    align-items: center; /* Vertically center the child elements */
+    justify-content: center; /* Horizontally center the child elements */
+    font-size: 18px;
+    background-color: white;
+    width: 100%;
+    height: 200px;
+    margin: 0;
+}
+
+.contact-info {
+    text-align: center;
+    max-width: 90%;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 120px;
+  background: white;
+  font-weight: bold;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  z-index: 8000;
+}
+
+.navbar-content {
+  max-width: 200px;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 50px;
+}
+
+.navbar-button {
+  text-decoration: none;
+  color: black;
+  margin: 20px;
+  font-size: 20px;
+  transition: 0.3s;
+  display: flex;
+}
+
+.pre-firmy {
+    width: 145px;
+}
+
+.navbar-button:hover {
+  scale: 1.3;
+}
+
+/* Style the social icons and phone info on the right side */
+.nav-contact {
+  display: flex;
+  align-items: center;
+}
+
+.fa-square-facebook,
+.fa-instagram {
+    transition: 0.3s;
+}
+
+.fa-square-facebook:hover,
+.fa-instagram:hover {
+    scale: 1.3;
+}
+
+.social-icons {
+  display: flex;
+  align-items: center;
+}
+
+.social-icons a {
+  text-decoration: none;
+  color: black;
+  margin: 5px;
+  font-size: 30px;
+}
+
+.switch-language-button {
+    background-color: transparent;
+    border-radius: 50%;
+    border: none;
+    transition: 0.3s;
+    margin-bottom: 2px;
+    margin-left: 0px;
+}
+
+.switch-language-button:hover {
+    scale: 1.3;
+    cursor: pointer;
+}
+
+.dropdown {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    border-radius: 0px 0px 10px 10px;
+    z-index: 999;
+}
+
+.dropdown-item {
+    margin-bottom: 5px;
+}
+
+.dropdown a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: #333;
+}
+
+.dropdown-link:hover {
+    background-color: #ddd;
+}
+
+#technique {
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.h1-slogan,
+#spolupraca h1,
+#gallery h1,
+#technique h1,
+#poukazka h1{
+    font-family: 'Luminari', fantasy;
+    text-align: center;
+    font-size: 35px;
+}
+
+.h1-slogan {
+    font-size: 28px;
+    font-family: 'Luminari', fantasy;
+}
+
+.name-surname {
+    font-family: 'Luminari', fantasy;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+}
+
+.name-surname .social-icons {
+    font-size: 40px;
+    margin-left: 15px;
+    text-decoration: none;
+    color: black;
+}
+
+.technique-list {
+    font-family: 'Roboto', sans-serif;
+    margin-left: 80px;
+    font-size: 18px;
+}
+
+.technique-segment {
+  width: 70%;
+  margin: 0 auto;
+  display: flex;
+  margin: 40px;
+  text-align: center;
+}
+
+.technique-segment p{
+    width: 70%;
+}
+
+.reservation-button-about-us {
+    padding: 15px 30px;
+    border: 2px solid black;
+    border-radius: 3px;
+    transition: 0.3s;
+    background-color: #e5e5e5;
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
+    font-size: 30px;
+    width: 40%;
+    text-align: center;
+    margin: 40px;
+}
+
+.reservation-button-about-us:hover {
+    background-color: #c9c9c9;
+}
+
+.summary {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+}
+
+.summary p {
+    opacity: 0;
+    display: none;
+    transition: opacity 0.5s ease;
+}
+
+.visible {
+    opacity: 1;
+    transition-delay: 0.5s;
+}
+
+.about-us-container {
+    display: flex;
+    margin: auto;
+    width: 85%;
+}
+
+.person-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: top;
+    align-items: center;
+    width: 50%;
+}
+
+.person-container img {
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+#spolupraca h3 {
+    font-weight: normal;
+}
+
+#spolupraca h1{
+    margin-bottom: 100px;
+}
+
+.evka-image {
+    width: 45%;
+}
+
+.roman-image {
+    width: 45%;
+}
+
+#gallery {
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+#spolupraca {
+    margin-top: 100px;
+    text-align: center;
+    margin-bottom: 150px;
+}
+
+.gallery-container {
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.gallery-container img {
+    width: calc(32% - 80px);
+    height: 500px;
+    margin: 15px;
+    box-sizing: border-box;
+    border-radius: 10%;
+    cursor: zoom-in;
+}
+
+.gallery-container-poukazka {
+    padding: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.voucher-download-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: calc(33% - 20px);
+}
+
+.voucher-download-container img {
+    height: 400px;
+    width: 97%;
+    margin: 15px;
+    box-sizing: border-box;
+    border-radius: 3%;
+    cursor: zoom-in;
+}
+
+.modal {
+    position: relative;
+    display: none;
+    position: fixed;
+    z-index: 9000;
+    top: 0;
+    right: 0;
+    padding-top: 50px;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.9);
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: auto;
+    max-width: 80%;
+    max-height: 80%;
+}
+
+.download-button {
+    text-decoration: none;
+    color: black;
+    font-size: 20px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.download-button i{
+    font-size: 25px;
+    margin-left: 10px;
+}
+
+.download-button:hover {
+    text-decoration: underline;
+}
+
+.close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+@media screen and (max-width: 500px) {
+
+    .person-container {
+        width: 100%;
+    }
+
+    .evka-image {
+        width: 50%;
+    }
+
+    .roman-image {
+        width: 50%;
+    }
+
+    .h1-slogan,
+    #spolupraca h1,
+    #gallery h1,
+    #technique h1,
+    #poukazka h1{
+        font-size: 20px;
+    }
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      height: 120px;
+      background: white;
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 10px;
+      flex-wrap: wrap;
+      flex-direction: column;
+    }
+
+    .pre-firmy {
+        width: 100px;
+        margin-left: 80px;
+    }
+
+    #spolupraca h3 {
+        font-weight: normal;
+        font-size: 13px;
+    }
+
+    .navbar-button {
+      text-decoration: none;
+      color: black;
+      margin: 2px;
+      font-size: 10px;
+      transition: 0.3s;
+    }
+
+    .social-icons {
+      display: flex;
+      align-items: center;
+      margin: 5px;
+    }
+
+    .logo-image {
+        width: 110px;
+        margin-right: 30px;
+    }
+
+    .summary h2{
+        font-size: 18px;
+    }
+
+    .contact-container {
+        display: flex;
+        align-items: center; /* Vertically center the child elements */
+        justify-content: center; /* Horizontally center the child elements */
+        font-size: 12px;
+        background-color: white;
+        width: 100%;
+        height: 120px;
+        margin: 0;
+        padding: 0;
+    }
+
+    .contact-container p{
+        margin: 0px;
+        padding: 2px;
+    }
+
+    .name-surname {
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+    }
+
+    .technique-list {
+        margin-left: 40px;
+        font-size: 13px;
+        margin-top: 0px;
+        margin-bottom: 50px;
+    }
+
+    .name-surname .social-icons {
+        font-size: 20px;
+        margin-left: 8px;
+    }
+
+    .social-icons a {
+      text-decoration: none;
+      color: black; /* Set your preferred icon color */
+      font-size: 30px;
+      margin: 0;
+    }
+
+    .social-icons img {
+        font-size: 18px;
+    }
+
+    .reservation-button-about-us {
+        padding: 10px 20px;
+        font-size: 20px;
+        width: 60%;
+        text-align: center;
+        margin: 20px;
+    }
+
+    .switch-language-button {
+      color: black;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .switch-language-button img {
+        width: 25px;
+    }
+
+    .about-us-container {
+        display: flex;
+        flex-direction: column;
+        margin: auto;
+        width: 90%;
+    }
+    .technique-segment {
+      width: 90%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .gallery-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: flex-start; /* Align items at the start of the flex container */
+        padding: 10px;
+    }
+
+    .gallery-container img {
+        width: 40%; /* Adjust width to fit two images in a row */
+        height: 130px;
+        margin: 15px;
+        box-sizing: border-box;
+        border-radius: 10%;
+        cursor: zoom-in;
+    }
+
+    .gallery-container-poukazka {
+        padding: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .voucher-download-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: calc(70% - 5px);
+    }
+
+    .voucher-download-container img {
+        height: 130px;
+        width: 92%;
+        margin: 15px;
+        box-sizing: border-box;
+        border-radius: 10%;
+        cursor: zoom-in;
+    }
+
+    .download-button {
+        text-decoration: none;
+        color: black;
+        font-size: 12px;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    .download-button i{
+        font-size: 17px;
+        margin-left: 10px;
+    }
+}
+
+
+@media screen and (max-width: 1500px) {
+    .gallery-container img,
+    .voucher-download-container img{
+        height: 400px;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .gallery-container img,
+    .voucher-download-container img{
+        height: 300px;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .gallery-container img,
+    .voucher-download-container img {
+        height: 250px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .gallery-container img,
+    .voucher-download-container img {
+        height: 150px;
+    }
+}
