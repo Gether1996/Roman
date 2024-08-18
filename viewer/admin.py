@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import GalleryPhoto, VoucherPhoto, Reservation
+from .models import GalleryPhoto, VoucherPhoto, Reservation, TurnedOffDay
 
 @admin.register(GalleryPhoto)
 class PhotoAdmin(admin.ModelAdmin):
@@ -34,3 +34,10 @@ class ReservationAdmin(admin.ModelAdmin):
             'fields': ('created_at', 'updated_at')
         }),
     )
+
+@admin.register(TurnedOffDay)
+class TurnedOffDayAdmin(admin.ModelAdmin):
+    list_display = (
+        'worker', 'date', 'whole_day', 'time_from', 'time_to'
+    )
+    list_filter = ('worker', 'date', 'whole_day', 'time_from', 'time_to')

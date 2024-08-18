@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+  <title>Nastavenia</title>
+{% endblock %}
+
+{% block content %}
+
+    {% include 'navbar.html' %}
+
+    <div class="container-settings-tables">
+        <div class="table-container-settings">
+            <h2>Nastavenia - Roman</h2>
+            <table class="table-settings">
+                <tbody>
+                    <tr>
+                        <td><label for="days_ahead_roman">Koĺko dní od dnes sa môžu ľudia rezervovať </label></td>
+                        <td><input type="number" id="days_ahead_roman" value="{{ days_ahead_roman }}"></td>
+                        <td><button class="btn" onclick="saveDaysAhead('roman', 'days_ahead_roman')">Uložiť</button></td>
+                    </tr>
+                    <tr>
+                        <td>Začiatok a koniec časových slotov:</td>
+                        <td>
+                            <select id="start_time_roman" name="start_time"></select>
+                            <select id="end_time_roman" name="end_time"></select>
+                        </td>
+                        <td><button class="btn" onclick="saveTimeRange('roman', 'start_time_roman', 'end_time_roman')">Uložiť</button></td>
+                    </tr>
+                    <tr>
+                        <td>Ktoré dni pracujem:</td>
+                        <td id="working_days_container_roman"></td>
+                        <td><button class="btn" onclick="saveWorkingDays('roman')">Uložiť</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <h2>Nastavenia - Evka</h2>
+            <table class="table-settings">
+                <tbody>
+                    <tr>
+                        <td><label for="days_ahead_roman">Koĺko dní od dnes sa môžu ľudia rezervovať </label></td>
+                        <td><input type="number" id="days_ahead_evka" value="{{ days_ahead_evka }}"></td>
+                        <td><button class="btn" onclick="saveDaysAhead('evka', 'days_ahead_evka')">Uložiť</button></td>
+                    </tr>
+                    <tr>
+                        <td>Začiatok a koniec časových slotov:</td>
+                        <td>
+                            <select id="start_time_evka" name="start_time"></select>
+                            <select id="end_time_evka" name="end_time"></select>
+                        </td>
+                        <td><button class="btn" onclick="saveTimeRange('evka', 'start_time_evka', 'end_time_evka')">Uložiť</button></td>
+                    </tr>
+                    <tr>
+                        <td>Ktoré dni pracujem:</td>
+                        <td id="working_days_container_evka"></td>
+                        <td><button class="btn" onclick="saveWorkingDays('evka')">Uložiť</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-container-settings">
+            <h2>Obmedzenia</h2>
+            <table class="table-settings">
+                <thead>
+                    <tr>
+                        <th>Masér</th>
+                        <th>Dátum</th>
+                        <th>Celý deň</th>
+                        <th>Od do</th>
+                        <th><button class="btn" onclick="addTurnedOffDay()">Pridať</button></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for turned_off_day in turned_off_days_data %}
+                        <tr>
+                            <td>{{turned_off_day.worker}}</td>
+                            <td>{{turned_off_day.date}}</td>
+                            <td>{% if turned_off_day.whole_day %}<i class="fa-duotone fa-solid fa-circle-check"></i>{% else %}<i class="fa-duotone fa-solid fa-circle-xmark"></i>{% endif %}</td>
+                            <td>{{turned_off_day.time_range}}</td>
+                            <td>
+                                <button class="deactivate-btn" onclick="cancelOffDay('{{ turned_off_day.id }}')">Zrušiť</button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+    <script>
+        var startingSlotHourRoman = '{{starting_slot_hour_roman}}';
+        var endingSlotHourRoman = '{{ending_slot_hour_roman}}';
+        var workingDaysRoman = '{{working_days_roman}}';
+
+        var startingSlotHourEvka = '{{starting_slot_hour_evka}}';
+        var endingSlotHourEvka = '{{ending_slot_hour_evka}}';
+        var workingDaysEvka = '{{working_days_evka}}';
+    </script>
+    <script src="{% static 'scripts/settings_view.js' %}"></script>
+{% endblock %}

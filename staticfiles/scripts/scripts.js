@@ -66,7 +66,7 @@ function switchLanguage(language_code) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      'X-CSRFToken': csrf_token,
+      'X-CSRFToken': csrfToken,
     },
   })
     .then(response => response.json())

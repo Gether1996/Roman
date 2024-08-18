@@ -8,11 +8,11 @@
 
 {% block content %}
 
-    {% include 'navbar-profile.html' %}
+    {% include 'navbar.html' %}
 
-    <div class="table-container">
+    <div class="table-container-settings">
         <h2>{% trans 'Moje rezervácie' %}</h2>
-        <table>
+        <table class="table-settings">
             <thead>
                 <tr>
                     <th>{% trans 'Meno' %}</th>
@@ -40,7 +40,7 @@
                         <td>{{reservation.special_request}}</td>
                         <td>{{reservation.created_at}}</td>
                         <td>
-                            <button class="deactivate-btn">{% trans 'Zrušiť' %}</button>
+                            <button class="deactivate-btn" onclick="deactivate('{{ reservation.id }}')">{% trans 'Zrušiť' %}</button>
                         </td>
                     </tr>
                 {% endfor %}

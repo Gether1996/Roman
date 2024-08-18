@@ -16,8 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, re_path
-from viewer.views import homepage, switch_language, profile
-from accounts.views import login_api, logout, registration
+from viewer.views import homepage, profile, reservation, settings as settings_view
+from Roman.backend_funcs.users import login_api, logout, registration
+from Roman.backend_funcs.general import switch_language
+from Roman.backend_funcs.settings_view import save_settings
 from django.views.static import serve
 from django.conf.urls.static import static
 from django.conf import settings
@@ -25,13 +27,19 @@ from django.conf import settings
 
 urlpatterns = [
     re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
-    path('login_api/', login_api, name='login_api'),
-    path('logout/', logout, name='logout'),
-    path('registration/', registration, name='registration'),
-    re_path(r'^profile/(?P<email>[^/]+)/$', profile, name='profile'),
 
+    #views
     path('', homepage, name='homepage'),
     path('admin/', admin.site.urls),
+    path('reservation/', reservation, name='reservation'),
+    path('settings_view/', settings_view, name='settings_view'),
+    re_path(r'^profile/(?P<email>[^/]+)/$', profile, name='profile'),
+
+    #API
+    path('login_api/', login_api, name='login_api'),
+    path('save_settings/', save_settings, name='save_settings'),
+    path('logout/', logout, name='logout'),
+    path('registration/', registration, name='registration'),
     path('switch_language/<str:language_code>/', switch_language, name='switch_language'),
 
 

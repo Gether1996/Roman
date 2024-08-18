@@ -70,7 +70,7 @@ function login() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRFToken': csrf_token,
+                    'X-CSRFToken': csrfToken,
                 },
                 body: JSON.stringify({ email, password })
             })
@@ -206,7 +206,7 @@ function registration() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRFToken': csrf_token
+                    'X-CSRFToken': csrfToken
                 },
                 body: JSON.stringify({ name, surname, email, password }),
             }).then(response => response.json())

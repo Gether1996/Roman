@@ -9,6 +9,25 @@ class VoucherPhoto(Model):
     photo = ImageField(upload_to='static/images/')
 
 
+class TurnedOffDay(Model):
+    worker = CharField(max_length=100)
+    date = DateField()
+    whole_day = BooleanField()
+    time_from = TimeField(blank=True, null=True)
+    time_to = TimeField(blank=True, null=True)
+
+    def formatted_date(self):
+        """Returns the date in DD.MM.YYYY format (e.g., '18.08.2024')."""
+        return self.date.strftime('%d.%m.%Y')
+
+    def formatted_time_range(self):
+        """Returns a string of the time range (HH:MM - HH:MM) if both time_from and time_to are present."""
+        if self.time_from and self.time_to:
+            return f"{self.time_from.strftime('%H:%M')} - {self.time_to.strftime('%H:%M')}"
+        else:
+            return f"-"
+
+
 class Reservation(Model):
     user = ForeignKey(CustomUser, on_delete=CASCADE, default=None, blank=True, null=True)
     name_surname = CharField(max_length=150)

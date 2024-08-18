@@ -4,9 +4,17 @@
 
 <nav class="navbar">
     <div class="navbar-content">
-        <a href="{% url 'homepage' %}">
-            <img class="logo-image" src="{% static 'images/logo1.png' %}" alt="fasdf">
-        </a>
+        <div>
+          <img class="logo-image" onclick="smoothScroll('about-us')" src="{% static 'images/logo1.png' %}" alt="fasdf">
+        </div>
+        <div class="nav-links">
+          <a href="#" class="navbar-button" onclick="smoothScroll('technique')">{% trans 'Techniky' %}</a>
+          <a href="#" class="navbar-button" onclick="smoothScroll('gallery')">{% trans 'Galéria' %}</a>
+          <a href="#" class="navbar-button" onclick="smoothScroll('poukazka')">{% trans 'Poukážky' %}</a>
+          <a href="https://masaze-salon-amina.reservio.com/?fbclid=IwAR3uwNP8s9vwK1yGT5q_tfWm40gzu7BY9kwhFdspp4zvDSwfOlC5jiVZfCo" class="navbar-button"><i class="fa-solid fa-calendar-circle-plus"></i> {% trans 'Rezervácia/Cenník' %}</a>
+          <a href="#" class="navbar-button" onclick="smoothScroll('spolupraca')">{% trans 'Firmy' %}</a>
+          <a href="#" class="navbar-button" onclick="smoothScroll('contact')">{% trans 'Kontakt' %}</a>
+        </div>
         <div class="nav-contact">
           <div class="social-icons">
             <a href="https://www.instagram.com/masazevlcince/" target="_blank"><i class="fab fa-instagram" title="Instagram"></i></a>
@@ -33,8 +41,14 @@
         <div class="navbar-user-info">
             <b>{{ user.email }} <i class="fa-duotone fa-user avatar-user-icon" id="avatar-user-icon"></i></b>
             <div style="background-color: white;" class="dropdown" id="dropdown-menu">
-                <a class="dropdown-link" href="{% url 'profile' email=user.email %}">{% trans 'Môj profil' %}</a>
-                <a class="dropdown-link" href="#" onclick="logoutConfirmation()"><i class="fas fa-sign-out-alt"></i> {% trans 'Odhlásiť sa' %}</a>
+                {% if user.is_superuser %}
+                    <a class="dropdown-link" href="{% url 'settings_view' %}">{% trans 'Nastavenia' %}</a>
+                    <a class="dropdown-link" href="{% url 'admin:index' %}">{% trans 'Prehľad rezervácií' %}</a>
+                    <a class="dropdown-link" href="#" onclick="logoutConfirmation()"><i class="fas fa-sign-out-alt"></i> {% trans 'Odhlásiť sa' %}</a>
+                {% else %}
+                    <a class="dropdown-link" href="{% url 'profile' email=user.email %}">{% trans 'Môj profil' %}</a>
+                    <a class="dropdown-link" href="#" onclick="logoutConfirmation()"><i class="fas fa-sign-out-alt"></i> {% trans 'Odhlásiť sa' %}</a>
+                {% endif %}
             </div>
         </div>
     {% else %}
