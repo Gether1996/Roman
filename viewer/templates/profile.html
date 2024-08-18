@@ -10,4 +10,42 @@
 
     {% include 'navbar-profile.html' %}
 
+    <div class="table-container">
+        <h2>{% trans 'Moje rezervácie' %}</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>{% trans 'Meno' %}</th>
+                    <th>Email</th>
+                    <th>{% trans 'Tel. č.' %}</th>
+                    <th>{% trans 'Dátum' %}</th>
+                    <th>{% trans 'Čas' %}</th>
+                    <th>{% trans 'Masér' %}</th>
+                    <th>{% trans 'Stav' %}</th>
+                    <th>{% trans 'Poznámka' %}</th>
+                    <th>{% trans 'Vytvorené' %}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reservation in reservation_data %}
+                    <tr>
+                        <td>{{reservation.name_surname}}</td>
+                        <td>{{reservation.email}}</td>
+                        <td>{{reservation.phone_number}}</td>
+                        <td>{{reservation.date}}</td>
+                        <td>{{reservation.time}}</td>
+                        <td>{{reservation.worker}}</td>
+                        <td>{{reservation.status}}</td>
+                        <td>{{reservation.special_request}}</td>
+                        <td>{{reservation.created_at}}</td>
+                        <td>
+                            <button class="deactivate-btn">{% trans 'Zrušiť' %}</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
 {% endblock %}
