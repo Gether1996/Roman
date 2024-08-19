@@ -75,24 +75,22 @@
                     <div id="Evka" class="big-button option-button-person" onclick="updateEvents('Evka')">Evka</div>
                 </div>
 
-                <hr class="hr-basic-style">
-
-                <h2>{% trans 'Vyberte si dĺžku masáže' %}:</h2>
-                <div class="row-container" style="gap: 20px; margin-top: 0px;">
-                    <div class="big-button option-button-time" id="30">30 min - 20€</div>
-                    <div class="big-button option-button-time" id="45">45 min - 28€</div>
-                    <div class="big-button option-button-time" id="60">60 min - 35€</div>
-                    <div class="big-button option-button-time" id="90">90 min - 50€</div>
-                    <div class="big-button option-button-time" id="120">120 min - 65€</div>
-                </div>
-
-                <hr class="hr-basic-style">
-
                 <h2 class="hidden-element-first">{% trans 'Vyberte Dátum' %}:</h2>
                 <input type="date" id="date" class="insert-date-add-truck hidden-element-first" onchange="pickDate()" readonly>
                 <div class="calendar hidden-element-first" id="calendar"></div>
 
-                <div class="hidden-element-first" id="time-slot-container"></div>
+                <div id="time-slot-container" style="margin-top: 30px;"></div>
+
+                <hr class="hidden-element-second hr-basic-style">
+
+                <h2 class="hidden-element-second">{% trans 'Vyberte si dĺžku masáže' %}:</h2>
+                <div class="row-container" style="gap: 20px; margin-top: 0px;">
+                    <div class="hidden-element-second big-button option-button-time" id="30">30 min - 20€</div>
+                    <div class="hidden-element-second big-button option-button-time" id="45">45 min - 28€</div>
+                    <div class="hidden-element-second big-button option-button-time" id="60">60 min - 35€</div>
+                    <div class="hidden-element-second big-button option-button-time" id="90">90 min - 50€</div>
+                    <div class="hidden-element-second big-button option-button-time" id="120">120 min - 65€</div>
+                </div>
 
                 <hr class="hidden-element-second hr-basic-style">
 

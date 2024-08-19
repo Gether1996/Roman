@@ -149,7 +149,7 @@ def check_available_slots_ahead(request, worker):
                 events.append({
                     'start': single_date.strftime('%Y-%m-%d'),
                     'end': single_date.strftime('%Y-%m-%d'),
-                    'title': f"{available_slots_count} voľných"
+                    'title': f"{available_slots_count} voľných",
                 })
 
         return JsonResponse({'status': 'success', 'events': events})

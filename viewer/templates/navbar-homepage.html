@@ -11,7 +11,7 @@
           <a href="#" class="navbar-button" onclick="smoothScroll('technique')">{% trans 'Techniky' %}</a>
           <a href="#" class="navbar-button" onclick="smoothScroll('gallery')">{% trans 'Galéria' %}</a>
           <a href="#" class="navbar-button" onclick="smoothScroll('poukazka')">{% trans 'Poukážky' %}</a>
-          <a href="https://masaze-salon-amina.reservio.com/?fbclid=IwAR3uwNP8s9vwK1yGT5q_tfWm40gzu7BY9kwhFdspp4zvDSwfOlC5jiVZfCo" class="navbar-button"><i class="fa-solid fa-calendar-circle-plus"></i> {% trans 'Rezervácia/Cenník' %}</a>
+          <a href="{% url 'reservation' %}" class="navbar-button"><i class="fa-solid fa-calendar-circle-plus"></i> {% trans 'Rezervácia/Cenník' %}</a>
           <a href="#" class="navbar-button" onclick="smoothScroll('spolupraca')">{% trans 'Firmy' %}</a>
           <a href="#" class="navbar-button" onclick="smoothScroll('contact')">{% trans 'Kontakt' %}</a>
         </div>

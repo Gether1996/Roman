@@ -23,7 +23,6 @@ document.addEventListener('DOMContentLoaded', function() {
             hiddenElements.forEach(element => {
                 element.classList.remove('hidden-element-first');
             });
-            moveToBottom();
         });
     });
 
@@ -155,6 +154,7 @@ function createReservation() {
     var phone = document.getElementById('phone').value;
     var note = document.getElementById('note').value;
 
+    // Check required fields
     if (!nameSurname || !email || !phone) {
         Swal.fire({
             icon: 'error',
@@ -163,6 +163,7 @@ function createReservation() {
         return;
     }
 
+    // Validate email format
     var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(email)) {
         Swal.fire({
@@ -180,32 +181,84 @@ function createReservation() {
         return;
     }
 
-    fetch('/create_reservation/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': csrfToken
-        },
-        body: JSON.stringify({
-            selectedDate: selectedDate,
-            worker: worker,
-            duration: duration,
-            timeSlot: timeSlot,
-            nameSurname: nameSurname,
-            email: email,
-            phone: phone,
-            note: note
-        }),
-    });
+    var dateParts = selectedDate.split('-');
+    var formattedDate = `${dateParts[2]}.${dateParts[1]}.${dateParts[0]}`;
+
+    var recapMessage = `
+        <table style="width:100%; text-align:left;">
+            <tr>
+                <td>${isEnglish ? 'Date' : 'Dátum'}</td>
+                <td>${formattedDate}</td>
+            </tr>
+            <tr>
+                <td>${isEnglish ? 'Name and Surname' : 'Meno a priezvisko'}</td>
+                <td>${nameSurname}</td>
+            </tr>
+            <tr>
+                <td>Email:</td>
+                <td>${email}</td>
+            </tr>
+            <tr>
+                <td>${isEnglish ? 'Phone' : 'Telefón'}</td>
+                <td>${phone}</td>
+            </tr>
+            <tr>
+                <td>${isEnglish ? 'Note' : 'Poznámka'}</td>
+                <td>${note || (isEnglish ? 'None' : 'Žiadna')}</td>
+            </tr>
+            <tr>
+                <td>${isEnglish ? 'Duration' : 'Trvanie'}</td>
+                <td>${duration} ${isEnglish ? 'minutes': 'minút'}</td>
+            </tr>
+            <tr>
+                <td>${isEnglish ? 'Massager' : 'Masér'}</td>
+                <td>${worker}</td>
+            </tr>
+            <tr>
+                <td>${isEnglish ? 'Starting time' : 'Začiatok'}</td>
+                <td>${timeSlot}</td>
+            </tr>
+        </table>
+    `;
 
     Swal.fire({
-      icon: 'success',
-      title: isEnglish ? `Reservation created` : `Rezervácia vytvorená`,
-    })
-    .then(() => {
-        window.location.href = `/`;
+        title: isEnglish ? 'Please confirm your reservation details' : 'Prosím, potvrďte údaje o rezervácii',
+        html: recapMessage,
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonText: isEnglish ? 'Confirm' : 'Potvrdiť',
+        cancelButtonText: isEnglish ? 'Cancel' : 'Zrušiť'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Proceed with reservation if confirmed
+            fetch('/create_reservation/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({
+                    selectedDate: selectedDate,
+                    worker: worker,
+                    duration: duration,
+                    timeSlot: timeSlot,
+                    nameSurname: nameSurname,
+                    email: email,
+                    phone: phone,
+                    note: note
+                }),
+            }).then(() => {
+                Swal.fire({
+                    icon: 'success',
+                    title: isEnglish ? `Reservation created` : `Rezervácia vytvorená`,
+                }).then(() => {
+                    window.location.href = `/`;
+                });
+            });
+        }
     });
 }
+
 
 document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
