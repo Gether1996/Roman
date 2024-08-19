@@ -35,7 +35,6 @@ def create_reservation(request):
             updated_at=datetime.now(),
         )
 
-        print(json_data)
         return JsonResponse({'status': 'success'})
     return JsonResponse({'status': 'error'})
 
@@ -149,7 +148,7 @@ def check_available_slots_ahead(request, worker):
                 events.append({
                     'start': single_date.strftime('%Y-%m-%d'),
                     'end': single_date.strftime('%Y-%m-%d'),
-                    'title': f"{available_slots_count} voľných",
+                    'title': f"{available_slots_count} {_('voľných')}",
                 })
 
         return JsonResponse({'status': 'success', 'events': events})

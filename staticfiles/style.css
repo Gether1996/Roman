@@ -1,13 +1,93 @@
 body {
     margin: 0px;
     padding: 0px;
-    margin-top: 170px;
     font-family: 'Roboto', sans-serif;
     background-color: #e5e5e5;
 }
 
+.top-margin-homepage {
+    margin-top: 170px;
+}
+
+.top-margin-reservation {
+    margin-top: 130px;
+}
+
+.reservation-box-container {
+    width: 85%;
+    padding: 30px;
+    background-color: white;
+    margin: auto;
+    border-radius: 20px;
+    margin-top: 20px;
+    margin-bottom: 50px;
+}
+
+.insert-date-add-truck {
+    font-size: 25px;
+    padding: 10px;
+    width: 50%;
+    text-align: center;
+}
+
+#calendar {
+    width: 60%;
+    height: 450px;
+    border: 1px solid black;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.hidden-element-first, .hidden-element-second {
+    display: none;
+}
+
+.input-container-reservation {
+    margin: 5px;
+}
+
+.input-container-reservation label {
+    width: 250px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.input-container-reservation input {
+    font-size: 25px;
+    padding: 5px;
+}
+
+.finish-reservation-button {
+    margin: 20px;
+    padding: 20px 120px;
+    font-size: 30px;
+    font-weight: bold;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.hr-basic-style {
+    width: 95%;
+    border: 1px solid grey;
+    margin: 20px;
+}
+
+.column-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.row-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .logo-image {
     width: 150px;
+    cursor: pointer;
 }
 
 #spolupraca {
@@ -58,11 +138,59 @@ body {
   margin-right: 50px;
 }
 
+.navbar-user-info {
+    position: absolute;
+    top: 35px;
+    right: 130px;
+    font-size: 19px;
+    background-color: transparent;
+    border: none;
+    margin-bottom: 0;
+    padding: 0px;
+}
+
+.avatar-user-icon {
+    font-size: 20px;
+    border: none;
+    background-color: #e5e5e5;
+    padding: 14px;
+    border-radius: 50%;
+    margin-bottom: 0;
+    margin-left: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.avatar-user-icon:hover {
+    scale: 1.15;
+}
+
+#dropdown-menu {
+    position: absolute;
+    top: 85px;
+    right: 3px;
+    width: 200px;
+    font-size: 18px;
+    transition: 0.3s;
+    text-align: right;
+}
+
+.toggle-password {
+    cursor: pointer;
+    font-size: 20px;
+    transition: 0.3s;
+    margin-top: 15px;
+}
+
+.navbar-user-info:hover #dropdown-menu {
+    display: block; /* Show dropdown on hover */
+}
+
 .navbar-button {
   text-decoration: none;
   color: black;
-  margin: 20px;
-  font-size: 20px;
+  margin: 12px;
+  font-size: 18px;
   transition: 0.3s;
   display: flex;
 }
@@ -121,7 +249,7 @@ body {
     display: none;
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
-    border-radius: 0px 0px 10px 10px;
+    border-radius: 5px;
     z-index: 999;
 }
 
@@ -145,6 +273,24 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
+}
+
+.swal2-popup {
+    width: auto;
+    padding: 30px 60px;
+    max-width: 95%;
+}
+
+.swal-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.swal-group {
+    display: flex;
+    flex-direction: row;
     align-items: center;
 }
 
@@ -379,6 +525,166 @@ body {
     cursor: pointer;
 }
 
+.container-settings-tables {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px;
+}
+
+.table-container-settings {
+    width: 47%;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.table-container-profile {
+    width: 95%;
+    margin: auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.table-container-settings h2, .table-container-profile h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #0056b3;
+    border-bottom: 2px solid #0056b3;
+    padding-bottom: 10px;
+}
+
+.table-settings {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-profile {
+    width: 100%;
+    text-align: left;
+}
+
+.table-settings td, .table-settings th {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+.table-settings th {
+    background-color: #f2f2f2;
+    color: #333;
+    font-weight: bold;
+}
+
+.table-settings input[type="number"],
+.table-settings input[type="text"],
+.table-settings input[type="time"] {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.table-settings .btn,
+.table-settings .deactivate-btn,
+.table-profile .deactivate-btn {
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.table-settings .btn:hover,
+.table-settings .deactivate-btn:hover,
+.table-profile .deactivate-btn:hover {
+    background-color: #003d80;
+}
+
+.table-settings .deactivate-btn,
+.table-profile .deactivate-btn {
+    background-color: #dc3545;
+}
+
+.table-settings .deactivate-btn:hover,
+.table-profile .deactivate-btn:hover {
+    background-color: #c82333;
+}
+
+.fa-duotone.fa-circle-check {
+    color: #28a745;
+}
+
+.fa-duotone.fa-circle-xmark {
+    color: #dc3545;
+}
+
+.day-button {
+    margin: 2px;
+    font-size: 15px;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+}
+
+.day-button.selected {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.option-button-person, .option-button-time {
+    padding: 10px 20px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    transition: all 0.3s ease; /* Transition for smoothness */
+    cursor: pointer;
+}
+
+/* Hover effect */
+.option-button-person:hover, .option-button-time:hover, .finish-reservation-button:hover {
+    background-color: #e0e0e0; /* Slightly darker background on hover */
+    border-color: #ccc; /* Change border color on hover */
+    transform: scale(1.05); /* Slight scale up on hover */
+}
+
+/* Style for selected buttons */
+.option-button-person.selected, .option-button-time.selected {
+    background-color: #007BFF; /* Change background color when selected */
+    color: white; /* Change text color when selected */
+    border-color: #0056b3; /* Change border color when selected */
+    transform: scale(1.1); /* Slightly larger scale for selected buttons */
+}
+
+.big-button {
+    padding: 20px;
+    margin: 10px 0;
+    font-size: 24px;
+    border: 2px solid #ccc;
+    border-radius: 20px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.big-button.selected {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.option-button.selected {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
 
 @media screen and (max-width: 500px) {
 

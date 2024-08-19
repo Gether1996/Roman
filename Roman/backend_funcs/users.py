@@ -21,7 +21,7 @@ def login_api(request):
                 return JsonResponse({'status': 'error', 'message': _('Nesprávne heslo.')})
         else:
             return JsonResponse({'status': 'error', 'message': _('Užívateľ s týmto emailom neexistuje.')})
-    return JsonResponse({'status': 'error', 'message': 'Zlý request'})
+    return JsonResponse({'status': 'error', 'message': _('Zlý request')})
 
 
 def logout(request):
@@ -56,4 +56,4 @@ def registration(request):
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': f'{e}'})
 
-    return JsonResponse({'status': 'error', 'message': 'Zlý request'})
+    return JsonResponse({'status': 'error', 'message': _('Zlý request')})
