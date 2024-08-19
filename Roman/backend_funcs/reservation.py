@@ -144,11 +144,13 @@ def check_available_slots_ahead(request, worker):
 
                 current_time = next_time
 
+            possible = _('voľných')
+
             if available_slots_count > 0:
                 events.append({
                     'start': single_date.strftime('%Y-%m-%d'),
                     'end': single_date.strftime('%Y-%m-%d'),
-                    'title': f"{available_slots_count} {_('voľných')}",
+                    'title': f"{available_slots_count} {possible}",
                 })
 
         return JsonResponse({'status': 'success', 'events': events})
