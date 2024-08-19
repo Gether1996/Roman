@@ -27,10 +27,8 @@ function saveTimeRange(person, time_from, time_to) {
 }
 
 function saveWorkingDays(person) {
-    // Determine which selected days to include based on the person
     const selectedDaysForPerson = Array.from(selectedDays[person]);
 
-    // Construct the body of the request
     let body;
     if (person === 'roman') {
         body = {
@@ -42,10 +40,7 @@ function saveWorkingDays(person) {
         };
     }
 
-    // Set the title for the response
-    const title = 'Selected days have been saved.';
-
-    // Send the data via fetch
+    var title = 'Pracovné dni boli zmenené.';
     sendFetchRequest(body, title);
 }
 
@@ -203,3 +198,136 @@ function initializeWorkingDays(working_days_person, container_name, person) {
 
 window.onload = initializeWorkingDays(workingDaysRoman, 'working_days_container_roman', 'roman');
 window.onload = initializeWorkingDays(workingDaysEvka, 'working_days_container_evka', 'evka');
+
+function addTurnedOffDay() {
+    Swal.fire({
+        title: 'Pridať obmedzenie',
+        html: `
+            <label for="worker">Masér:</label>
+            <select id="worker" class="swal2-input">
+                <option value="Roman">Roman</option>
+                <option value="Evka">Evka</option>
+            </select>
+            <label for="date">Dátum:</label>
+            <input id="date" type="date" class="swal2-input" required>
+            <label for="whole_day">Celý deň:</label>
+            <select id="whole_day" class="swal2-input">
+                <option value="true">Áno</option>
+                <option value="false">Nie</option>
+            </select>
+            <div id="time_range_container" style="display: none;">
+                <label for="time_from">Od:</label>
+                <input id="time_from" type="time" class="swal2-input">
+                <label for="time_to">Do:</label>
+                <input id="time_to" type="time" class="swal2-input">
+            </div>
+        `,
+        preConfirm: () => {
+            var worker = document.getElementById('worker').value;
+            var date = document.getElementById('date').value;
+            var whole_day = document.getElementById('whole_day').value === 'true';
+            let time_from = null;
+            let time_to = null;
+
+            if (!whole_day) {
+                time_from = document.getElementById('time_from').value;
+                time_to = document.getElementById('time_to').value;
+            }
+
+            if (!worker || !date || (!whole_day && (!time_from || !time_to))) {
+                Swal.showValidationMessage('Prosím vyplňte všetky polia');
+                return false;
+            }
+
+            return { worker, date, whole_day, time_from, time_to };
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const { worker, date, whole_day, time_from, time_to } = result.value;
+
+            fetch('/add_turned_off_day/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken,
+                },
+                body: JSON.stringify({ worker, date, whole_day, time_from, time_to })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Obmedzenie pridané',
+                        showConfirmButton: false,
+                        showCancelButton: false,
+                        timer: 1000,
+                    });
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                } else {
+                    Swal.fire('Chyba!', 'Nastala chyba pri pridávaní.', 'error');
+                }
+            })
+            .catch(error => {
+                Swal.fire('Chyba!', 'Nastala chyba pri pridávaní.', 'error');
+            });
+        }
+    });
+
+    document.getElementById('whole_day').addEventListener('change', function () {
+        const timeRangeContainer = document.getElementById('time_range_container');
+        if (this.value === 'false') {
+            timeRangeContainer.style.display = 'block';
+        } else {
+            timeRangeContainer.style.display = 'none';
+        }
+    });
+}
+
+function cancelOffDay(turnedOffDayId) {
+    Swal.fire({
+        text: "Naozaj vymazať?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Áno',
+        cancelButtonText: 'Zrušiť',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`/delete_turned_off_day/`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({ turnedOffDayId: turnedOffDayId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: data.message,
+                        showConfirmButton: false,
+                        showCancelButton: false,
+                        timer: 1000,
+                    });
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: data.message,
+                    });
+                }
+            })
+            .catch(error => {
+                Swal.fire('Chyba!', 'Nastala chyba pri mazani.', 'error');
+            });
+        }
+    });
+}

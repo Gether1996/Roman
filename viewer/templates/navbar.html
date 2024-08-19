@@ -35,7 +35,7 @@
             <div style="background-color: white;" class="dropdown" id="dropdown-menu">
                 {% if user.is_superuser %}
                     <a class="dropdown-link" href="{% url 'settings_view' %}">{% trans 'Nastavenia' %}</a>
-                    <a class="dropdown-link" href="{% url 'admin:index' %}">{% trans 'Prehľad rezervácií' %}</a>
+                    <a class="dropdown-link" href="{% url 'admin:index' %}viewer/reservation/">{% trans 'Prehľad rezervácií' %}</a>
                     <a class="dropdown-link" href="#" onclick="logoutConfirmation()"><i class="fas fa-sign-out-alt"></i> {% trans 'Odhlásiť sa' %}</a>
                 {% else %}
                     <a class="dropdown-link" href="{% url 'profile' email=user.email %}">{% trans 'Môj profil' %}</a>

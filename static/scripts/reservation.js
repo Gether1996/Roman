@@ -1,10 +1,47 @@
-function pickDate() {
+let worker = null;
+let duration = null;
+let timeSlot = null;
 
+function moveToBottom() {
+    setTimeout(() => {
+        window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth'
+        });
+    }, 50);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const bigButtons = document.querySelectorAll('.option-button-person');
+    bigButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            bigButtons.forEach(btn => btn.classList.remove('selected'));
+            this.classList.add('selected');
+            worker = this.id;
+
+            var hiddenElements = document.querySelectorAll('.hidden-element-first');
+            hiddenElements.forEach(element => {
+                element.classList.remove('hidden-element-first');
+            });
+            moveToBottom();
+        });
+    });
+
+    const optionButtons = document.querySelectorAll('.option-button-time');
+    optionButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            optionButtons.forEach(btn => btn.classList.remove('selected'));
+            this.classList.add('selected');
+            duration = this.id;
+            moveToBottom();
+        });
+    });
+});
+
+function pickDate() {
     var mainContainer = document.getElementById('time-slot-container');
-    var object_obj = document.getElementById('object');
-    var ecv = document.getElementById('ecv');
     var selectedDate = document.getElementById('date');
-    var finishButton = document.querySelector('.finish-truck-button');
+    var finishButton = document.querySelector('.finish-truck-button')
 
     if (finishButton) {
       finishButton.remove();
@@ -13,15 +50,15 @@ function pickDate() {
     mainContainer.innerHTML = '';
     selectedDate.style.border = '1px solid black';
 
-    if (isValidDate(selectedDate.value)) {
+    if (worker) {
 
-        fetch('/check_available_slots/' + language_code + '/', {
+        fetch('/check_available_slots/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': csrfToken
             },
-            body: JSON.stringify({selectedDate: selectedDate.value, object_id: object_obj.value}),
+            body: JSON.stringify({selectedDate: selectedDate.value, worker: worker}),
         })
         .then(response => response.json())
         .then(data => {
@@ -30,10 +67,14 @@ function pickDate() {
                 let slotsHtml = '';
 
                 availableSlots.forEach(slot => {
-                  var startTime = Object.keys(slot)[0];
-                  var endTime = Object.values(slot)[0];
-                  var availableCount = Object.values(slot)[1];
-                  slotsHtml += `<button class="time-slot-select basic-button-style" onclick="selectTimeSlot(this)">${startTime} - ${endTime} (${availableCount})</button>`;
+                    slotsHtml += `
+                        <button
+                            style="margin: 5px;"
+                            class="big-button time-slot-select"
+                            onclick="selectTimeSlot(this)"
+                        >
+                            ${slot}
+                        </button>`;
                 });
 
                 if (availableSlots.length !== 0) {
@@ -63,6 +104,8 @@ function pickDate() {
     } else {
 
     }
+
+    moveToBottom();
 }
 
 function formatDate(date) {
@@ -73,97 +116,99 @@ function formatDate(date) {
   return `${day}.${month}.${year}`; // Return formatted date
 }
 
-function isValidDate(dateString) {
-  const dateObj = new Date(dateString);
-
-  if (isNaN(dateObj.getTime()) || dateObj.toString() === "Invalid Date") {
-    return false;
-  }
-
-  dateObj.setHours(0, 0, 0, 0);
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  return dateObj.getTime() >= today.getTime();
-}
-
 function selectTimeSlot(button) {
-    var mainContainer = document.getElementById('add-truck-main-container');
+    var mainContainer = document.getElementById('reservation-box-container');
     var previouslySelectedButton = document.getElementById('picked-time-slot');
     if (previouslySelectedButton) {
       previouslySelectedButton.removeAttribute('id');
+      previouslySelectedButton.classList.remove('selected');
     }
 
     button.id = 'picked-time-slot';
-    var finishButton = document.querySelector('.finish-truck-button');
+    button.classList.add('selected');
+    timeSlot = button.textContent.trim();
+
+    var finishButton = document.querySelector('.finish-reservation-button');
 
     if (!finishButton) {
       finishButton = document.createElement('button');
-      finishButton.textContent = isEnglish ? 'Create Truck' : 'Vytvoriť vozidlo';
-      finishButton.classList.add('finish-truck-button');
-      finishButton.classList.add('basic-button-style');
-      finishButton.onclick = createTruckOnClick;
+      finishButton.textContent = isEnglish ? 'Create reservation' : 'Vytvoriť rezeráciu';
+      finishButton.classList.add('finish-reservation-button');
+      finishButton.classList.add('big-button');
+      finishButton.onclick = createReservation;
 
       mainContainer.appendChild(finishButton);
     }
+
+    var hiddenElements = document.querySelectorAll('.hidden-element-second');
+    hiddenElements.forEach(element => {
+        element.classList.remove('hidden-element-second');
+    });
+
+    moveToBottom();
 }
 
-function createTruckOnClick() {
+function createReservation() {
+    var selectedDate = document.getElementById('date').value;
+    var nameSurname = document.getElementById('name_surname').value;
+    var email = document.getElementById('email').value;
+    var phone = document.getElementById('phone').value;
+    var note = document.getElementById('note').value;
 
-    var objectObj = document.getElementById('object');
-    var ecv = document.getElementById('ecv');
-    var selectedDate = document.getElementById('date');
-    var pickedTimeSlot = document.getElementById('picked-time-slot');
-
-    console.log(pickedTimeSlot.value);
-
-    objectObj.style.border = '';
-    ecv.style.border = '';
-    selectedDate.style.border = '';
-
-    if (!objectObj.value) {
-        objectObj.style.border = '2px solid red';
-        console.log('fill object');
-        return;
-    } else if (!ecv.value) {
-        ecv.style.border = '2px solid red';
-        console.log('fill ecv');
-        return;
-    } else if (!selectedDate.value) {
-        selectedDate.style.border = '2px solid red';
-        console.log('fill date');
+    if (!nameSurname || !email || !phone) {
+        Swal.fire({
+            icon: 'error',
+            title: isEnglish ? `Please fill in all required fields` : `Vyplňte všetky povinné polia`,
+        });
         return;
     }
 
-    if (isValidDate(selectedDate.value)) {
-        fetch('/create_truck/' + language_code + '/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': csrfToken
-            },
-            body: JSON.stringify({selectedDate: selectedDate.value, object_id: objectObj.value, ecv: ecv.value, time_slot: pickedTimeSlot.textContent}),
-        });
-
+    var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
         Swal.fire({
-          icon: 'success',
-          title: isEnglish ? `Truck created` : `Vozidlo vytvorené`,
-        })
-        .then(() => {
-            window.location.href = `/${language_code}/`;
+            icon: 'error',
+            title: isEnglish ? `Invalid email address` : `Neplatná e-mailová adresa`,
         });
-    } else {
-        Swal.fire({
-          icon: 'error',
-          title: isEnglish ? `Can not pick Date in past` : `Nedá sa vybrať dátum v minulosti`,
-        });
-        selectedDate.style.border = '2px solid red';
+        return;
     }
-}
 
+    if (!duration) {
+        Swal.fire({
+            icon: 'error',
+            title: isEnglish ? `Choose a duration please` : `Vyberte si ešte dĺžku trvania prosím`,
+        });
+        return;
+    }
+
+    fetch('/create_reservation/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken
+        },
+        body: JSON.stringify({
+            selectedDate: selectedDate,
+            worker: worker,
+            duration: duration,
+            timeSlot: timeSlot,
+            nameSurname: nameSurname,
+            email: email,
+            phone: phone,
+            note: note
+        }),
+    });
+
+    Swal.fire({
+      icon: 'success',
+      title: isEnglish ? `Reservation created` : `Rezervácia vytvorená`,
+    })
+    .then(() => {
+        window.location.href = `/`;
+    });
+}
 
 document.addEventListener('DOMContentLoaded', function() {
-    var calendarEl = document.getElementById('calendar-add-truck');
+    var calendarEl = document.getElementById('calendar');
     var dateInput = document.getElementById('date');
     calendar = new FullCalendar.Calendar(calendarEl, {
 
@@ -217,34 +262,44 @@ document.addEventListener('DOMContentLoaded', function() {
             dateInput.value = formattedDate;
             pickDate();
         },
+        datesSet: function() {
+            if (worker) {
+                updateEvents(worker);
+            }
+        }
     });
 
     calendar.render();
 
-        // Get the navigation buttons
     var nextButton = calendarEl.querySelector('.fc-next-button');
     var prevButton = calendarEl.querySelector('.fc-prev-button');
 
-    // Add click event listeners to the navigation buttons
-    nextButton.addEventListener('click', function() {
-        // Call your function for next month arrow clicked
-        updateEvents(obj_id);
-    });
+    if (nextButton) {
+        nextButton.addEventListener('click', function() {
+            if (worker) {
+                setTimeout(function() {
+                    updateEvents(worker);
+                }, 100);
+            }
+        });
+    }
 
-    prevButton.addEventListener('click', function() {
-        // Call your function for previous month arrow clicked
-        updateEvents(obj_id);
-    });
+    if (prevButton) {
+        prevButton.addEventListener('click', function() {
+            if (worker) {
+                setTimeout(function() {
+                    updateEvents(worker);
+                }, 100);
+            }
+        });
+    }
 });
 
-function updateEvents(obj_id) {
+function updateEvents(worker) {
     $.ajax({
-        url: '/check_available_slots_ahead/' + language_code + '/',
+        url: '/check_available_slots_ahead/' + worker + '/',
         type: 'GET',
         dataType: 'json',
-        data: {
-            obj_id: obj_id
-        },
         success: function(response) {
             if (response.status === 'success') {
                 calendar.getEvents().forEach(function(event) {

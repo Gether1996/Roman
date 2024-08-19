@@ -8,6 +8,121 @@
 
 {% block content %}
 
-    {% include 'navbar.html' %}
+    <style>
+        .fc-header-toolbar { /* Target the entire header toolbar */
+          font-size: 0.8rem; /* Reduce font size */
+        }
 
+        .fc-left button, .fc-right button { /* Target buttons on left and right */
+          padding: 5px 8px; /* Reduce button padding */
+        }
+
+        .fc-daygrid-day { /* Target the day cell class */
+          font-size: 15px !important; /* Adjust font size as needed */
+        }
+
+        .fc-daygrid-day {
+            transition: 0.2s;
+        }
+
+        .fc-day:hover {
+            cursor: pointer;
+        }
+
+        .fc-day-past:hover {
+            cursor: not-allowed;
+        }
+
+        .custom-day-class {
+            background-color: #bebebe;
+        }
+
+        .fc-col-header-cell {
+            background-color: white;
+        }
+
+        .custom-day-class:hover {
+            cursor: not-allowed;
+        }
+
+        .fc-col-header-cell {
+            font-size: 15px;
+        }
+
+        .fc-daygrid-day-number {
+          margin: auto;
+          font-size: 18px;
+        }
+
+        .fc-daygrid-day-frame {
+            height: 50px;
+        }
+
+    </style>
+
+    {% include 'navbar.html' %}
+    <div class="top-margin-reservation"></div>
+
+    <div class="column-container">
+        <h1>{% trans 'Rezervácia' %}</h1>
+
+        <div class="reservation-box-container">
+            <div id="reservation-box-container" class="column-container">
+
+                <h2>{% trans 'Vyberte si maséra' %}:</h2>
+                <div id="person-selection" class="row-container" style="gap: 20px; margin-top: 0px;">
+                    <div id="Roman" class="big-button option-button-person" onclick="updateEvents('Roman')">Roman</div>
+                    <div id="Evka" class="big-button option-button-person" onclick="updateEvents('Evka')">Evka</div>
+                </div>
+
+                <hr class="hr-basic-style">
+
+                <h2>{% trans 'Vyberte si dĺžku masáže' %}:</h2>
+                <div class="row-container" style="gap: 20px; margin-top: 0px;">
+                    <div class="big-button option-button-time" id="30">30 min - 20€</div>
+                    <div class="big-button option-button-time" id="45">45 min - 28€</div>
+                    <div class="big-button option-button-time" id="60">60 min - 35€</div>
+                    <div class="big-button option-button-time" id="90">90 min - 50€</div>
+                    <div class="big-button option-button-time" id="120">120 min - 65€</div>
+                </div>
+
+                <hr class="hr-basic-style">
+
+                <h2 class="hidden-element-first">{% trans 'Vyberte Dátum' %}:</h2>
+                <input type="date" id="date" class="insert-date-add-truck hidden-element-first" onchange="pickDate()" readonly>
+                <div class="calendar hidden-element-first" id="calendar"></div>
+
+                <div class="hidden-element-first" id="time-slot-container"></div>
+
+                <hr class="hidden-element-second hr-basic-style">
+
+                <div class="hidden-element-second">
+                    <div class="column-container">
+                        <div class="row-container input-container-reservation">
+                            <label for="name_surname">{% trans 'Meno a Priezvisko' %}:</label>
+                            <input type="text" id="name_surname" name="name_surname">
+                        </div>
+                        <div class="row-container input-container-reservation">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="email">
+                        </div>
+                        <div class="row-container input-container-reservation">
+                            <label for="phone">{% trans 'Telefónne číslo' %}:</label>
+                            <input type="text" id="phone" name="phone">
+                        </div>
+                        <div class="row-container input-container-reservation">
+                            <label for="note">{% trans 'Poznámka' %}:</label>
+                            <input type="text" id="note" name="note">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+    <script src="{% static 'scripts/reservation.js' %}"></script>
 {% endblock %}

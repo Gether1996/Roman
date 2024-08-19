@@ -1,9 +1,88 @@
 body {
     margin: 0px;
     padding: 0px;
-    margin-top: 170px;
     font-family: 'Roboto', sans-serif;
     background-color: #e5e5e5;
+}
+
+.top-margin-homepage {
+    margin-top: 170px;
+}
+
+.top-margin-reservation {
+    margin-top: 130px;
+}
+
+.reservation-box-container {
+    width: 85%;
+    padding: 10px;
+    background-color: white;
+    margin: auto;
+    border-radius: 20px;
+    margin-top: 20px;
+    margin-bottom: 50px;
+}
+
+.insert-date-add-truck {
+    font-size: 25px;
+    padding: 10px;
+    width: 50%;
+    text-align: center;
+}
+
+#calendar {
+    width: 60%;
+    height: 450px;
+    border: 1px solid black;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.hidden-element-first, .hidden-element-second {
+    display: none;
+}
+
+.input-container-reservation {
+    margin: 5px;
+}
+
+.input-container-reservation label {
+    width: 250px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.input-container-reservation input {
+    font-size: 25px;
+    padding: 5px;
+}
+
+.finish-reservation-button {
+    margin: 20px;
+    padding: 20px 120px;
+    font-size: 30px;
+    font-weight: bold;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.hr-basic-style {
+    width: 95%;
+    border: 1px solid grey;
+    margin: 20px;
+}
+
+.column-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.row-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .logo-image {
@@ -460,7 +539,16 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.table-container-settings h2 {
+.table-container-profile {
+    width: 95%;
+    margin: auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.table-container-settings h2, .table-container-profile h2 {
     font-size: 24px;
     margin-bottom: 20px;
     color: #0056b3;
@@ -471,6 +559,11 @@ body {
 .table-settings {
     width: 100%;
     border-collapse: collapse;
+}
+
+.table-profile {
+    width: 100%;
+    text-align: left;
 }
 
 .table-settings td, .table-settings th {
@@ -496,7 +589,8 @@ body {
 }
 
 .table-settings .btn,
-.table-settings .deactivate-btn {
+.table-settings .deactivate-btn,
+.table-profile .deactivate-btn {
     background-color: #0056b3;
     color: white;
     border: none;
@@ -507,15 +601,18 @@ body {
 }
 
 .table-settings .btn:hover,
-.table-settings .deactivate-btn:hover {
+.table-settings .deactivate-btn:hover,
+.table-profile .deactivate-btn:hover {
     background-color: #003d80;
 }
 
-.table-settings .deactivate-btn {
+.table-settings .deactivate-btn,
+.table-profile .deactivate-btn {
     background-color: #dc3545;
 }
 
-.table-settings .deactivate-btn:hover {
+.table-settings .deactivate-btn:hover,
+.table-profile .deactivate-btn:hover {
     background-color: #c82333;
 }
 
@@ -529,14 +626,61 @@ body {
 
 .day-button {
     margin: 2px;
+    font-size: 15px;
     padding: 5px 10px;
     border: 1px solid #ddd;
-    border-radius: 4px;
+    border-radius: 10px;
     background-color: #f9f9f9;
     cursor: pointer;
 }
 
 .day-button.selected {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.option-button-person, .option-button-time {
+    padding: 10px 20px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    transition: all 0.3s ease; /* Transition for smoothness */
+    cursor: pointer;
+}
+
+/* Hover effect */
+.option-button-person:hover, .option-button-time:hover, .finish-reservation-button:hover {
+    background-color: #e0e0e0; /* Slightly darker background on hover */
+    border-color: #ccc; /* Change border color on hover */
+    transform: scale(1.05); /* Slight scale up on hover */
+}
+
+/* Style for selected buttons */
+.option-button-person.selected, .option-button-time.selected {
+    background-color: #007BFF; /* Change background color when selected */
+    color: white; /* Change text color when selected */
+    border-color: #0056b3; /* Change border color when selected */
+    transform: scale(1.1); /* Slightly larger scale for selected buttons */
+}
+
+.big-button {
+    padding: 20px;
+    margin: 10px 0;
+    font-size: 24px;
+    border: 2px solid #ccc;
+    border-radius: 20px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.big-button.selected {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.option-button.selected {
     background-color: #007bff;
     color: white;
     border-color: #007bff;

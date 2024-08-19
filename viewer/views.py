@@ -18,9 +18,7 @@ def homepage(request):
 
 
 def reservation(request):
-    turned_off_days = TurnedOffDay.objects.all()
-
-    return render(request, 'reservation.html', {'turned_off_days': turned_off_days})
+    return render(request, 'reservation.html')
 
 
 def settings(request):
