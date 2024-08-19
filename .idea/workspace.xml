@@ -6,12 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="8188c9f5-6e45-4569-81c6-bb3ae98b4a23" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Roman/backend_funcs/general.py" beforeDir="false" afterPath="$PROJECT_DIR$/Roman/backend_funcs/general.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Roman/backend_funcs/reservation.py" beforeDir="false" afterPath="$PROJECT_DIR$/Roman/backend_funcs/reservation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Roman/backend_funcs/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/Roman/backend_funcs/users.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/locale/en/LC_MESSAGES/django.mo" beforeDir="false" afterPath="$PROJECT_DIR$/locale/en/LC_MESSAGES/django.mo" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/locale/en/LC_MESSAGES/django.po" beforeDir="false" afterPath="$PROJECT_DIR$/locale/en/LC_MESSAGES/django.po" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticfiles/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/viewer/templates/homepage.html" beforeDir="false" afterPath="$PROJECT_DIR$/viewer/templates/homepage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/viewer/templates/reservation.html" beforeDir="false" afterPath="$PROJECT_DIR$/viewer/templates/reservation.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

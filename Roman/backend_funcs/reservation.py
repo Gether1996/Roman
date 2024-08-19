@@ -92,6 +92,7 @@ def check_available_slots(request):
 def check_available_slots_ahead(request, worker):
     if request.method == 'GET':
         today = datetime.now().date()
+        tomorrow = today + timedelta(days=1)
         worker_config = config['settings-roman'] if worker == 'Roman' else config['settings-evka']
 
         days_to_check_ahead = int(worker_config['days_ahead'])
@@ -105,6 +106,8 @@ def check_available_slots_ahead(request, worker):
         events = []
 
         for single_date in (today + timedelta(n) for n in range((end_date - today).days + 1)):
+            if single_date == today or single_date == tomorrow:
+                continue
             # Skip if not a working day
             if single_date.strftime('%A') not in working_days:
                 continue

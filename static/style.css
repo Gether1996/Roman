@@ -30,6 +30,11 @@ body {
     text-align: center;
 }
 
+.miniature-img {
+    border-radius: 50%;
+    width: 100px;
+}
+
 #calendar {
     width: 60%;
     height: 450px;
