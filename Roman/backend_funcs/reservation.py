@@ -6,10 +6,10 @@ from django.utils.translation import gettext_lazy as _
 import configparser
 
 config = configparser.ConfigParser()
-config.read('config.ini')
 
 def create_reservation(request):
     if request.method == 'POST':
+        config.read('config.ini')
         json_data = json.loads(request.body)
 
         selected_date = json_data.get('selectedDate')
@@ -40,6 +40,7 @@ def create_reservation(request):
 
 def check_available_slots(request):
     if request.method == 'POST':
+        config.read('config.ini')
         json_data = json.loads(request.body)
 
         worker = json_data.get('worker')
@@ -91,6 +92,7 @@ def check_available_slots(request):
 
 def check_available_slots_ahead(request, worker):
     if request.method == 'GET':
+        config.read('config.ini')
         today = datetime.now().date()
         tomorrow = today + timedelta(days=1)
         worker_config = config['settings-roman'] if worker == 'Roman' else config['settings-evka']

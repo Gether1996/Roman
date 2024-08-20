@@ -31,8 +31,8 @@ class TurnedOffDay(Model):
 class Reservation(Model):
     user = ForeignKey(CustomUser, on_delete=CASCADE, default=None, blank=True, null=True)
     name_surname = CharField(max_length=150)
-    email = EmailField()
-    phone_number = CharField(max_length=20)
+    email = EmailField(default=None, blank=True, null=True)
+    phone_number = CharField(max_length=20, default=None, blank=True, null=True)
     datetime_from = DateTimeField()
     datetime_to = DateTimeField()
     active = BooleanField(default=True)
