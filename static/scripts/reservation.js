@@ -23,6 +23,8 @@ document.addEventListener('DOMContentLoaded', function() {
             hiddenElements.forEach(element => {
                 element.classList.remove('hidden-element-first');
             });
+
+            moveToBottom();
         });
     });
 
@@ -32,10 +34,53 @@ document.addEventListener('DOMContentLoaded', function() {
             optionButtons.forEach(btn => btn.classList.remove('selected'));
             this.classList.add('selected');
             duration = this.id;
+
+            var mainContainer = document.getElementById('reservation-box-container');
+            var finishButton = document.querySelector('.finish-reservation-button');
+
+            if (!finishButton) {
+              finishButton = document.createElement('button');
+              finishButton.textContent = isEnglish ? 'Create reservation' : 'Vytvoriť rezeráciu';
+              finishButton.classList.add('finish-reservation-button');
+              finishButton.classList.add('big-button');
+              finishButton.onclick = createReservation;
+
+              mainContainer.appendChild(finishButton);
+            }
+
+            var hiddenElements = document.querySelectorAll('.hidden-element-third');
+            hiddenElements.forEach(element => {
+                element.classList.remove('hidden-element-third');
+            });
+
             moveToBottom();
         });
     });
 });
+
+$(document).ready(function() {
+  // Function to add highlight to the cell
+  function addHighlight(cell) {
+    if (cell.find('.fc-event').length > 0) { // Check if there are any events in this cell
+      cell.addClass('highlight-cell');
+    }
+  }
+
+  // Function to remove highlight from the cell
+  function removeHighlight(cell) {
+    cell.removeClass('highlight-cell');
+  }
+
+  // Hover over the entire day cell
+  $(document).on('mouseenter', '.fc-daygrid-day', function() {
+    addHighlight($(this));
+  });
+
+  $(document).on('mouseleave', '.fc-daygrid-day', function() {
+    removeHighlight($(this));
+  });
+});
+
 
 function pickDate() {
     var mainContainer = document.getElementById('time-slot-container');
@@ -64,6 +109,9 @@ function pickDate() {
             if (data.status === 'success') {
                 availableSlots = data.available_slots;
                 let slotsHtml = '';
+                var textAboveSlots = `
+                    <h2 style="text-align: center;">${isEnglish ? "Pick massage start" : "Vyberte začiatok masáže"}:</h2>
+                `;
 
                 availableSlots.forEach(slot => {
                     slotsHtml += `
@@ -77,12 +125,17 @@ function pickDate() {
                 });
 
                 if (availableSlots.length !== 0) {
-                    const fragment = document.createDocumentFragment();
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(slotsHtml, 'text/html');
-                    const slots = Array.from(doc.querySelectorAll('button'));
+                    var fragment = document.createDocumentFragment();
+                    var parser = new DOMParser();
+                    var doc = parser.parseFromString(slotsHtml, 'text/html');
+                    var slots = Array.from(doc.querySelectorAll('button'));
 
                     slots.forEach(slot => fragment.appendChild(slot));
+                    var tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = textAboveSlots;
+                    var textNode = tempDiv.firstElementChild;
+
+                    mainContainer.appendChild(textNode);
                     mainContainer.appendChild(fragment);
                 } else {
                     var textForApending = document.createElement('p');
@@ -108,15 +161,14 @@ function pickDate() {
 }
 
 function formatDate(date) {
-  const dateObj = new Date(date); // Create a Date object
-  const day = String(dateObj.getDate()).padStart(2, '0'); // Get day with padding
-  const month = String(dateObj.getMonth() + 1).padStart(2, '0'); // Get month with padding (starts at 0)
-  const year = dateObj.getFullYear();
+  var dateObj = new Date(date); // Create a Date object
+  var day = String(dateObj.getDate()).padStart(2, '0'); // Get day with padding
+  var month = String(dateObj.getMonth() + 1).padStart(2, '0'); // Get month with padding (starts at 0)
+  var year = dateObj.getFullYear();
   return `${day}.${month}.${year}`; // Return formatted date
 }
 
 function selectTimeSlot(button) {
-    var mainContainer = document.getElementById('reservation-box-container');
     var previouslySelectedButton = document.getElementById('picked-time-slot');
     if (previouslySelectedButton) {
       previouslySelectedButton.removeAttribute('id');
@@ -126,18 +178,6 @@ function selectTimeSlot(button) {
     button.id = 'picked-time-slot';
     button.classList.add('selected');
     timeSlot = button.textContent.trim();
-
-    var finishButton = document.querySelector('.finish-reservation-button');
-
-    if (!finishButton) {
-      finishButton = document.createElement('button');
-      finishButton.textContent = isEnglish ? 'Create reservation' : 'Vytvoriť rezeráciu';
-      finishButton.classList.add('finish-reservation-button');
-      finishButton.classList.add('big-button');
-      finishButton.onclick = createReservation;
-
-      mainContainer.appendChild(finishButton);
-    }
 
     var hiddenElements = document.querySelectorAll('.hidden-element-second');
     hiddenElements.forEach(element => {
@@ -149,27 +189,43 @@ function selectTimeSlot(button) {
 
 function createReservation() {
     var selectedDate = document.getElementById('date').value;
-    var nameSurname = document.getElementById('name_surname').value;
-    var email = document.getElementById('email').value;
-    var phone = document.getElementById('phone').value;
-    var note = document.getElementById('note').value;
+    var nameSurname = document.getElementById('name_surname');
+    var email = document.getElementById('email');
+    var phone = document.getElementById('phone');
+    var note = document.getElementById('note');
 
-    // Check required fields
-    if (!nameSurname || !email || !phone) {
+    nameSurname.style.border = '1px solid black';
+    email.style.border = '1px solid black';
+    phone.style.border = '1px solid black';
+
+    function showError(field, message) {
+        field.style.border = '2px solid red';
         Swal.fire({
             icon: 'error',
-            title: isEnglish ? `Please fill in all required fields` : `Vyplňte všetky povinné polia`,
-        });
-        return;
+            title: message,
+        })
     }
 
-    // Validate email format
+    var errorMessage = null;
+
+    if (!nameSurname.value) {
+        errorMessage = isEnglish ? `Please enter your name and surname` : `Zadajte svoje meno a priezvisko`;
+        showError(nameSurname, errorMessage);
+    } else if (!email.value) {
+        errorMessage = isEnglish ? `Please enter your email address` : `Zadajte svoju e-mailovú adresu`;
+        showError(email, errorMessage);
+    } else if (!phone.value) {
+        errorMessage = isEnglish ? `Please enter your phone number` : `Zadajte svoje telefónne číslo`;
+        showError(phone, errorMessage);
+    }
+
     var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(email)) {
-        Swal.fire({
-            icon: 'error',
-            title: isEnglish ? `Invalid email address` : `Neplatná e-mailová adresa`,
-        });
+    if (!emailPattern.test(email.value)) {
+        errorMessage = isEnglish ? `Enter valid email please` : `Zadajte prosím správny email`;
+        showError(email, errorMessage);
+    }
+
+    if (errorMessage) {
         return;
     }
 
@@ -192,19 +248,19 @@ function createReservation() {
             </tr>
             <tr>
                 <td>${isEnglish ? 'Name and Surname' : 'Meno a priezvisko'}</td>
-                <td>${nameSurname}</td>
+                <td>${nameSurname.value}</td>
             </tr>
             <tr>
                 <td>Email:</td>
-                <td>${email}</td>
+                <td>${email.value}</td>
             </tr>
             <tr>
                 <td>${isEnglish ? 'Phone' : 'Telefón'}</td>
-                <td>${phone}</td>
+                <td>${phone.value}</td>
             </tr>
             <tr>
                 <td>${isEnglish ? 'Note' : 'Poznámka'}</td>
-                <td>${note || (isEnglish ? 'None' : 'Žiadna')}</td>
+                <td>${note.value || (isEnglish ? 'None' : 'Žiadna')}</td>
             </tr>
             <tr>
                 <td>${isEnglish ? 'Duration' : 'Trvanie'}</td>
@@ -242,10 +298,10 @@ function createReservation() {
                     worker: worker,
                     duration: duration,
                     timeSlot: timeSlot,
-                    nameSurname: nameSurname,
-                    email: email,
-                    phone: phone,
-                    note: note
+                    nameSurname: nameSurname.value,
+                    email: email.value,
+                    phone: phone.value,
+                    note: note.value
                 }),
             }).then(() => {
                 Swal.fire({
@@ -384,3 +440,53 @@ function updateEvents(worker) {
         }
     });
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Get references to the input fields
+    var nameSurname = document.getElementById('name_surname');
+    var email = document.getElementById('email');
+    var phone = document.getElementById('phone');
+    var note = document.getElementById('note');
+
+    // Function to trigger the button click
+    function triggerButtonClick() {
+        var finishButton = document.querySelector('.finish-reservation-button');
+        if (finishButton) {
+            console.log('Triggering button click'); // Debugging log
+            finishButton.click();
+        } else {
+            console.error('Button with class "finish-reservation-button" not found.');
+        }
+    }
+
+    // Function to handle the keydown event
+    function handleKeyDown(event) {
+        if (event.key === 'Enter') { // Check if Enter key was pressed
+            event.preventDefault(); // Prevent default Enter key behavior (like form submission)
+            console.log('Enter key pressed'); // Debugging log
+            triggerButtonClick(); // Trigger button click
+        }
+    }
+
+    // Function to add event listeners to fields
+    function addEventListeners() {
+        if (nameSurname) nameSurname.addEventListener('keydown', handleKeyDown);
+        if (email) email.addEventListener('keydown', handleKeyDown);
+        if (phone) phone.addEventListener('keydown', handleKeyDown);
+        if (note) note.addEventListener('keydown', handleKeyDown);
+    }
+
+    // Use MutationObserver to detect when the button is added
+    var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (document.querySelector('.finish-reservation-button')) {
+                console.log('Button found, adding event listeners');
+                addEventListeners();
+                observer.disconnect(); // Stop observing once button is found and listeners are added
+            }
+        });
+    });
+
+    // Start observing the document body for changes
+    observer.observe(document.body, { childList: true, subtree: true });
+});

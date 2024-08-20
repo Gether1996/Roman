@@ -30,6 +30,11 @@ body {
     text-align: center;
 }
 
+.miniature-img {
+    border-radius: 50%;
+    width: 100px;
+}
+
 #calendar {
     width: 60%;
     height: 450px;
@@ -38,7 +43,11 @@ body {
     margin-top: 10px;
 }
 
-.hidden-element-first, .hidden-element-second {
+.highlight-cell {
+  background-color: rgba(0, 128, 255, 0.2); /* Change this color as needed */
+}
+
+.hidden-element-first, .hidden-element-second, .hidden-element-third {
     display: none;
 }
 
@@ -640,7 +649,7 @@ body {
     border-color: #007bff;
 }
 
-.option-button-person, .option-button-time {
+.option-button-person, .option-button-time, .time-slot-select {
     padding: 10px 20px;
     border: 2px solid #ddd;
     border-radius: 5px;
@@ -650,7 +659,7 @@ body {
 }
 
 /* Hover effect */
-.option-button-person:hover, .option-button-time:hover, .finish-reservation-button:hover {
+.option-button-person:hover, .option-button-time:hover, .finish-reservation-button:hover, .time-slot-select:hover {
     background-color: #e0e0e0; /* Slightly darker background on hover */
     border-color: #ccc; /* Change border color on hover */
     transform: scale(1.05); /* Slight scale up on hover */

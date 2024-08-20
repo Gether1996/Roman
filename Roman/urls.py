@@ -20,7 +20,8 @@ from viewer.views import homepage, profile, reservation, settings as settings_vi
 from Roman.backend_funcs.users import login_api, logout, registration
 from Roman.backend_funcs.general import switch_language
 from Roman.backend_funcs.settings_view import save_settings, add_turned_off_day, delete_turned_off_day
-from Roman.backend_funcs.reservation import check_available_slots, check_available_slots_ahead, create_reservation
+from Roman.backend_funcs.reservation import check_available_slots, check_available_slots_ahead, create_reservation, \
+    deactivate_reservation
 from django.views.static import serve
 from django.conf.urls.static import static
 from django.conf import settings
@@ -48,6 +49,7 @@ urlpatterns = [
     path('check_available_slots/', check_available_slots, name='check_available_slots'),
     path('check_available_slots_ahead/<str:worker>/', check_available_slots_ahead, name='check_available_slots_ahead'),
     path('create_reservation/', create_reservation, name='create_reservation'),
+    path('deactivate_reservation/', deactivate_reservation, name='deactivate_reservation'),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

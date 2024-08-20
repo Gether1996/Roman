@@ -19,7 +19,7 @@ def create_reservation(request):
         datetime_from_obj = datetime.strptime(f"{selected_date} {time_slot}", "%Y-%m-%d %H:%M")
         date_time_to_obj = datetime_from_obj + timedelta(minutes=int(duration))
 
-        user = request.user if request.user else None
+        user = request.user if request.user.is_authenticated else None
 
         new_reservation = Reservation.objects.create(
             user=user,
@@ -154,7 +154,24 @@ def check_available_slots_ahead(request, worker):
                     'start': single_date.strftime('%Y-%m-%d'),
                     'end': single_date.strftime('%Y-%m-%d'),
                     'title': f"{available_slots_count} {possible}",
+                    'className': 'allowed-events-day'
                 })
 
         return JsonResponse({'status': 'success', 'events': events})
     return JsonResponse({'status': 'error'})
+
+
+def deactivate_reservation(request):
+    if request.method == 'DELETE':
+        json_data = json.loads(request.body)
+
+        try:
+            deactivated_reservation = Reservation.objects.get(id=json_data.get('reservation_id'))
+            deactivated_reservation.active = False
+            deactivated_reservation.cancellation_reason = json_data.get('reason')
+            deactivated_reservation.save()
+            return JsonResponse({'status': 'success', 'message': _('Rezervácia úspešne zrušená.')})
+
+        except Reservation.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': _('Rezervácia sa nenašla.')})
+    return JsonResponse({'status': 'error', 'message': _('Zlý request')})
