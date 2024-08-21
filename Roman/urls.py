@@ -16,7 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, re_path
-from viewer.views import homepage, profile, reservation, settings as settings_view
+from viewer.views import homepage, profile, reservation, settings as settings_view, get_all_reservations_data, \
+    all_reservations
 from Roman.backend_funcs.users import login_api, logout, registration
 from Roman.backend_funcs.general import switch_language
 from Roman.backend_funcs.settings_view import save_settings, add_turned_off_day, delete_turned_off_day
@@ -34,6 +35,7 @@ urlpatterns = [
     path('', homepage, name='homepage'),
     path('admin/', admin.site.urls),
     path('reservation/', reservation, name='reservation'),
+    path('all_reservations/', all_reservations, name='all_reservations'),
     path('settings_view/', settings_view, name='settings_view'),
     re_path(r'^profile/(?P<email>[^/]+)/$', profile, name='profile'),
 
@@ -50,6 +52,7 @@ urlpatterns = [
     path('check_available_slots_ahead/<str:worker>/', check_available_slots_ahead, name='check_available_slots_ahead'),
     path('create_reservation/', create_reservation, name='create_reservation'),
     path('deactivate_reservation/', deactivate_reservation, name='deactivate_reservation'),
+    path('get_all_reservations_data/', get_all_reservations_data, name='get_all_reservations_data'),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -35,7 +35,7 @@
             <div style="background-color: white;" class="dropdown" id="dropdown-menu">
                 {% if user.is_superuser %}
                     <a class="dropdown-link" href="{% url 'settings_view' %}">{% trans 'Nastavenia' %}</a>
-                    <a class="dropdown-link" href="{% url 'admin:index' %}viewer/reservation/">{% trans 'Prehľad rezervácií' %}</a>
+                    <a class="dropdown-link" href="{% url 'all_reservations' %}">{% trans 'Prehľad rezervácií' %}</a>
                     <a class="dropdown-link" href="#" onclick="logoutConfirmation()"><i class="fas fa-sign-out-alt"></i> {% trans 'Odhlásiť sa' %}</a>
                 {% else %}
                     <a class="dropdown-link" href="{% url 'profile' email=user.email %}">{% trans 'Môj profil' %}</a>
@@ -45,7 +45,7 @@
         </div>
     {% else %}
         <div class="navbar-user-info">
-            <b><i class="fa-duotone fa-user avatar-user-icon" id="avatar-user-icon"></i></b>
+            <b>{% trans 'Účet' %} <i class="fa-duotone fa-user avatar-user-icon" id="avatar-user-icon"></i></b>
                 <div style="background-color: white; border:" class="dropdown" id="dropdown-menu">
                     <a class="dropdown-link" href="#" onclick="login()"><i class="fa-duotone fa-right-to-bracket"></i> {% trans 'Prihlásiť sa' %}</a>
                     <a class="dropdown-link" href="#" onclick="registration()"><i class="fa-duotone fa-user-plus"></i> {% trans 'Registrácia' %}</a>

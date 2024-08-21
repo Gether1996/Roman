@@ -40,14 +40,14 @@ body {
     height: 450px;
     border: 1px solid black;
     padding: 10px;
-    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .highlight-cell {
   background-color: rgba(0, 128, 255, 0.2); /* Change this color as needed */
 }
 
-.hidden-element-first, .hidden-element-second, .hidden-element-third {
+.hidden-element-first, .hidden-element-second, .hidden-element-third, .hidden-element-timeSlots {
     display: none;
 }
 

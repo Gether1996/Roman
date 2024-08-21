@@ -8,23 +8,49 @@ function moveToBottom() {
             top: document.body.scrollHeight,
             behavior: 'smooth'
         });
-    }, 50);
+    }, 250);
+}
+
+function resetDateInput() {
+    var dateInput = document.getElementById("date");
+    if (dateInput) {
+        if (dateInput.value) {
+            dateInput.value = "";
+        }
+    }
 }
 
 document.addEventListener('DOMContentLoaded', function() {
     const bigButtons = document.querySelectorAll('.option-button-person');
     bigButtons.forEach(button => {
         button.addEventListener('click', function() {
-            bigButtons.forEach(btn => btn.classList.remove('selected'));
+            allSelectedElements = document.querySelectorAll('.selected');
+            allSelectedElements.forEach(btn => btn.classList.remove('selected'));
             this.classList.add('selected');
             worker = this.id;
+
+            hiddenTimeSlot = document.querySelector('.add-hidden-timeSlots');
+            hiddenSlotsSecondAll = document.querySelectorAll('.add-hidden-second');
+            hiddenSlotsThirdAll = document.querySelectorAll('.add-hidden-third');
+            if (!hiddenTimeSlot.classList.contains('hidden-element-timeSlots')) {
+                hiddenTimeSlot.classList.add('hidden-element-timeSlots');
+            }
+            hiddenSlotsSecondAll.forEach(element => {
+                if (!element.classList.contains('hidden-element-second')) {
+                    element.classList.add('hidden-element-second');
+                }
+            });
+            hiddenSlotsThirdAll.forEach(element => {
+                if (!element.classList.contains('hidden-element-third')) {
+                    element.classList.add('hidden-element-third');
+                }
+            });
 
             var hiddenElements = document.querySelectorAll('.hidden-element-first');
             hiddenElements.forEach(element => {
                 element.classList.remove('hidden-element-first');
             });
-
-            moveToBottom();
+            resetDateInput();
         });
     });
 
@@ -42,6 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
               finishButton = document.createElement('button');
               finishButton.textContent = isEnglish ? 'Create reservation' : 'Vytvoriť rezeráciu';
               finishButton.classList.add('finish-reservation-button');
+              finishButton.classList.add('add-hidden-third');
               finishButton.classList.add('big-button');
               finishButton.onclick = createReservation;
 
@@ -87,6 +114,9 @@ function pickDate() {
     var selectedDate = document.getElementById('date');
     var finishButton = document.querySelector('.finish-truck-button')
 
+    hiddenTimeSlot = document.querySelector('.add-hidden-timeSlots');
+    hiddenTimeSlot.classList.remove('hidden-element-timeSlots');
+
     if (finishButton) {
       finishButton.remove();
     }
@@ -95,6 +125,15 @@ function pickDate() {
     selectedDate.style.border = '1px solid black';
 
     if (worker) {
+
+        Swal.fire({
+            allowOutsideClick: false, // Prevent closing by clicking outside
+            allowEscapeKey: false,   // Prevent closing by pressing the Esc key
+            allowEnterKey: false,    // Prevent closing by pressing the Enter key
+            didOpen: () => {
+                Swal.showLoading();  // Show loading animation
+            }
+        });
 
         fetch('/check_available_slots/', {
             method: 'POST',
@@ -143,6 +182,9 @@ function pickDate() {
                     mainContainer.appendChild(textForApending);
                 }
 
+                Swal.close();
+                moveToBottom();
+
             } else {
                 Swal.fire({
                     icon: 'error',
@@ -156,8 +198,6 @@ function pickDate() {
     } else {
 
     }
-
-    moveToBottom();
 }
 
 function formatDate(date) {
@@ -208,21 +248,29 @@ function createReservation() {
 
     var errorMessage = null;
 
-    if (!nameSurname.value) {
-        errorMessage = isEnglish ? `Please enter your name and surname` : `Zadajte svoje meno a priezvisko`;
-        showError(nameSurname, errorMessage);
-    } else if (!email.value) {
-        errorMessage = isEnglish ? `Please enter your email address` : `Zadajte svoju e-mailovú adresu`;
-        showError(email, errorMessage);
-    } else if (!phone.value) {
-        errorMessage = isEnglish ? `Please enter your phone number` : `Zadajte svoje telefónne číslo`;
-        showError(phone, errorMessage);
-    }
+    if (superUser === "true") {
+        if (!nameSurname.value) {
+            errorMessage = isEnglish ? `Please enter your name and surname` : `Zadajte svoje meno a priezvisko`;
+            showError(nameSurname, errorMessage);
+        }
+    } else {
 
-    var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(email.value)) {
-        errorMessage = isEnglish ? `Enter valid email please` : `Zadajte prosím správny email`;
-        showError(email, errorMessage);
+        if (!nameSurname.value) {
+            errorMessage = isEnglish ? `Please enter your name and surname` : `Zadajte svoje meno a priezvisko`;
+            showError(nameSurname, errorMessage);
+        } else if (!email.value) {
+            errorMessage = isEnglish ? `Please enter your email address` : `Zadajte svoju e-mailovú adresu`;
+            showError(email, errorMessage);
+        } else if (!phone.value) {
+            errorMessage = isEnglish ? `Please enter your phone number` : `Zadajte svoje telefónne číslo`;
+            showError(phone, errorMessage);
+        }
+
+        var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(email.value)) {
+            errorMessage = isEnglish ? `Enter a valid email, please` : `Zadajte prosím správny email`;
+            showError(email, errorMessage);
+        }
     }
 
     if (errorMessage) {
@@ -405,6 +453,16 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function updateEvents(worker) {
+    // Show the loading Swal
+    Swal.fire({
+        allowOutsideClick: false, // Prevent closing by clicking outside
+        allowEscapeKey: false,   // Prevent closing by pressing the Esc key
+        allowEnterKey: false,    // Prevent closing by pressing the Enter key
+        didOpen: () => {
+            Swal.showLoading();  // Show loading animation
+        }
+    });
+
     $.ajax({
         url: '/check_available_slots_ahead/' + worker + '/',
         type: 'GET',
@@ -431,12 +489,26 @@ function updateEvents(worker) {
                     }
                 });
 
+                Swal.close();
+                moveToBottom();
             } else {
-                console.error('Error fetching events:', response.error);
+                // Close the Swal and show error
+                Swal.close();
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Error fetching events: ' + response.error,
+                    icon: 'error'
+                });
             }
         },
         error: function(xhr, status, error) {
-            console.error('Error fetching events:', error);
+            // Close the Swal and show error
+            Swal.close();
+            Swal.fire({
+                title: 'Error',
+                text: 'Error fetching events: ' + error,
+                icon: 'error'
+            });
         }
     });
 }
@@ -490,3 +562,28 @@ document.addEventListener('DOMContentLoaded', function() {
     // Start observing the document body for changes
     observer.observe(document.body, { childList: true, subtree: true });
 });
+
+var observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+        if (mutation.addedNodes.length > 0) {
+            // Check if the specific container has been added
+            if (document.querySelector('.hidden-element-third')) {
+                // Perform the asterisk toggle based on superUser value
+                toggleAsterisks();
+                observer.disconnect();  // Stop observing once content is loaded
+            }
+        }
+    });
+});
+
+observer.observe(document.body, { childList: true, subtree: true });
+
+function toggleAsterisks() {
+    if (superUser === "true") {
+        document.querySelector('.email-required').style.display = 'none';
+        document.querySelector('.phone-required').style.display = 'none';
+    } else {
+        document.querySelector('.email-required').style.display = 'inline';
+        document.querySelector('.phone-required').style.display = 'inline';
+    }
+}

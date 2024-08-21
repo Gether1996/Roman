@@ -90,40 +90,48 @@
                 </div>
 
                 <h2 class="hidden-element-first">{% trans 'Vyberte Dátum' %}:</h2>
-                <input type="date" id="date" class="insert-date-add-truck hidden-element-first" onchange="pickDate()" readonly>
                 <div class="calendar hidden-element-first" id="calendar"></div>
+                <input type="date" id="date" class="insert-date-add-truck hidden-element-first" onchange="pickDate()" readonly>
 
-                <div id="time-slot-container" style="margin-top: 30px; width: 80%;"></div>
+                <div id="time-slot-container" style="margin-top: 30px; width: 80%;" class="hidden-element-timeSlots add-hidden-timeSlots"></div>
 
-                <hr class="hidden-element-second hr-basic-style">
+                <hr class="hidden-element-second add-hidden-second hr-basic-style">
 
-                <h2 class="hidden-element-second">{% trans 'Vyberte dĺžku masáže' %}:</h2>
+                <h2 class="hidden-element-second add-hidden-second">{% trans 'Vyberte dĺžku masáže' %}:</h2>
                 <div class="row-container" style="gap: 20px; margin-top: 0px;">
-                    <div class="hidden-element-second big-button option-button-time" id="30">30 min - 20€</div>
-                    <div class="hidden-element-second big-button option-button-time" id="45">45 min - 28€</div>
-                    <div class="hidden-element-second big-button option-button-time" id="60">60 min - 35€</div>
-                    <div class="hidden-element-second big-button option-button-time" id="90">90 min - 50€</div>
-                    <div class="hidden-element-second big-button option-button-time" id="120">120 min - 65€</div>
+                    <div class="hidden-element-second add-hidden-second big-button option-button-time" id="30">30 min - 20€</div>
+                    <div class="hidden-element-second add-hidden-second big-button option-button-time" id="45">45 min - 28€</div>
+                    <div class="hidden-element-second add-hidden-second big-button option-button-time" id="60">60 min - 35€</div>
+                    <div class="hidden-element-second add-hidden-second big-button option-button-time" id="90">90 min - 50€</div>
+                    <div class="hidden-element-second add-hidden-second big-button option-button-time" id="120">120 min - 65€</div>
                 </div>
 
-                <hr class="hidden-element-third hr-basic-style">
+                <hr class="hidden-element-third add-hidden-third hr-basic-style">
 
-                <div class="hidden-element-third">
+                <div class="hidden-element-third add-hidden-third">
                     <div class="column-container">
                         <div class="row-container input-container-reservation">
-                            <label for="name_surname">{% trans 'Meno a Priezvisko' %}*:</label>
+                            <label for="name_surname">
+                                {% trans 'Meno a Priezvisko' %}<span class="required">*</span>:
+                            </label>
                             <input type="text" id="name_surname" name="name_surname">
                         </div>
                         <div class="row-container input-container-reservation">
-                            <label for="email">Email*:</label>
+                            <label for="email">
+                                Email<span class="required email-required">*</span>:
+                            </label>
                             <input type="email" id="email" name="email">
                         </div>
                         <div class="row-container input-container-reservation">
-                            <label for="phone">{% trans 'Telefónne číslo' %}*:</label>
+                            <label for="phone">
+                                {% trans 'Telefónne číslo' %}<span class="required phone-required">*</span>:
+                            </label>
                             <input type="text" id="phone" name="phone">
                         </div>
                         <div class="row-container input-container-reservation">
-                            <label for="note">{% trans 'Poznámka' %}:</label>
+                            <label for="note">
+                                {% trans 'Poznámka' %}:
+                            </label>
                             <input type="text" id="note" name="note">
                         </div>
                         <p>{% trans 'Polia označené * sú povinné' %}</p>

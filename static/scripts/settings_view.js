@@ -222,6 +222,7 @@ function addTurnedOffDay() {
                 <input id="time_to" type="time" class="swal2-input">
             </div>
         `,
+        showCancelButton: true,
         preConfirm: () => {
             var worker = document.getElementById('worker').value;
             var date = document.getElementById('date').value;

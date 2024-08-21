@@ -17,6 +17,15 @@
         var language_code = '{{ language_code }}';
         var isEnglish = (language_code === 'en');
         var csrfToken = "{{ csrf_token }}";
+        {% if request.user.is_authenticated %}
+            {% if request.user.is_superuser %}
+                var superUser = "true";
+            {% else %}
+                var superUser = "false";
+            {% endif %}
+        {% else %}
+            var superUser = "false";
+        {% endif %}
     </script>
     <script src="{% static 'scripts/sweetalert2@11.js' %}"></script>
     <script src="{% static 'scripts/scripts.js' %}"></script>
