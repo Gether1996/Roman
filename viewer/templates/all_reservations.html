@@ -2,15 +2,22 @@
 {% load static %}
 
 {% block extra_head %}
-    <title>Odoslané súbory</title>
+    <title>Všetky rezervácie</title>
 {% endblock %}
 
 {% block content %}
+
+    <style>
+        body {
+            background-color: white;
+        }
+    </style>
 
     {% include 'navbar.html' %}
     <div class="top-margin-reservation"></div>
 
     <div class="column-container">
+        <h2>Všetky rezervácie</h2>
 
         <div class="paginator"></div>
         <div class="cancel-filter-button hidden-initially" onclick="removeAllFilters()"><i class="fa-solid fa-filter"></i> Zrušiť filter</div>
@@ -18,39 +25,37 @@
         <table class="emp-table">
             <thead>
                 <tr class="table-top-tr-no-background">
-                    <th class="text-align-left" style="width: 7%;"><a class="ordering-link" href="{% url 'all_reservations' %}?sort_by=name_surname&order={% if current_sort_by == 'name_surname' and current_order == 'asc' %}desc{% else %}asc{% endif %}{% if page %}&page={{ page }}{% endif %}">
+                    <th class="text-align-left"><a class="ordering-link" href="{% url 'all_reservations' %}?sort_by=name_surname&order={% if current_sort_by == 'name_surname' and current_order == 'asc' %}desc{% else %}asc{% endif %}{% if page %}&page={{ page }}{% endif %}">
                         Meno {% if current_sort_by == 'name_surname' %} {% if current_order == 'asc' %}&#9650;{% else %}&#9660;{% endif %}{% endif %}
                     </a></th>
-                    <th class="text-align-left" style="width: 7%;"><a class="ordering-link" href="{% url 'all_reservations' %}?sort_by=email&order={% if current_sort_by == 'email' and current_order == 'asc' %}desc{% else %}asc{% endif %}{% if page %}&page={{ page }}{% endif %}">
+                    <th class="text-align-left"><a class="ordering-link" href="{% url 'all_reservations' %}?sort_by=email&order={% if current_sort_by == 'email' and current_order == 'asc' %}desc{% else %}asc{% endif %}{% if page %}&page={{ page }}{% endif %}">
                         Email {% if current_sort_by == 'email' %} {% if current_order == 'asc' %}&#9650;{% else %}&#9660;{% endif %}{% endif %}
                     </a></th>
-                    <th class="text-align-left" style="width: 7%;"><a class="ordering-link" href="{% url 'all_reservations' %}?sort_by=phone_number&order={% if current_sort_by == 'phone_number' and current_order == 'asc' %}desc{% else %}asc{% endif %}{% if page %}&page={{ page }}{% endif %}">
+                    <th class="text-align-left"><a class="ordering-link" href="{% url 'all_reservations' %}?sort_by=phone_number&order={% if current_sort_by == 'phone_number' and current_order == 'asc' %}desc{% else %}asc{% endif %}{% if page %}&page={{ page }}{% endif %}">
                         Telefón {% if current_sort_by == 'phone_number' %} {% if current_order == 'asc' %}&#9650;{% else %}&#9660;{% endif %}{% endif %}
                     </a></th>
-                    <th class="text-align-left" style="width: 7%;"><a class="ordering-link" href="{% url 'all_reservations' %}?sort_by=date&order={% if current_sort_by == 'date' and current_order == 'asc' %}desc{% else %}asc{% endif %}{% if page %}&page={{ page }}{% endif %}">
-                        Dátum {% if current_sort_by == 'date' %} {% if current_order == 'asc' %}&#9650;{% else %}&#9660;{% endif %}{% endif %}
+                    <th class="text-align-left"><a class="ordering-link" href="{% url 'all_reservations' %}?sort_by=datetime_from&order={% if current_sort_by == 'datetime_from' and current_order == 'asc' %}desc{% else %}asc{% endif %}{% if page %}&page={{ page }}{% endif %}">
+                        Dátum {% if current_sort_by == 'datetime_from' %} {% if current_order == 'asc' %}&#9650;{% else %}&#9660;{% endif %}{% endif %}
                     </a></th>
-                    <th class="text-align-left" style="width: 7%;"><a class="ordering-link" href="{% url 'all_reservations' %}?sort_by=slot&order={% if current_sort_by == 'slot' and current_order == 'asc' %}desc{% else %}asc{% endif %}{% if page %}&page={{ page }}{% endif %}">
-                        Slot {% if current_sort_by == 'slot' %} {% if current_order == 'asc' %}&#9650;{% else %}&#9660;{% endif %}{% endif %}
-                    </a></th>
-                    <th class="text-align-left" style="width: 7%;"><a class="ordering-link" href="{% url 'all_reservations' %}?sort_by=worker&order={% if current_sort_by == 'worker' and current_order == 'asc' %}desc{% else %}asc{% endif %}{% if page %}&page={{ page }}{% endif %}">
+                    <th class="text-align-left" style="width: 5%;">Slot</th>
+                    <th class="text-align-left" style="width: 5%;"><a class="ordering-link" href="{% url 'all_reservations' %}?sort_by=worker&order={% if current_sort_by == 'worker' and current_order == 'asc' %}desc{% else %}asc{% endif %}{% if page %}&page={{ page }}{% endif %}">
                         Masér {% if current_sort_by == 'worker' %} {% if current_order == 'asc' %}&#9650;{% else %}&#9660;{% endif %}{% endif %}
                     </a></th>
-                    <th class="text-align-left" style="width: 7%;"><a class="ordering-link" href="{% url 'all_reservations' %}?sort_by=created_at&order={% if current_sort_by == 'created_at' and current_order == 'asc' %}desc{% else %}asc{% endif %}{% if page %}&page={{ page }}{% endif %}">
+                    <th class="text-align-left" style="width: 8%;"><a class="ordering-link" href="{% url 'all_reservations' %}?sort_by=created_at&order={% if current_sort_by == 'created_at' and current_order == 'asc' %}desc{% else %}asc{% endif %}{% if page %}&page={{ page }}{% endif %}">
                         Vytvorená {% if current_sort_by == 'created_at' %} {% if current_order == 'asc' %}&#9650;{% else %}&#9660;{% endif %}{% endif %}
                     </a></th>
-                    <th class="text-align-left" style="width: 7%;"><a class="ordering-link" href="{% url 'all_reservations' %}?sort_by=special_request&order={% if current_sort_by == 'special_request' and current_order == 'asc' %}desc{% else %}asc{% endif %}{% if page %}&page={{ page }}{% endif %}">
+                    <th class="text-align-left"><a class="ordering-link" href="{% url 'all_reservations' %}?sort_by=special_request&order={% if current_sort_by == 'special_request' and current_order == 'asc' %}desc{% else %}asc{% endif %}{% if page %}&page={{ page }}{% endif %}">
                         Poznámka {% if current_sort_by == 'special_request' %} {% if current_order == 'asc' %}&#9650;{% else %}&#9660;{% endif %}{% endif %}
-                    </a></th>
-                    <th class="text-align-left" style="width: 7%;">Môj popis</th>
-                    <th class="text-align-center" style="width: 7%;"><a class="ordering-link" href="{% url 'all_reservations' %}?sort_by=active&order={% if current_sort_by == 'active' and current_order == 'asc' %}desc{% else %}asc{% endif %}{% if page %}&page={{ page }}{% endif %}">
-                        Aktívna {% if current_sort_by == 'active' %} {% if current_order == 'asc' %}&#9650;{% else %}&#9660;{% endif %}{% endif %}
                     </a></th>
                     <th class="text-align-left" style="width: 7%;"><a class="ordering-link" href="{% url 'all_reservations' %}?sort_by=status&order={% if current_sort_by == 'status' and current_order == 'asc' %}desc{% else %}asc{% endif %}{% if page %}&page={{ page }}{% endif %}">
                         Status {% if current_sort_by == 'status' %} {% if current_order == 'asc' %}&#9650;{% else %}&#9660;{% endif %}{% endif %}
                     </a></th>
-                    <th class="text-align-left" style="width: 7%;">Dôvod zrušenia</th>
-                    <th class="text-align-center" style="width: 5%;"></th>
+                    <th class="text-align-left">Môj popis</th>
+                    <th class="text-align-center" style="width: 5%;"><a class="ordering-link" href="{% url 'all_reservations' %}?sort_by=active&order={% if current_sort_by == 'active' and current_order == 'asc' %}desc{% else %}asc{% endif %}{% if page %}&page={{ page }}{% endif %}">
+                        Aktívna {% if current_sort_by == 'active' %} {% if current_order == 'asc' %}&#9650;{% else %}&#9660;{% endif %}{% endif %}
+                    </a></th>
+                    <th class="text-align-left">Zrušenie</th>
+                    <th></th>
                 </tr>
                 <tr class="table-second-tr-with-background">
                     <th><input class="searching-input-table" data-filter="name_surname" type="text" id="sort_name_surname"></th>
@@ -61,9 +66,9 @@
                     <th><input class="searching-input-table" data-filter="worker" type="text" id="sort_worker"></th>
                     <th><input class="searching-input-table" data-filter="created_at" type="text" id="sort_created_at"></th>
                     <th><input class="searching-input-table" data-filter="special_request" type="text" id="sort_special_request"></th>
-                    <th></th>
-                    <th></th>
                     <th><input class="searching-input-table" data-filter="status" type="text" id="sort_status"></th>
+                    <th></th>
+                    <th></th>
                     <th></th>
                     <th></th>
                 </tr>

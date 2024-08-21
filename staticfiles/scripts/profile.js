@@ -5,8 +5,6 @@ function deactivate(reservation_id) {
         input: 'text',
         inputPlaceholder: isEnglish ? 'Enter reason here' : 'Zadajte dôvod',
         showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
         confirmButtonText: isEnglish ? 'Yes' : 'Áno',
         cancelButtonText: isEnglish ? 'Cancel' : 'Zrušiť',
         inputValidator: (value) => {

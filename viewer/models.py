@@ -35,7 +35,7 @@ class Reservation(Model):
     phone_number = CharField(max_length=20, default=None, blank=True, null=True)
     datetime_from = DateTimeField()
     datetime_to = DateTimeField()
-    active = BooleanField(default=True)
+    active = BooleanField(default=False)
     worker = CharField(max_length=100)
     status = CharField(max_length=50)
     created_at = DateTimeField()

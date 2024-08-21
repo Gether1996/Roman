@@ -49,7 +49,7 @@ function updateTable(reservations) {
             '<i style="color: red;" class="fa-solid fa-circle-xmark"></i>';
 
         var actionButton = reservation.active ?
-            `<button class="action-button" style='background-color: #dd3c3c;' onclick="cancelReservation('${reservation.id}', '${reservation.name_surname}')">Zrušiť</button>` :
+            `<button class="action-button" style='background-color: #dd3c3c;' onclick="cancelReservation('${reservation.id}', '${reservation.name_surname}')">Zrušiť <i class="fa-solid fa-xmark"></i></button>` :
             `<button class="action-button" style='background-color: #238b55;' onclick="approveReservation('${reservation.id}', '${reservation.name_surname}')">Schváliť</button>`;
 
         var row = document.createElement('tr');
@@ -67,9 +67,9 @@ function updateTable(reservations) {
             <td>${reservation.personal_note}</td>
             <td class="text-align-center">${successIcon}</td>
             <td>${reservation.cancellation_reason}</td>
-            <td class="text-align-center row-container">
+            <td class="text-align-center">
                 ${actionButton}
-                <button class="action-button" style='background-color: #238b55; margin-left: 2px;' onclick="addNote('${reservation.id}', '${reservation.name_surname}', '${reservation.personal_note}')">Poznámka</button>
+                <button class="action-button" style='background-color: #238b55; margin-top: 2px;' onclick="addNote('${reservation.id}', '${reservation.name_surname}', '${reservation.personal_note}')">Poznámka</button>
             </td>
         `;
         tbody.appendChild(row);
@@ -225,8 +225,6 @@ function filterTable() {
                     return email.includes(filterValue);
                 case 'phone_number':
                     return phone_number.includes(filterValue);
-                case 'date':
-                    return date.includes(filterValue);
                 case 'slot':
                     return slot.includes(filterValue);
                 case 'worker':

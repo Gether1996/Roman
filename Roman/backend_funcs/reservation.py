@@ -9,6 +9,15 @@ config = configparser.ConfigParser()
 
 def create_reservation(request):
     if request.method == 'POST':
+        active = False
+        status = 'Čaká sa schválenie'
+        note = 'user'
+        user = request.user if request.user.is_authenticated else None
+        if user and user.is_superuser:
+            active = True
+            status = 'Schválená'
+            note = 'admin'
+
         config.read('config.ini')
         json_data = json.loads(request.body)
 
@@ -27,8 +36,10 @@ def create_reservation(request):
             email=json_data.get('email'),
             phone_number=json_data.get('phone'),
             worker=json_data.get('worker'),
-            status='Čaká sa schválenie',
-            special_request=json_data.get('note'),
+            status=status,
+            active=active,
+            special_request=json_data.get('note') if note == 'user' else '',
+            personal_note=json_data.get('note') if note == 'admin' else '',
             datetime_from=datetime_from_obj,
             datetime_to=date_time_to_obj,
             created_at=datetime.now(),
@@ -168,12 +179,61 @@ def deactivate_reservation(request):
         json_data = json.loads(request.body)
 
         try:
-            deactivated_reservation = Reservation.objects.get(id=json_data.get('reservation_id'))
-            deactivated_reservation.active = False
-            deactivated_reservation.cancellation_reason = json_data.get('reason')
-            deactivated_reservation.save()
+            reservation = Reservation.objects.get(id=json_data.get('reservation_id'))
+            reservation.active = False
+            reservation.status = 'Zrušená zákazníkom'
+            reservation.cancellation_reason = json_data.get('reason')
+            reservation.save()
             return JsonResponse({'status': 'success', 'message': _('Rezervácia úspešne zrušená.')})
 
         except Reservation.DoesNotExist:
             return JsonResponse({'status': 'error', 'message': _('Rezervácia sa nenašla.')})
+    return JsonResponse({'status': 'error', 'message': _('Zlý request')})
+
+
+def approve_reservation(request):
+    if request.method == 'POST':
+        json_data = json.loads(request.body)
+
+        try:
+            reservation = Reservation.objects.get(id=json_data.get('id'))
+            reservation.active = True
+            reservation.status = 'Schválená'
+            reservation.save()
+            return JsonResponse({'status': 'success'})
+
+        except Reservation.DoesNotExist:
+            return JsonResponse({'status': 'error'})
+    return JsonResponse({'status': 'error', 'message': _('Zlý request')})
+
+
+def cancel_reservation(request):
+    if request.method == 'DELETE':
+        json_data = json.loads(request.body)
+
+        try:
+            reservation = Reservation.objects.get(id=json_data.get('id'))
+            reservation.active = False
+            reservation.status = 'Zrušená Masérom'
+            reservation.personal_note = json_data.get('note')
+            reservation.save()
+            return JsonResponse({'status': 'success'})
+
+        except Reservation.DoesNotExist:
+            return JsonResponse({'status': 'error'})
+    return JsonResponse({'status': 'error', 'message': _('Zlý request')})
+
+
+def add_personal_note(request):
+    if request.method == 'POST':
+        json_data = json.loads(request.body)
+
+        try:
+            reservation = Reservation.objects.get(id=json_data.get('id'))
+            reservation.personal_note = json_data.get('note')
+            reservation.save()
+            return JsonResponse({'status': 'success'})
+
+        except Reservation.DoesNotExist:
+            return JsonResponse({'status': 'error'})
     return JsonResponse({'status': 'error', 'message': _('Zlý request')})

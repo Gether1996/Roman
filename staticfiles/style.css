@@ -695,6 +695,283 @@ body {
     border-color: #007bff;
 }
 
+.column-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.emp-table {
+    width: 98%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin-top: 60px;
+    padding: 50px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.text-align-left {
+    text-align: left;
+}
+
+.text-align-center {
+    text-align: center;
+}
+
+.table-top-tr-no-background {
+    color: black;
+    background-color: white;
+}
+
+.table-second-tr-with-background {
+    background-color: #244b90;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 40px;
+}
+
+.searching-input-table {
+    width: 90%;
+    height: 30px;
+    border-radius: 5px;
+    margin: auto;
+}
+
+.add-employee-th-table-button {
+    color: white;
+    cursor: pointer;
+    background-color: #309d30;
+    padding: 5px;
+    border-radius: 6px;
+    transition: 0.3s;
+    text-decoration: none;
+}
+
+.add-employee-th-table-button:hover {
+    background-color: #247324;
+    color: white;
+    text-decoration: none;
+}
+
+.emp-table tbody td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    vertical-align: middle;
+}
+
+.action-button {
+    color: white;
+    border: none;
+    padding: 8px 10px;
+    text-decoration: none;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin: auto;
+}
+
+.action-button:hover {
+    opacity: 0.8;
+}
+
+.emp-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.emp-table tbody tr:hover {
+    background-color: #ddd;
+}
+
+.paginator {
+    position: absolute; /* Ensures it's positioned relative to its closest positioned ancestor */
+    width: 98%; /* Width of the paginator */
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centers the content horizontally */
+    margin: 0 auto;
+    top: 110px; /* Aligns it relative to the top of the page */
+    left: 50%; /* Moves it to the center of the page */
+    transform: translateX(-50%); /* Offsets it back by 50% of its width to ensure true centering */
+    font-family: Arial, sans-serif;
+    margin-top: 40px; /* Space from the top of the page */
+    margin-bottom: 20px; /* Space from the bottom of the paginator (not effective when using margin-top and transform) */
+}
+
+.paginator-button {
+    margin: 0px 3px;
+    padding: 5px 10px;
+}
+
+.paginator .current-page {
+    font-weight: bold;
+    margin: 0 10px;
+}
+
+.paginator button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.paginator button:focus {
+    outline: none;
+}
+
+.employee-count {
+    margin-left: auto; /* Pushes the employee count span to the right */
+    font-weight: normal;
+}
+
+.add-employee-button {
+  width: 250px;
+  padding: 10px 50px;
+  border: 2px solid black;
+  border-radius: 5px;
+  background-color: white;
+  color: black;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 25px;
+  margin: 10px;
+  margin-top: 30px;
+}
+
+.add-employee-button:hover,
+.settings-save-button:hover {
+  background-color: #e5e5e5;
+}
+
+.add-employee-link {
+    color: black;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.add-employee-link:hover {
+    color: #244b90;
+    text-decoration: underline;
+}
+
+.ordering-link {
+    color: black;
+    font-size: 20px;
+    margin-left: 4px;
+}
+
+.ordering-link:hover {
+    color: black;
+    text-decoration: underline;
+}
+
+.container {
+  max-width: 800px;
+}
+
+.card-header {
+    background-color: #244b90;
+    color: white;
+}
+
+.styled-checkbox {
+    display: flex;
+    align-items: center;
+    padding: 0.375rem 0.75rem; /* Adjust padding to match btn-outline-info */
+    border-radius: 0.25rem; /* Match the button's border-radius */
+    cursor: pointer;
+}
+
+.styled-checkbox input[type="checkbox"] {
+    margin-right: 0.5rem;
+    margin-left: 0.25rem; /* Adjust margin to move the checkbox to the right */
+    cursor: pointer;
+}
+
+.styled-checkbox label {
+    cursor: pointer;
+}
+
+.styled-checkbox:hover {
+    background-color: #244b90;
+    color: white;
+}
+
+.ccsi-image-navbar {
+    width: 50px;
+}
+
+.swal-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.swal-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.swal-group label {
+    width: 100px;
+    margin-bottom: 0px;
+}
+
+.swal2-input {
+    flex: 1;
+    margin-bottom: 18px;
+}
+
+.nav-link {
+    cursor: pointer;
+}
+
+.btn {
+    background-color: #cbd3e8;
+    color: black;
+}
+
+.btn:hover {
+    background-color: #244b90;
+    color: white;
+}
+
+.swal2-popup {
+    width: auto;
+    padding: 30px 60px;
+    max-width: 95%;
+}
+
+.hidden-initially {
+    visibility: hidden;
+}
+
+.cancel-filter-button {
+    background-color: #ff808ef7;
+    color: black;
+    transition: 0.3s;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    position: absolute; /* Ensures it's positioned relative to its closest positioned ancestor */
+    top: 110px; /* Aligns it relative to the top of the page */
+    left: 570px; /* Moves it to the center of the page */
+    transform: translateX(-50%); /* Offsets it back by 50% of its width to ensure true centering */
+    font-family: Arial, sans-serif;
+    margin-top: 40px; /* Space from the top of the page */
+    margin-bottom: 20px; /* Space from the bottom of the paginator (not effective when using margin-top and transform) */
+}
+
+.cancel-filter-button:hover {
+    background-color: #d13041;
+    color: white;
+}
+
 @media screen and (max-width: 500px) {
 
     .person-container {

@@ -99,7 +99,7 @@ def profile(request, email):
 
 @login_required
 def all_reservations(request):
-    sort_by = request.GET.get('sort_by', 'created_at')
+    sort_by = request.GET.get('sort_by', 'datetime_from')
     order = request.GET.get('order', 'desc')
     page = request.GET.get('page', 1)
 
@@ -111,9 +111,9 @@ def all_reservations(request):
 
     if 'sort_by' not in request.GET:
         if page:
-            return redirect(f'{reverse("all_reservations")}?sort_by=created_at&order=desc&page={page}')
+            return redirect(f'{reverse("all_reservations")}?sort_by=datetime_from&order=desc&page={page}')
         else:
-            return redirect(f'{reverse("all_reservations")}?sort_by=created_at&order=desc')
+            return redirect(f'{reverse("all_reservations")}?sort_by=datetime_from&order=desc')
     return render(request, 'all_reservations.html', context)
 
 
@@ -134,7 +134,7 @@ def get_all_reservations_data(request):
     reservations_per_page = int(config['settings']['reservations_per_page'])
     all_reservations_obj = Reservation.objects.all()
 
-    sort_by = request.GET.get('sort_by', 'created_at')
+    sort_by = request.GET.get('sort_by', 'datetime_from')
     order = request.GET.get('order', 'desc')
 
     if filters['name_surname']:
@@ -167,14 +167,14 @@ def get_all_reservations_data(request):
             reservation for reservation in all_reservations_obj
             if filters['date'] in reservation.get_date_string()
         ]
-        all_reservations_obj = all_reservations_obj_filtered
+        all_reservations_obj = all_reservations_obj.filter(datetime_from__in=[reservation.datetime_from for reservation in all_reservations_obj_filtered])
 
     if filters['slot']:
         all_reservations_obj_filtered = [
             reservation for reservation in all_reservations_obj
             if filters['slot'] in reservation.get_time_range_string()
         ]
-        all_reservations_obj = all_reservations_obj_filtered
+        all_reservations_obj = all_reservations_obj.filter(datetime_from__in=[reservation.datetime_from for reservation in all_reservations_obj_filtered])
 
     if order == 'asc' and sort_by:
         all_reservations_obj = all_reservations_obj.order_by(str(sort_by))
@@ -193,9 +193,10 @@ def get_all_reservations_data(request):
     formatted_reservations = []
     for reservation in loaded_reservations:
         formatted_reservations.append({
+            'id': str(reservation.id),
             'name_surname': reservation.name_surname,
-            'email': reservation.email,
-            'phone_number': reservation.phone_number,
+            'email': reservation.email if reservation.email else '',
+            'phone_number': reservation.phone_number if reservation.phone_number else '',
             'date': reservation.get_date_string(),
             'slot': reservation.get_time_range_string(),
             'active': reservation.active,
