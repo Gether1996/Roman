@@ -93,12 +93,13 @@
                 <div class="calendar hidden-element-first" id="calendar"></div>
                 <input type="date" id="date" class="insert-date-add-truck hidden-element-first" onchange="pickDate()" readonly>
 
-                <div id="time-slot-container" style="margin-top: 30px; width: 80%;" class="hidden-element-timeSlots add-hidden-timeSlots"></div>
+                <h2 style="text-align: center;" class="hidden-element-timeSlots add-hidden-timeSlots">{% trans 'Vyberte začiatok masáže' %}:</h2>
+                <div id="time-slot-container" class="hidden-element-timeSlots add-hidden-timeSlots time-slot-container"></div>
 
                 <hr class="hidden-element-second add-hidden-second hr-basic-style">
 
                 <h2 class="hidden-element-second add-hidden-second">{% trans 'Vyberte dĺžku masáže' %}:</h2>
-                <div class="row-container" style="gap: 20px; margin-top: 0px;">
+                <div class="row-container duration-container">
                     <div class="hidden-element-second add-hidden-second big-button option-button-time" id="30">30 min - 20€</div>
                     <div class="hidden-element-second add-hidden-second big-button option-button-time" id="45">45 min - 28€</div>
                     <div class="hidden-element-second add-hidden-second big-button option-button-time" id="60">60 min - 35€</div>

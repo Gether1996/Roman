@@ -43,6 +43,25 @@ body {
     margin-bottom: 10px;
 }
 
+.time-slot-container {
+    margin-top: 30px;
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.duration-container {
+    margin-top: 0px;
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
 .highlight-cell {
   background-color: rgba(0, 128, 255, 0.2); /* Change this color as needed */
 }
@@ -654,7 +673,7 @@ body {
     border: 2px solid #ddd;
     border-radius: 5px;
     background-color: #f0f0f0;
-    transition: all 0.3s ease; /* Transition for smoothness */
+    transition: all 0.3s ease;
     cursor: pointer;
 }
 
@@ -1184,6 +1203,80 @@ body {
         font-size: 17px;
         margin-left: 10px;
     }
+
+    .navbar-user-info {
+        position: absolute;
+        top: 90px;
+        right: 10px;
+        font-size: 9px;
+        background-color: transparent;
+    }
+
+    .avatar-user-icon {
+        font-size: 10px;
+        padding: 8px;
+        margin-left: 2px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    #dropdown-menu {
+        position: absolute;
+        top: 30px;
+        right: 3px;
+        width: 120px;
+        font-size: 10px;
+        transition: 0.3s;
+        text-align: right;
+    }
+
+    #calendar {
+        width: 95%;
+        height: 450px;
+        border: 1px solid black;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    .big-button {
+        padding: 6px;
+        margin: 5px 0;
+        font-size: 18px;
+        border: 2px solid #ccc;
+        border-radius: 20px;
+        cursor: pointer;
+        text-align: center;
+    }
+
+    .time-slot-container {
+        margin-top: 15px;
+        width: 100%;
+    }
+
+    .input-container-reservation {
+        margin: 5px;
+    }
+
+    .input-container-reservation label {
+        width: 100px;
+        font-size: 15px;
+        font-weight: bold;
+    }
+
+    .input-container-reservation input {
+        font-size: 13px;
+        padding: 5px;
+    }
+
+    .finish-reservation-button {
+        margin: 20px;
+        padding: 20px 60px;
+        font-size: 18px;
+        font-weight: bold;
+        transition: 0.3s;
+        cursor: pointer;
+    }
+
 }
 
 

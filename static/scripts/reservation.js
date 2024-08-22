@@ -29,12 +29,14 @@ document.addEventListener('DOMContentLoaded', function() {
             this.classList.add('selected');
             worker = this.id;
 
-            hiddenTimeSlot = document.querySelector('.add-hidden-timeSlots');
+            hiddenTimeSlotAll = document.querySelectorAll('.add-hidden-timeSlots');
             hiddenSlotsSecondAll = document.querySelectorAll('.add-hidden-second');
             hiddenSlotsThirdAll = document.querySelectorAll('.add-hidden-third');
-            if (!hiddenTimeSlot.classList.contains('hidden-element-timeSlots')) {
-                hiddenTimeSlot.classList.add('hidden-element-timeSlots');
-            }
+            hiddenTimeSlotAll.forEach(element => {
+                if (!element.classList.contains('hidden-element-timeSlots')) {
+                    element.classList.add('hidden-element-timeSlots');
+                }
+            });
             hiddenSlotsSecondAll.forEach(element => {
                 if (!element.classList.contains('hidden-element-second')) {
                     element.classList.add('hidden-element-second');
@@ -66,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (!finishButton) {
               finishButton = document.createElement('button');
-              finishButton.textContent = isEnglish ? 'Create reservation' : 'Vytvoriť rezeráciu';
+              finishButton.textContent = isEnglish ? 'Create reservation' : 'Vytvoriť rezerváciu';
               finishButton.classList.add('finish-reservation-button');
               finishButton.classList.add('add-hidden-third');
               finishButton.classList.add('big-button');
@@ -114,8 +116,10 @@ function pickDate() {
     var selectedDate = document.getElementById('date');
     var finishButton = document.querySelector('.finish-truck-button')
 
-    hiddenTimeSlot = document.querySelector('.add-hidden-timeSlots');
-    hiddenTimeSlot.classList.remove('hidden-element-timeSlots');
+    hiddenTimeSlotAll = document.querySelectorAll('.add-hidden-timeSlots');
+    hiddenTimeSlotAll.forEach(element => {
+        element.classList.remove('hidden-element-timeSlots');
+    });
 
     if (finishButton) {
       finishButton.remove();
@@ -148,9 +152,6 @@ function pickDate() {
             if (data.status === 'success') {
                 availableSlots = data.available_slots;
                 let slotsHtml = '';
-                var textAboveSlots = `
-                    <h2 style="text-align: center;">${isEnglish ? "Pick massage start" : "Vyberte začiatok masáže"}:</h2>
-                `;
 
                 availableSlots.forEach(slot => {
                     slotsHtml += `
@@ -170,11 +171,6 @@ function pickDate() {
                     var slots = Array.from(doc.querySelectorAll('button'));
 
                     slots.forEach(slot => fragment.appendChild(slot));
-                    var tempDiv = document.createElement('div');
-                    tempDiv.innerHTML = textAboveSlots;
-                    var textNode = tempDiv.firstElementChild;
-
-                    mainContainer.appendChild(textNode);
                     mainContainer.appendChild(fragment);
                 } else {
                     var textForApending = document.createElement('p');
