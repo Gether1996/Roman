@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path
 from viewer.views import homepage, profile, reservation, settings as settings_view, get_all_reservations_data, \
-    all_reservations
+    all_reservations, approve_reservation_mail
 from Roman.backend_funcs.users import login_api, logout, registration
 from Roman.backend_funcs.general import switch_language
 from Roman.backend_funcs.settings_view import save_settings, add_turned_off_day, delete_turned_off_day
@@ -57,6 +57,8 @@ urlpatterns = [
     path('approve_reservation/', approve_reservation, name='approve_reservation'),
     path('cancel_reservation/', cancel_reservation, name='cancel_reservation'),
     path('add_personal_note/', add_personal_note, name='add_personal_note'),
+
+    path('approve_reservation_mail/<int:reservation_id>/', approve_reservation_mail, name='approve_reservation_mail'),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

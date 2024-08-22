@@ -8,6 +8,8 @@ import configparser
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from Roman.backend_funcs.reservation import prepare_reservation_data, send_email
+from django.template.loader import render_to_string
 
 config = configparser.ConfigParser()
 
@@ -192,21 +194,7 @@ def get_all_reservations_data(request):
 
     formatted_reservations = []
     for reservation in loaded_reservations:
-        formatted_reservations.append({
-            'id': str(reservation.id),
-            'name_surname': reservation.name_surname,
-            'email': reservation.email if reservation.email else '',
-            'phone_number': reservation.phone_number if reservation.phone_number else '',
-            'date': reservation.get_date_string(),
-            'slot': reservation.get_time_range_string(),
-            'active': reservation.active,
-            'worker': reservation.worker,
-            'status': reservation.status,
-            'created_at': reservation.get_created_at_string(),
-            'special_request': reservation.special_request if reservation.special_request else '',
-            'personal_note': reservation.personal_note if reservation.personal_note else '',
-            'cancellation_reason': reservation.cancellation_reason if reservation.cancellation_reason else '',
-        })
+        formatted_reservations.append(prepare_reservation_data(reservation))
 
     response_data = {
         'reservations': formatted_reservations,
@@ -223,3 +211,36 @@ def get_all_reservations_data(request):
     print(response_data)
 
     return JsonResponse(response_data, safe=False)
+
+
+def approve_reservation_mail(request, reservation_id):
+    if request.method == 'GET':
+        try:
+            reserv = Reservation.objects.get(id=reservation_id)
+
+            if not reserv.active:
+                reserv.active = True
+                reserv.status = 'Schválená'
+                reserv.save()
+
+                subject = f'Vaša rezervácia bola akceptovaná'
+                html_message = render_to_string('email_template.html',
+                                                {'reservation': prepare_reservation_data(reserv),
+                                                 'button': None,
+                                                 'accept_link': None,
+                                                 'text': '',
+                                                 })
+                send_email(subject, html_message, reserv.email)
+
+            context = {
+                'reservation': prepare_reservation_data(reserv),
+            }
+
+            return render(request, 'approved_reservation.html', context)
+
+        except Reservation.DoesNotExist:
+            message = 'Rezervácia sa nenašla.'
+            return render(request, 'error.html', {'message': message})
+
+    message = 'Zlý request'
+    return render(request, 'error.html', {'message': message})

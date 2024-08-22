@@ -1,9 +1,42 @@
+from django.conf import settings
 from django.http import JsonResponse
 from viewer.models import Reservation, TurnedOffDay
 import json
 from datetime import datetime, timedelta
 from django.utils.translation import gettext_lazy as _
 import configparser
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+
+def send_email(subject, html_message, to_mail):
+    from_email = getattr(settings, 'EMAIL_HOST_USER')
+    send_mail(
+        subject=subject,
+        message='',
+        from_email=from_email,
+        recipient_list=[to_mail],
+        html_message=html_message,
+    )
+
+
+def prepare_reservation_data(reservation):
+    data = {
+        'id': str(reservation.id),
+        'name_surname': reservation.name_surname,
+        'email': reservation.email if reservation.email else '',
+        'phone_number': reservation.phone_number if reservation.phone_number else '',
+        'date': reservation.get_date_string(),
+        'slot': reservation.get_time_range_string(),
+        'active': reservation.active,
+        'worker': reservation.worker,
+        'status': reservation.status,
+        'created_at': reservation.get_created_at_string(),
+        'special_request': reservation.special_request if reservation.special_request else '',
+        'personal_note': reservation.personal_note if reservation.personal_note else '',
+        'cancellation_reason': reservation.cancellation_reason if reservation.cancellation_reason else '',
+    }
+
+    return data
 
 config = configparser.ConfigParser()
 
@@ -45,6 +78,18 @@ def create_reservation(request):
             created_at=datetime.now(),
             updated_at=datetime.now(),
         )
+
+        subject = f'Nová rezervácia ({new_reservation.worker})'
+        accept_link = f'https://masazevlcince.sk/approve_reservation_mail/{new_reservation.id}/'
+        text = f'Nová rezervácia pre maséra {new_reservation.worker}'
+        if note == 'user':
+            html_message = render_to_string('email_template.html',
+                                            {'reservation': prepare_reservation_data(new_reservation),
+                                             'button': True,
+                                             'accept_link': accept_link,
+                                             'text': text,
+                                             })
+            send_email(subject, html_message, 'gether1996@gmail.com')
 
         return JsonResponse({'status': 'success'})
     return JsonResponse({'status': 'error'})

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+    <title>Schválená rezervácia</title>
+{% endblock %}
+
+{% block content %}
+
+    {% include 'navbar.html' %}
+
+    <div class="top-margin-reservation"></div>
+
+    <div class="table-container-profile">
+        <h1>Rezervácia schválená pre maséra {{ reservation.worker }} <i style="color: green;" class="fa-solid fa-check"></i></h1>
+
+        <table border="1" cellpadding="10" cellspacing="0" style="border-collapse: collapse; width: 50%;">
+            <tbody>
+                <tr>
+                    <td>Meno a Priezvisko</td>
+                    <td>{{ reservation.name_surname }}</td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>{{ reservation.email }}</td>
+                </tr>
+                <tr>
+                    <td>Číslo</td>
+                    <td>{{ reservation.phone_number }}</td>
+                </tr>
+                <tr>
+                    <td>Dátum</td>
+                    <td>{{ reservation.date }}</td>
+                </tr>
+                <tr>
+                    <td>Slot</td>
+                    <td>{{ reservation.slot }}</td>
+                </tr>
+                <tr>
+                    <td>Vytvorené</td>
+                    <td>{{ reservation.created_at }}</td>
+                </tr>
+                <tr>
+                    <td>Poznámka</td>
+                    <td>{{ reservation.special_request }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
