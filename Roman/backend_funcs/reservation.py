@@ -8,6 +8,12 @@ import configparser
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 
+def adjustment_hours():
+    current_time = datetime.now()
+    is_summer_time = current_time.dst() != timedelta(0)
+    adjustment_hours = 2 if is_summer_time else 1
+    return adjustment_hours
+
 def send_email(subject, html_message, to_mail):
     from_email = getattr(settings, 'EMAIL_HOST_USER')
     send_mail(
@@ -38,6 +44,7 @@ def prepare_reservation_data(reservation):
 
     return data
 
+
 config = configparser.ConfigParser()
 
 def create_reservation(request):
@@ -58,8 +65,8 @@ def create_reservation(request):
         time_slot = json_data.get('timeSlot')
         duration = json_data.get('duration')
 
-        datetime_from_obj = datetime.strptime(f"{selected_date} {time_slot}", "%Y-%m-%d %H:%M")
-        date_time_to_obj = datetime_from_obj + timedelta(minutes=int(duration))
+        datetime_from_obj = datetime.strptime(f"{selected_date} {time_slot}", "%Y-%m-%d %H:%M") + timedelta(hours=adjustment_hours())
+        date_time_to_obj = datetime_from_obj + timedelta(minutes=int(duration)) + timedelta(hours=adjustment_hours())
 
         user = request.user if request.user.is_authenticated else None
 
@@ -75,8 +82,8 @@ def create_reservation(request):
             personal_note=json_data.get('note') if note == 'admin' else '',
             datetime_from=datetime_from_obj,
             datetime_to=date_time_to_obj,
-            created_at=datetime.now(),
-            updated_at=datetime.now(),
+            created_at=datetime.now() + timedelta(hours=adjustment_hours()),
+            updated_at=datetime.now() + timedelta(hours=adjustment_hours()),
         )
 
         subject = f'Nová rezervácia ({new_reservation.worker})'
