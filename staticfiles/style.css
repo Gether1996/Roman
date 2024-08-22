@@ -710,8 +710,11 @@ body {
     background-color: #f9f9f9;
     margin-top: 60px;
     padding: 50px;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+}
+
+.emp-table th, td {
+    padding: 2px;
+    white-space: nowrap;
 }
 
 .text-align-left {

@@ -334,6 +334,15 @@ function createReservation() {
         cancelButtonText: isEnglish ? 'Cancel' : 'Zrušiť'
     }).then((result) => {
         if (result.isConfirmed) {
+            Swal.fire({
+                allowOutsideClick: false, // Prevent closing by clicking outside
+                allowEscapeKey: false,   // Prevent closing by pressing the Esc key
+                allowEnterKey: false,    // Prevent closing by pressing the Enter key
+                didOpen: () => {
+                    Swal.showLoading();  // Show loading animation
+                }
+            });
+
             // Proceed with reservation if confirmed
             fetch('/create_reservation/', {
                 method: 'POST',
@@ -352,6 +361,7 @@ function createReservation() {
                     note: note.value
                 }),
             }).then(() => {
+                Swal.close();
                 Swal.fire({
                     icon: 'success',
                     title: isEnglish ? `Reservation created` : `Rezervácia vytvorená`,

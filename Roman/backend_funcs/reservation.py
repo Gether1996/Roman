@@ -66,7 +66,7 @@ def create_reservation(request):
         duration = json_data.get('duration')
 
         datetime_from_obj = datetime.strptime(f"{selected_date} {time_slot}", "%Y-%m-%d %H:%M") + timedelta(hours=adjustment_hours())
-        date_time_to_obj = datetime_from_obj + timedelta(minutes=int(duration)) + timedelta(hours=adjustment_hours())
+        date_time_to_obj = datetime_from_obj + timedelta(minutes=int(duration))
 
         user = request.user if request.user.is_authenticated else None
 
@@ -96,7 +96,7 @@ def create_reservation(request):
                                              'accept_link': accept_link,
                                              'text': text,
                                              })
-            send_email(subject, html_message, 'gether1996@gmail.com')
+            send_email(subject, html_message, getattr(settings, 'MAIN_EMAIL'))
 
         return JsonResponse({'status': 'success'})
     return JsonResponse({'status': 'error'})
