@@ -105,6 +105,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    overflow-x: auto;
 }
 
 .row-container {
@@ -302,12 +303,6 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-}
-
-.swal2-popup {
-    width: auto;
-    padding: 30px 60px;
-    max-width: 95%;
 }
 
 .swal-layout {
@@ -569,14 +564,15 @@ body {
 
 .table-container-profile {
     width: 95%;
+    max-width: 95%;
     margin: auto;
     background-color: #fff;
-    padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
 }
 
 .table-container-settings h2, .table-container-profile h2 {
+    width: 95%;
     font-size: 24px;
     margin-bottom: 20px;
     color: #0056b3;
@@ -592,6 +588,12 @@ body {
 .table-profile {
     width: 100%;
     text-align: left;
+    border-collapse: collapse;
+}
+
+.table-profile th, .table-profile td {
+    padding: 5px;
+    margin: 5px;
 }
 
 .table-settings td, .table-settings th {
@@ -714,13 +716,6 @@ body {
     border-color: #007bff;
 }
 
-.column-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
 .emp-table {
     width: 98%;
     margin: 0 auto;
@@ -733,7 +728,6 @@ body {
 
 .emp-table th, td {
     padding: 2px;
-    white-space: nowrap;
 }
 
 .text-align-left {
@@ -965,7 +959,6 @@ body {
 
 .swal2-popup {
     width: auto;
-    padding: 30px 60px;
     max-width: 95%;
 }
 
@@ -1275,6 +1268,119 @@ body {
         font-weight: bold;
         transition: 0.3s;
         cursor: pointer;
+    }
+
+    .swal2-popup {
+        width: auto;
+        max-width: 95%;
+        font-size: 12px;
+    }
+
+    .toggle-password {
+        transition: 0.3s;
+        margin-top: 0px;
+    }
+
+    .table-container-settings h2, .table-container-profile h2 {
+        width: 140%;
+        font-size: 20px;
+        margin-bottom: 10px;
+        color: #0056b3;
+        border-bottom: 2px solid #0056b3;
+    }
+
+    .table-container-profile {
+        width: 88%;
+        max-width: 90%;
+        margin: auto;
+        background-color: #fff;
+        border-radius: 8px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 5px;
+    }
+
+    .container-settings-tables {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: 10px;
+        gap: 10px;
+    }
+
+    .table-container-settings {
+        width: auto;
+        font-size: 12px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .emp-table {
+        width: 95%;
+        margin: 0 auto;
+        border-collapse: collapse;
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        margin-top: 30px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        font-size: 10px;
+    }
+
+    .emp-table th, td {
+        padding: 2px;
+    }
+
+    .table-second-tr-with-background {
+        background-color: #244b90;
+        color: white;
+        padding: 10px;
+        text-align: center;
+        vertical-align: middle;
+        line-height: 40px;
+    }
+
+    .searching-input-table {
+        width: 90%;
+        height: 20px;
+        border-radius: 5px;
+        margin: auto;
+    }
+
+    .paginator {
+        position: absolute; /* Ensures it's positioned relative to its closest positioned ancestor */
+        width: 90%; /* Width of the paginator */
+        margin: 0 auto;
+        top: 180px; /* Aligns it relative to the top of the page */
+        left: 50%; /* Moves it to the center of the page */
+        transform: translateX(-50%); /* Offsets it back by 50% of its width to ensure true centering */
+        font-family: Arial, sans-serif;
+    }
+
+    .ordering-link {
+        color: black;
+        font-size: 12px;
+        margin-left: 3px;
+    }
+
+    .cancel-filter-button {
+        background-color: #ff808ef7;
+        color: black;
+        transition: 0.3s;
+        padding: 5px 10px;
+        cursor: pointer;
+        border-radius: 5px;
+        position: absolute; /* Ensures it's positioned relative to its closest positioned ancestor */
+        top: 90px; /* Aligns it relative to the top of the page */
+        left: 300px; /* Moves it to the center of the page */
+        transform: translateX(-50%); /* Offsets it back by 50% of its width to ensure true centering */
+        font-family: Arial, sans-serif;
+        margin-top: 40px; /* Space from the top of the page */
+        margin-bottom: 20px; /* Space from the bottom of the paginator (not effective when using margin-top and transform) */
+        font-size: 12px;
     }
 
 }

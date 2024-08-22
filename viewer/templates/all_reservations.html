@@ -15,13 +15,12 @@
 
     {% include 'navbar.html' %}
     <div class="top-margin-reservation"></div>
+    <h2 style="margin-left: 20px;">Všetky rezervácie</h2>
 
-    <div class="column-container">
-        <h2>Všetky rezervácie</h2>
+    <div class="paginator"></div>
+    <div class="cancel-filter-button hidden-initially" onclick="removeAllFilters()"><i class="fa-solid fa-filter"></i> Zrušiť filter</div>
 
-        <div class="paginator"></div>
-        <div class="cancel-filter-button hidden-initially" onclick="removeAllFilters()"><i class="fa-solid fa-filter"></i> Zrušiť filter</div>
-
+    <div class="table-container-profile">
         <table class="emp-table">
             <thead>
                 <tr class="table-top-tr-no-background">
