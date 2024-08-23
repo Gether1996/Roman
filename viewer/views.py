@@ -24,7 +24,17 @@ def homepage(request):
 
 
 def reservation(request):
-    return render(request, 'reservation.html')
+
+    users = CustomUser.objects.filter(is_superuser=0)
+    user_data = [
+        {
+            'id': str(user.id),
+            'name_surname': f'{user.name} {user.surname}',
+            'email': user.email,
+        }
+        for user in users
+    ]
+    return render(request, 'reservation.html', {'user_data': user_data})
 
 
 def settings(request):
@@ -223,7 +233,7 @@ def approve_reservation_mail(request, reservation_id):
                 reserv.status = 'Schválená'
                 reserv.save()
 
-                subject = f'Vaša rezervácia bola akceptovaná'
+                subject = f'Rezervácia potvrdená / Reservation accepted'
                 html_message = render_to_string('email_template.html',
                                                 {'reservation': prepare_reservation_data(reserv),
                                                  'button': None,

@@ -146,5 +146,8 @@
 {% endblock %}
 
 {% block extra_scripts %}
+    <script>
+        var userOptions = {{ user_data|safe }};
+    </script>
     <script src="{% static 'scripts/reservation.js' %}"></script>
 {% endblock %}

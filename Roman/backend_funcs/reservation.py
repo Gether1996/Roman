@@ -86,10 +86,10 @@ def create_reservation(request):
             updated_at=datetime.now() + timedelta(hours=adjustment_hours()),
         )
 
-        subject = f'Nová rezervácia ({new_reservation.worker})'
-        accept_link = f'https://masazevlcince.sk/approve_reservation_mail/{new_reservation.id}/'
-        text = f'Nová rezervácia pre maséra {new_reservation.worker}'
         if note == 'user':
+            subject = f'Nová rezervácia ({new_reservation.worker})'
+            accept_link = f'https://masazevlcince.sk/approve_reservation_mail/{new_reservation.id}/'
+            text = f'Nová rezervácia pre maséra {new_reservation.worker}'
             html_message = render_to_string('email_template.html',
                                             {'reservation': prepare_reservation_data(new_reservation),
                                              'button': True,
@@ -97,6 +97,16 @@ def create_reservation(request):
                                              'text': text,
                                              })
             send_email(subject, html_message, getattr(settings, 'MAIN_EMAIL'))
+
+        if note == 'admin' and new_reservation.email:
+            subject = f'Rezervácia potvrdená / Reservation accepted'
+            html_message = render_to_string('email_template.html',
+                                            {'reservation': prepare_reservation_data(new_reservation),
+                                             'button': None,
+                                             'accept_link': None,
+                                             'text': '',
+                                             })
+            send_email(subject, html_message, new_reservation.email)
 
         return JsonResponse({'status': 'success'})
     return JsonResponse({'status': 'error'})

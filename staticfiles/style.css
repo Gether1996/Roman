@@ -13,6 +13,10 @@ body {
     margin-top: 130px;
 }
 
+.selected-date {
+    background-color: rgba(0, 128, 255, 0.4);
+}
+
 .reservation-box-container {
     width: 85%;
     padding: 30px;
@@ -1374,12 +1378,13 @@ body {
         cursor: pointer;
         border-radius: 5px;
         position: absolute; /* Ensures it's positioned relative to its closest positioned ancestor */
-        top: 110px; /* Aligns it relative to the top of the page */
-        left: 100px; /* Moves it to the center of the page */
+        top: 90px; /* Aligns it relative to the top of the page */
+        left: 300px; /* Moves it to the center of the page */
         transform: translateX(-50%); /* Offsets it back by 50% of its width to ensure true centering */
         font-family: Arial, sans-serif;
         margin-top: 40px; /* Space from the top of the page */
         margin-bottom: 20px; /* Space from the bottom of the paginator (not effective when using margin-top and transform) */
+        font-size: 12px;
     }
 
 }

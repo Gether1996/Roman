@@ -66,6 +66,54 @@ document.addEventListener('DOMContentLoaded', function() {
             var mainContainer = document.getElementById('reservation-box-container');
             var finishButton = document.querySelector('.finish-reservation-button');
 
+            if (superUser === "true") {
+                // Create the select element if it doesn't already exist
+                var userSelect = document.querySelector('.user-select');
+                if (!userSelect) {
+                    userSelect = document.createElement('select');
+                    userSelect.classList.add('user-select');
+                    userSelect.classList.add('big-button');
+
+                    // Default option
+                    var defaultOption = document.createElement('option');
+                    defaultOption.value = "";
+                    defaultOption.textContent = "-- Vybrať uživateľa --";
+                    userSelect.appendChild(defaultOption);
+
+                    // Populate the select with options from userOptions
+                    userOptions.forEach(function(option) {
+                        var optionElement = document.createElement('option');
+                        optionElement.value = option.id;  // Assuming each option has an 'id'
+                        optionElement.textContent = option.name_surname;  // Assuming each option has a 'name_surname'
+                        optionElement.dataset.email = option.email;  // Store the email in a data attribute
+                        userSelect.appendChild(optionElement);
+                    });
+
+                    // Append the select element to the container
+                    mainContainer.appendChild(userSelect);
+
+                    // Add event listener for when an option is selected
+                    userSelect.addEventListener('change', function() {
+                        var selectedOption = this.options[this.selectedIndex];
+
+                        // Check if an actual user is selected (not the default option)
+                        if (selectedOption.value !== "") {
+                            // Get the selected name_surname and email from the option
+                            var selectedNameSurname = selectedOption.textContent;
+                            var selectedEmail = selectedOption.dataset.email;
+
+                            // Update the input fields with the selected user's data
+                            document.getElementById('name_surname').value = selectedNameSurname;
+                            document.getElementById('email').value = selectedEmail;
+                        } else {
+                            // If default option is selected, clear the fields or do nothing
+                            document.getElementById('name_surname').value = "";
+                            document.getElementById('email').value = "";
+                        }
+                    });
+                }
+            }
+
             if (!finishButton) {
               finishButton = document.createElement('button');
               finishButton.textContent = isEnglish ? 'Create reservation' : 'Vytvoriť rezerváciu';
@@ -111,19 +159,25 @@ $(document).ready(function() {
 });
 
 
-function pickDate() {
+function pickDate(clickedDateElement = null) {
+
+    if (clickedDateElement) {
+        // Remove the class from any previously clicked date (if needed)
+        const previouslySelected = document.querySelector('.selected-date');
+        if (previouslySelected) {
+            previouslySelected.classList.remove('selected-date');
+        }
+
+        // Add the new class to the clicked date element
+        clickedDateElement.classList.add('selected-date');
+    }
     var mainContainer = document.getElementById('time-slot-container');
     var selectedDate = document.getElementById('date');
-    var finishButton = document.querySelector('.finish-truck-button')
 
     hiddenTimeSlotAll = document.querySelectorAll('.add-hidden-timeSlots');
     hiddenTimeSlotAll.forEach(element => {
         element.classList.remove('hidden-element-timeSlots');
     });
-
-    if (finishButton) {
-      finishButton.remove();
-    }
 
     mainContainer.innerHTML = '';
     selectedDate.style.border = '1px solid black';
@@ -408,7 +462,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
           const formattedDate = info.dateStr;
           dateInput.value = formattedDate;
-          pickDate();
+          pickDate(info.dayEl);
         },
 
         eventClick: function(info) {
@@ -423,7 +477,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const formattedDate = info.event.startStr;
             dateInput.value = formattedDate;
-            pickDate();
+
+            const dayCellSelector = `.fc-day[data-date="${info.event.startStr.split('T')[0]}"]`;
+            const dayCellElement = document.querySelector(dayCellSelector);
+
+            // Pass the day cell element to pickDate if found
+            if (dayCellElement) {
+                pickDate(dayCellElement);
+            } else {
+                pickDate();
+            }
         },
         datesSet: function() {
             if (worker) {
