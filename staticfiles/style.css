@@ -726,7 +726,7 @@ body {
     border-collapse: collapse;
     font-family: Arial, sans-serif;
     background-color: #f9f9f9;
-    margin-top: 60px;
+    margin-top: 50px;
     padding: 50px;
 }
 
@@ -810,12 +810,12 @@ body {
 
 .paginator {
     position: absolute; /* Ensures it's positioned relative to its closest positioned ancestor */
-    width: 98%; /* Width of the paginator */
+    width: 92%; /* Width of the paginator */
     display: flex;
     align-items: center;
     justify-content: center; /* Centers the content horizontally */
     margin: 0 auto;
-    top: 110px; /* Aligns it relative to the top of the page */
+    top: 140px; /* Aligns it relative to the top of the page */
     left: 50%; /* Moves it to the center of the page */
     transform: translateX(-50%); /* Offsets it back by 50% of its width to ensure true centering */
     font-family: Arial, sans-serif;
@@ -826,6 +826,8 @@ body {
 .paginator-button {
     margin: 0px 3px;
     padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
 }
 
 .paginator .current-page {
@@ -978,8 +980,8 @@ body {
     cursor: pointer;
     border-radius: 5px;
     position: absolute; /* Ensures it's positioned relative to its closest positioned ancestor */
-    top: 110px; /* Aligns it relative to the top of the page */
-    left: 570px; /* Moves it to the center of the page */
+    top: 175px; /* Aligns it relative to the top of the page */
+    left: 135px; /* Moves it to the center of the page */
     transform: translateX(-50%); /* Offsets it back by 50% of its width to ensure true centering */
     font-family: Arial, sans-serif;
     margin-top: 40px; /* Space from the top of the page */
@@ -1363,7 +1365,7 @@ body {
         border-collapse: collapse;
         font-family: Arial, sans-serif;
         background-color: #f9f9f9;
-        margin-top: 70px;
+        margin-top: 40px;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
         font-size: 10px;
@@ -1393,10 +1395,11 @@ body {
         position: absolute; /* Ensures it's positioned relative to its closest positioned ancestor */
         width: 90%; /* Width of the paginator */
         margin: 0 auto;
-        top: 220px; /* Aligns it relative to the top of the page */
+        top: 180px; /* Aligns it relative to the top of the page */
         left: 50%; /* Moves it to the center of the page */
         transform: translateX(-50%); /* Offsets it back by 50% of its width to ensure true centering */
         font-family: Arial, sans-serif;
+        font-size: 10px;
     }
 
     .ordering-link {
@@ -1413,12 +1416,19 @@ body {
         cursor: pointer;
         border-radius: 5px;
         position: absolute; /* Ensures it's positioned relative to its closest positioned ancestor */
-        top: 130px; /* Aligns it relative to the top of the page */
+        top: 95px; /* Aligns it relative to the top of the page */
         left: 300px; /* Moves it to the center of the page */
         transform: translateX(-50%); /* Offsets it back by 50% of its width to ensure true centering */
         font-family: Arial, sans-serif;
         margin-top: 40px; /* Space from the top of the page */
         margin-bottom: 20px; /* Space from the bottom of the paginator (not effective when using margin-top and transform) */
+        font-size: 10px;
+    }
+
+    .paginator-button {
+        margin: 0px 3px;
+        padding: 2px 4px;
+        cursor: pointer;
         font-size: 10px;
     }
 
