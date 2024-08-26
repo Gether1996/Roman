@@ -49,8 +49,8 @@ function updateTable(reservations) {
             '<i style="color: red;" class="fa-solid fa-circle-xmark"></i>';
 
         var actionButton = reservation.active ?
-            `<button class="action-button" style='background-color: #dd3c3c;' onclick="cancelReservation('${reservation.id}', '${reservation.name_surname}')">Zrušiť</button>` :
-            `<button class="action-button" style='background-color: #238b55;' onclick="approveReservation('${reservation.id}', '${reservation.name_surname}')">Schváliť</button>`;
+            `<button class="action-button" style='background-color: #dd3c3c; margin-bottom: 3px;' onclick="cancelReservation('${reservation.id}', '${reservation.name_surname}')">Zrušiť</button>` :
+            `<button class="action-button" style='background-color: #238b55; margin-bottom: 3px;' onclick="approveReservation('${reservation.id}', '${reservation.name_surname}')">Schváliť</button>`;
 
         var row = document.createElement('tr');
         row.className = 'files-row';
@@ -67,7 +67,7 @@ function updateTable(reservations) {
             <td>${reservation.personal_note}</td>
             <td class="text-align-center">${successIcon}</td>
             <td>${reservation.cancellation_reason}</td>
-            <td class="text-align-center row-container">
+            <td class="text-align-center">
                 ${actionButton}
                 <button class="action-button" style='background-color: #238b55; margin-left: 2px;' onclick="addNote('${reservation.id}', '${reservation.name_surname}', '${reservation.personal_note}')">Poznámka</button>
             </td>
@@ -85,21 +85,54 @@ function updatePaginateElements(pagination) {
         paginator.innerHTML = '';
 
         if (pagination.current_page > 1) {
-            paginator.innerHTML += `<button class="btn paginator-button" onclick="fetchFilteredData(1, '${current_sort_by}', '${current_order}', 'reload')"><i class="fa-regular fa-arrow-left-to-line"></i> Prvá</button>`;
+            paginator.innerHTML += `<button class="btn paginator-button" title="${isEnglish? 'First' : 'Prvá'}" onclick="fetchFilteredData(1, '${current_sort_by}', '${current_order}', 'reload')"><i class="fa-regular fa-arrow-left-to-line"></i></button>`;
         }
 
         if (pagination.has_previous) {
-            paginator.innerHTML += `<button class="btn paginator-button" onclick="fetchFilteredData(${pagination.current_page - 1}, '${current_sort_by}', '${current_order}', 'reload')"><i class="fa-solid fa-arrow-left"></i> Predchádzajúca</button>`;
+            paginator.innerHTML += `<button class="btn paginator-button" title="${isEnglish? 'Previous' : 'Predchádzajúca'}" onclick="fetchFilteredData(${pagination.current_page - 1}, '${current_sort_by}', '${current_order}', 'reload')"><i class="fa-solid fa-arrow-left"></i></button>`;
         }
 
-        paginator.innerHTML += `<span class="current-page">Strana ${pagination.current_page} - ${pagination.total_pages}</span>`;
+        const total_pages = pagination.total_pages;
+        const current_page = pagination.current_page;
+        const max_visible_pages = 7;
+        let start_page, end_page;
+
+        // Always try to center the current page within the visible range
+        if (total_pages <= max_visible_pages) {
+            // If there are fewer pages than the max visible, show them all
+            start_page = 1;
+            end_page = total_pages;
+        } else {
+            // Calculate start and end pages to keep the current page centered
+            start_page = Math.max(1, current_page - Math.floor(max_visible_pages / 2));
+            end_page = Math.min(total_pages, current_page + Math.floor(max_visible_pages / 2));
+
+            // Adjust if we are at the beginning of the pagination range
+            if (start_page === 1) {
+                end_page = max_visible_pages;
+            }
+
+            // Adjust if we are at the end of the pagination range
+            if (end_page === total_pages) {
+                start_page = total_pages - max_visible_pages + 1;
+            }
+        }
+
+        // Add page numbers
+        for (let page = start_page; page <= end_page; page++) {
+            if (page === current_page) {
+                paginator.innerHTML += `<span style="background-color: #a7b8e7;" class="paginator-button btn">${page}</span>`;
+            } else {
+                paginator.innerHTML += `<button class="btn paginator-button" onclick="fetchFilteredData(${page}, '${current_sort_by}', '${current_order}', 'reload')">${page}</button>`;
+            }
+        }
 
         if (pagination.has_next) {
-            paginator.innerHTML += `<button class="btn paginator-button" onclick="fetchFilteredData(${pagination.current_page + 1}, '${current_sort_by}', '${current_order}', 'reload')">Nasledujúca <i class="fa-solid fa-arrow-right"></i></button>`;
+            paginator.innerHTML += `<button class="btn paginator-button" title="${isEnglish? 'Next' : 'Nasledujúca'}" onclick="fetchFilteredData(${pagination.current_page + 1}, '${current_sort_by}', '${current_order}', 'reload')"><i class="fa-solid fa-arrow-right"></i></button>`;
         }
 
         if (pagination.current_page < pagination.total_pages) {
-            paginator.innerHTML += `<button class="btn paginator-button" onclick="fetchFilteredData(${pagination.total_pages}, '${current_sort_by}', '${current_order}', 'reload')">Posledná <i class="fa-regular fa-arrow-right-to-line"></i></button>`;
+            paginator.innerHTML += `<button class="btn paginator-button" title="${isEnglish? 'Last' : 'Posledná'}" onclick="fetchFilteredData(${pagination.total_pages}, '${current_sort_by}', '${current_order}', 'reload')"><i class="fa-regular fa-arrow-right-to-line"></i></button>`;
         }
     }
 
