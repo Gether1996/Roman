@@ -80,8 +80,7 @@ def settings(request):
 
 def profile(request, email):
     try:
-        user = CustomUser.objects.get(email=email)
-        reservations = Reservation.objects.filter(user=user).order_by('datetime_from')
+        reservations = Reservation.objects.filter(email=email).order_by('datetime_from')
 
         reservation_data = [
             {

@@ -20,6 +20,11 @@ def save_settings(request):
         time_to_evka = json_data.get('time_to_evka')
         selected_days_evka = json_data.get('selected_days_evka')
 
+        files_per_page = json_data.get('files_per_page')
+
+        if files_per_page:
+            config.set('settings', 'reservations_per_page', files_per_page)
+
         if days_ahead_roman:
             config.set('settings-roman', 'days_ahead', days_ahead_roman)
         if time_from_roman:
