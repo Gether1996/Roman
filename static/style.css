@@ -991,6 +991,41 @@ body {
     color: white;
 }
 
+@media screen and (max-width: 1700px) {
+    .navbar-user-info {
+        position: absolute;
+        top: 70px;
+        right: 130px;
+        font-size: 15px;
+        background-color: transparent;
+        border: none;
+        margin-bottom: 0;
+        padding: 0px;
+    }
+
+    .avatar-user-icon {
+        font-size: 18px;
+        border: none;
+        background-color: #e5e5e5;
+        padding: 9px;
+        border-radius: 50%;
+        margin-bottom: 0;
+        margin-left: 10px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    #dropdown-menu {
+        position: absolute;
+        top: 50px;
+        right: 3px;
+        width: 200px;
+        font-size: 18px;
+        transition: 0.3s;
+        text-align: right;
+    }
+}
+
 @media screen and (max-width: 500px) {
 
     .person-container {
@@ -1328,7 +1363,7 @@ body {
         border-collapse: collapse;
         font-family: Arial, sans-serif;
         background-color: #f9f9f9;
-        margin-top: 30px;
+        margin-top: 70px;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
         font-size: 10px;
@@ -1358,7 +1393,7 @@ body {
         position: absolute; /* Ensures it's positioned relative to its closest positioned ancestor */
         width: 90%; /* Width of the paginator */
         margin: 0 auto;
-        top: 180px; /* Aligns it relative to the top of the page */
+        top: 220px; /* Aligns it relative to the top of the page */
         left: 50%; /* Moves it to the center of the page */
         transform: translateX(-50%); /* Offsets it back by 50% of its width to ensure true centering */
         font-family: Arial, sans-serif;
@@ -1378,17 +1413,16 @@ body {
         cursor: pointer;
         border-radius: 5px;
         position: absolute; /* Ensures it's positioned relative to its closest positioned ancestor */
-        top: 90px; /* Aligns it relative to the top of the page */
+        top: 130px; /* Aligns it relative to the top of the page */
         left: 300px; /* Moves it to the center of the page */
         transform: translateX(-50%); /* Offsets it back by 50% of its width to ensure true centering */
         font-family: Arial, sans-serif;
         margin-top: 40px; /* Space from the top of the page */
         margin-bottom: 20px; /* Space from the bottom of the paginator (not effective when using margin-top and transform) */
-        font-size: 12px;
+        font-size: 10px;
     }
 
 }
-
 
 @media screen and (max-width: 1500px) {
     .gallery-container img,
