@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-26 15:19+0200\n"
+"POT-Creation-Date: 2024-08-27 13:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,7 +33,8 @@ msgstr "Reservation not found."
 #: .\Roman\backend_funcs\reservation.py:253
 #: .\Roman\backend_funcs\reservation.py:269
 #: .\Roman\backend_funcs\reservation.py:286
-#: .\Roman\backend_funcs\reservation.py:301 .\Roman\backend_funcs\users.py:24
+#: .\Roman\backend_funcs\reservation.py:300
+#: .\Roman\backend_funcs\reservation.py:315 .\Roman\backend_funcs\users.py:24
 #: .\Roman\backend_funcs\users.py:59
 msgid "Zlý request"
 msgstr "Wrong request"
@@ -1563,7 +1564,7 @@ msgstr "Cancel"
 
 #: .\viewer\templates\reservation.html:6 .\viewer\templates\reservation.html:71
 msgid "Rezervácia"
-msgstr "Reservation/Prices"
+msgstr "Reservation"
 
 #: .\viewer\templates\reservation.html:76
 msgid "Vyberte si maséra"

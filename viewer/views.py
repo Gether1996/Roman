@@ -217,8 +217,6 @@ def get_all_reservations_data(request):
         }
     }
 
-    print(response_data)
-
     return JsonResponse(response_data, safe=False)
 
 

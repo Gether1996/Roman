@@ -109,7 +109,6 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    overflow-x: auto;
 }
 
 .row-container {
@@ -1265,7 +1264,7 @@ body {
     }
 
     #calendar {
-        width: 95%;
+        width: 105%;
         height: 450px;
         border: 1px solid black;
         padding: 10px;
@@ -1430,6 +1429,33 @@ body {
         padding: 2px 4px;
         cursor: pointer;
         font-size: 10px;
+    }
+
+    .insert-date-add-truck {
+        font-size: 15px;
+        padding: 10px;
+        width: 50%;
+        text-align: center;
+    }
+
+    .reservation-box-container {
+        width: 80%;
+        padding: 30px;
+        background-color: white;
+        margin: auto;
+        border-radius: 20px;
+        margin-top: 20px;
+        margin-bottom: 50px;
+    }
+
+    .option-button-time {
+        padding: 5px 10px;
+        border: 2px solid #ddd;
+        border-radius: 12px;
+        background-color: #f0f0f0;
+        transition: all 0.3s ease;
+        font-size: 15px;
+        cursor: pointer;
     }
 
 }

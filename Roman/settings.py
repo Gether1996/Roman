@@ -31,7 +31,7 @@ DOMAINS = ['https://masazevlcince.sk']
 
 CSRF_TRUSTED_ORIGINS = DOMAINS
 
-MAIN_EMAIL = 'salonaminask@gmail.com'
+MAIN_EMAIL = 'gether1996@gmail.com'
 
 # Application definition
 

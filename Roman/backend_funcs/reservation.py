@@ -269,7 +269,7 @@ def approve_reservation(request):
     return JsonResponse({'status': 'error', 'message': _('Zlý request')})
 
 
-def cancel_reservation(request):
+def deactivate_reservation_by_admin(request):
     if request.method == 'DELETE':
         json_data = json.loads(request.body)
 
@@ -279,6 +279,20 @@ def cancel_reservation(request):
             reservation.status = 'Zrušená Masérom'
             reservation.personal_note = json_data.get('note')
             reservation.save()
+            return JsonResponse({'status': 'success'})
+
+        except Reservation.DoesNotExist:
+            return JsonResponse({'status': 'error'})
+    return JsonResponse({'status': 'error', 'message': _('Zlý request')})
+
+
+def delete_reservation(request):
+    if request.method == 'DELETE':
+        json_data = json.loads(request.body)
+
+        try:
+            reservation = Reservation.objects.get(id=json_data.get('id'))
+            reservation.delete()
             return JsonResponse({'status': 'success'})
 
         except Reservation.DoesNotExist:

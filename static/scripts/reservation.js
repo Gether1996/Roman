@@ -293,7 +293,7 @@ function createReservation() {
         Swal.fire({
             icon: 'error',
             title: message,
-        })
+        });
     }
 
     var errorMessage = null;
@@ -304,7 +304,6 @@ function createReservation() {
             showError(nameSurname, errorMessage);
         }
     } else {
-
         if (!nameSurname.value) {
             errorMessage = isEnglish ? `Please enter your name and surname` : `Zadajte svoje meno a priezvisko`;
             showError(nameSurname, errorMessage);
@@ -338,11 +337,27 @@ function createReservation() {
     var dateParts = selectedDate.split('-');
     var formattedDate = `${dateParts[2]}.${dateParts[1]}.${dateParts[0]}`;
 
+    // Convert the timeSlot to a Date object
+    var timeParts = timeSlot.split(':');
+    var startTime = new Date();
+    startTime.setHours(parseInt(timeParts[0]));
+    startTime.setMinutes(parseInt(timeParts[1]));
+
+    // Ensure that duration is treated as minutes and add it to the start time
+    startTime.setMinutes(startTime.getMinutes() + parseInt(duration));
+
+    // Format the end time
+    var endTime = `${startTime.getHours().toString().padStart(2, '0')}:${startTime.getMinutes().toString().padStart(2, '0')}`;
+
     var recapMessage = `
         <table style="width:100%; text-align:left;">
             <tr>
                 <td>${isEnglish ? 'Date' : 'Dátum'}</td>
                 <td>${formattedDate}</td>
+            </tr>
+            <tr>
+                <td>Slot</td>
+                <td>${timeSlot} - ${endTime}</td>
             </tr>
             <tr>
                 <td>${isEnglish ? 'Name and Surname' : 'Meno a priezvisko'}</td>
@@ -361,16 +376,8 @@ function createReservation() {
                 <td>${note.value || (isEnglish ? 'None' : 'Žiadna')}</td>
             </tr>
             <tr>
-                <td>${isEnglish ? 'Duration' : 'Trvanie'}</td>
-                <td>${duration} ${isEnglish ? 'minutes': 'minút'}</td>
-            </tr>
-            <tr>
                 <td>${isEnglish ? 'Massager' : 'Masér'}</td>
                 <td>${worker}</td>
-            </tr>
-            <tr>
-                <td>${isEnglish ? 'Starting time' : 'Začiatok'}</td>
-                <td>${timeSlot}</td>
             </tr>
         </table>
     `;
@@ -410,18 +417,30 @@ function createReservation() {
                     phone: phone.value,
                     note: note.value
                 }),
-            }).then(() => {
+            }).then((response) => {
+                if (response.ok) {
+                    Swal.close();
+                    Swal.fire({
+                        icon: 'success',
+                        title: isEnglish ? `Reservation created` : `Rezervácia vytvorená`,
+                    }).then(() => {
+                        window.location.href = `/`;
+                    });
+                } else {
+                    throw new Error('Failed to create reservation');
+                }
+            }).catch((error) => {
                 Swal.close();
                 Swal.fire({
-                    icon: 'success',
-                    title: isEnglish ? `Reservation created` : `Rezervácia vytvorená`,
-                }).then(() => {
-                    window.location.href = `/`;
+                    icon: 'error',
+                    title: isEnglish ? `Reservation failed` : `Rezervácia zlyhala`,
+                    text: error.message
                 });
             });
         }
     });
 }
+
 
 
 document.addEventListener('DOMContentLoaded', function() {

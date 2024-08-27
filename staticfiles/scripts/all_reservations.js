@@ -49,7 +49,7 @@ function updateTable(reservations) {
             '<i style="color: red;" class="fa-solid fa-circle-xmark"></i>';
 
         var actionButton = reservation.active ?
-            `<button class="action-button" style='background-color: #dd3c3c; margin-bottom: 3px;' onclick="cancelReservation('${reservation.id}', '${reservation.name_surname}')">Zrušiť</button>` :
+            `<button class="action-button" style='background-color: #dd3c3c; margin-bottom: 3px;' onclick="deactivateReservation('${reservation.id}', '${reservation.name_surname}')">Deaktivovať</button>` :
             `<button class="action-button" style='background-color: #238b55; margin-bottom: 3px;' onclick="approveReservation('${reservation.id}', '${reservation.name_surname}')">Schváliť</button>`;
 
         var row = document.createElement('tr');
@@ -69,7 +69,8 @@ function updateTable(reservations) {
             <td>${reservation.cancellation_reason}</td>
             <td class="text-align-center">
                 ${actionButton}
-                <button class="action-button" style='background-color: #238b55; margin-left: 2px;' onclick="addNote('${reservation.id}', '${reservation.name_surname}', '${reservation.personal_note}')">Poznámka</button>
+                <button title="Poznámka" class="action-button" style='background-color: #238b55; margin-left: 2px;' onclick="addNote('${reservation.id}', '${reservation.name_surname}', '${reservation.personal_note}')"><i class="fa-solid fa-pen-to-square"></i></button>
+                <button title="Vymazať" class="action-button" style='background-color: #dd3c3c; margin-left: 2px;' onclick="deleteReservation('${reservation.id}', '${reservation.name_surname}')"><i class="fa-solid fa-trash"></i></button>
             </td>
         `;
         tbody.appendChild(row);
@@ -332,24 +333,27 @@ function attachEventListeners() {
 
 document.addEventListener('DOMContentLoaded', attachEventListeners);
 
-
-function cancelReservation(reservationId, name) {
+function deactivateReservation(reservationId, name) {
     Swal.fire({
-        title: `Naozaj zrušiť rezerváciu na meno ${name}?`,
+        title: `Naozaj deaktivovať rezerváciu na meno ${name}?`,
         text: "Môžete uviesť poznámku k zrušeniu (voliteľné):",
         input: 'text',
         showCancelButton: true,
-        confirmButtonText: "Áno, zrušiť rezerváciu",
+        confirmButtonText: "Áno",
         cancelButtonText: "Zrušiť",
         icon: "question",
-        preConfirm: (note) => {
-            return fetch(`/cancel_reservation/`, {
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Fetch the note input from the user
+            const note = result.value || '';
+
+            fetch(`/deactivate_reservation_by_admin/`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': csrfToken
                 },
-                body: JSON.stringify({id: reservationId, note: note })
+                body: JSON.stringify({ id: reservationId, note: note })
             })
             .then(response => response.json())
             .then(data => {
@@ -382,7 +386,7 @@ function addNote(reservationId, name, note) {
         cancelButtonText: "Zrušiť",
         preConfirm: (note) => {
             if (!note) {
-                return 'AAAAA';
+                return 'Pridajte poznámku';
             }
 
             return fetch(`/add_personal_note/`, {
@@ -414,6 +418,43 @@ function addNote(reservationId, name, note) {
     });
 }
 
+function deleteReservation(reservationId, name) {
+    Swal.fire({
+        title: `Vymazať natrvalo rezerváciu na meno ${name}?`,
+        showCancelButton: true,
+        confirmButtonText: "Áno",
+        cancelButtonText: "Zrušiť",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`/delete_reservation/`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({ id: reservationId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    Swal.fire({
+                        icon: "success",
+                        timer: 600,
+                        showConfirmButton: false
+                    }).then(() => {
+                        fetchFilteredData(page, current_sort_by, current_order, 'no');
+                    });
+                } else {
+                    Swal.fire("Chyba", "Vyskytol sa problém pri mazaní rezervácie.", "error");
+                }
+            })
+            .catch(error => {
+                Swal.fire("Chyba", "Vyskytol sa problém s požiadavkou.", "error");
+            });
+        }
+    });
+}
+
 function approveReservation(reservationId, name) {
     Swal.fire({
         title: `Naozaj schváliť rezerváciu na meno ${name}?`,
@@ -421,14 +462,15 @@ function approveReservation(reservationId, name) {
         showCancelButton: true,
         confirmButtonText: "Áno, schváliť",
         cancelButtonText: "Zrušiť",
-        preConfirm: () => {
-            return fetch(`/approve_reservation/`, {
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`/approve_reservation/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': csrfToken
                 },
-                body: JSON.stringify({id: reservationId })
+                body: JSON.stringify({ id: reservationId })
             })
             .then(response => response.json())
             .then(data => {
