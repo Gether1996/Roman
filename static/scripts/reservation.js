@@ -67,51 +67,18 @@ document.addEventListener('DOMContentLoaded', function() {
             var finishButton = document.querySelector('.finish-reservation-button');
 
             if (superUser === "true") {
-                // Create the select element if it doesn't already exist
-                var userSelect = document.querySelector('.user-select');
-                if (!userSelect) {
-                    userSelect = document.createElement('select');
-                    userSelect.classList.add('user-select');
-                    userSelect.classList.add('big-button');
 
-                    // Default option
-                    var defaultOption = document.createElement('option');
-                    defaultOption.value = "";
-                    defaultOption.textContent = "-- Vybrať uživateľa --";
-                    userSelect.appendChild(defaultOption);
+                var userSelectButton = document.createElement('button');
+                userSelectButton.classList.add('user-select', 'big-button');
+                userSelectButton.textContent = 'Vybrať uživateľa';
 
-                    // Populate the select with options from userOptions
-                    userOptions.forEach(function(option) {
-                        var optionElement = document.createElement('option');
-                        optionElement.value = option.id;  // Assuming each option has an 'id'
-                        optionElement.textContent = option.name_surname;  // Assuming each option has a 'name_surname'
-                        optionElement.dataset.email = option.email;  // Store the email in a data attribute
-                        userSelect.appendChild(optionElement);
-                    });
+                // Append the button to the main container
+                mainContainer.appendChild(userSelectButton);
 
-                    // Append the select element to the container
-                    mainContainer.appendChild(userSelect);
-
-                    // Add event listener for when an option is selected
-                    userSelect.addEventListener('change', function() {
-                        var selectedOption = this.options[this.selectedIndex];
-
-                        // Check if an actual user is selected (not the default option)
-                        if (selectedOption.value !== "") {
-                            // Get the selected name_surname and email from the option
-                            var selectedNameSurname = selectedOption.textContent;
-                            var selectedEmail = selectedOption.dataset.email;
-
-                            // Update the input fields with the selected user's data
-                            document.getElementById('name_surname').value = selectedNameSurname;
-                            document.getElementById('email').value = selectedEmail;
-                        } else {
-                            // If default option is selected, clear the fields or do nothing
-                            document.getElementById('name_surname').value = "";
-                            document.getElementById('email').value = "";
-                        }
-                    });
-                }
+                // Event listener to open Swal.fire when the button is clicked
+                userSelectButton.addEventListener('click', function() {
+                    displayUserSelect(userOptions);
+                });
             }
 
             if (!finishButton) {
@@ -134,6 +101,84 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+function displayUserSelect(userOptions) {
+    // Create the HTML structure for the Swal.fire modal content
+    let htmlContent = '<div id="userSelectList" class="swal2-user-select-list">';
+
+    // Populate the div with options from userOptions
+    userOptions.forEach(function(option) {
+        htmlContent += `
+            <div class="saved-person-container">
+                <span class="user-info saved-person-text" data-id="${option.id}" data-email="${option.email}" data-phone="${option.phone}" data-name_surname="${option.name_surname}">
+                    ${option.name_surname}
+                </span>
+                <button onclick="deleteSavedPerson('${option.id}', '${option.name_surname}')" class="saved-person-delete-button" title="Vymazať">❌</button>
+            </div>
+        `;
+    });
+
+    htmlContent += '</div>';
+
+    Swal.fire({
+        title: 'Vybrať uživateľa',
+        html: htmlContent,
+        showCancelButton: true,
+        showConfirmButton: false,
+        didOpen: () => {
+            // Attach click event listener to all user-info elements
+            document.querySelectorAll('.user-info').forEach(function(element) {
+                element.addEventListener('click', function() {
+                    var selectedNameSurname = this.dataset.name_surname;
+                    var selectedEmail = this.dataset.email;
+                    var selectedPhone = this.dataset.phone;
+
+                    // Update the input fields with the selected user's data
+                    document.getElementById('name_surname').value = selectedNameSurname;
+                    document.getElementById('email').value = selectedEmail;
+                    document.getElementById('phone').value = selectedPhone;
+
+                    Swal.close();
+                });
+            });
+        }
+    });
+}
+
+function deleteSavedPerson(id, name_surname) {
+    Swal.fire({
+        title: `Určite vymazať ${name_surname}?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Áno',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Send a fetch request to delete the user
+            fetch('/delete_saved_person/', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken,
+                },
+                body: JSON.stringify({ id: id })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);  // Log the response to ensure it's correct
+                if (data.status === 'success') {
+                    userOptions = userOptions.filter(option => option.id !== id.toString());
+                    displayUserSelect(userOptions);
+                } else {
+                    Swal.fire('Error', 'Failed to delete the user', 'error');
+                }
+            })
+            .catch(error => {
+                // Display the error message using Swal.fire
+                Swal.fire('Error', error.message || 'An unknown error occurred', 'error');
+            });
+        }
+    });
+}
 
 $(document).ready(function() {
   // Function to add highlight to the cell

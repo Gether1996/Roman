@@ -5,6 +5,7 @@ import json
 from django.contrib.auth import logout as django_logout
 from django.shortcuts import redirect
 from accounts.models import CustomUser
+from viewer.models import AlreadyMadeReservation
 from django.utils.translation import gettext_lazy as _
 
 
@@ -57,3 +58,13 @@ def registration(request):
             return JsonResponse({'status': 'error', 'message': f'{e}'})
 
     return JsonResponse({'status': 'error', 'message': _('Zlý request')})
+
+
+def delete_saved_person(request):
+    if request.method == 'DELETE':
+        json_data = json.loads(request.body.decode('utf-8'))
+
+        saved_person = AlreadyMadeReservation.objects.get(id=int(json_data['id']))
+        saved_person.delete()
+        return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'error'})

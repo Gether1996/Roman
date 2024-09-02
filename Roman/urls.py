@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, re_path
 from viewer.views import homepage, profile, reservation, settings as settings_view, get_all_reservations_data, \
     all_reservations, approve_reservation_mail
-from Roman.backend_funcs.users import login_api, logout, registration
+from Roman.backend_funcs.users import login_api, logout, registration, delete_saved_person
 from Roman.backend_funcs.general import switch_language
 from Roman.backend_funcs.settings_view import save_settings, add_turned_off_day, delete_turned_off_day
 from Roman.backend_funcs.reservation import check_available_slots, check_available_slots_ahead, create_reservation, \
@@ -60,6 +60,7 @@ urlpatterns = [
     path('delete_reservation/', delete_reservation, name='delete_reservation'),
 
     path('approve_reservation_mail/<int:reservation_id>/', approve_reservation_mail, name='approve_reservation_mail'),
+    path('delete_saved_person/', delete_saved_person, name='delete_saved_person'),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,12 +1,13 @@
 from django.conf import settings
 from django.http import JsonResponse
-from viewer.models import Reservation, TurnedOffDay
+from viewer.models import Reservation, TurnedOffDay, AlreadyMadeReservation
 import json
 from datetime import datetime, timedelta
 from django.utils.translation import gettext_lazy as _
 import configparser
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
+from unidecode import unidecode
 
 def adjustment_hours():
     current_time = datetime.now()
@@ -85,6 +86,19 @@ def create_reservation(request):
             created_at=datetime.now() + timedelta(hours=adjustment_hours()),
             updated_at=datetime.now() + timedelta(hours=adjustment_hours()),
         )
+
+        normalized_name = unidecode(json_data.get('nameSurname'))
+
+        try:
+            already_created_reservation = AlreadyMadeReservation.objects.get(
+                name_surname__iexact=unidecode(new_reservation.name_surname)
+            )
+        except AlreadyMadeReservation.DoesNotExist:
+            already_created_reservation = AlreadyMadeReservation.objects.create(
+                name_surname=json_data.get('nameSurname'),
+                email=json_data.get('email'),
+                phone_number=json_data.get('phone'),
+            )
 
         if note == 'user':
             subject = f'Nová rezervácia ({new_reservation.worker})'

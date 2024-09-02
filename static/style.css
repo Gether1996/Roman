@@ -697,6 +697,38 @@ body {
     transform: scale(1.1); /* Slightly larger scale for selected buttons */
 }
 
+.saved-person-container {
+    margin: 10px;
+    font-size: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.saved-person-text {
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.saved-person-delete-button {
+    cursor:pointer;
+    margin-left: 10px;
+    border: none;
+    background-color: white;
+    transition: 0.3s;
+}
+
+.saved-person-text:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.saved-person-delete-button:hover {
+    scale: 1.2;
+}
+
 .big-button {
     padding: 20px;
     margin: 10px 0;

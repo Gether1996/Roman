@@ -1,15 +1,17 @@
+import configparser
+
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
-from django.utils.translation import activate
-from viewer.models import GalleryPhoto, VoucherPhoto, Reservation, TurnedOffDay
-from accounts.models import CustomUser
-from django.utils.translation import gettext_lazy as _
-import configparser
-from django.contrib.auth.decorators import login_required
-from django.urls import reverse
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from Roman.backend_funcs.reservation import prepare_reservation_data, send_email
 from django.template.loader import render_to_string
+from django.urls import reverse
+from django.utils.translation import activate
+from django.utils.translation import gettext_lazy as _
+
+from Roman.backend_funcs.reservation import prepare_reservation_data, send_email
+from accounts.models import CustomUser
+from viewer.models import GalleryPhoto, VoucherPhoto, Reservation, TurnedOffDay, AlreadyMadeReservation
 
 config = configparser.ConfigParser()
 
@@ -25,12 +27,13 @@ def homepage(request):
 
 def reservation(request):
 
-    users = CustomUser.objects.filter(is_superuser=0)
+    users = AlreadyMadeReservation.objects.all()
     user_data = [
         {
             'id': str(user.id),
-            'name_surname': f'{user.name} {user.surname}',
-            'email': user.email,
+            'name_surname': user.name_surname,
+            'email': user.email if user.email else '',
+            'phone': user.phone_number if user.phone_number else '',
         }
         for user in users
     ]
