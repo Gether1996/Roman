@@ -7,14 +7,16 @@
     <list default="true" id="8188c9f5-6e45-4569-81c6-bb3ae98b4a23" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Roman/backend_funcs/reservation.py" beforeDir="false" afterPath="$PROJECT_DIR$/Roman/backend_funcs/reservation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Roman/backend_funcs/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/Roman/backend_funcs/users.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Roman/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/Roman/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Roman/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Roman/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/scripts/all_reservations.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/scripts/all_reservations.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/scripts/reservation.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/scripts/reservation.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticfiles/scripts/reservation.js" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/scripts/reservation.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/staticfiles/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/viewer/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/viewer/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/viewer/templates/all_reservations.html" beforeDir="false" afterPath="$PROJECT_DIR$/viewer/templates/all_reservations.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/viewer/templates/email_template.html" beforeDir="false" afterPath="$PROJECT_DIR$/viewer/templates/email_template.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/viewer/templates/error.html" beforeDir="false" afterPath="$PROJECT_DIR$/viewer/templates/error.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/viewer/templates/navbar-homepage.html" beforeDir="false" afterPath="$PROJECT_DIR$/viewer/templates/navbar-homepage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/viewer/templates/navbar.html" beforeDir="false" afterPath="$PROJECT_DIR$/viewer/templates/navbar.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/viewer/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/viewer/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

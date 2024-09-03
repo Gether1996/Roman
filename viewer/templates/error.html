@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block extra_head %}
     <title>{% trans 'Chyba' %}</title>
@@ -8,10 +9,10 @@
 
 <div style="margin-top: 50px; margin-left: 50px;">
     <h1>{{ message }}</h1>
-
+    <br>
     <div class="display: flex; gap: 20px;">
-        <a class="dropdown-link" href="{% url 'homepage' %}">Späť na úvodnú stránku</a>
-        <a class="dropdown-link" onclick="login()">Prihlásenie </a>
+        <a class="btn big-button" style="text-decoration: none;" href="{% url 'homepage' %}">{% trans 'Späť na úvodnú stránku' %}</a>
+        <a class="btn big-button" onclick="login()">{% trans 'Prihlásenie' %}</a>
     </div>
 </div>
 

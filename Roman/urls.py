@@ -37,7 +37,7 @@ urlpatterns = [
     path('reservation/', reservation, name='reservation'),
     path('all_reservations/', all_reservations, name='all_reservations'),
     path('settings_view/', settings_view, name='settings_view'),
-    re_path(r'^profile/(?P<email>[^/]+)/$', profile, name='profile'),
+    path('profile/', profile, name='profile'),
 
     #API
     path('login_api/', login_api, name='login_api'),

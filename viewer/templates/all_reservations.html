@@ -15,15 +15,30 @@
 
     {% include 'navbar.html' %}
     <div class="top-margin-reservation"></div>
-    <h2 style="text-align: left; margin-left: 40px;">Všetky rezervácie</h2>
+    <h2 class="all-reservations-h2">Všetky rezervácie</h2>
 
     <div class="paginator"></div>
     <div class="cancel-filter-button hidden-initially" onclick="removeAllFilters()"><i class="fa-solid fa-filter"></i> Zrušiť filter</div>
+
+    <div class="all-reservations-action-buttons-container">
+        <button class="action-button btn action-button-all-reservations" onclick="pickMassager('Roman')">Roman</button>
+        <button class="action-button btn action-button-all-reservations" onclick="pickMassager('Evka')">Evka</button>
+        <button class="action-button btn action-button-all-reservations" onclick="pickDate('today')">Dnes</button>
+        <button class="action-button btn action-button-all-reservations" onclick="pickDate('tomorrow')">Zajtra</button>
+        <input class="date-input-all-reservations" type="date" id="customDatePicker" placeholder="Vybrať dátum" onchange="setCustomDate(event)">
+    </div>
 
     <div class="table-container-profile">
         <table class="emp-table">
             <thead>
                 <tr class="table-top-tr-no-background">
+                    <th class="text-align-left" style="width: 6%;"><a class="ordering-link" href="{% url 'all_reservations' %}?sort_by=worker&order={% if current_sort_by == 'worker' and current_order == 'asc' %}desc{% else %}asc{% endif %}{% if page %}&page={{ page }}{% endif %}">
+                        Masér {% if current_sort_by == 'worker' %} {% if current_order == 'asc' %}&#9650;{% else %}&#9660;{% endif %}{% endif %}
+                    </a></th>
+                    <th class="text-align-left"><a class="ordering-link" href="{% url 'all_reservations' %}?sort_by=datetime_from&order={% if current_sort_by == 'datetime_from' and current_order == 'asc' %}desc{% else %}asc{% endif %}{% if page %}&page={{ page }}{% endif %}">
+                        Dátum {% if current_sort_by == 'datetime_from' %} {% if current_order == 'asc' %}&#9650;{% else %}&#9660;{% endif %}{% endif %}
+                    </a></th>
+                    <th class="text-align-center" style="width: 5%;">Slot</th>
                     <th class="text-align-left"><a class="ordering-link" href="{% url 'all_reservations' %}?sort_by=name_surname&order={% if current_sort_by == 'name_surname' and current_order == 'asc' %}desc{% else %}asc{% endif %}{% if page %}&page={{ page }}{% endif %}">
                         Meno {% if current_sort_by == 'name_surname' %} {% if current_order == 'asc' %}&#9650;{% else %}&#9660;{% endif %}{% endif %}
                     </a></th>
@@ -32,13 +47,6 @@
                     </a></th>
                     <th class="text-align-left"><a class="ordering-link" href="{% url 'all_reservations' %}?sort_by=phone_number&order={% if current_sort_by == 'phone_number' and current_order == 'asc' %}desc{% else %}asc{% endif %}{% if page %}&page={{ page }}{% endif %}">
                         Telefón {% if current_sort_by == 'phone_number' %} {% if current_order == 'asc' %}&#9650;{% else %}&#9660;{% endif %}{% endif %}
-                    </a></th>
-                    <th class="text-align-left"><a class="ordering-link" href="{% url 'all_reservations' %}?sort_by=datetime_from&order={% if current_sort_by == 'datetime_from' and current_order == 'asc' %}desc{% else %}asc{% endif %}{% if page %}&page={{ page }}{% endif %}">
-                        Dátum {% if current_sort_by == 'datetime_from' %} {% if current_order == 'asc' %}&#9650;{% else %}&#9660;{% endif %}{% endif %}
-                    </a></th>
-                    <th class="text-align-left" style="width: 5%;">Slot</th>
-                    <th class="text-align-left" style="width: 5%;"><a class="ordering-link" href="{% url 'all_reservations' %}?sort_by=worker&order={% if current_sort_by == 'worker' and current_order == 'asc' %}desc{% else %}asc{% endif %}{% if page %}&page={{ page }}{% endif %}">
-                        Masér {% if current_sort_by == 'worker' %} {% if current_order == 'asc' %}&#9650;{% else %}&#9660;{% endif %}{% endif %}
                     </a></th>
                     <th class="text-align-left" style="width: 8%;"><a class="ordering-link" href="{% url 'all_reservations' %}?sort_by=created_at&order={% if current_sort_by == 'created_at' and current_order == 'asc' %}desc{% else %}asc{% endif %}{% if page %}&page={{ page }}{% endif %}">
                         Vytvorená {% if current_sort_by == 'created_at' %} {% if current_order == 'asc' %}&#9650;{% else %}&#9660;{% endif %}{% endif %}
@@ -54,15 +62,15 @@
                         Aktívna {% if current_sort_by == 'active' %} {% if current_order == 'asc' %}&#9650;{% else %}&#9660;{% endif %}{% endif %}
                     </a></th>
                     <th class="text-align-left">Zrušenie</th>
-                    <th></th>
+                    <th style="width: 4%;"></th>
                 </tr>
                 <tr class="table-second-tr-with-background">
+                    <th><input class="searching-input-table" data-filter="worker" type="text" id="sort_worker"></th>
+                    <th><input class="searching-input-table" data-filter="date" type="text" id="sort_date"></th>
+                    <th><input class="searching-input-table" data-filter="slot" type="text" id="sort_slot"></th>
                     <th><input class="searching-input-table" data-filter="name_surname" type="text" id="sort_name_surname"></th>
                     <th><input class="searching-input-table" data-filter="email" type="text" id="sort_email"></th>
                     <th><input class="searching-input-table" data-filter="phone_number" type="text" id="sort_phone_number"></th>
-                    <th><input class="searching-input-table" data-filter="date" type="text" id="sort_date"></th>
-                    <th><input class="searching-input-table" data-filter="slot" type="text" id="sort_slot"></th>
-                    <th><input class="searching-input-table" data-filter="worker" type="text" id="sort_worker"></th>
                     <th><input class="searching-input-table" data-filter="created_at" type="text" id="sort_created_at"></th>
                     <th><input class="searching-input-table" data-filter="special_request" type="text" id="sort_special_request"></th>
                     <th><input class="searching-input-table" data-filter="status" type="text" id="sort_status"></th>
@@ -85,4 +93,7 @@
         var current_order = '{{ current_order }}';
     </script>
     <script src="{% static 'scripts/all_reservations.js' %}"></script>
+    <script>
+        fetchFilteredData(page, current_sort_by, current_order, 'no');
+    </script>
 {% endblock %}

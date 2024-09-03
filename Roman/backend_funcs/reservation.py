@@ -103,11 +103,13 @@ def create_reservation(request):
         if note == 'user':
             subject = f'Nová rezervácia ({new_reservation.worker})'
             accept_link = f'https://masazevlcince.sk/approve_reservation_mail/{new_reservation.id}/'
+            all_reservations_link = f'https://masazevlcince.sk/all_reservations/'
             text = f'Nová rezervácia pre maséra {new_reservation.worker}'
             html_message = render_to_string('email_template.html',
                                             {'reservation': prepare_reservation_data(new_reservation),
                                              'button': True,
                                              'accept_link': accept_link,
+                                             'all_reservations_link': all_reservations_link,
                                              'text': text,
                                              })
             send_email(subject, html_message, getattr(settings, 'MAIN_EMAIL'))
@@ -118,6 +120,7 @@ def create_reservation(request):
                                             {'reservation': prepare_reservation_data(new_reservation),
                                              'button': None,
                                              'accept_link': None,
+                                             'all_reservations_link': None,
                                              'text': '',
                                              })
             send_email(subject, html_message, new_reservation.email)

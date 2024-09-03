@@ -33,6 +33,8 @@ CSRF_TRUSTED_ORIGINS = DOMAINS
 
 MAIN_EMAIL = 'gether1996@gmail.com'
 
+LOGIN_URL = '/admin/login/'
+
 # Application definition
 
 INSTALLED_APPS = [

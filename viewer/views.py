@@ -26,8 +26,7 @@ def homepage(request):
 
 
 def reservation(request):
-
-    users = AlreadyMadeReservation.objects.all()
+    users = AlreadyMadeReservation.objects.all().order_by('name_surname')
     user_data = [
         {
             'id': str(user.id),
@@ -41,6 +40,14 @@ def reservation(request):
 
 
 def settings(request):
+    if not request.user.is_authenticated:
+        message = _('Najskôr sa prihláste. (len pre admina)')
+        return render(request, 'error.html', {'message': message})
+
+    if not request.user.is_superuser:
+        message = _('Náhľad povolený len pre admina.')
+        return render(request, 'error.html', {'message': message})
+
     config.read('config.ini')
 
     days_ahead_roman = int(config['settings-roman']['days_ahead'])
@@ -81,9 +88,12 @@ def settings(request):
     return render(request, 'settings_view.html', context)
 
 
-def profile(request, email):
+def profile(request):
+    if not request.user.is_authenticated:
+        message = _('Najskôr sa prihláste.')
+        return render(request, 'error.html', {'message': message})
     try:
-        reservations = Reservation.objects.filter(email=email).order_by('datetime_from')
+        reservations = Reservation.objects.filter(email=request.user.email).order_by('datetime_from')
 
         reservation_data = [
             {
@@ -111,10 +121,18 @@ def profile(request, email):
         message = _('Najskôr sa prihláste.')
         return render(request, 'error.html', {'message': message})
 
-@login_required
+
 def all_reservations(request):
+    if not request.user.is_authenticated:
+        message = _('Najskôr sa prihláste. (len pre admina)')
+        return render(request, 'error.html', {'message': message})
+
+    if not request.user.is_superuser:
+        message = _('Náhľad povolený len pre admina.')
+        return render(request, 'error.html', {'message': message})
+
     sort_by = request.GET.get('sort_by', 'datetime_from')
-    order = request.GET.get('order', 'desc')
+    order = request.GET.get('order', 'asc')
     page = request.GET.get('page', 1)
 
     context = {
@@ -125,9 +143,9 @@ def all_reservations(request):
 
     if 'sort_by' not in request.GET:
         if page:
-            return redirect(f'{reverse("all_reservations")}?sort_by=datetime_from&order=desc&page={page}')
+            return redirect(f'{reverse("all_reservations")}?sort_by=datetime_from&order=asc&page={page}')
         else:
-            return redirect(f'{reverse("all_reservations")}?sort_by=datetime_from&order=desc')
+            return redirect(f'{reverse("all_reservations")}?sort_by=datetime_from&order=asc')
     return render(request, 'all_reservations.html', context)
 
 
@@ -149,7 +167,7 @@ def get_all_reservations_data(request):
     all_reservations_obj = Reservation.objects.all()
 
     sort_by = request.GET.get('sort_by', 'datetime_from')
-    order = request.GET.get('order', 'desc')
+    order = request.GET.get('order', 'asc')
 
     if filters['name_surname']:
         all_reservations_obj = all_reservations_obj.filter(name_surname__icontains=filters['name_surname'])

@@ -38,7 +38,7 @@
                     <a class="dropdown-link" href="{% url 'all_reservations' %}">{% trans 'Prehľad rezervácií' %}</a>
                     <a class="dropdown-link" href="#" onclick="logoutConfirmation()"><i class="fas fa-sign-out-alt"></i> {% trans 'Odhlásiť sa' %}</a>
                 {% else %}
-                    <a class="dropdown-link" href="{% url 'profile' email=user.email %}">{% trans 'Môj profil' %}</a>
+                    <a class="dropdown-link" href="{% url 'profile' %}">{% trans 'Môj profil' %}</a>
                     <a class="dropdown-link" href="#" onclick="logoutConfirmation()"><i class="fas fa-sign-out-alt"></i> {% trans 'Odhlásiť sa' %}</a>
                 {% endif %}
             </div>
