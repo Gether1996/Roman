@@ -20,7 +20,8 @@ from viewer.views import homepage, profile, reservation, settings as settings_vi
     all_reservations, approve_reservation_mail
 from Roman.backend_funcs.users import login_api, logout, registration, delete_saved_person
 from Roman.backend_funcs.general import switch_language
-from Roman.backend_funcs.settings_view import save_settings, add_turned_off_day, delete_turned_off_day
+from Roman.backend_funcs.settings_view import save_settings, add_turned_off_day, delete_turned_off_day, \
+    delete_turned_off_days
 from Roman.backend_funcs.reservation import check_available_slots, check_available_slots_ahead, create_reservation, \
     deactivate_reservation, approve_reservation, deactivate_reservation_by_admin, add_personal_note, delete_reservation
 from django.views.static import serve
@@ -46,6 +47,7 @@ urlpatterns = [
     path('registration/', registration, name='registration'),
     path('add_turned_off_day/', add_turned_off_day, name='add_turned_off_day'),
     path('delete_turned_off_day/', delete_turned_off_day, name='delete_turned_off_day'),
+    path('delete_turned_off_days/', delete_turned_off_days, name='delete_turned_off_days'),
     path('switch_language/<str:language_code>/', switch_language, name='switch_language'),
 
     path('check_available_slots/', check_available_slots, name='check_available_slots'),

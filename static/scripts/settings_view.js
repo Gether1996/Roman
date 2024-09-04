@@ -203,29 +203,46 @@ function addTurnedOffDay() {
     Swal.fire({
         title: 'Pridať obmedzenie',
         html: `
-            <label for="worker">Masér:</label>
-            <select id="worker" class="swal2-input">
-                <option value="Roman">Roman</option>
-                <option value="Evka">Evka</option>
-            </select>
-            <label for="date">Dátum:</label>
-            <input id="date" type="date" class="swal2-input" required>
-            <label for="whole_day">Celý deň:</label>
-            <select id="whole_day" class="swal2-input">
-                <option value="true">Áno</option>
-                <option value="false">Nie</option>
-            </select>
-            <div id="time_range_container" style="display: none;">
-                <label for="time_from">Od:</label>
-                <input id="time_from" type="time" class="swal2-input">
-                <label for="time_to">Do:</label>
-                <input id="time_to" type="time" class="swal2-input">
+            <div class="swal-layout">
+                <div class="swal-group" style="margin-top: 15px;">
+                    <label for="worker" style="margin-bottom: 20px;">Masér:</label>
+                    <select id="worker" class="swal2-input">
+                        <option value="Roman">Roman</option>
+                        <option value="Evka">Evka</option>
+                    </select>
+                </div>
+                <div class="swal-group">
+                    <label for="date_from">Dátum od:</label>
+                    <input id="date_from" type="date" class="swal2-input" required>
+                </div>
+                <div class="swal-group">
+                    <label for="date_to">Dátum do:</label>
+                    <input id="date_to" type="date" class="swal2-input" required>
+                </div>
+                <div class="swal-group">
+                    <label for="whole_day" style="margin-bottom: 20px;">Celý deň:</label>
+                    <select id="whole_day" class="swal2-input">
+                        <option value="true">Áno</option>
+                        <option value="false">Nie</option>
+                    </select>
+                </div>
+                <div id="time_range_container" style="display: none;">
+                    <div class="swal-group">
+                        <label for="time_from">Od:</label>
+                        <input id="time_from" type="time" class="swal2-input">
+                    </div>
+                    <div class="swal-group">
+                        <label for="time_to">Do:</label>
+                        <input id="time_to" type="time" class="swal2-input">
+                    </div>
+                </div>
             </div>
         `,
         showCancelButton: true,
         preConfirm: () => {
             var worker = document.getElementById('worker').value;
-            var date = document.getElementById('date').value;
+            var date_from = document.getElementById('date_from').value;
+            var date_to = document.getElementById('date_to').value;
             var whole_day = document.getElementById('whole_day').value === 'true';
             let time_from = null;
             let time_to = null;
@@ -235,16 +252,21 @@ function addTurnedOffDay() {
                 time_to = document.getElementById('time_to').value;
             }
 
-            if (!worker || !date || (!whole_day && (!time_from || !time_to))) {
+            if (!worker || !date_from || !date_to || (!whole_day && (!time_from || !time_to))) {
                 Swal.showValidationMessage('Prosím vyplňte všetky polia');
                 return false;
             }
 
-            return { worker, date, whole_day, time_from, time_to };
+            if (new Date(date_to) < new Date(date_from)) {
+                Swal.showValidationMessage('Koncový dátum nemôže byť menší ako počiatočný dátum');
+                return false;
+            }
+
+            return { worker, date_from, date_to, whole_day, time_from, time_to };
         }
     }).then((result) => {
         if (result.isConfirmed) {
-            const { worker, date, whole_day, time_from, time_to } = result.value;
+            const { worker, date_from, date_to, whole_day, time_from, time_to } = result.value;
 
             fetch('/add_turned_off_day/', {
                 method: 'POST',
@@ -252,7 +274,7 @@ function addTurnedOffDay() {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': csrfToken,
                 },
-                body: JSON.stringify({ worker, date, whole_day, time_from, time_to })
+                body: JSON.stringify({ worker, date_from, date_to, whole_day, time_from, time_to })
             })
             .then(response => response.json())
             .then(data => {
@@ -330,3 +352,88 @@ function cancelOffDay(turnedOffDayId) {
         }
     });
 }
+
+function cancelOffDays() {
+    Swal.fire({
+        text: "Naozaj vymazať?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Áno',
+        cancelButtonText: 'Zrušiť',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            const checkedCheckboxes = document.querySelectorAll('.turned-off-day-checkbox:checked');
+            const idsToDelete = Array.from(checkedCheckboxes).map(checkbox => checkbox.value);
+
+            const requestData = {
+                ids: idsToDelete
+            };
+
+            fetch('/delete_turned_off_days/', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken,
+                },
+                body: JSON.stringify(requestData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Close loading Swal and show result Swal
+                Swal.close();
+                if (data.status === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: data.message,
+                        showConfirmButton: false,
+                        showCancelButton: false,
+                        timer: 1000,
+                    });
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: data.message,
+                    });
+                }
+            })
+            .catch(error => {
+                Swal.close();
+                Swal.fire({
+                    icon: 'error',
+                    title: error.message,
+                    showConfirmButton: false,
+                });
+            });
+        }
+    });
+}
+
+function toggleCancelAllDaysRow() {
+    const anyChecked = document.querySelectorAll('.turned-off-day-checkbox:checked').length > 0;
+    const cancelRow = document.getElementById('cancel-all-days-tr');
+    const cancelCell = document.getElementById('cancel-all-days-td');
+
+    // Add or remove the 'hidden-initially' class based on whether any checkboxes are checked
+    if (anyChecked) {
+        cancelRow.classList.remove('hidden-initially');
+        cancelCell.classList.remove('hidden-initially');
+    } else {
+        cancelRow.classList.add('hidden-initially');
+        cancelCell.classList.add('hidden-initially');
+    }
+}
+
+// Attach the toggleCancelAllDaysRow function to checkbox change events
+document.querySelectorAll('.turned-off-day-checkbox').forEach(checkbox => {
+    checkbox.addEventListener('change', toggleCancelAllDaysRow);
+});

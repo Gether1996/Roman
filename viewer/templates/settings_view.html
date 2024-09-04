@@ -65,6 +65,7 @@
             <table class="table-settings">
                 <thead>
                     <tr>
+                        <th></th>
                         <th>Masér</th>
                         <th>Dátum</th>
                         <th>Celý deň</th>
@@ -75,6 +76,7 @@
                 <tbody>
                     {% for turned_off_day in turned_off_days_data %}
                         <tr>
+                            <td><input type="checkbox" value="{{ turned_off_day.id }}" class="turned-off-day-checkbox" style="cursor: pointer;"></td>
                             <td>{{turned_off_day.worker}}</td>
                             <td>{{turned_off_day.date}}</td>
                             <td>{% if turned_off_day.whole_day %}<i class="fa-duotone fa-solid fa-circle-check"></i>{% else %}<i class="fa-duotone fa-solid fa-circle-xmark"></i>{% endif %}</td>
@@ -84,6 +86,11 @@
                             </td>
                         </tr>
                     {% endfor %}
+                    <tr class="hidden-initially" id="cancel-all-days-tr">
+                        <td colspan="5" class="hidden-initially" id="cancel-all-days-td" style="border: none;">
+                            <button class="deactivate-btn" onclick="cancelOffDays()">Zrušiť označené</button>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
