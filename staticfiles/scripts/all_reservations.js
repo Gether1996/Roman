@@ -12,6 +12,12 @@ function fetchFilteredData(page = 1, sort_by, order, reload) {
         page: page
     };
 
+    var urlParams = new URLSearchParams(window.location.search);
+    var worker_from_url = urlParams.get('worker');
+    if (worker_from_url) {
+        filters.worker = worker_from_url;
+    }
+
     var queryString = new URLSearchParams(filters).toString();
     var url = `/get_all_reservations_data/?${queryString}&sort_by=${sort_by}&order=${order}`;
     console.log(url);
@@ -55,12 +61,12 @@ function updateTable(reservations) {
         var row = document.createElement('tr');
         row.className = 'files-row';
         row.innerHTML = `
+            <td>${reservation.worker}</td>
+            <td>${reservation.date}</td>
+            <td>${reservation.slot}</td>
             <td>${reservation.name_surname}</td>
             <td>${reservation.email}</td>
             <td>${reservation.phone_number}</td>
-            <td>${reservation.date}</td>
-            <td>${reservation.slot}</td>
-            <td>${reservation.worker}</td>
             <td>${reservation.created_at}</td>
             <td>${reservation.special_request}</td>
             <td>${reservation.status}</td>
@@ -171,8 +177,6 @@ function updatePaginateElements(pagination) {
         </span>
     `;
 }
-
-fetchFilteredData(page, current_sort_by, current_order, 'no');
 
 function saveFilesPerPage(value) {
     var body = {files_per_page: value};
@@ -491,4 +495,39 @@ function approveReservation(reservationId, name) {
             });
         }
     });
+}
+
+function formatDate(date) {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}.${month}.${year}`;
+}
+
+function pickDate(option) {
+    let date;
+    if (option === 'today') {
+        date = new Date();
+    } else if (option === 'tomorrow') {
+        date = new Date();
+        date.setDate(date.getDate() + 1);
+    }
+
+    document.getElementById('sort_date').value = formatDate(date);
+    document.getElementById('customDatePicker').value = '';  // Clear the date picker value
+    fetchFilteredData(page, current_sort_by, current_order, 'no');
+    toggleClearButtonVisibility();
+}
+
+function pickMassager(name) {
+    document.getElementById('sort_worker').value = name;
+    fetchFilteredData(page, current_sort_by, current_order, 'no');
+    toggleClearButtonVisibility();
+}
+
+function setCustomDate(event) {
+    const selectedDate = new Date(event.target.value);
+    document.getElementById('sort_date').value = formatDate(selectedDate);
+    fetchFilteredData(page, current_sort_by, current_order, 'no');
+    toggleClearButtonVisibility();
 }

@@ -279,6 +279,16 @@ def approve_reservation(request):
             reservation.active = True
             reservation.status = 'Schválená'
             reservation.save()
+
+            subject = f'Rezervácia potvrdená / Reservation accepted'
+            html_message = render_to_string('email_template.html',
+                                            {'reservation': prepare_reservation_data(reservation),
+                                             'button': None,
+                                             'accept_link': None,
+                                             'text': '',
+                                             })
+            send_email(subject, html_message, reservation.email)
+
             return JsonResponse({'status': 'success'})
 
         except Reservation.DoesNotExist:

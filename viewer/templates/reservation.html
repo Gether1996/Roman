@@ -115,19 +115,19 @@
                             <label for="name_surname">
                                 {% trans 'Meno a Priezvisko' %}<span class="required">*</span>:
                             </label>
-                            <input type="text" id="name_surname" name="name_surname">
+                            <input type="text" id="name_surname" name="name_surname" value="{% if request.user.is_authenticated and not request.user.is_superuser%}{{ user.name }} {{ user.surname }}{% endif %}">
                         </div>
                         <div class="row-container input-container-reservation">
                             <label for="email">
                                 Email<span class="required email-required">*</span>:
                             </label>
-                            <input type="email" id="email" name="email">
+                            <input type="email" id="email" name="email" value="{% if request.user.is_authenticated and not request.user.is_superuser%}{{ user.email }}{% endif %}">
                         </div>
                         <div class="row-container input-container-reservation">
                             <label for="phone">
                                 {% trans 'Telefónne číslo' %}<span class="required phone-required">*</span>:
                             </label>
-                            <input type="text" id="phone" name="phone">
+                            <input type="text" id="phone" name="phone" value="{% if request.user.is_authenticated and not request.user.is_superuser and user.phone_number %}{{ user.phone_number }}{% endif %}">
                         </div>
                         <div class="row-container input-container-reservation">
                             <label for="note">

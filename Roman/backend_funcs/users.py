@@ -7,6 +7,7 @@ from django.shortcuts import redirect
 from accounts.models import CustomUser
 from viewer.models import AlreadyMadeReservation
 from django.utils.translation import gettext_lazy as _
+import re
 
 
 def login_api(request):
@@ -39,6 +40,7 @@ def registration(request):
             surname = json_data.get('surname')
             email = json_data.get('email')
             password = json_data.get('password')
+            phone_number = json_data.get('phone_number')
 
             # Check if the user already exists
             if CustomUser.objects.filter(email=email).exists():
@@ -48,7 +50,8 @@ def registration(request):
                 name=name,
                 surname=surname,
                 email=email,
-                password=make_password(password)
+                password=make_password(password),
+                phone_number=phone_number,
             )
 
             login(request, user)

@@ -83,7 +83,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (!finishButton) {
               finishButton = document.createElement('button');
-              finishButton.textContent = isEnglish ? 'Create reservation' : 'Vytvoriť rezerváciu';
+              finishButton.innerHTML = isEnglish
+                ? `<i class="fa-duotone fa-solid fa-user"></i> Create reservation`
+                : `<i class="fa-duotone fa-solid fa-user"></i> Vytvoriť rezerváciu`;
               finishButton.classList.add('finish-reservation-button');
               finishButton.classList.add('add-hidden-third');
               finishButton.classList.add('big-button');
@@ -104,20 +106,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function displayUserSelect(userOptions) {
     // Create the HTML structure for the Swal.fire modal content
-    let htmlContent = '<div id="userSelectList" class="swal2-user-select-list">';
+    let htmlContent = `
+        <input type="text" id="userSearchInput" class="swal2-input" placeholder="Hľadať užívateľa..." style="margin-bottom: 15px;">
+        <div id="userSelectList" class="swal2-user-select-list">
+    `;
 
-    // Populate the div with options from userOptions
-    userOptions.forEach(function(option) {
-        htmlContent += `
+    // Function to generate the user list based on filtered options
+    function generateUserList(options) {
+        return options.map(option => `
             <div class="saved-person-container">
                 <span class="user-info saved-person-text" data-id="${option.id}" data-email="${option.email}" data-phone="${option.phone}" data-name_surname="${option.name_surname}">
                     ${option.name_surname}
                 </span>
                 <button onclick="deleteSavedPerson('${option.id}', '${option.name_surname}')" class="saved-person-delete-button" title="Vymazať">❌</button>
             </div>
-        `;
-    });
+        `).join('');
+    }
 
+    // Function to normalize and remove diacritics from text
+    function normalizeText(text) {
+        return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    }
+
+    // Populate the div with options from userOptions
+    htmlContent += generateUserList(userOptions);
     htmlContent += '</div>';
 
     Swal.fire({
@@ -126,20 +138,43 @@ function displayUserSelect(userOptions) {
         showCancelButton: true,
         showConfirmButton: false,
         didOpen: () => {
+            const searchInput = document.getElementById('userSearchInput');
+            const userSelectList = document.getElementById('userSelectList');
+
             // Attach click event listener to all user-info elements
-            document.querySelectorAll('.user-info').forEach(function(element) {
-                element.addEventListener('click', function() {
-                    var selectedNameSurname = this.dataset.name_surname;
-                    var selectedEmail = this.dataset.email;
-                    var selectedPhone = this.dataset.phone;
+            function attachClickEvents() {
+                document.querySelectorAll('.user-info').forEach(function(element) {
+                    element.addEventListener('click', function() {
+                        var selectedNameSurname = this.dataset.name_surname;
+                        var selectedEmail = this.dataset.email;
+                        var selectedPhone = this.dataset.phone;
 
-                    // Update the input fields with the selected user's data
-                    document.getElementById('name_surname').value = selectedNameSurname;
-                    document.getElementById('email').value = selectedEmail;
-                    document.getElementById('phone').value = selectedPhone;
+                        // Update the input fields with the selected user's data
+                        document.getElementById('name_surname').value = selectedNameSurname;
+                        document.getElementById('email').value = selectedEmail;
+                        document.getElementById('phone').value = selectedPhone;
 
-                    Swal.close();
+                        Swal.close();
+                    });
                 });
+            }
+
+            attachClickEvents();
+
+            // Filter function to search and display matching users
+            searchInput.addEventListener('input', function() {
+                const searchTerm = normalizeText(searchInput.value);
+
+                // Filter the user options based on the normalized search term
+                const filteredOptions = userOptions.filter(option =>
+                    normalizeText(option.name_surname).includes(searchTerm)
+                );
+
+                // Update the user list with filtered options
+                userSelectList.innerHTML = generateUserList(filteredOptions);
+
+                // Re-attach click events to the newly generated elements
+                attachClickEvents();
             });
         }
     });
@@ -176,6 +211,8 @@ function deleteSavedPerson(id, name_surname) {
                 // Display the error message using Swal.fire
                 Swal.fire('Error', error.message || 'An unknown error occurred', 'error');
             });
+        } else {
+            displayUserSelect(userOptions);
         }
     });
 }

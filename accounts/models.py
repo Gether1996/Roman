@@ -5,6 +5,7 @@ class CustomUser(AbstractUser):
     email = models.EmailField(unique=True)
     name = models.CharField(max_length=30)
     surname = models.CharField(max_length=30)
+    phone_number = models.CharField(max_length=30, default=None, blank=True, null=True)
 
     # Set username to be non-unique
     username = models.CharField(max_length=30, unique=False)

@@ -83,7 +83,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (!finishButton) {
               finishButton = document.createElement('button');
-              finishButton.textContent = isEnglish ? 'Create reservation' : 'Vytvoriť rezerváciu';
+              finishButton.innerHTML = isEnglish
+                ? `<i class="fa-duotone fa-solid fa-user"></i> Create reservation`
+                : `<i class="fa-duotone fa-solid fa-user"></i> Vytvoriť rezerváciu`;
               finishButton.classList.add('finish-reservation-button');
               finishButton.classList.add('add-hidden-third');
               finishButton.classList.add('big-button');
@@ -177,7 +179,6 @@ function displayUserSelect(userOptions) {
         }
     });
 }
-
 
 function deleteSavedPerson(id, name_surname) {
     Swal.fire({

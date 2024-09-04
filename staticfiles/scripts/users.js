@@ -131,6 +131,9 @@ function registration() {
                 <div class="swal-group">
                     <input id="email" class="swal2-input" placeholder="Email">
                 </div>
+                <div class="swal-group">
+                    <input type="number" id="phone_number" class="swal2-input" placeholder="${isEnglish ? 'Phone' : 'Telefón'}">
+                </div>
                 <div class="swal-group" style="margin-left: 20px;">
                     <input id="password1" class="swal2-input" type="password" placeholder="${isEnglish ? 'Password' : 'Heslo'}" autocomplete="new-password">
                     <i class="toggle-password fas fa-eye" id="toggle-password-register" title="${isEnglish ? 'Show password' : 'Ukázať heslo'}"></i>
@@ -174,21 +177,23 @@ function registration() {
             var name = Swal.getPopup().querySelector('#name').value;
             var surname = Swal.getPopup().querySelector('#surname').value;
             var email = Swal.getPopup().querySelector('#email').value;
+            var phone_number = Swal.getPopup().querySelector('#phone_number').value;
             var password = Swal.getPopup().querySelector('#password1').value;
             var confirmPassword = Swal.getPopup().querySelector('#password2').value;
+            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!emailRegex.test(email)) {
+                Swal.showValidationMessage(isEnglish ? 'Invalid email format' : 'Nesprávny formát emailu.');
+                return false;
+            }
 
             if (password !== confirmPassword) {
                 Swal.showValidationMessage(isEnglish ? 'Passwords do not match' : 'Heslá sa nezhodujú.');
                 return false;
             }
 
-            if (!name || !surname || !email || !password || !confirmPassword) {
+            if (!name || !surname || !email || !phone_number || !password || !confirmPassword) {
                 Swal.showValidationMessage(isEnglish ? 'All fields must be filled.' : 'Všetky polia musia byť vyplnené.');
-                return false;
-            }
-
-            if (!email.includes('@')) {
-                Swal.showValidationMessage(isEnglish ? 'Wrong email address.' : 'Neplatná emailová adresa.');
                 return false;
             }
 
@@ -197,18 +202,18 @@ function registration() {
                 return false;
             }
 
-            return { name, surname, email, password, confirmPassword };
+            return { name, surname, email, phone_number, password, confirmPassword };
         },
     }).then((result) => {
         if (!result.dismiss && result.value) {
-            var { name, surname, email, password } = result.value;
+            var { name, surname, email, phone_number, password } = result.value;
             fetch('/registration/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': csrfToken
                 },
-                body: JSON.stringify({ name, surname, email, password }),
+                body: JSON.stringify({ name, surname, email, phone_number, password }),
             }).then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {

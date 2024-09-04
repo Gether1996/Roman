@@ -1,6 +1,4 @@
 import configparser
-
-from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
@@ -8,10 +6,11 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.translation import activate
 from django.utils.translation import gettext_lazy as _
-
 from Roman.backend_funcs.reservation import prepare_reservation_data, send_email
 from accounts.models import CustomUser
 from viewer.models import GalleryPhoto, VoucherPhoto, Reservation, TurnedOffDay, AlreadyMadeReservation
+from django.utils import timezone
+from django.utils.timezone import is_naive, make_aware
 
 config = configparser.ConfigParser()
 
@@ -93,7 +92,7 @@ def profile(request):
         message = _('Najskôr sa prihláste.')
         return render(request, 'error.html', {'message': message})
     try:
-        reservations = Reservation.objects.filter(email=request.user.email).order_by('datetime_from')
+        reservations = Reservation.objects.filter(email=request.user.email).order_by('-datetime_from')
 
         reservation_data = [
             {
@@ -107,6 +106,7 @@ def profile(request):
                 'status': reservation.status,
                 'special_request': reservation.special_request,
                 'created_at': reservation.get_created_at_string(),
+                'is_past': timezone.now() > (make_aware(reservation.datetime_to) if is_naive(reservation.datetime_to) else reservation.datetime_to),
             }
             for reservation in reservations
         ]

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-27 13:19+0200\n"
+"POT-Creation-Date: 2024-09-04 12:45+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,44 +18,44 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\Roman\backend_funcs\reservation.py:225
+#: .\Roman\backend_funcs\reservation.py:242
 msgid "voľných"
 msgstr "available"
 
-#: .\Roman\backend_funcs\reservation.py:249
+#: .\Roman\backend_funcs\reservation.py:266
 msgid "Rezervácia úspešne zrušená."
 msgstr "Reservation cancelled successfully."
 
-#: .\Roman\backend_funcs\reservation.py:252
+#: .\Roman\backend_funcs\reservation.py:269
 msgid "Rezervácia sa nenašla."
 msgstr "Reservation not found."
 
-#: .\Roman\backend_funcs\reservation.py:253
-#: .\Roman\backend_funcs\reservation.py:269
-#: .\Roman\backend_funcs\reservation.py:286
-#: .\Roman\backend_funcs\reservation.py:300
-#: .\Roman\backend_funcs\reservation.py:315 .\Roman\backend_funcs\users.py:24
-#: .\Roman\backend_funcs\users.py:59
+#: .\Roman\backend_funcs\reservation.py:270
+#: .\Roman\backend_funcs\reservation.py:296
+#: .\Roman\backend_funcs\reservation.py:313
+#: .\Roman\backend_funcs\reservation.py:327
+#: .\Roman\backend_funcs\reservation.py:342 .\Roman\backend_funcs\users.py:26
+#: .\Roman\backend_funcs\users.py:63
 msgid "Zlý request"
 msgstr "Wrong request"
 
-#: .\Roman\backend_funcs\users.py:19
+#: .\Roman\backend_funcs\users.py:21
 msgid "Prihlásenie úspešné."
 msgstr "Login successfull."
 
-#: .\Roman\backend_funcs\users.py:21
+#: .\Roman\backend_funcs\users.py:23
 msgid "Nesprávne heslo."
 msgstr "Wrong password."
 
-#: .\Roman\backend_funcs\users.py:23
+#: .\Roman\backend_funcs\users.py:25
 msgid "Užívateľ s týmto emailom neexistuje."
 msgstr "User with this email doesn't exist."
 
-#: .\Roman\backend_funcs\users.py:44
+#: .\Roman\backend_funcs\users.py:47
 msgid "Email už existuje."
 msgstr "Email already taken."
 
-#: .\Roman\backend_funcs\users.py:54
+#: .\Roman\backend_funcs\users.py:58
 msgid "Registrácia úspešná - prihlasujem."
 msgstr "Registration successfull - logging in."
 
@@ -1279,9 +1279,17 @@ msgstr ""
 msgid "Connect, get help, or contribute"
 msgstr ""
 
-#: .\viewer\templates\error.html:4
+#: .\viewer\templates\error.html:5
 msgid "Chyba"
 msgstr "Error"
+
+#: .\viewer\templates\error.html:14
+msgid "Späť na úvodnú stránku"
+msgstr "Homepage"
+
+#: .\viewer\templates\error.html:15
+msgid "Prihlásenie"
+msgstr "Log-in"
 
 #: .\viewer\templates\homepage.html:6 .\viewer\templates\homepage.html:126
 msgid "Masáže Vlčince"
@@ -1458,7 +1466,7 @@ msgstr ""
 msgid "Pre viac informácii nás kontaktujte."
 msgstr "Contact us for more informations."
 
-#: .\viewer\templates\navbar-homepage.html:14
+#: .\viewer\templates\navbar-homepage.html:14 .\viewer\templates\navbar.html:12
 msgid "Rezervácia/Cenník"
 msgstr "Reservation/Prices"
 
@@ -1471,50 +1479,50 @@ msgid "Kontakt"
 msgstr "Contact"
 
 #: .\viewer\templates\navbar-homepage.html:28
-#: .\viewer\templates\navbar-homepage.html:30 .\viewer\templates\navbar.html:20
-#: .\viewer\templates\navbar.html:22
+#: .\viewer\templates\navbar-homepage.html:30 .\viewer\templates\navbar.html:24
+#: .\viewer\templates\navbar.html:26
 msgid "Prepnúť jazyk"
 msgstr "Switch language"
 
-#: .\viewer\templates\navbar-homepage.html:34 .\viewer\templates\navbar.html:26
+#: .\viewer\templates\navbar-homepage.html:34 .\viewer\templates\navbar.html:30
 msgid "Slovenčina"
 msgstr "Slovak"
 
-#: .\viewer\templates\navbar-homepage.html:36 .\viewer\templates\navbar.html:28
+#: .\viewer\templates\navbar-homepage.html:36 .\viewer\templates\navbar.html:32
 msgid "Angličtina"
 msgstr "English"
 
-#: .\viewer\templates\navbar-homepage.html:45 .\viewer\templates\navbar.html:37
+#: .\viewer\templates\navbar-homepage.html:45 .\viewer\templates\navbar.html:41
 msgid "Nastavenia"
 msgstr "Settings"
 
-#: .\viewer\templates\navbar-homepage.html:46 .\viewer\templates\navbar.html:38
+#: .\viewer\templates\navbar-homepage.html:46 .\viewer\templates\navbar.html:42
 msgid "Prehľad rezervácií"
 msgstr "Reservations"
 
 #: .\viewer\templates\navbar-homepage.html:47
-#: .\viewer\templates\navbar-homepage.html:50 .\viewer\templates\navbar.html:39
-#: .\viewer\templates\navbar.html:42
+#: .\viewer\templates\navbar-homepage.html:50 .\viewer\templates\navbar.html:43
+#: .\viewer\templates\navbar.html:46
 msgid "Odhlásiť sa"
 msgstr "Log-out"
 
-#: .\viewer\templates\navbar-homepage.html:49 .\viewer\templates\navbar.html:41
+#: .\viewer\templates\navbar-homepage.html:49 .\viewer\templates\navbar.html:45
 msgid "Môj profil"
 msgstr "Profile"
 
-#: .\viewer\templates\navbar-homepage.html:56 .\viewer\templates\navbar.html:48
+#: .\viewer\templates\navbar-homepage.html:56 .\viewer\templates\navbar.html:52
 msgid "Účet"
 msgstr "Account"
 
-#: .\viewer\templates\navbar-homepage.html:58 .\viewer\templates\navbar.html:50
+#: .\viewer\templates\navbar-homepage.html:58 .\viewer\templates\navbar.html:54
 msgid "Prihlásiť sa"
 msgstr "Log-in"
 
-#: .\viewer\templates\navbar-homepage.html:59 .\viewer\templates\navbar.html:51
+#: .\viewer\templates\navbar-homepage.html:59 .\viewer\templates\navbar.html:55
 msgid "Registrácia"
 msgstr "Registration"
 
-#: .\viewer\templates\navbar.html:8
+#: .\viewer\templates\navbar.html:8 .\viewer\templates\navbar.html:11
 msgid "Domov"
 msgstr "Homepage"
 
@@ -1530,35 +1538,35 @@ msgstr "My reservations"
 msgid "Meno"
 msgstr "Name"
 
-#: .\viewer\templates\profile.html:22
+#: .\viewer\templates\profile.html:21
 msgid "Tel. č."
 msgstr "Phone"
 
-#: .\viewer\templates\profile.html:23
+#: .\viewer\templates\profile.html:22
 msgid "Dátum"
 msgstr "Date"
 
-#: .\viewer\templates\profile.html:24
+#: .\viewer\templates\profile.html:23
 msgid "Čas"
 msgstr "Time"
 
-#: .\viewer\templates\profile.html:25
+#: .\viewer\templates\profile.html:24
 msgid "Masér"
 msgstr "Massager"
 
-#: .\viewer\templates\profile.html:26
+#: .\viewer\templates\profile.html:25
 msgid "Stav"
 msgstr "Status"
 
-#: .\viewer\templates\profile.html:27 .\viewer\templates\reservation.html:134
+#: .\viewer\templates\profile.html:26 .\viewer\templates\reservation.html:134
 msgid "Poznámka"
 msgstr "Note"
 
-#: .\viewer\templates\profile.html:28
+#: .\viewer\templates\profile.html:27
 msgid "Vytvorené"
 msgstr "Created"
 
-#: .\viewer\templates\profile.html:45
+#: .\viewer\templates\profile.html:44
 msgid "Zrušiť"
 msgstr "Cancel"
 
@@ -1594,7 +1602,15 @@ msgstr "Phone number"
 msgid "Polia označené * sú povinné"
 msgstr "Fields with * are mandatory"
 
-#: .\viewer\views.py:108
+#: .\viewer\views.py:43 .\viewer\views.py:127
+msgid "Najskôr sa prihláste. (len pre admina)"
+msgstr "Log-in first. (for admin only)"
+
+#: .\viewer\views.py:47 .\viewer\views.py:131
+msgid "Náhľad povolený len pre admina."
+msgstr "Access only for admin."
+
+#: .\viewer\views.py:92 .\viewer\views.py:121
 msgid "Najskôr sa prihláste."
 msgstr "Log-in first."
 

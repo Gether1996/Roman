@@ -6,4 +6,4 @@ admin.site.unregister(Group)
 
 @admin.register(CustomUser)
 class VoucherAdmin(admin.ModelAdmin):
-    list_display = ('email', 'name', 'surname', 'username')
+    list_display = ('email', 'name', 'surname', 'username', 'phone_number')

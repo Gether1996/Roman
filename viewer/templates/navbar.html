@@ -7,6 +7,10 @@
         <a href="{% url 'homepage' %}">
             <img class="logo-image" src="{% static 'images/logo1.png' %}" title="{% trans 'Domov' %}">
         </a>
+        <div class="nav-links">
+            <a href="{% url 'homepage' %}" class="navbar-button">{% trans 'Domov' %}</a>
+            <a href="{% url 'reservation' %}" class="navbar-button"><i class="fa-solid fa-calendar-circle-plus"></i> {% trans 'Rezervácia/Cenník' %}</a>
+        </div>
         <div class="nav-contact">
           <div class="social-icons">
             <a href="https://www.instagram.com/masazevlcince/" target="_blank"><i class="fab fa-instagram" title="Instagram"></i></a>
