@@ -5,11 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8188c9f5-6e45-4569-81c6-bb3ae98b4a23" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Roman/backend_funcs/settings_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/Roman/backend_funcs/settings_view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Roman/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Roman/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/scripts/settings_view.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/scripts/settings_view.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/staticfiles/scripts/settings_view.js" beforeDir="false" afterPath="$PROJECT_DIR$/staticfiles/scripts/settings_view.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/viewer/templates/settings_view.html" beforeDir="false" afterPath="$PROJECT_DIR$/viewer/templates/settings_view.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

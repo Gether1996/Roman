@@ -352,3 +352,88 @@ function cancelOffDay(turnedOffDayId) {
         }
     });
 }
+
+function cancelOffDays() {
+    Swal.fire({
+        text: "Naozaj vymazať?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Áno',
+        cancelButtonText: 'Zrušiť',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            const checkedCheckboxes = document.querySelectorAll('.turned-off-day-checkbox:checked');
+            const idsToDelete = Array.from(checkedCheckboxes).map(checkbox => checkbox.value);
+
+            const requestData = {
+                ids: idsToDelete
+            };
+
+            fetch('/delete_turned_off_days/', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken,
+                },
+                body: JSON.stringify(requestData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Close loading Swal and show result Swal
+                Swal.close();
+                if (data.status === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: data.message,
+                        showConfirmButton: false,
+                        showCancelButton: false,
+                        timer: 1000,
+                    });
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: data.message,
+                    });
+                }
+            })
+            .catch(error => {
+                Swal.close();
+                Swal.fire({
+                    icon: 'error',
+                    title: error.message,
+                    showConfirmButton: false,
+                });
+            });
+        }
+    });
+}
+
+function toggleCancelAllDaysRow() {
+    const anyChecked = document.querySelectorAll('.turned-off-day-checkbox:checked').length > 0;
+    const cancelRow = document.getElementById('cancel-all-days-tr');
+    const cancelCell = document.getElementById('cancel-all-days-td');
+
+    // Add or remove the 'hidden-initially' class based on whether any checkboxes are checked
+    if (anyChecked) {
+        cancelRow.classList.remove('hidden-initially');
+        cancelCell.classList.remove('hidden-initially');
+    } else {
+        cancelRow.classList.add('hidden-initially');
+        cancelCell.classList.add('hidden-initially');
+    }
+}
+
+// Attach the toggleCancelAllDaysRow function to checkbox change events
+document.querySelectorAll('.turned-off-day-checkbox').forEach(checkbox => {
+    checkbox.addEventListener('change', toggleCancelAllDaysRow);
+});
