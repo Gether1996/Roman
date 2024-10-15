@@ -31,7 +31,7 @@ DOMAINS = ['https://masazevlcince.sk', 'https://www.masazevlcince.sk']
 
 CSRF_TRUSTED_ORIGINS = DOMAINS
 
-MAIN_EMAIL = 'gether1996@gmail.com'
+MAIN_EMAIL = 'salonaminask@gmail.com'
 
 LOGIN_URL = '/admin/login/'
 
