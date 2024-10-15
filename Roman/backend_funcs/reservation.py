@@ -9,11 +9,6 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from unidecode import unidecode
 
-def adjustment_hours():
-    current_time = datetime.now()
-    is_summer_time = current_time.dst() != timedelta(0)
-    adjustment_hours = 2 if is_summer_time else 1
-    return adjustment_hours
 
 def send_email(subject, html_message, to_mail):
     from_email = getattr(settings, 'EMAIL_HOST_USER')
@@ -66,7 +61,7 @@ def create_reservation(request):
         time_slot = json_data.get('timeSlot')
         duration = json_data.get('duration')
 
-        datetime_from_obj = datetime.strptime(f"{selected_date} {time_slot}", "%Y-%m-%d %H:%M") + timedelta(hours=adjustment_hours())
+        datetime_from_obj = datetime.strptime(f"{selected_date} {time_slot}", "%Y-%m-%d %H:%M")
         date_time_to_obj = datetime_from_obj + timedelta(minutes=int(duration))
 
         user = request.user if request.user.is_authenticated else None
@@ -83,8 +78,8 @@ def create_reservation(request):
             personal_note=json_data.get('note') if note == 'admin' else '',
             datetime_from=datetime_from_obj,
             datetime_to=date_time_to_obj,
-            created_at=datetime.now() + timedelta(hours=adjustment_hours()),
-            updated_at=datetime.now() + timedelta(hours=adjustment_hours()),
+            created_at=datetime.now(),
+            updated_at=datetime.now(),
         )
 
         normalized_name = unidecode(json_data.get('nameSurname'))
@@ -128,6 +123,7 @@ def create_reservation(request):
         return JsonResponse({'status': 'success'})
     return JsonResponse({'status': 'error'})
 
+
 def check_available_slots(request):
     if request.method == 'POST':
         config.read('config.ini')
@@ -162,7 +158,9 @@ def check_available_slots(request):
 
             # Check against turned-off days
             for turned_off_day in turned_off_days:
-                if turned_off_day.whole_day or (turned_off_day.time_from <= slot_start <= turned_off_day.time_to):
+                if turned_off_day.whole_day or (
+                        turned_off_day.time_from < slot_end and turned_off_day.time_to > slot_start
+                ):
                     is_available = False
                     break
 
@@ -177,6 +175,63 @@ def check_available_slots(request):
 
             current_time = next_time
         return JsonResponse({'status': 'success', 'available_slots': available_slots})
+    return JsonResponse({'status': 'error'})
+
+
+def check_available_durations(request, worker):
+    if request.method == 'POST':
+        config.read('config.ini')
+        json_data = json.loads(request.body)
+        selected_date = json_data.get('pickedDateGeneralData')
+        selected_date = datetime.strptime(selected_date, '%Y-%m-%d').date()
+        time_slot_start_str = json_data.get('timeSlot')  # Time as string (e.g., "15:30")
+        time_slot_start = datetime.strptime(time_slot_start_str, '%H:%M').time()  # Convert to time object
+        worker_config = config['settings-roman'] if worker == 'Roman' else config['settings-evka']
+
+        # Work hours
+        starting_hour = datetime.strptime(worker_config['starting_slot_hour'], '%H:%M').time()
+        ending_hour = datetime.strptime(worker_config['ending_slot_hour'], '%H:%M').time()
+
+        turned_off_times = TurnedOffDay.objects.filter(worker=worker, date=selected_date)
+        reservations = Reservation.objects.filter(datetime_from__date=selected_date)
+
+        # Define possible duration windows in minutes
+        duration_options = [30, 45, 60, 90, 120]
+        available_durations = []
+
+        for duration in duration_options:
+            end_time = (datetime.combine(selected_date, time_slot_start) + timedelta(minutes=duration)).time()
+
+            # Check if the window is within working hours
+            if not (starting_hour <= time_slot_start <= ending_hour and starting_hour <= end_time <= ending_hour):
+                continue
+
+            # Check if this duration overlaps with any turned-off times
+            overlaps = False
+            for off_day in turned_off_times:
+                off_start = off_day.time_from
+                off_end = off_day.time_to
+
+                if off_day.whole_day or (off_start and off_end and off_start < end_time and time_slot_start < off_end):
+                    overlaps = True
+                    break
+
+            # Check for overlap with existing reservations
+            for reservation in reservations:
+                reservation_start = reservation.datetime_from.time()
+                reservation_end = reservation.datetime_to.time()
+
+                if reservation_start < end_time and time_slot_start < reservation_end:
+                    overlaps = True
+                    break
+
+            if not overlaps:
+                available_durations.append(duration)
+            else:
+                print(f"Duration {duration} is not available due to overlap.")
+
+        print("Available durations:", available_durations)
+        return JsonResponse({'status': 'success', 'available_durations': available_durations})
     return JsonResponse({'status': 'error'})
 
 

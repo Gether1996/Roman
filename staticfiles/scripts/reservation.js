@@ -1,6 +1,7 @@
 let worker = null;
 let duration = null;
 let timeSlot = null;
+let pickedDateGeneralData = null;
 
 function moveToBottom() {
     setTimeout(() => {
@@ -63,12 +64,15 @@ document.addEventListener('DOMContentLoaded', function() {
             this.classList.add('selected');
             duration = this.id;
 
-            var mainContainer = document.getElementById('reservation-box-container');
-            var finishButton = document.querySelector('.finish-reservation-button');
+            const mainContainer = document.getElementById('reservation-box-container');
+            let finishButton = document.querySelector('.finish-reservation-button');
 
-            if (superUser === "true") {
+            // Check if the "Vybrať uživateľa" button already exists
+            let userSelectButton = mainContainer.querySelector('.user-select');
 
-                var userSelectButton = document.createElement('button');
+            if (superUser === "true" && !userSelectButton) {
+                // Create the button only if it does not exist
+                userSelectButton = document.createElement('button');
                 userSelectButton.classList.add('user-select', 'big-button');
                 userSelectButton.textContent = 'Vybrať uživateľa';
 
@@ -82,19 +86,17 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             if (!finishButton) {
-              finishButton = document.createElement('button');
-              finishButton.innerHTML = isEnglish
-                ? `<i class="fa-duotone fa-solid fa-user"></i> Create reservation`
-                : `<i class="fa-duotone fa-solid fa-user"></i> Vytvoriť rezerváciu`;
-              finishButton.classList.add('finish-reservation-button');
-              finishButton.classList.add('add-hidden-third');
-              finishButton.classList.add('big-button');
-              finishButton.onclick = createReservation;
+                finishButton = document.createElement('button');
+                finishButton.innerHTML = isEnglish
+                    ? `Create reservation`
+                    : `Vytvoriť rezerváciu`;
+                finishButton.classList.add('finish-reservation-button', 'add-hidden-third', 'big-button');
+                finishButton.onclick = createReservation;
 
-              mainContainer.appendChild(finishButton);
+                mainContainer.appendChild(finishButton);
             }
 
-            var hiddenElements = document.querySelectorAll('.hidden-element-third');
+            const hiddenElements = document.querySelectorAll('.hidden-element-third');
             hiddenElements.forEach(element => {
                 element.classList.remove('hidden-element-third');
             });
@@ -255,6 +257,7 @@ function pickDate(clickedDateElement = null) {
     }
     var mainContainer = document.getElementById('time-slot-container');
     var selectedDate = document.getElementById('date');
+    pickedDateGeneralData = selectedDate.value;
 
     hiddenTimeSlotAll = document.querySelectorAll('.add-hidden-timeSlots');
     hiddenTimeSlotAll.forEach(element => {
@@ -351,13 +354,45 @@ function selectTimeSlot(button) {
     button.classList.add('selected');
     timeSlot = button.textContent.trim();
 
-    var hiddenElements = document.querySelectorAll('.hidden-element-second');
-    hiddenElements.forEach(element => {
-        element.classList.remove('hidden-element-second');
+    fetch(`/check_available_durations/${worker}/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken
+        },
+        body: JSON.stringify({ timeSlot: timeSlot, pickedDateGeneralData: pickedDateGeneralData })
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Hide all duration options initially
+        var allDurations = document.querySelectorAll('.option-button-time');
+        allDurations.forEach(element => {
+            element.classList.add('hidden-element-second');
+            element.classList.remove('selected');
+        });
+        duration = null;
+
+        var heading = document.getElementById('choose-duration-h2');
+        heading.classList.remove('hidden-element-second');
+
+        // Show only available duration options
+        var availableDurations = data.available_durations; // This is the array of available durations from the response
+        availableDurations.forEach(duration => {
+            var durationElement = document.getElementById(duration.toString()); // Select the element by ID
+            if (durationElement) {
+                durationElement.classList.remove('hidden-element-second');
+            }
+        });
+
+        console.log('Available durations:', availableDurations);
+    })
+    .catch(error => {
+        console.error('Error:', error);
     });
 
     moveToBottom();
 }
+
 
 function createReservation() {
     var selectedDate = document.getElementById('date').value;

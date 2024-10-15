@@ -23,7 +23,8 @@ from Roman.backend_funcs.general import switch_language
 from Roman.backend_funcs.settings_view import save_settings, add_turned_off_day, delete_turned_off_day, \
     delete_turned_off_days
 from Roman.backend_funcs.reservation import check_available_slots, check_available_slots_ahead, create_reservation, \
-    deactivate_reservation, approve_reservation, deactivate_reservation_by_admin, add_personal_note, delete_reservation
+    deactivate_reservation, approve_reservation, deactivate_reservation_by_admin, add_personal_note, delete_reservation, \
+    check_available_durations
 from django.views.static import serve
 from django.conf.urls.static import static
 from django.conf import settings
@@ -52,6 +53,7 @@ urlpatterns = [
 
     path('check_available_slots/', check_available_slots, name='check_available_slots'),
     path('check_available_slots_ahead/<str:worker>/', check_available_slots_ahead, name='check_available_slots_ahead'),
+    path('check_available_durations/<str:worker>/', check_available_durations, name='check_available_durations'),
     path('create_reservation/', create_reservation, name='create_reservation'),
     path('deactivate_reservation/', deactivate_reservation, name='deactivate_reservation'),
     path('get_all_reservations_data/', get_all_reservations_data, name='get_all_reservations_data'),
