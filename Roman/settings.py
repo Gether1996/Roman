@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1']
 
-DOMAINS = ['https://masazevlcince.sk']
+DOMAINS = ['https://masazevlcince.sk', 'https://www.masazevlcince.sk']
 
 CSRF_TRUSTED_ORIGINS = DOMAINS
 
