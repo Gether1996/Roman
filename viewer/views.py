@@ -9,8 +9,7 @@ from django.utils.translation import gettext_lazy as _
 from Roman.backend_funcs.reservation import prepare_reservation_data, send_email
 from accounts.models import CustomUser
 from viewer.models import GalleryPhoto, VoucherPhoto, Reservation, TurnedOffDay, AlreadyMadeReservation
-from django.utils import timezone
-from django.utils.timezone import is_naive, make_aware
+from datetime import datetime
 
 config = configparser.ConfigParser()
 
@@ -166,8 +165,8 @@ def profile(request):
                 'worker': reservation.worker,
                 'status': reservation.status,
                 'special_request': reservation.special_request,
-                'created_at': reservation.get_created_at_string(),
-                'is_past': timezone.now() > (make_aware(reservation.datetime_to) if is_naive(reservation.datetime_to) else reservation.datetime_to),
+                'created_at': reservation.get_created_at_string_adjusted(),
+                'is_past': datetime.now() > reservation.datetime_to
             }
             for reservation in reservations
         ]
@@ -251,7 +250,7 @@ def get_all_reservations_data(request):
     if filters['created_at']:
         all_reservations_obj_filtered = [
             reservation for reservation in all_reservations_obj
-            if filters['created_at'] in reservation.get_created_at_string()
+            if filters['created_at'] in reservation.get_created_at_string_adjusted()
         ]
         all_reservations_obj = all_reservations_obj.filter(created_at__in=[reservation.created_at for reservation in all_reservations_obj_filtered])
 

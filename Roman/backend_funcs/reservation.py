@@ -32,7 +32,7 @@ def prepare_reservation_data(reservation):
         'active': reservation.active,
         'worker': reservation.worker,
         'status': reservation.status,
-        'created_at': reservation.get_created_at_string(),
+        'created_at': reservation.get_created_at_string_adjusted(),
         'special_request': reservation.special_request if reservation.special_request else '',
         'personal_note': reservation.personal_note if reservation.personal_note else '',
         'cancellation_reason': reservation.cancellation_reason if reservation.cancellation_reason else '',
