@@ -49,14 +49,47 @@ def settings(request):
 
     config.read('config.ini')
 
+    # ROMAN
     days_ahead_roman = int(config['settings-roman']['days_ahead'])
-    starting_slot_hour_roman = str(config['settings-roman']['starting_slot_hour'])
-    ending_slot_hour_roman = str(config['settings-roman']['ending_slot_hour'])
+
+    starting_slot_hour_roman_monday = str(config['settings-roman']['monday_starting_hour'])
+    starting_slot_hour_roman_tuesday = str(config['settings-roman']['tuesday_starting_hour'])
+    starting_slot_hour_roman_wednesday = str(config['settings-roman']['wednesday_starting_hour'])
+    starting_slot_hour_roman_thursday = str(config['settings-roman']['thursday_starting_hour'])
+    starting_slot_hour_roman_friday = str(config['settings-roman']['friday_starting_hour'])
+    starting_slot_hour_roman_saturday = str(config['settings-roman']['saturday_starting_hour'])
+    starting_slot_hour_roman_sunday = str(config['settings-roman']['sunday_starting_hour'])
+
+    ending_slot_hour_roman_monday = str(config['settings-roman']['monday_ending_hour'])
+    ending_slot_hour_roman_tuesday = str(config['settings-roman']['tuesday_ending_hour'])
+    ending_slot_hour_roman_wednesday = str(config['settings-roman']['wednesday_ending_hour'])
+    ending_slot_hour_roman_thursday = str(config['settings-roman']['thursday_ending_hour'])
+    ending_slot_hour_roman_friday = str(config['settings-roman']['friday_ending_hour'])
+    ending_slot_hour_roman_saturday = str(config['settings-roman']['saturday_ending_hour'])
+    ending_slot_hour_roman_sunday = str(config['settings-roman']['sunday_ending_hour'])
+
     working_days_roman = config['settings-roman']['working_days']
 
+    # EVKA
     days_ahead_evka = int(config['settings-evka']['days_ahead'])
-    starting_slot_hour_evka = str(config['settings-evka']['starting_slot_hour'])
-    ending_slot_hour_evka = str(config['settings-evka']['ending_slot_hour'])
+
+    starting_slot_hour_evka_monday = str(config['settings-evka']['monday_starting_hour'])
+    starting_slot_hour_evka_tuesday = str(config['settings-evka']['tuesday_starting_hour'])
+    starting_slot_hour_evka_wednesday = str(config['settings-evka']['wednesday_starting_hour'])
+    starting_slot_hour_evka_thursday = str(config['settings-evka']['thursday_starting_hour'])
+    starting_slot_hour_evka_friday = str(config['settings-evka']['friday_starting_hour'])
+    starting_slot_hour_evka_saturday = str(config['settings-evka']['saturday_starting_hour'])
+    starting_slot_hour_evka_sunday = str(config['settings-evka']['sunday_starting_hour'])
+
+    # Ending hours for each day
+    ending_slot_hour_evka_monday = str(config['settings-evka']['monday_ending_hour'])
+    ending_slot_hour_evka_tuesday = str(config['settings-evka']['tuesday_ending_hour'])
+    ending_slot_hour_evka_wednesday = str(config['settings-evka']['wednesday_ending_hour'])
+    ending_slot_hour_evka_thursday = str(config['settings-evka']['thursday_ending_hour'])
+    ending_slot_hour_evka_friday = str(config['settings-evka']['friday_ending_hour'])
+    ending_slot_hour_evka_saturday = str(config['settings-evka']['saturday_ending_hour'])
+    ending_slot_hour_evka_sunday = str(config['settings-evka']['sunday_ending_hour'])
+
     working_days_evka = config['settings-evka']['working_days']
 
     turned_off_days = TurnedOffDay.objects.all()
@@ -74,14 +107,42 @@ def settings(request):
 
     context = {
         'turned_off_days_data': turned_off_days_data,
+
+        # Roman's settings
         'days_ahead_roman': days_ahead_roman,
-        'starting_slot_hour_roman': starting_slot_hour_roman,
-        'ending_slot_hour_roman': ending_slot_hour_roman,
         'working_days_roman': working_days_roman,
+        'starting_slot_hour_roman_monday': starting_slot_hour_roman_monday,
+        'ending_slot_hour_roman_monday': ending_slot_hour_roman_monday,
+        'starting_slot_hour_roman_tuesday': starting_slot_hour_roman_tuesday,
+        'ending_slot_hour_roman_tuesday': ending_slot_hour_roman_tuesday,
+        'starting_slot_hour_roman_wednesday': starting_slot_hour_roman_wednesday,
+        'ending_slot_hour_roman_wednesday': ending_slot_hour_roman_wednesday,
+        'starting_slot_hour_roman_thursday': starting_slot_hour_roman_thursday,
+        'ending_slot_hour_roman_thursday': ending_slot_hour_roman_thursday,
+        'starting_slot_hour_roman_friday': starting_slot_hour_roman_friday,
+        'ending_slot_hour_roman_friday': ending_slot_hour_roman_friday,
+        'starting_slot_hour_roman_saturday': starting_slot_hour_roman_saturday,
+        'ending_slot_hour_roman_saturday': ending_slot_hour_roman_saturday,
+        'starting_slot_hour_roman_sunday': starting_slot_hour_roman_sunday,
+        'ending_slot_hour_roman_sunday': ending_slot_hour_roman_sunday,
+
+        # Evka's settings
         'days_ahead_evka': days_ahead_evka,
-        'starting_slot_hour_evka': starting_slot_hour_evka,
-        'ending_slot_hour_evka': ending_slot_hour_evka,
         'working_days_evka': working_days_evka,
+        'starting_slot_hour_evka_monday': starting_slot_hour_evka_monday,
+        'ending_slot_hour_evka_monday': ending_slot_hour_evka_monday,
+        'starting_slot_hour_evka_tuesday': starting_slot_hour_evka_tuesday,
+        'ending_slot_hour_evka_tuesday': ending_slot_hour_evka_tuesday,
+        'starting_slot_hour_evka_wednesday': starting_slot_hour_evka_wednesday,
+        'ending_slot_hour_evka_wednesday': ending_slot_hour_evka_wednesday,
+        'starting_slot_hour_evka_thursday': starting_slot_hour_evka_thursday,
+        'ending_slot_hour_evka_thursday': ending_slot_hour_evka_thursday,
+        'starting_slot_hour_evka_friday': starting_slot_hour_evka_friday,
+        'ending_slot_hour_evka_friday': ending_slot_hour_evka_friday,
+        'starting_slot_hour_evka_saturday': starting_slot_hour_evka_saturday,
+        'ending_slot_hour_evka_saturday': ending_slot_hour_evka_saturday,
+        'starting_slot_hour_evka_sunday': starting_slot_hour_evka_sunday,
+        'ending_slot_hour_evka_sunday': ending_slot_hour_evka_sunday,
     }
 
     return render(request, 'settings_view.html', context)

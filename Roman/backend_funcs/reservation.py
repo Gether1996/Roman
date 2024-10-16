@@ -132,12 +132,15 @@ def check_available_slots(request):
         worker = json_data.get('worker')
         selected_date = json_data['selectedDate']
         selected_date = datetime.strptime(selected_date, '%Y-%m-%d').date()
+        weekday_name = selected_date.strftime('%A')
 
         worker_config = config['settings-roman'] if worker == 'Roman' else config['settings-evka']
+        starting_hour_str = worker_config.get(f'{weekday_name}_starting_hour')
+        ending_hour_str = worker_config.get(f'{weekday_name}_ending_hour')
 
         # Determine work hours
-        starting_hour = datetime.strptime(worker_config['starting_slot_hour'], '%H:%M').time()
-        ending_hour = datetime.strptime(worker_config['ending_slot_hour'], '%H:%M').time()
+        starting_hour = datetime.strptime(starting_hour_str, '%H:%M').time()
+        ending_hour = datetime.strptime(ending_hour_str, '%H:%M').time()
 
         # Get all reservations and turned-off days for the worker on the selected date
         reservations = Reservation.objects.filter(datetime_from__date=selected_date)
@@ -186,11 +189,15 @@ def check_available_durations(request, worker):
         selected_date = datetime.strptime(selected_date, '%Y-%m-%d').date()
         time_slot_start_str = json_data.get('timeSlot')  # Time as string (e.g., "15:30")
         time_slot_start = datetime.strptime(time_slot_start_str, '%H:%M').time()  # Convert to time object
-        worker_config = config['settings-roman'] if worker == 'Roman' else config['settings-evka']
+        weekday_name = selected_date.strftime('%A')
 
-        # Work hours
-        starting_hour = datetime.strptime(worker_config['starting_slot_hour'], '%H:%M').time()
-        ending_hour = datetime.strptime(worker_config['ending_slot_hour'], '%H:%M').time()
+        worker_config = config['settings-roman'] if worker == 'Roman' else config['settings-evka']
+        starting_hour_str = worker_config.get(f'{weekday_name}_starting_hour')
+        ending_hour_str = worker_config.get(f'{weekday_name}_ending_hour')
+
+        # Determine work hours
+        starting_hour = datetime.strptime(starting_hour_str, '%H:%M').time()
+        ending_hour = datetime.strptime(ending_hour_str, '%H:%M').time()
 
         turned_off_times = TurnedOffDay.objects.filter(worker=worker, date=selected_date)
         reservations = Reservation.objects.filter(datetime_from__date=selected_date)
@@ -245,9 +252,6 @@ def check_available_slots_ahead(request, worker):
         days_to_check_ahead = int(worker_config['days_ahead'])
         working_days = worker_config['working_days']
         end_date = today + timedelta(days=days_to_check_ahead)
-
-        starting_hour = datetime.strptime(worker_config['starting_slot_hour'], '%H:%M').time()
-        ending_hour = datetime.strptime(worker_config['ending_slot_hour'], '%H:%M').time()
         slot_duration = 30  # Assuming 30 minutes per slot
 
         events = []
@@ -255,9 +259,21 @@ def check_available_slots_ahead(request, worker):
         for single_date in (today + timedelta(n) for n in range((end_date - today).days + 1)):
             if single_date == today or single_date == tomorrow:
                 continue
-            # Skip if not a working day
-            if single_date.strftime('%A') not in working_days:
+            weekday_name = single_date.strftime('%A')
+
+            # Skip if the day is not a working day
+            if weekday_name not in working_days:
                 continue
+
+            # Retrieve start and end working hours for the specific day
+            starting_hour_str = worker_config.get(f'{weekday_name}_starting_hour')
+            ending_hour_str = worker_config.get(f'{weekday_name}_ending_hour')
+
+            if not starting_hour_str or not ending_hour_str:
+                continue
+
+            starting_hour = datetime.strptime(starting_hour_str, '%H:%M').time()
+            ending_hour = datetime.strptime(ending_hour_str, '%H:%M').time()
 
             # Check if the day is turned off for the whole day
             turned_off_day = TurnedOffDay.objects.filter(worker=worker, date=single_date, whole_day=True).first()
@@ -295,7 +311,6 @@ def check_available_slots_ahead(request, worker):
                 current_time = next_time
 
             possible = _('voľných')
-
             if available_slots_count > 0:
                 events.append({
                     'start': single_date.strftime('%Y-%m-%d'),

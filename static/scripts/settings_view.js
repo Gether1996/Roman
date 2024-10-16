@@ -15,13 +15,27 @@ function saveDaysAhead(person, days_ahead_person) {
 }
 
 function saveTimeRange(person, time_from, time_to) {
-    var time_from = document.getElementById(time_from).value;
-    var time_to = document.getElementById(time_to).value;
+    // Extract the day from the IDs
+    const dayMatch = time_from.match(/_(monday|tuesday|wednesday|thursday|friday|saturday|sunday)$/);
+    const day = dayMatch ? dayMatch[1] : '';
+
+    var time_from_value = document.getElementById(time_from).value;
+    var time_to_value = document.getElementById(time_to).value;
+
+    // Construct the body based on the person and the extracted day
+    var body;
     if (person === 'roman') {
-        var body = {time_from_roman: time_from, time_to_roman: time_to};
+        body = {
+            [`time_from_roman_${day}`]: time_from_value,
+            [`time_to_roman_${day}`]: time_to_value
+        };
     } else {
-        var body = {time_from_evka: time_from, time_to_evka: time_to};
+        body = {
+            [`time_from_evka_${day}`]: time_from_value,
+            [`time_to_evka_${day}`]: time_to_value
+        };
     }
+
     var title = 'Sloty zmenené.';
     sendFetchRequest(body, title);
 }
@@ -128,6 +142,12 @@ function populateTimeSelects(start_slot, end_slot, start_container, end_containe
     var startSelect = document.getElementById(start_container);
     var endSelect = document.getElementById(end_container);
 
+        // Check if the selects are found
+    if (!startSelect || !endSelect) {
+        console.error("Select elements not found:", start_container, end_container);
+        return;
+    }
+
     // Loop from 00:00 (0 minutes) to 23:30 (1410 minutes) by 30-minute intervals
     for (let i = 0; i <= 1410; i += 30) {
         let hours = Math.floor(i / 60);
@@ -154,8 +174,25 @@ function populateTimeSelects(start_slot, end_slot, start_container, end_containe
     }
 }
 
-window.onload = populateTimeSelects(startingSlotHourRoman, endingSlotHourRoman, 'start_time_roman', 'end_time_roman');
-window.onload = populateTimeSelects(startingSlotHourEvka, endingSlotHourEvka, 'start_time_evka', 'end_time_evka');
+document.addEventListener("DOMContentLoaded", function() {
+    // Populate for Roman
+    populateTimeSelects(startingSlotHourRomanMonday, endingSlotHourRomanMonday, 'start_time_roman_monday', 'end_time_roman_monday');
+    populateTimeSelects(startingSlotHourRomanTuesday, endingSlotHourRomanTuesday, 'start_time_roman_tuesday', 'end_time_roman_tuesday');
+    populateTimeSelects(startingSlotHourRomanWednesday, endingSlotHourRomanWednesday, 'start_time_roman_wednesday', 'end_time_roman_wednesday');
+    populateTimeSelects(startingSlotHourRomanThursday, endingSlotHourRomanThursday, 'start_time_roman_thursday', 'end_time_roman_thursday');
+    populateTimeSelects(startingSlotHourRomanFriday, endingSlotHourRomanFriday, 'start_time_roman_friday', 'end_time_roman_friday');
+    populateTimeSelects(startingSlotHourRomanSaturday, endingSlotHourRomanSaturday, 'start_time_roman_saturday', 'end_time_roman_saturday');
+    populateTimeSelects(startingSlotHourRomanSunday, endingSlotHourRomanSunday, 'start_time_roman_sunday', 'end_time_roman_sunday');
+
+    // Populate for Evka
+    populateTimeSelects(startingSlotHourEvkaMonday, endingSlotHourEvkaMonday, 'start_time_evka_monday', 'end_time_evka_monday');
+    populateTimeSelects(startingSlotHourEvkaTuesday, endingSlotHourEvkaTuesday, 'start_time_evka_tuesday', 'end_time_evka_tuesday');
+    populateTimeSelects(startingSlotHourEvkaWednesday, endingSlotHourEvkaWednesday, 'start_time_evka_wednesday', 'end_time_evka_wednesday');
+    populateTimeSelects(startingSlotHourEvkaThursday, endingSlotHourEvkaThursday, 'start_time_evka_thursday', 'end_time_evka_thursday');
+    populateTimeSelects(startingSlotHourEvkaFriday, endingSlotHourEvkaFriday, 'start_time_evka_friday', 'end_time_evka_friday');
+    populateTimeSelects(startingSlotHourEvkaSaturday, endingSlotHourEvkaSaturday, 'start_time_evka_saturday', 'end_time_evka_saturday');
+    populateTimeSelects(startingSlotHourEvkaSunday, endingSlotHourEvkaSunday, 'start_time_evka_sunday', 'end_time_evka_sunday');
+});
 
 var dayLabels = {
     'Monday': 'Pon',
