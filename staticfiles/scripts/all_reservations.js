@@ -243,32 +243,33 @@ function filterTable() {
     var rows = document.querySelectorAll('#filesBody .files-row');
 
     rows.forEach(row => {
-        var name_surname = removeDiacritics(row.children[0].textContent.toLowerCase());
-        var email = removeDiacritics(row.children[1].textContent.toLowerCase());
-        var phone_number = row.children[2].textContent.toLowerCase();
-        var date = row.children[3].textContent.toLowerCase();
-        var slot = row.children[4].textContent.toLowerCase();
-        var worker = row.children[5].textContent.toLowerCase();
-        var created_at = row.children[6].textContent.toLowerCase();
-        var special_request = removeDiacritics(row.children[7].textContent.toLowerCase());
-        var status = removeDiacritics(row.children[8].textContent.toLowerCase());
+        // Update these indices according to your new column order
+        var worker = removeDiacritics(row.children[0].textContent.toLowerCase());      // Updated: Worker
+        var date = row.children[1].textContent.toLowerCase();                         // Updated: Date
+        var slot = row.children[2].textContent.toLowerCase();                         // Updated: Slot
+        var name_surname = removeDiacritics(row.children[3].textContent.toLowerCase()); // Updated: Name and Surname
+        var email = removeDiacritics(row.children[4].textContent.toLowerCase());       // Updated: Email
+        var phone_number = row.children[5].textContent.toLowerCase();                  // Updated: Phone Number
+        var created_at = row.children[6].textContent.toLowerCase();                    // Updated: Created At
+        var special_request = removeDiacritics(row.children[7].textContent.toLowerCase()); // Updated: Special Request
+        var status = removeDiacritics(row.children[8].textContent.toLowerCase());       // Updated: Status
 
         // Determine if the row matches the filter criteria
         var matches = Object.keys(filters).every(key => {
             var filterValue = filters[key];
             switch (key) {
+                case 'worker':
+                    return worker.includes(filterValue);
+                case 'date':
+                    return date.includes(filterValue);
+                case 'slot':
+                    return slot.includes(filterValue);
                 case 'name_surname':
                     return name_surname.includes(filterValue);
                 case 'email':
                     return email.includes(filterValue);
                 case 'phone_number':
                     return phone_number.includes(filterValue);
-                case 'date':
-                    return date.includes(filterValue);
-                case 'slot':
-                    return slot.includes(filterValue);
-                case 'worker':
-                    return worker.includes(filterValue);
                 case 'created_at':
                     return created_at.includes(filterValue);
                 case 'special_request':
