@@ -43,6 +43,7 @@ def prepare_reservation_data(reservation):
 
 config = configparser.ConfigParser()
 
+
 def create_reservation(request):
     if request.method == 'POST':
         active = False
@@ -151,25 +152,46 @@ def check_available_slots(request):
         current_time = datetime.combine(selected_date, starting_hour)
         end_time = datetime.combine(selected_date, ending_hour)
 
-        while current_time < end_time:
-            next_time = current_time + timedelta(minutes=30)  # Assuming 30-minute slots
+        # Calculate the end time for the last possible starting slot to account for the minimum reservation time
+        last_possible_start = end_time - timedelta(minutes=30)  # Adjust for 30-minute reservations
+
+        while current_time <= last_possible_start:  # Include last possible starting time
+            next_time = current_time + timedelta(minutes=15)  # Assuming 15-minute slots
             slot_start = current_time.time()
             slot_end = next_time.time()
 
             # Check if the slot overlaps with any turned-off time or reservations
             is_available = True
 
-            # Check against turned-off days
+            # Check against turned-off days with specific times
             for turned_off_day in turned_off_days:
-                if turned_off_day.whole_day or (
-                        turned_off_day.time_from < slot_end and turned_off_day.time_to > slot_start
-                ):
+                turned_off_start = turned_off_day.time_from
+                turned_off_end = turned_off_day.time_to
+
+                # If the turned-off day covers the whole day, mark as unavailable
+                if turned_off_day.whole_day:
                     is_available = False
                     break
 
+                # If the turned-off period is specified, exclude overlapping slots
+                if turned_off_start and turned_off_end:
+                    # Calculate slot end time considering the 30-minute duration
+                    slot_end = (datetime.combine(selected_date, slot_start) + timedelta(minutes=30)).time()
+
+                    # Check if any part of the slot overlaps with the turned-off period
+                    if not (slot_end <= turned_off_start or slot_start >= turned_off_end):
+                        is_available = False
+                        break
+
             # Check against reservations
             for reservation in reservations:
-                if reservation.datetime_from.time() < slot_end and reservation.datetime_to.time() > slot_start:
+                reservation_start_time = reservation.datetime_from.time()
+                reservation_end_time = reservation.datetime_to.time()
+
+                # Check if the entire 30-minute duration is available
+                if (slot_start < reservation_end_time and
+                        (datetime.combine(selected_date, slot_start) + timedelta(
+                            minutes=30)).time() > reservation_start_time):
                     is_available = False
                     break
 

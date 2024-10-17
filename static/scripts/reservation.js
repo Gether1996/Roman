@@ -658,6 +658,14 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function updateEvents(worker) {
+    const previouslySelected = document.querySelector('.selected-date');
+    const userSelectButton = document.querySelector('.user-select');
+    if (previouslySelected) {
+        previouslySelected.classList.remove('selected-date');
+    }
+    if (userSelectButton) {
+        userSelectButton.remove();
+    }
     // Show the loading Swal
     Swal.fire({
         allowOutsideClick: false, // Prevent closing by clicking outside
