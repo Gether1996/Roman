@@ -372,14 +372,15 @@ def approve_reservation(request):
             reservation.status = 'Schválená'
             reservation.save()
 
-            subject = f'Rezervácia potvrdená / Reservation accepted'
-            html_message = render_to_string('email_template.html',
-                                            {'reservation': prepare_reservation_data(reservation),
-                                             'button': None,
-                                             'accept_link': None,
-                                             'text': '',
-                                             })
-            send_email(subject, html_message, reservation.email)
+            if reservation.email:
+                subject = f'Rezervácia potvrdená / Reservation accepted'
+                html_message = render_to_string('email_template.html',
+                                                {'reservation': prepare_reservation_data(reservation),
+                                                 'button': None,
+                                                 'accept_link': None,
+                                                 'text': '',
+                                                 })
+                send_email(subject, html_message, reservation.email)
 
             return JsonResponse({'status': 'success'})
 
@@ -398,8 +399,17 @@ def deactivate_reservation_by_admin(request):
             reservation.status = 'Zrušená Masérom'
             reservation.personal_note = json_data.get('note')
             reservation.save()
-            return JsonResponse({'status': 'success'})
 
+            if reservation.email:
+                subject = f'Rezervácia zamietnutá / Reservation cancelled'
+                html_message = render_to_string('email_template.html',
+                                                {'reservation': prepare_reservation_data(reservation),
+                                                 'button': None,
+                                                 'accept_link': None,
+                                                 'text': f'Poznámka maséra: {json_data.get("note")}' if json_data.get("note") else "",
+                                                 })
+                send_email(subject, html_message, reservation.email)
+            return JsonResponse({'status': 'success'})
         except Reservation.DoesNotExist:
             return JsonResponse({'status': 'error'})
     return JsonResponse({'status': 'error', 'message': _('Zlý request')})
