@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
 
             events: events,
+            eventMinHeight: 50,
 
             eventContent: function(info) {
                 let title = info.event.title;
@@ -87,6 +88,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     emailEl.innerText = `Email: ${email}`;
                     detailsEl.appendChild(emailEl);
                     detailsEl.appendChild(document.createElement('br'));
+                }
+
+                // Check if phone or email is present to adjust min height
+                if (phone || email) {
+                    calendar.setOption('eventMinHeight', 80); // Set min height to 80
+                } else {
+                    calendar.setOption('eventMinHeight', 50); // Reset to default
                 }
 
                 contentEl.appendChild(timeEl);
