@@ -69,6 +69,14 @@ class Reservation(Model):
         """Returns the created_at timestamp in DD.MM.YYYY HH:MM:SS format."""
         return (self.created_at + timedelta(hours=adjustment_hours())).strftime('%d.%m.%Y %H:%M:%S')
 
+    def get_color(self):
+        if not self.active:
+            return '#8B0000'
+        else:
+            if self.worker == "Evka":
+                return '#ff1493'
+            else:
+                return '#007bff'
 
 class AlreadyMadeReservation(Model):
     name_surname = CharField(max_length=150, unique=True)

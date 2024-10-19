@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path
 from viewer.views import homepage, profile, reservation, settings as settings_view, get_all_reservations_data, \
-    all_reservations, approve_reservation_mail
+    all_reservations, approve_reservation_mail, calendar_view_admin
 from Roman.backend_funcs.users import login_api, logout, registration, delete_saved_person
 from Roman.backend_funcs.general import switch_language
 from Roman.backend_funcs.settings_view import save_settings, add_turned_off_day, delete_turned_off_day, \
@@ -40,6 +40,7 @@ urlpatterns = [
     path('all_reservations/', all_reservations, name='all_reservations'),
     path('settings_view/', settings_view, name='settings_view'),
     path('profile/', profile, name='profile'),
+    path('calendar_view_admin/', calendar_view_admin, name='calendar_view_admin'),
 
     #API
     path('login_api/', login_api, name='login_api'),

@@ -40,6 +40,7 @@
                 {% if user.is_superuser %}
                     <a class="dropdown-link" href="{% url 'settings_view' %}">{% trans 'Nastavenia' %}</a>
                     <a class="dropdown-link" href="{% url 'all_reservations' %}">{% trans 'Prehľad rezervácií' %}</a>
+                    <a class="dropdown-link" href="{% url 'calendar_view_admin' %}">{% trans 'Kalendár' %}</a>
                     <a class="dropdown-link" href="#" onclick="logoutConfirmation()"><i class="fas fa-sign-out-alt"></i> {% trans 'Odhlásiť sa' %}</a>
                 {% else %}
                     <a class="dropdown-link" href="{% url 'profile' %}">{% trans 'Môj profil' %}</a>

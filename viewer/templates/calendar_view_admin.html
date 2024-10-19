@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+    <title>Kalendár</title>
+{% endblock %}
+
+{% block content %}
+
+    <style>
+        body {
+            background-color: white;
+        }
+        #calendar {
+            width: 90%;
+            height: auto;
+            margin: auto;
+            border: 1px solid black;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .fc .fc-timegrid-slot {
+            height: 40px; /* Set to desired height */
+        }
+    </style>
+
+    {% include 'navbar.html' %}
+    <div class="top-margin-reservation"></div>
+    <div id="calendar"></div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+    <script>
+        var events = {{ events|safe }};
+    </script>
+    <script src="{% static 'scripts/calendar_view_admin.js' %}"></script>
+{% endblock %}

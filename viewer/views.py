@@ -23,6 +23,38 @@ def homepage(request):
     return render(request, 'homepage.html', {'photos': photos, 'vouchers': vouchers})
 
 
+def calendar_view_admin(request):
+    if not request.user.is_authenticated:
+        message = _('Najskôr sa prihláste. (len pre admina)')
+        return render(request, 'error.html', {'message': message})
+
+    if not request.user.is_superuser:
+        message = _('Náhľad povolený len pre admina.')
+        return render(request, 'error.html', {'message': message})
+
+    all_active_reservations = Reservation.objects.all()
+    events = []
+    for reservation in all_active_reservations:
+        events.append({
+            'id': reservation.id,
+            'title': f"{reservation.worker} - {reservation.name_surname}",
+            'start': reservation.datetime_from.isoformat(),
+            'end': reservation.datetime_to.isoformat(),
+            'borderColor': reservation.get_color(),
+            'backgroundColor': reservation.get_color(),
+            'textColor': 'white',
+
+            # Put phone and email into extendedProps
+            'extendedProps': {
+                'phone': reservation.phone_number,
+                'email': reservation.email,
+                'active': "True" if reservation.active else "False",
+            }
+        })
+
+    return render(request, 'calendar_view_admin.html', {'events': events})
+
+
 def reservation(request):
     users = AlreadyMadeReservation.objects.all().order_by('name_surname')
     user_data = [

@@ -144,7 +144,7 @@ def check_available_slots(request):
         ending_hour = datetime.strptime(ending_hour_str, '%H:%M').time()
 
         # Get all reservations and turned-off days for the worker on the selected date
-        reservations = Reservation.objects.filter(datetime_from__date=selected_date)
+        reservations = Reservation.objects.filter(datetime_from__date=selected_date, active=True)
         turned_off_days = TurnedOffDay.objects.filter(worker=worker, date=selected_date)
 
         # Create a list of all possible slots for the day
@@ -222,7 +222,7 @@ def check_available_durations(request, worker):
         ending_hour = datetime.strptime(ending_hour_str, '%H:%M').time()
 
         turned_off_times = TurnedOffDay.objects.filter(worker=worker, date=selected_date)
-        reservations = Reservation.objects.filter(datetime_from__date=selected_date)
+        reservations = Reservation.objects.filter(datetime_from__date=selected_date, active=True)
 
         # Define possible duration windows in minutes
         duration_options = [30, 45, 60, 90, 120]
@@ -303,7 +303,7 @@ def check_available_slots_ahead(request, worker):
                 continue
 
             # Get all reservations and partial turned-off slots for that day
-            reservations = Reservation.objects.filter(datetime_from__date=single_date)
+            reservations = Reservation.objects.filter(datetime_from__date=single_date, active=True)
             turned_off_slots = TurnedOffDay.objects.filter(worker=worker, date=single_date, whole_day=False)
 
             available_slots_count = 0
