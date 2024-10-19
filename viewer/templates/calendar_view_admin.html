@@ -14,14 +14,51 @@
         #calendar {
             width: 90%;
             height: auto;
+            max-height: 110vh;
             margin: auto;
             border: 1px solid black;
             padding: 10px;
             margin-bottom: 10px;
         }
+        .fc-event {
+            padding: 4px; /* Add padding for better touch target */
+        }
         .fc .fc-timegrid-slot {
             height: 40px; /* Set to desired height */
+            max-height: 40px;
         }
+
+        @media (max-width: 500px) {
+            #calendar {
+                font-size: 12px; /* Adjust font size for readability */
+                height: 80vh;
+            }
+
+            .fc-event {
+                padding: 5px; /* Add padding for better touch target */
+                font-size: 12px; /* Smaller font size for events */
+            }
+
+            .fc-toolbar {
+                display: flex;
+                flex-direction: column; /* Stack toolbar elements vertically */
+                align-items: center; /* Center align the toolbar elements */
+            }
+
+            .fc-toolbar-chunk {
+                display: flex;
+            }
+
+            .fc-toolbar button {
+                margin-bottom: 5px; /* Space between buttons */
+                width: 100%; /* Full-width buttons */
+            }
+
+            .fc-dayGrid-view {
+                padding: 10px; /* Add padding around the view */
+            }
+        }
+
     </style>
 
     {% include 'navbar.html' %}
