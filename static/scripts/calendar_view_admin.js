@@ -1,31 +1,33 @@
+function formatDateWithoutTimezone(dateString) {
+    // Split on the '+' or 'Z' to remove the timezone part
+    return dateString.split('+')[0].split('Z')[0];
+}
+
+let debounceTimer;
+const debounceDelay = 150; // 300ms delay
+
 document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
     var calendar;
 
     function initializeCalendar() {
-        // Clear the calendar if it exists
         if (calendar) {
             calendar.destroy();
         }
 
-        // Determine the view based on screen width
         const isMobile = window.matchMedia('(max-width: 500px)').matches;
-        const initialView = isMobile ? 'dayGridDay' : 'timeGridWeek'; // Use single-day view for mobile
+        const initialView = isMobile ? 'dayGridDay' : 'timeGridWeek';
 
         calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: initialView,
-
-            // Toolbar with buttons for week and month view
             headerToolbar: {
                 left: 'prev,next today',
                 center: 'title',
                 right: isMobile ? 'dayGridDay,dayGridMonth' : 'timeGridWeek,dayGridMonth',
             },
-
-            // General settings
             slotDuration: '01:00:00',
-            slotMinTime: '07:00', // Start at midnight
-            slotMaxTime: '22:00', // End at midnight of the next day
+            slotMinTime: '07:00',
+            slotMaxTime: '22:00',
             allDaySlot: false,
             expandRows: true,
 
@@ -41,12 +43,30 @@ document.addEventListener('DOMContentLoaded', function() {
                 today: 'Dnes',
                 week: 'Týždeň',
                 month: 'Mesiac',
-                day: 'Deň', // Added for single day view
+                day: 'Deň',
             },
 
-            events: events,
-            eventMinHeight: 50,
+            events: function(fetchInfo, successCallback, failureCallback) {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(() => {
+                    fetch(`/fetch_reservations/?start=${formatDateWithoutTimezone(fetchInfo.startStr)}&end=${formatDateWithoutTimezone(fetchInfo.endStr)}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            successCallback(data);
+                        })
+                        .catch(error => {
+                            console.error('Error fetching reservations:', error);
+                            failureCallback(error);
+                        });
+                }, debounceDelay);
+            },
 
+            eventMinHeight: 50,
             eventContent: function(info) {
                 let title = info.event.title;
                 let startTime = info.timeText;
@@ -90,11 +110,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     detailsEl.appendChild(document.createElement('br'));
                 }
 
-                // Check if phone or email is present to adjust min height
                 if (phone || email) {
-                    calendar.setOption('eventMinHeight', 80); // Set min height to 80
+                    calendar.setOption('eventMinHeight', 80);
                 } else {
-                    calendar.setOption('eventMinHeight', 50); // Reset to default
+                    calendar.setOption('eventMinHeight', 50);
                 }
 
                 contentEl.appendChild(timeEl);
@@ -120,9 +139,6 @@ document.addEventListener('DOMContentLoaded', function() {
         calendar.render();
     }
 
-    // Initialize the calendar on load
     initializeCalendar();
-
-    // Reinitialize on window resize to adapt to screen size
     window.addEventListener('resize', initializeCalendar);
 });

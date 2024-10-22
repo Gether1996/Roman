@@ -68,8 +68,5 @@
 {% endblock %}
 
 {% block extra_scripts %}
-    <script>
-        var events = {{ events|safe }};
-    </script>
     <script src="{% static 'scripts/calendar_view_admin.js' %}"></script>
 {% endblock %}

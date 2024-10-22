@@ -24,15 +24,63 @@ def homepage(request):
 
 
 def calendar_view_admin(request):
-    if not request.user.is_authenticated:
-        message = _('Najskôr sa prihláste. (len pre admina)')
-        return render(request, 'error.html', {'message': message})
+    # if not request.user.is_authenticated:
+    #     message = _('Najskôr sa prihláste. (len pre admina)')
+    #     return render(request, 'error.html', {'message': message})
+    #
+    # if not request.user.is_superuser:
+    #     message = _('Náhľad povolený len pre admina.')
+    #     return render(request, 'error.html', {'message': message})
+    #
+    # all_active_reservations = Reservation.objects.all()
+    # events = []
+    # for reservation in all_active_reservations:
+    #     events.append({
+    #         'id': reservation.id,
+    #         'title': f"{reservation.worker} - {reservation.name_surname}",
+    #         'start': reservation.datetime_from.isoformat(),
+    #         'end': reservation.datetime_to.isoformat(),
+    #         'borderColor': reservation.get_color(),
+    #         'backgroundColor': reservation.get_color(),
+    #         'textColor': 'white',
+    #
+    #         # Put phone and email into extendedProps
+    #         'extendedProps': {
+    #             'phone': reservation.phone_number,
+    #             'email': reservation.email,
+    #             'active': "True" if reservation.active else "False",
+    #         }
+    #     })
 
-    if not request.user.is_superuser:
-        message = _('Náhľad povolený len pre admina.')
-        return render(request, 'error.html', {'message': message})
+    return render(request, 'calendar_view_admin.html')
 
-    all_active_reservations = Reservation.objects.all()
+
+from django.http import JsonResponse
+from django.utils.translation import gettext as _
+from datetime import datetime
+
+
+def fetch_reservations(request):
+    start = request.GET.get('start')
+    end = request.GET.get('end')
+
+    if not start or not end:
+        return JsonResponse({'error': _('Chýba časové rozpätie.')}, status=400)
+
+    try:
+        # Remove timezone information
+        start_date = datetime.fromisoformat(start.split('+')[0])  # Ignore any '+' timezone info
+        end_date = datetime.fromisoformat(end.split('+')[0])  # Ignore any '+' timezone info
+    except ValueError:
+        return JsonResponse({'error': _('Neplatný formát dátumu.')}, status=400)
+
+    # Check if the parsed dates are valid
+    if start_date is None or end_date is None:
+        return JsonResponse({'error': _('Neplatný formát dátumu.')}, status=400)
+
+    # Filter reservations within the requested date range
+    all_active_reservations = Reservation.objects.filter(datetime_from__gte=start_date, datetime_to__lte=end_date)
+
     events = []
     for reservation in all_active_reservations:
         events.append({
@@ -43,8 +91,6 @@ def calendar_view_admin(request):
             'borderColor': reservation.get_color(),
             'backgroundColor': reservation.get_color(),
             'textColor': 'white',
-
-            # Put phone and email into extendedProps
             'extendedProps': {
                 'phone': reservation.phone_number,
                 'email': reservation.email,
@@ -52,8 +98,7 @@ def calendar_view_admin(request):
             }
         })
 
-    return render(request, 'calendar_view_admin.html', {'events': events})
-
+    return JsonResponse(events, safe=False)
 
 def reservation(request):
     users = AlreadyMadeReservation.objects.all().order_by('name_surname')
