@@ -145,7 +145,7 @@ body {
   justify-content: center;
   display: flex;
   align-items: center;
-  z-index: 8000;
+  z-index: 1000;
 }
 
 .navbar-content {
@@ -1025,6 +1025,7 @@ body {
 .swal2-popup {
     width: auto;
     max-width: 95%;
+    z-index: 2000;
 }
 
 .hidden-initially {
@@ -1321,14 +1322,6 @@ body {
         font-size: 10px;
         transition: 0.3s;
         text-align: right;
-    }
-
-    #calendar {
-        width: 105%;
-        height: 450px;
-        border: 1px solid black;
-        padding: 10px;
-        margin-bottom: 10px;
     }
 
     .big-button {

@@ -186,7 +186,8 @@ def check_available_slots(request):
             # Check against reservations
             for reservation in reservations:
                 reservation_start_time = reservation.datetime_from.time()
-                reservation_end_time = reservation.datetime_to.time()
+                # Adding 15-minute break after each reservation
+                reservation_end_time = (reservation.datetime_to + timedelta(minutes=15)).time()
 
                 # Check if the entire 30-minute duration is available
                 if (slot_start < reservation_end_time and
@@ -271,7 +272,10 @@ def check_available_slots_ahead(request, worker):
         tomorrow = today + timedelta(days=1)
         worker_config = config['settings-roman'] if worker == 'Roman' else config['settings-evka']
 
-        days_to_check_ahead = int(worker_config['days_ahead'])
+        if request.user.is_superuser:
+            days_to_check_ahead = 90
+        else:
+            days_to_check_ahead = int(worker_config['days_ahead'])
         working_days = worker_config['working_days']
         end_date = today + timedelta(days=days_to_check_ahead)
         slot_duration = 30  # Assuming 30 minutes per slot
@@ -332,7 +336,13 @@ def check_available_slots_ahead(request, worker):
 
                 current_time = next_time
 
-            possible = _('voľných')
+            if available_slots_count == 1:
+                possible = _('voľný')
+            elif 2 <= available_slots_count <= 4:
+                possible = _('voľné')
+            else:
+                possible = _('voľných')
+
             if available_slots_count > 0:
                 events.append({
                     'start': single_date.strftime('%Y-%m-%d'),
