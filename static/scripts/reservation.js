@@ -563,6 +563,7 @@ function createReservation() {
 document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
     var dateInput = document.getElementById('date');
+
     calendar = new FullCalendar.Calendar(calendarEl, {
 
         initialView: 'dayGridMonth',
