@@ -34,9 +34,10 @@ def calendar_view_admin(request):
         message = _('Náhľad povolený len pre admina.')
         return render(request, 'error.html', {'message': message})
 
-    all_active_reservations = Reservation.objects.all()
+    current_datetime = datetime.now()
+    future_reservations = Reservation.objects.filter(datetime_from__gt=current_datetime)
     events = []
-    for reservation in all_active_reservations:
+    for reservation in future_reservations:
         events.append({
             'id': reservation.id,
             'title': f"{reservation.worker} - {reservation.name_surname}",
@@ -201,7 +202,7 @@ def profile(request):
                 'worker': reservation.worker,
                 'status': reservation.status,
                 'special_request': reservation.special_request,
-                'created_at': reservation.get_created_at_string_adjusted(),
+                'created_at': reservation.get_created_at_string(),
                 'is_past': datetime.now() > reservation.datetime_to
             }
             for reservation in reservations
@@ -286,7 +287,7 @@ def get_all_reservations_data(request):
     if filters['created_at']:
         all_reservations_obj_filtered = [
             reservation for reservation in all_reservations_obj
-            if filters['created_at'] in reservation.get_created_at_string_adjusted()
+            if filters['created_at'] in reservation.get_created_at_string()
         ]
         all_reservations_obj = all_reservations_obj.filter(created_at__in=[reservation.created_at for reservation in all_reservations_obj_filtered])
 

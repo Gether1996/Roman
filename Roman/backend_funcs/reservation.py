@@ -32,7 +32,7 @@ def prepare_reservation_data(reservation):
         'active': reservation.active,
         'worker': reservation.worker,
         'status': reservation.status,
-        'created_at': reservation.get_created_at_string_adjusted(),
+        'created_at': reservation.get_created_at_string(),
         'special_request': reservation.special_request if reservation.special_request else '',
         'personal_note': reservation.personal_note if reservation.personal_note else '',
         'cancellation_reason': reservation.cancellation_reason if reservation.cancellation_reason else '',
@@ -185,7 +185,7 @@ def check_available_slots(request):
 
             # Check against reservations
             for reservation in reservations:
-                reservation_start_time = reservation.datetime_from.time()
+                reservation_start_time = (reservation.datetime_from - timedelta(minutes=15)).time()
                 # Adding 15-minute break after each reservation
                 reservation_end_time = (reservation.datetime_to + timedelta(minutes=15)).time()
 
@@ -246,10 +246,10 @@ def check_available_durations(request, worker):
                     overlaps = True
                     break
 
-            # Check for overlap with existing reservations
+            # Check for overlap with existing reservations, considering a 15-minute buffer
             for reservation in reservations:
-                reservation_start = reservation.datetime_from.time()
-                reservation_end = reservation.datetime_to.time()
+                reservation_start = (reservation.datetime_from - timedelta(minutes=15)).time()
+                reservation_end = (reservation.datetime_to + timedelta(minutes=15)).time()
 
                 if reservation_start < end_time and time_slot_start < reservation_end:
                     overlaps = True

@@ -1,12 +1,6 @@
 from django.db.models import *
 from accounts.models import CustomUser
-from datetime import datetime, timedelta
 
-def adjustment_hours():
-    current_time = datetime.now()
-    is_summer_time = current_time.dst() != timedelta(0)
-    adjustment_hours = 2 if is_summer_time else 1
-    return adjustment_hours
 
 class GalleryPhoto(Model):
     photo = ImageField(upload_to='static/images/')
@@ -64,10 +58,6 @@ class Reservation(Model):
     def get_created_at_string(self):
         """Returns the created_at timestamp in DD.MM.YYYY HH:MM:SS format."""
         return self.created_at.strftime('%d.%m.%Y %H:%M:%S')
-
-    def get_created_at_string_adjusted(self):
-        """Returns the created_at timestamp in DD.MM.YYYY HH:MM:SS format."""
-        return (self.created_at + timedelta(hours=adjustment_hours())).strftime('%d.%m.%Y %H:%M:%S')
 
     def get_color(self):
         if not self.active:

@@ -8,9 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     console.log("Calendar element found:", calendarEl);
 
-    // Determine the minimum height based on event properties
-    let hasContactInfo = events.some(event => event.phone || event.email);
-    let eventMinHeight = hasContactInfo ? 80 : 50;
+    let eventMinHeight = 40;
 
     // Check screen width and set the initial view accordingly
     function getInitialView() {
@@ -50,8 +48,6 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log("Event content being processed");
             let title = info.event.title;
             let startTime = info.timeText;
-            let phone = info.event.extendedProps.phone;
-            let email = info.event.extendedProps.email;
             let active = info.event.extendedProps.active;
 
             let contentEl = document.createElement('div');
@@ -73,20 +69,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 activeEl.classList.add('event-active');
                 activeEl.innerText = `Nepotvrdené`;
                 detailsEl.appendChild(activeEl);
-                detailsEl.appendChild(document.createElement('br'));
-            }
-            if (phone) {
-                let phoneEl = document.createElement('span');
-                phoneEl.classList.add('event-phone');
-                phoneEl.innerText = `Phone: ${phone}`;
-                detailsEl.appendChild(phoneEl);
-                detailsEl.appendChild(document.createElement('br'));
-            }
-            if (email) {
-                let emailEl = document.createElement('span');
-                emailEl.classList.add('event-email');
-                emailEl.innerText = `Email: ${email}`;
-                detailsEl.appendChild(emailEl);
                 detailsEl.appendChild(document.createElement('br'));
             }
 
