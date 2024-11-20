@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-22 13:59+0200\n"
+"POT-Creation-Date: 2024-11-20 13:42+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1299,7 +1299,7 @@ msgstr "Homepage"
 msgid "Prihlásenie"
 msgstr "Log-in"
 
-#: .\viewer\templates\homepage.html:6 .\viewer\templates\homepage.html:126
+#: .\viewer\templates\homepage.html:6 .\viewer\templates\homepage.html:144
 msgid "Masáže Vlčince"
 msgstr "Massages Vlčince"
 
@@ -1307,40 +1307,44 @@ msgstr "Massages Vlčince"
 msgid "Priateľský a individuálny prístup pre naších klientov"
 msgstr "Friendly and individual approach for our clients"
 
-#: .\viewer\templates\homepage.html:30 .\viewer\templates\homepage.html:40
-#: .\viewer\templates\homepage.html:60
+#: .\viewer\templates\homepage.html:30 .\viewer\templates\homepage.html:41
+#: .\viewer\templates\homepage.html:61
 msgid "Klasická masáž"
 msgstr "Classic massage"
 
-#: .\viewer\templates\homepage.html:31 .\viewer\templates\homepage.html:41
-#: .\viewer\templates\homepage.html:68
+#: .\viewer\templates\homepage.html:31 .\viewer\templates\homepage.html:42
+#: .\viewer\templates\homepage.html:69
 msgid "Športová masáž"
 msgstr "Sport massage"
 
-#: .\viewer\templates\homepage.html:32 .\viewer\templates\homepage.html:42
-#: .\viewer\templates\homepage.html:64
+#: .\viewer\templates\homepage.html:32 .\viewer\templates\homepage.html:43
+#: .\viewer\templates\homepage.html:65
 msgid "Mäkké a myofasciálne techniky"
 msgstr "Soft and myofascial techniques"
 
-#: .\viewer\templates\homepage.html:33 .\viewer\templates\homepage.html:43
-#: .\viewer\templates\homepage.html:75
+#: .\viewer\templates\homepage.html:33 .\viewer\templates\homepage.html:44
+#: .\viewer\templates\homepage.html:76
 msgid "Bankovanie"
 msgstr "Cupping"
 
-#: .\viewer\templates\homepage.html:44 .\viewer\templates\homepage.html:79
+#: .\viewer\templates\homepage.html:34 .\viewer\templates\homepage.html:84
+msgid "terapia"
+msgstr "Therapy"
+
+#: .\viewer\templates\homepage.html:45 .\viewer\templates\homepage.html:80
 msgid "Lávové kamene"
 msgstr "Lava stones"
 
-#: .\viewer\templates\homepage.html:50
+#: .\viewer\templates\homepage.html:51
 msgid "Rezervovať termín"
 msgstr "Make reservation"
 
-#: .\viewer\templates\homepage.html:56
+#: .\viewer\templates\homepage.html:57
 #: .\viewer\templates\navbar-homepage.html:11
 msgid "Techniky"
 msgstr "Techniques"
 
-#: .\viewer\templates\homepage.html:61
+#: .\viewer\templates\homepage.html:62
 msgid ""
 "Klasická masáž aktivuje celkový krvný a lymfatický obeh, ktorý následne "
 "zlepšuje okysličenie organizmu a odlev škodlivých látok z tela. Zlepšuje "
@@ -1359,7 +1363,7 @@ msgstr ""
 "and soul. It is suitable for almost everyone, whether for stress relief, "
 "pain relief, or prevention and regeneration"
 
-#: .\viewer\templates\homepage.html:65
+#: .\viewer\templates\homepage.html:66
 msgid ""
 "Mäkké a myofasciálne techniky sú masážne techniky, ktoré primárne uvoľnujú "
 "mäkké tkanivá – svaly. <br><br>V porovnaní s klasickou masážou môže byť "
@@ -1376,7 +1380,7 @@ msgstr ""
 "is also an excellent method for stopping the process of muscle stiffness or "
 "tension release."
 
-#: .\viewer\templates\homepage.html:69
+#: .\viewer\templates\homepage.html:70
 msgid ""
 "Športová masáž je veľmi podobná klasickej masáži, keďže využíva väčšinu "
 "hmatov klasickej relaxačnej masáže, je však prispôsobená špeciálne pre "
@@ -1399,7 +1403,7 @@ msgstr ""
 "psychological aspect, relieving pre-competition stress and positively "
 "impacting performance."
 
-#: .\viewer\templates\homepage.html:76
+#: .\viewer\templates\homepage.html:77
 msgid ""
 "Pri bankovaní prikladáme sklenné banky s nahriatym vzduchom, v tých sa "
 "ochladzovaním vytvorí podtlak a banka sa na kožu prisaje. Podtlak vtiahne "
@@ -1416,7 +1420,7 @@ msgstr ""
 "residual color marks at the application site (painless), which will "
 "disappear within a few days."
 
-#: .\viewer\templates\homepage.html:80
+#: .\viewer\templates\homepage.html:81
 msgid ""
 "Lávové kamene z čadiča absorbujú, udržiavajú a následne odovzdávajú teplo, "
 "čo pozitívne pôsobí nielen na pokožku, podkožie a svaly, ale zlepšujú aj "
@@ -1435,34 +1439,59 @@ msgstr ""
 "between humans and the Earth, harmonizing with nature. Thus, their effect "
 "harmonizes and regenerates not only the body but also the mind."
 
-#: .\viewer\templates\homepage.html:87
+#: .\viewer\templates\homepage.html:86
+msgid ""
+"IASTM (Instrument Assisted Soft Tissue Mobilization) predstavuje moderný "
+"terapeutický prístup v oblasti fasciálnej mobilizácie a celkovej terapie "
+"fascií ľudského tela. Pôsobením IASTM nástrojov dochádza vo fasciách ku "
+"vzniku stresového podnetu, tlaku a tepla, čo napomáha v rámci správneho "
+"fungovania fascií."
+msgstr "IASTM (Instrument Assisted Soft Tissue Mobilization) represents a modern therapeutic approach in the field of fascial mobilization and overall fascia therapy of the human body. The use of IASTM tools creates a stress stimulus, pressure, and heat within the fascia, which helps in the proper functioning of the fascia."
+
+#: .\viewer\templates\homepage.html:91
+msgid "Zníženie bolesti"
+msgstr "Pain reduction"
+
+#: .\viewer\templates\homepage.html:93
+msgid "Zlepšuje rozsah pohybu"
+msgstr "Improves range of motion"
+
+#: .\viewer\templates\homepage.html:95
+msgid "Zlepšuje pružnosť a elasticitu tkanív"
+msgstr "Improves flexibility and elasticity of tissues"
+
+#: .\viewer\templates\homepage.html:97
+msgid "Mobilizuje mäkké tkanivá"
+msgstr "Mobilizes soft tissues"
+
+#: .\viewer\templates\homepage.html:105
 #: .\viewer\templates\navbar-homepage.html:12
 msgid "Galéria"
 msgstr "Gallery"
 
-#: .\viewer\templates\homepage.html:100
+#: .\viewer\templates\homepage.html:118
 #: .\viewer\templates\navbar-homepage.html:13
 msgid "Poukážky"
 msgstr "Vouchers"
 
-#: .\viewer\templates\homepage.html:105
+#: .\viewer\templates\homepage.html:123
 msgid "Stiahnúť"
 msgstr "Download"
 
-#: .\viewer\templates\homepage.html:116
+#: .\viewer\templates\homepage.html:134
 msgid "Pre firmy"
 msgstr "For companies"
 
-#: .\viewer\templates\homepage.html:117
+#: .\viewer\templates\homepage.html:135
 msgid "Jedinečná príležitosť dopriať svojim zamestnancom relax od práce"
 msgstr ""
 "A unique opportunity to provide your employees with relaxation from work"
 
-#: .\viewer\templates\homepage.html:118
+#: .\viewer\templates\homepage.html:136
 msgid "prostredníctvom poukážok upravených pre Vašu firmu na mieru."
 msgstr "through vouchers tailored specifically for your company."
 
-#: .\viewer\templates\homepage.html:119
+#: .\viewer\templates\homepage.html:137
 msgid ""
 "Spolupracujte s nami a prineste do svojho pracovného prostredia novú úroveň "
 "pohody."
@@ -1470,7 +1499,7 @@ msgstr ""
 "Collaborate with us and bring a new level of comfort to your work "
 "environment."
 
-#: .\viewer\templates\homepage.html:120
+#: .\viewer\templates\homepage.html:138
 msgid "Pre viac informácii nás kontaktujte."
 msgstr "Contact us for more informations."
 
@@ -1615,15 +1644,15 @@ msgstr "Phone number"
 msgid "Polia označené * sú povinné"
 msgstr "Fields with * are mandatory"
 
-#: .\viewer\views.py:28 .\viewer\views.py:74 .\viewer\views.py:219
+#: .\viewer\views.py:30 .\viewer\views.py:79 .\viewer\views.py:224
 msgid "Najskôr sa prihláste. (len pre admina)"
 msgstr "Log-in first. (for admin only)"
 
-#: .\viewer\views.py:32 .\viewer\views.py:78 .\viewer\views.py:223
+#: .\viewer\views.py:34 .\viewer\views.py:83 .\viewer\views.py:228
 msgid "Náhľad povolený len pre admina."
 msgstr "Access only for admin."
 
-#: .\viewer\views.py:184 .\viewer\views.py:213
+#: .\viewer\views.py:189 .\viewer\views.py:218
 msgid "Najskôr sa prihláste."
 msgstr "Log-in first."
 
