@@ -83,12 +83,8 @@ def create_reservation(request):
             updated_at=datetime.now(),
         )
 
-        normalized_name = unidecode(json_data.get('nameSurname'))
-
         try:
-            already_created_reservation = AlreadyMadeReservation.objects.get(
-                name_surname__iexact=unidecode(new_reservation.name_surname)
-            )
+            already_created_reservation = AlreadyMadeReservation.objects.get(name_surname=json_data.get('nameSurname'))
         except AlreadyMadeReservation.DoesNotExist:
             already_created_reservation = AlreadyMadeReservation.objects.create(
                 name_surname=json_data.get('nameSurname'),
