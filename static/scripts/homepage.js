@@ -51,14 +51,14 @@ function showTechnique(index) {
     Glass cups with heated air are applied to the skin. Cooling air creates suction, drawing the skin and underlying tissue into the cup.<br><br>
     Improves circulation and oxygenation of critical points. Toxins are removed from the body.<br><br>
     Temporary painless marks may remain but disappear within a few days.<br><br>
-    <img style="width: 60%;" src="/static/images/cupping.png">
+    <img style="width: 60%; max-width: 300px;" src="/static/images/cupping.png">
     `,
             sk: `
     <strong style="font-size: 30px;">Bankovanie</strong><br><br>
     Sklenené banky s nahriatym vzduchom sa prisajú na kožu a vytvárajú podtlak, ktorý vtiahne pokožku a podkožie do banky.<br><br>
     Prekrvuje a okysličuje dôležité miesta, pomáha odplavovať škodliviny.<br><br>
     Zostávajú dočasné bezbolestné stopy, ktoré zmiznú za pár dní.<br><br>
-    <img style="width: 60%;" src="/static/images/cupping.png">
+    <img style="width: 60%; max-width: 300px;" src="/static/images/cupping.png">
     `
         },
 
@@ -82,13 +82,13 @@ function showTechnique(index) {
     <strong style="font-size: 30px;">IASTM Therapy</strong><br><br>
     Instrument-Assisted Soft Tissue Mobilization is a modern fascial therapy technique using tools to apply pressure and heat.<br><br>
     This stimulates fascia and supports healthy soft tissue function.<br><br>
-    <img style="width: 60%;" src="/static/images/iastm.png">
+    <img style="width: 60%; max-width: 300px;" src="/static/images/iastm.png">
     `,
         sk: `
     <strong style="font-size: 30px;">IASTM terapia</strong><br><br>
     Moderná terapia fascií pomocou nástrojov, ktoré vytvárajú tlak a teplo vo fasciách.<br><br>
     Stimuluje správne fungovanie mäkkých tkanív.<br><br>
-    <img style="width: 60%;" src="/static/images/iastm.png">
+    <img style="width: 60%; max-width: 300px;" src="/static/images/iastm.png">
     `
     }
   };
