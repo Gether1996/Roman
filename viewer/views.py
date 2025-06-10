@@ -8,22 +8,59 @@ from django.utils.translation import activate
 from django.utils.translation import gettext_lazy as _
 from Roman.backend_funcs.reservation import prepare_reservation_data, send_email
 from accounts.models import CustomUser
-from viewer.models import GalleryPhoto, VoucherPhoto, Reservation, TurnedOffDay, AlreadyMadeReservation
+from viewer.models import GalleryPhoto, VoucherPhoto, Reservation, TurnedOffDay, AlreadyMadeReservation, Review
 from datetime import datetime
 from django.utils.translation import gettext as _
 import json
+from statistics import mean
+import shutil
 
 config = configparser.ConfigParser()
-
 
 def homepage(request):
     language_code = request.session.get('django_language', 'sk')
     photos = GalleryPhoto.objects.all()
     vouchers = VoucherPhoto.objects.all()
+    print(shutil.which("msguniq"))
+
+    # Prepare enriched review data
+    reviews = Review.objects.all().order_by('-created_at')
+    roman_reviews = []
+    evka_reviews = []
+
+    for review in reviews:
+        enriched_review = {
+            'id': review.id,
+            'name_surname': review.name_surname,
+            'message': review.message,
+            'stars': review.stars,
+            'filled_stars': range(int(review.stars)),
+            'empty_stars': range(5 - int(review.stars)),
+            'created_at': review.created_at.strftime('%d.%m.%Y %H:%M'),
+        }
+
+        if review.worker == 'roman':
+            roman_reviews.append(enriched_review)
+        elif review.worker == 'evka':
+            evka_reviews.append(enriched_review)
+        # Zober len 10 najnovších recenzií a vypočítaj priemer
+    recent_roman_stars = [r['stars'] for r in roman_reviews[:10]]
+    recent_evka_stars = [r['stars'] for r in evka_reviews[:10]]
+
+    roman_avg = round(mean(recent_roman_stars), 2) if recent_roman_stars else 0
+    evka_avg = round(mean(recent_evka_stars), 2) if recent_evka_stars else 0        
+
+    context = {
+        'photos': photos,
+        'vouchers': vouchers,
+        'roman_reviews': roman_reviews[:10],
+        'evka_reviews': evka_reviews[:10],
+        'roman_avg': roman_avg,
+        'evka_avg': evka_avg,
+    }
 
     activate(language_code)
-    return render(request, 'homepage.html', {'photos': photos, 'vouchers': vouchers})
-
+    return render(request, 'homepage.html', context)
 
 def calendar_view_admin(request):
     if not request.user.is_authenticated:
@@ -54,11 +91,8 @@ def calendar_view_admin(request):
                 'active': "True" if reservation.active else "False",
             }
         })
-
     events_json = json.dumps(events)
-
     return render(request, 'calendar_view_admin.html', {'events': events_json})
-
 
 def reservation(request):
     users = AlreadyMadeReservation.objects.all().order_by('name_surname')
@@ -72,7 +106,6 @@ def reservation(request):
         for user in users
     ]
     return render(request, 'reservation.html', {'user_data': user_data})
-
 
 def settings(request):
     if not request.user.is_authenticated:
@@ -127,9 +160,7 @@ def settings(request):
     ending_slot_hour_evka_sunday = str(config['settings-evka']['sunday_ending_hour'])
 
     working_days_evka = config['settings-evka']['working_days']
-
     turned_off_days = TurnedOffDay.objects.all()
-
     turned_off_days_data = [
         {
             'id': day.id,
@@ -180,9 +211,7 @@ def settings(request):
         'starting_slot_hour_evka_sunday': starting_slot_hour_evka_sunday,
         'ending_slot_hour_evka_sunday': ending_slot_hour_evka_sunday,
     }
-
     return render(request, 'settings_view.html', context)
-
 
 def profile(request):
     if not request.user.is_authenticated:
@@ -211,11 +240,9 @@ def profile(request):
             'reservation_data': reservation_data
         }
         return render(request, 'profile.html', context)
-
     except CustomUser.DoesNotExist:
         message = _('Najskôr sa prihláste.')
         return render(request, 'error.html', {'message': message})
-
 
 def all_reservations(request):
     if not request.user.is_authenticated:
@@ -229,20 +256,17 @@ def all_reservations(request):
     sort_by = request.GET.get('sort_by', 'datetime_from')
     order = request.GET.get('order', 'asc')
     page = request.GET.get('page', 1)
-
     context = {
         'current_sort_by': sort_by,
         'current_order': order,
         'page': page,
     }
-
     if 'sort_by' not in request.GET:
         if page:
             return redirect(f'{reverse("all_reservations")}?sort_by=datetime_from&order=desc&page={page}')
         else:
             return redirect(f'{reverse("all_reservations")}?sort_by=datetime_from&order=desc')
     return render(request, 'all_reservations.html', context)
-
 
 def get_all_reservations_data(request):
     config.read('config.ini')
@@ -260,7 +284,6 @@ def get_all_reservations_data(request):
 
     reservations_per_page = int(config['settings']['reservations_per_page'])
     all_reservations_obj = Reservation.objects.all()
-
     sort_by = request.GET.get('sort_by', 'datetime_from')
     order = request.GET.get('order', 'asc')
 
@@ -332,20 +355,16 @@ def get_all_reservations_data(request):
             'has_next': loaded_reservations.has_next(),
         }
     }
-
     return JsonResponse(response_data, safe=False)
-
 
 def approve_reservation_mail(request, reservation_id):
     if request.method == 'GET':
         try:
             reserv = Reservation.objects.get(id=reservation_id)
-
             if not reserv.active:
                 reserv.active = True
                 reserv.status = 'Schválená'
                 reserv.save()
-
                 subject = f'Rezervácia potvrdená / Reservation accepted'
                 html_message = render_to_string('email_template.html',
                                                 {'reservation': prepare_reservation_data(reserv),
@@ -357,12 +376,9 @@ def approve_reservation_mail(request, reservation_id):
             context = {
                 'reservation': prepare_reservation_data(reserv),
             }
-
             return render(request, 'approved_reservation.html', context)
-
         except Reservation.DoesNotExist:
             message = 'Rezervácia sa nenašla.'
             return render(request, 'error.html', {'message': message})
-
     message = 'Zlý request'
     return render(request, 'error.html', {'message': message})

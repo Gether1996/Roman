@@ -183,3 +183,123 @@ function openBiggerImage(photoSrc) {
     modal.style.display = "block";
     modalImg.src = photoSrc;
 }
+
+function addReview(worker) {
+    const isEng = isEnglish;
+
+    // Translation map
+    const t = {
+        title: isEng ? `Add a Review for ${worker}` : `Pridať hodnotenie pre ${worker}`,
+        namePlaceholder: isEng ? "Your Full Name" : "Vaše meno a priezvisko",
+        msgPlaceholder: isEng ? "Your Message" : "Vaša správa",
+        validationError: isEng
+            ? "All fields are required, and rating must be selected."
+            : "Všetky polia sú povinné a je potrebné zvoliť hodnotenie.",
+        confirmText: isEng ? "Submit" : "Odoslať",
+        successTitle: isEng ? "Success" : "Hotovo",
+        successMsg: isEng ? "Review submitted!" : "Hodnotenie odoslané!",
+        errorTitle: isEng ? "Error" : "Chyba",
+        errorMsg: isEng ? "Failed to submit review" : "Nepodarilo sa odoslať hodnotenie",
+        networkError: isEng ? "Network error occurred" : "Došlo k chybe siete",
+    };
+
+    Swal.fire({
+        title: t.title,
+        width: 'auto',
+        html: `
+            <div style="display: flex; flex-direction: column; align-items: center; padding: 20px;">
+                <div style="width: 100%; max-width: 500px; margin-bottom: 15px;">
+                    <input id="nameInput" class="swal2-input" placeholder="${t.namePlaceholder}" style="width: 80%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+                </div>
+                <div style="width: 100%; max-width: 500px; margin-bottom: 15px;">
+                    <textarea id="messageInput" class="swal2-textarea" placeholder="${t.msgPlaceholder}" style="width: 80%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; min-height: 100px;"></textarea>
+                </div>
+                <div id="starRating" style="margin-top: 1em; display: flex; justify-content: center; width: 80%; max-width: 500px;">
+                    ${[1,2,3,4,5].map(i => `<i class="fa fa-star" id="star${i}" onclick="rateStars(${i})" style="font-size: 2em; cursor: pointer; color: gray; margin: 0 5px;"></i>`).join('')}
+                </div>
+            </div>
+        `,
+        preConfirm: () => {
+            const name = document.getElementById('nameInput').value.trim();
+            const message = document.getElementById('messageInput').value.trim();
+            const stars = parseInt(document.getElementById('starRating').getAttribute('data-stars'));
+
+            if (!name || !message || !stars) {
+                Swal.showValidationMessage(t.validationError);
+                return false;
+            }
+
+            return { name, message, stars };
+        },
+        showCancelButton: true,
+        confirmButtonText: t.confirmText,
+    }).then(result => {
+        if (result.isConfirmed && result.value) {
+            const { name, message, stars } = result.value;
+            fetch('/add_review/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({
+                    name_surname: name,
+                    message: message,
+                    stars: stars,
+                    worker: worker
+                })
+            }).then(res => {
+                if (res.ok) {
+                    Swal.fire(t.successTitle, t.successMsg, 'success').then(() => {
+                        location.reload();
+                    });
+                } else {
+                    Swal.fire(t.errorTitle, t.errorMsg, 'error');
+                }
+            }).catch(() => {
+                Swal.fire(t.errorTitle, t.networkError, 'error');
+            });
+        }
+    });
+}
+
+function rateStars(count) {
+    for (let i = 1; i <= 5; i++) {
+        const star = document.getElementById(`star${i}`);
+        star.style.color = i <= count ? 'gold' : 'gray';
+    }
+    document.getElementById('starRating').setAttribute('data-stars', count);
+}
+
+function deleteReview(id) {
+    Swal.fire({
+        title: "Naozaj vymazať hodnotenie?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Vymazať",
+        cancelButtonText: "Zrušiť",
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+    }).then(result => {
+        if (result.isConfirmed) {
+            fetch(`/delete_review/${id}/`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                }
+            }).then(async res => {
+                if (res.ok) {
+                    Swal.fire('Vymazané', '', 'success').then(() => {
+                        location.reload();
+                    });
+                } else {
+                    const errorData = await res.json();
+                    Swal.fire('Chyba', errorData.message || 'Nepodarilo sa vymazať.', 'error');
+                }
+            }).catch(() => {
+                Swal.fire('Chyba', 'Nastala chyba pri spájaní so serverom.', 'error');
+            });
+        }
+    });
+}

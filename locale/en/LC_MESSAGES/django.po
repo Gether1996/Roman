@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-20 13:48+0100\n"
+"POT-Creation-Date: 2025-06-10 17:07+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,34 +18,34 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\Roman\backend_funcs\reservation.py:340
-msgid "voľný"
-msgstr "available"
-
-#: .\Roman\backend_funcs\reservation.py:342
-msgid "voľné"
-msgstr "available"
-
-#: .\Roman\backend_funcs\reservation.py:344
-msgid "voľných"
-msgstr "available"
-
-#: .\Roman\backend_funcs\reservation.py:368
-msgid "Rezervácia úspešne zrušená."
-msgstr "Reservation cancelled successfully."
-
-#: .\Roman\backend_funcs\reservation.py:371
-msgid "Rezervácia sa nenašla."
-msgstr "Reservation not found."
-
-#: .\Roman\backend_funcs\reservation.py:372
-#: .\Roman\backend_funcs\reservation.py:399
-#: .\Roman\backend_funcs\reservation.py:425
-#: .\Roman\backend_funcs\reservation.py:439
-#: .\Roman\backend_funcs\reservation.py:454 .\Roman\backend_funcs\users.py:26
+#: .\Roman\backend_funcs\general.py:54 .\Roman\backend_funcs\reservation.py:364
+#: .\Roman\backend_funcs\reservation.py:387
+#: .\Roman\backend_funcs\reservation.py:412
+#: .\Roman\backend_funcs\reservation.py:423
+#: .\Roman\backend_funcs\reservation.py:437 .\Roman\backend_funcs\users.py:26
 #: .\Roman\backend_funcs\users.py:63
 msgid "Zlý request"
 msgstr "Wrong request"
+
+#: .\Roman\backend_funcs\reservation.py:326
+msgid "voľný"
+msgstr "available"
+
+#: .\Roman\backend_funcs\reservation.py:328
+msgid "voľné"
+msgstr "available"
+
+#: .\Roman\backend_funcs\reservation.py:330
+msgid "voľných"
+msgstr "available"
+
+#: .\Roman\backend_funcs\reservation.py:361
+msgid "Rezervácia úspešne zrušená."
+msgstr "Reservation cancelled successfully."
+
+#: .\Roman\backend_funcs\reservation.py:363
+msgid "Rezervácia sa nenašla."
+msgstr "Reservation not found."
 
 #: .\Roman\backend_funcs\users.py:21
 msgid "Prihlásenie úspešné."
@@ -333,8 +333,8 @@ msgstr ""
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1550
 #, python-format
 msgid ""
-"“%(value)s” value has an invalid format. It must be in YYYY-MM-DD HH:MM[:ss[."
-"uuuuuu]][TZ] format."
+"“%(value)s” value has an invalid format. It must be in YYYY-MM-DD "
+"HH:MM[:ss[.uuuuuu]][TZ] format."
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1558
@@ -360,8 +360,8 @@ msgstr ""
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1853
 #, python-format
 msgid ""
-"“%(value)s” value has an invalid format. It must be in [DD] [[HH:]MM:]ss[."
-"uuuuuu] format."
+"“%(value)s” value has an invalid format. It must be in [DD] "
+"[[HH:]MM:]ss[.uuuuuu] format."
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1857
@@ -1146,8 +1146,8 @@ msgid ""
 "If you are using the <meta name=\"referrer\" content=\"no-referrer\"> tag or "
 "including the “Referrer-Policy: no-referrer” header, please remove them. The "
 "CSRF protection requires the “Referer” header to do strict referer checking. "
-"If you’re concerned about privacy, use alternatives like <a rel=\"noreferrer"
-"\" …> for links to third-party sites."
+"If you’re concerned about privacy, use alternatives like <a "
+"rel=\"noreferrer\" …> for links to third-party sites."
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\views\csrf.py:54
@@ -1198,8 +1198,8 @@ msgstr ""
 #: .\venv\Lib\site-packages\django\views\generic\dates.py:652
 #, python-format
 msgid ""
-"Future %(verbose_name_plural)s not available because %(class_name)s."
-"allow_future is False."
+"Future %(verbose_name_plural)s not available because "
+"%(class_name)s.allow_future is False."
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\views\generic\dates.py:692
@@ -1258,9 +1258,9 @@ msgstr ""
 #, python-format
 msgid ""
 "You are seeing this page because <a href=\"https://docs.djangoproject.com/en/"
-"%(version)s/ref/settings/#debug\" target=\"_blank\" rel=\"noopener"
-"\">DEBUG=True</a> is in your settings file and you have not configured any "
-"URLs."
+"%(version)s/ref/settings/#debug\" target=\"_blank\" "
+"rel=\"noopener\">DEBUG=True</a> is in your settings file and you have not "
+"configured any URLs."
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:229
@@ -1299,208 +1299,92 @@ msgstr "Homepage"
 msgid "Prihlásenie"
 msgstr "Log-in"
 
-#: .\viewer\templates\homepage.html:6 .\viewer\templates\homepage.html:144
+#: .\viewer\templates\homepage.html:6 .\viewer\templates\homepage.html:192
 msgid "Masáže Vlčince"
 msgstr "Massages Vlčince"
 
-#: .\viewer\templates\homepage.html:20
+#: .\viewer\templates\homepage.html:19
 msgid "Priateľský a individuálny prístup pre naších klientov"
 msgstr "Friendly and individual approach for our clients"
 
-#: .\viewer\templates\homepage.html:30 .\viewer\templates\homepage.html:41
-#: .\viewer\templates\homepage.html:61
+#: .\viewer\templates\homepage.html:28 .\viewer\templates\homepage.html:39
+#: .\viewer\templates\homepage.html:55
 msgid "Klasická masáž"
 msgstr "Classic massage"
 
-#: .\viewer\templates\homepage.html:31 .\viewer\templates\homepage.html:42
-#: .\viewer\templates\homepage.html:69
+#: .\viewer\templates\homepage.html:29 .\viewer\templates\homepage.html:40
+#: .\viewer\templates\homepage.html:57
 msgid "Športová masáž"
 msgstr "Sport massage"
 
-#: .\viewer\templates\homepage.html:32 .\viewer\templates\homepage.html:43
-#: .\viewer\templates\homepage.html:65
+#: .\viewer\templates\homepage.html:30 .\viewer\templates\homepage.html:41
+#: .\viewer\templates\homepage.html:56
 msgid "Mäkké a myofasciálne techniky"
 msgstr "Soft and myofascial techniques"
 
-#: .\viewer\templates\homepage.html:33 .\viewer\templates\homepage.html:44
-#: .\viewer\templates\homepage.html:76
+#: .\viewer\templates\homepage.html:31 .\viewer\templates\homepage.html:42
+#: .\viewer\templates\homepage.html:58
 msgid "Bankovanie"
 msgstr "Cupping"
 
-#: .\viewer\templates\homepage.html:34 .\viewer\templates\homepage.html:84
+#: .\viewer\templates\homepage.html:32 .\viewer\templates\homepage.html:60
 msgid "terapia"
 msgstr "Therapy"
 
-#: .\viewer\templates\homepage.html:45 .\viewer\templates\homepage.html:80
+#: .\viewer\templates\homepage.html:43 .\viewer\templates\homepage.html:59
 msgid "Lávové kamene"
 msgstr "Lava stones"
 
-#: .\viewer\templates\homepage.html:51
+#: .\viewer\templates\homepage.html:48
 msgid "Rezervovať termín"
 msgstr "Make reservation"
 
-#: .\viewer\templates\homepage.html:57
+#: .\viewer\templates\homepage.html:53
 #: .\viewer\templates\navbar-homepage.html:11
 msgid "Techniky"
 msgstr "Techniques"
 
-#: .\viewer\templates\homepage.html:62
-msgid ""
-"Klasická masáž aktivuje celkový krvný a lymfatický obeh, ktorý následne "
-"zlepšuje okysličenie organizmu a odlev škodlivých látok z tela. Zlepšuje "
-"prekrvenie pokožky, podkožia a svalov, pomáha uvoľňovať stuhnuté a bolestivé "
-"svaly a podieľa sa na lepšom vyplavovaní odpadových látok z organizmu. "
-"Pomáha aj pri emocionálnom napätí a prináša úľavu telu aj duši. Je vhodná "
-"takmer pre každého či už na uvoľnenie stresu, odstránenie bolesti alebo pri "
-"prevencií či regenerácií."
-msgstr ""
-"The classic massage activates the overall blood and lymphatic circulation, "
-"which subsequently improves the oxygenation of the body and the removal of "
-"harmful substances from the body. It enhances the circulation of the skin, "
-"subcutaneous tissue, and muscles, helps to release stiff and painful "
-"muscles, and contributes to better elimination of waste materials from the "
-"body. It also helps with emotional tension and brings relief to both body "
-"and soul. It is suitable for almost everyone, whether for stress relief, "
-"pain relief, or prevention and regeneration"
-
-#: .\viewer\templates\homepage.html:66
-msgid ""
-"Mäkké a myofasciálne techniky sú masážne techniky, ktoré primárne uvoľnujú "
-"mäkké tkanivá – svaly. <br><br>V porovnaní s klasickou masážou môže byť "
-"mierne bolestivejšia a vykonáva sa bez oleja. Najprv sa uvoľnuje krčná "
-"chrbtica v sede a následne sa v ľahu pokračuje dole až ku kostrči. Je "
-"výborným doplnkom športovej alebo klasickej masáže. Taktiež je výbornou "
-"metódou na zastavenie procesu stuhnutia alebo uvoľňovania svalov."
-msgstr ""
-"Soft and myofascial techniques are massage techniques that primarily release "
-"soft tissues - muscles. <br><br>Compared to classic massage, it may be "
-"slightly more painful and is performed without oil. First, the cervical "
-"spine is loosened in a seated position, and then it continues lying down to "
-"the coccyx. It is an excellent complement to sports or classic massage. It "
-"is also an excellent method for stopping the process of muscle stiffness or "
-"tension release."
-
-#: .\viewer\templates\homepage.html:70
-msgid ""
-"Športová masáž je veľmi podobná klasickej masáži, keďže využíva väčšinu "
-"hmatov klasickej relaxačnej masáže, je však prispôsobená špeciálne pre "
-"športovcov, ktorí podávajú náročnejšie fyzické výkony, a to na základe typu "
-"športu a tým, či sa vykonáva pred alebo po výkone. Od klasickej masáže sa "
-"líši najmä v rytme a intenzite masážnych hmatov. Slúži v prvom rade na "
-"zvýšenie kondície a uvoľnenie po náročnej fyzickej záťaži. Zároveň je "
-"skvelou voľbou ako prevencia pred úrazmi. Samotná masáž vplýva aj na "
-"psychickú stránku, uvoľňuje stres pred pretekmi a pozitívne vplýva na podané "
-"výkony."
-msgstr ""
-"Sports massage is very similar to classic massage, as it utilizes most of "
-"the techniques of a classic relaxation massage, but it is specifically "
-"tailored for athletes who undergo more demanding physical performances, "
-"based on the type of sport and whether it is performed before or after the "
-"activity. It differs from classic massage mainly in the rhythm and intensity "
-"of massage strokes. Its primary purpose is to improve conditioning and "
-"relaxation after strenuous physical exertion. Additionally, it is an "
-"excellent choice for injury prevention. The massage itself also affects the "
-"psychological aspect, relieving pre-competition stress and positively "
-"impacting performance."
-
-#: .\viewer\templates\homepage.html:77
-msgid ""
-"Pri bankovaní prikladáme sklenné banky s nahriatym vzduchom, v tých sa "
-"ochladzovaním vytvorí podtlak a banka sa na kožu prisaje. Podtlak vtiahne "
-"časť kože aj podkožia do banky, čím sa prekrvia, no môže nastať aj "
-"popraskanie drobných cievok. Okysličia sa kritické body a odplavia sa "
-"škodlivé látky. <br><br> Po bankovaní môžu na mieste priloženia ostať "
-"farebné stopy (bezbolestné), ktoré však v priebehu pár dní zmiznú."
-msgstr ""
-"When cupping, we apply glass cups with heated air, creating a vacuum by "
-"cooling, causing the cup to adhere to the skin. The vacuum draws a portion "
-"of the skin and subcutaneous tissue into the cup, increasing blood flow, but "
-"it may also cause minor capillary ruptures. Critical points are oxygenated, "
-"and harmful substances are flushed out. <br><br> After cupping, there may be "
-"residual color marks at the application site (painless), which will "
-"disappear within a few days."
-
-#: .\viewer\templates\homepage.html:81
-msgid ""
-"Lávové kamene z čadiča absorbujú, udržiavajú a následne odovzdávajú teplo, "
-"čo pozitívne pôsobí nielen na pokožku, podkožie a svaly, ale zlepšujú aj "
-"prekrvenie ciev, cirkuláciu, stimulujú lymfatický systém, urýchľujú "
-"metabolizmus a detoxikujú telo. Výrazným benefitom tejto masáže je priaznivý "
-"vplyv na psychiku, pôsobí antistresovo až antidepresívne. Kamene sú istým "
-"prepojením človeka so Zemou, harmóniou s prírodou. Ich účinkom sa teda "
-"harmonizuje a regeneruje nielen telo ale aj myseľ."
-msgstr ""
-"Lava stones made of basalt absorb, retain, and then release heat, which has "
-"a positive effect not only on the skin, subcutaneous tissue, and muscles but "
-"also improves blood vessel circulation, circulation, stimulates the "
-"lymphatic system, accelerates metabolism, and detoxifies the body. A "
-"significant benefit of this massage is its favorable effect on the psyche, "
-"acting anti-stress and even antidepressant. The stones serve as a connection "
-"between humans and the Earth, harmonizing with nature. Thus, their effect "
-"harmonizes and regenerates not only the body but also the mind."
-
-#: .\viewer\templates\homepage.html:86
-msgid ""
-"IASTM (Instrument Assisted Soft Tissue Mobilization) predstavuje moderný "
-"terapeutický prístup v oblasti fasciálnej mobilizácie a celkovej terapie "
-"fascií ľudského tela. Pôsobením IASTM nástrojov dochádza vo fasciách ku "
-"vzniku stresového podnetu, tlaku a tepla, čo napomáha v rámci správneho "
-"fungovania fascií."
-msgstr ""
-"IASTM (Instrument Assisted Soft Tissue Mobilization) represents a modern "
-"therapeutic approach in the field of fascial mobilization and overall fascia "
-"therapy of the human body. The use of IASTM tools creates a stress stimulus, "
-"pressure, and heat within the fascia, which helps in the proper functioning "
-"of the fascia."
-
-#: .\viewer\templates\homepage.html:88
-msgid "Výhody IASTM"
-msgstr "Advantages of IASTM"
-
-#: .\viewer\templates\homepage.html:91
-msgid "Zníženie bolesti"
-msgstr "Pain reduction"
-
-#: .\viewer\templates\homepage.html:93
-msgid "Zlepšuje rozsah pohybu"
-msgstr "Improves range of motion"
-
-#: .\viewer\templates\homepage.html:95
-msgid "Zlepšuje pružnosť a elasticitu tkanív"
-msgstr "Improves flexibility and elasticity of tissues"
-
-#: .\viewer\templates\homepage.html:97
-msgid "Mobilizuje mäkké tkanivá"
-msgstr "Mobilizes soft tissues"
-
-#: .\viewer\templates\homepage.html:105
+#: .\viewer\templates\homepage.html:65
 #: .\viewer\templates\navbar-homepage.html:12
 msgid "Galéria"
 msgstr "Gallery"
 
-#: .\viewer\templates\homepage.html:118
+#: .\viewer\templates\homepage.html:78
 #: .\viewer\templates\navbar-homepage.html:13
 msgid "Poukážky"
 msgstr "Vouchers"
 
-#: .\viewer\templates\homepage.html:123
+#: .\viewer\templates\homepage.html:83
 msgid "Stiahnúť"
 msgstr "Download"
 
-#: .\viewer\templates\homepage.html:134
+#: .\viewer\templates\homepage.html:94
+#: .\viewer\templates\navbar-homepage.html:15
+msgid "Hodnotenia"
+msgstr "Reviews"
+
+#: .\viewer\templates\homepage.html:104 .\viewer\templates\homepage.html:145
+msgid "Pridať hodnotenie"
+msgstr "Add review"
+
+#: .\viewer\templates\homepage.html:131 .\viewer\templates\homepage.html:172
+msgid "Zatiaľ bez hodnotení"
+msgstr "No reviews yet"
+
+#: .\viewer\templates\homepage.html:182
 msgid "Pre firmy"
 msgstr "For companies"
 
-#: .\viewer\templates\homepage.html:135
+#: .\viewer\templates\homepage.html:183
 msgid "Jedinečná príležitosť dopriať svojim zamestnancom relax od práce"
 msgstr ""
 "A unique opportunity to provide your employees with relaxation from work"
 
-#: .\viewer\templates\homepage.html:136
+#: .\viewer\templates\homepage.html:184
 msgid "prostredníctvom poukážok upravených pre Vašu firmu na mieru."
 msgstr "through vouchers tailored specifically for your company."
 
-#: .\viewer\templates\homepage.html:137
+#: .\viewer\templates\homepage.html:185
 msgid ""
 "Spolupracujte s nami a prineste do svojho pracovného prostredia novú úroveň "
 "pohody."
@@ -1508,17 +1392,13 @@ msgstr ""
 "Collaborate with us and bring a new level of comfort to your work "
 "environment."
 
-#: .\viewer\templates\homepage.html:138
+#: .\viewer\templates\homepage.html:186
 msgid "Pre viac informácii nás kontaktujte."
 msgstr "Contact us for more informations."
 
 #: .\viewer\templates\navbar-homepage.html:14 .\viewer\templates\navbar.html:12
 msgid "Rezervácia/Cenník"
 msgstr "Reservation/Prices"
-
-#: .\viewer\templates\navbar-homepage.html:15
-msgid "Firmy"
-msgstr "Companies"
 
 #: .\viewer\templates\navbar-homepage.html:16
 msgid "Kontakt"
@@ -1608,15 +1488,19 @@ msgstr "Massager"
 msgid "Stav"
 msgstr "Status"
 
-#: .\viewer\templates\profile.html:26 .\viewer\templates\reservation.html:166
+#: .\viewer\templates\profile.html:26
+msgid "Dôvod zrušenia"
+msgstr "Cancellation reason"
+
+#: .\viewer\templates\profile.html:27 .\viewer\templates\reservation.html:166
 msgid "Poznámka"
 msgstr "Note"
 
-#: .\viewer\templates\profile.html:27
+#: .\viewer\templates\profile.html:28
 msgid "Vytvorené"
 msgstr "Created"
 
-#: .\viewer\templates\profile.html:44
+#: .\viewer\templates\profile.html:46
 msgid "Zrušiť"
 msgstr "Cancel"
 
@@ -1653,36 +1537,14 @@ msgstr "Phone number"
 msgid "Polia označené * sú povinné"
 msgstr "Fields with * are mandatory"
 
-#: .\viewer\views.py:30 .\viewer\views.py:79 .\viewer\views.py:224
+#: .\viewer\views.py:67 .\viewer\views.py:112 .\viewer\views.py:249
 msgid "Najskôr sa prihláste. (len pre admina)"
 msgstr "Log-in first. (for admin only)"
 
-#: .\viewer\views.py:34 .\viewer\views.py:83 .\viewer\views.py:228
+#: .\viewer\views.py:71 .\viewer\views.py:116 .\viewer\views.py:253
 msgid "Náhľad povolený len pre admina."
 msgstr "Access only for admin."
 
-#: .\viewer\views.py:189 .\viewer\views.py:218
+#: .\viewer\views.py:218 .\viewer\views.py:244
 msgid "Najskôr sa prihláste."
 msgstr "Log-in first."
-
-#~ msgid "Prístrojová lymfodrenáž"
-#~ msgstr "Device lymphatic drainage"
-
-#~ msgid ""
-#~ "Prístrojová lymfodrenáž alebo presoterapia využíva tlakovú vlnu "
-#~ "prístroja. Princíp spočíva v postupnom nafukovaní jednotlivých komôr "
-#~ "drenážneho návleku. Rytmické tlakové vlny povoľujú a opäť nafukujú "
-#~ "drenážny návlek. Presoterapia je výborná na aktiváciu lymfatického "
-#~ "systému, čím sa odvádza z tela tkaninová tekutina obsahujúca splodiny "
-#~ "látkovej výmeny. Pomáha pri opuchoch dolných končatín, pocite ťažkých "
-#~ "nôh, únave, posilňuje imunitný system, zmierňuje prejavy celulitídy, "
-#~ "odvodňuje a zoštíhľuje."
-#~ msgstr ""
-#~ "Instrumental lymphatic drainage or pressotherapy utilizes the pressure "
-#~ "wave of the device. The principle involves gradually inflating individual "
-#~ "chambers of the drainage sleeve. Rhythmic pressure waves allow the "
-#~ "drainage sleeve to relax and inflate again. Pressotherapy is excellent "
-#~ "for activating the lymphatic system, thereby removing tissue fluid "
-#~ "containing metabolic waste from the body. It helps with swelling of the "
-#~ "lower limbs, the sensation of heavy legs, fatigue, strengthens the immune "
-#~ "system, alleviates cellulite symptoms, promotes drainage, and slims."

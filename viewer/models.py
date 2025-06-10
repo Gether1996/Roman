@@ -72,3 +72,11 @@ class AlreadyMadeReservation(Model):
     name_surname = CharField(max_length=150, unique=True)
     email = EmailField(default=None, blank=True, null=True)
     phone_number = CharField(max_length=20, default=None, blank=True, null=True)
+
+
+class Review(Model):
+    name_surname = CharField(max_length=150)
+    worker = CharField(max_length=100)
+    message = TextField()
+    created_at = DateTimeField()
+    stars = IntegerField()

@@ -14,7 +14,7 @@ body {
 }
 
 .selected-date {
-    background-color: rgba(0, 128, 255, 0.4);
+    background-color: #0080ff66;
 }
 
 .reservation-box-container {
@@ -350,10 +350,119 @@ body {
 #spolupraca h1,
 #gallery h1,
 #technique h1,
+#recenzie h1,
 #poukazka h1{
     font-family: 'Luminari', fantasy;
     text-align: center;
     font-size: 35px;
+}
+
+.reviews-split-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: center;
+}
+
+.review-column {
+    flex: 1 1 400px;
+    max-width: 600px;
+}
+
+.review-column h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.6rem;
+    color: #222;
+}
+
+.reviews-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.review-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.review-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.review-header h3 {
+    font-size: 1.1rem;
+    margin: 0;
+    color: #333;
+}
+
+.stars {
+    color: #FFD700;
+    font-size: 1rem;
+}
+
+.stars .fa-star {
+    margin-left: 2px;
+}
+
+.stars .filled {
+    color: #FFD700;
+}
+
+.review-message {
+    font-style: italic;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.review-date {
+    font-size: 0.85rem;
+    color: #999;
+    text-align: right;
+}
+
+.review-delete {
+    font-size: 0.85rem;
+    color: red;
+    text-align: right;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    padding: 5px;
+}
+
+.review-button {
+    padding: 0.5rem 1rem;
+    background-color: #0080ff66;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.review-button:hover {
+    background-color: #0080ff66;
+    transform: translateY(-2px);
+}
+
+.review-button:active {
+    background-color: #0080ff66;
+    transform: translateY(0);
 }
 
 .h1-slogan {

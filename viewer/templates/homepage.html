@@ -90,6 +90,94 @@
         </div>
     </section>
 
+    <section id="recenzie" style="width: 90%; margin: 80px auto;">
+        <h1 style="text-align: center;">{% trans 'Hodnotenia' %}</h1>
+        <div class="reviews-split-container">
+            
+            <!-- Roman's Reviews -->
+            <div class="review-column">
+                <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
+                    {% if roman_reviews %}
+                        <h2><i class="fa-solid fa-star stars" style="font-size: 24px;"></i> {{roman_avg}} / 5</h2>
+                    {% endif %}
+                    <h2>Roman </h2>
+                    <button class="review-button" onclick="addReview('Roman')">{% trans 'Pridať hodnotenie' %}</button>
+                </div>
+                <div class="reviews-wrapper">
+                    {% if roman_reviews %}
+                        {% for review in roman_reviews %}
+                            <div class="review-card">
+                                <div class="review-header">
+                                    <h3>{{ review.name_surname }}</h3>
+                                        <div class="stars">
+                                            {% for _ in review.filled_stars %}
+                                                <i class="fa-solid fa-star"></i>
+                                            {% endfor %}
+                                            {% for _ in review.empty_stars %}
+                                                <i class="fa-regular fa-star"></i>
+                                            {% endfor %}
+                                        </div>
+                                </div>
+                                <p class="review-message">“{{ review.message }}”</p>
+                                <p class="review-date">{{ review.created_at }}</p>
+                                {% if request.user.is_superuser %}
+                                    <p class="review-delete" onclick="deleteReview('{{review.id}}')"><i class="fa-solid fa-trash"></i></p>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="review-card">
+                            <div class="review-header">
+                                <h3>{% trans 'Zatiaľ bez hodnotení' %}</h3>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Evka's Reviews -->
+            <div class="review-column">
+                <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
+                    {% if evka_reviews %}
+                        <h2><i class="fa-solid fa-star stars" style="font-size: 24px;"></i> {{evka_avg}} / 5</h2>
+                    {% endif %}
+                    <h2>Evka</h2>
+                    <button class="review-button" onclick="addReview('Evka')">{% trans 'Pridať hodnotenie' %}</button>
+                </div>
+                <div class="reviews-wrapper">
+                    {% if evka_reviews %}    
+                        {% for review in evka_reviews %}
+                            <div class="review-card">
+                                <div class="review-header">
+                                    <h3>{{ review.name_surname }}</h3>
+                                        <div class="stars">
+                                            {% for _ in review.filled_stars %}
+                                                <i class="fa-solid fa-star"></i>
+                                            {% endfor %}
+                                            {% for _ in review.empty_stars %}
+                                                <i class="fa-regular fa-star"></i>
+                                            {% endfor %}
+                                        </div>
+                                </div>
+                                <p class="review-message">“{{ review.message }}”</p>
+                                <p class="review-date">{{ review.created_at }}</p>
+                                {% if request.user.is_superuser %}
+                                    <button class="review-delete" onclick="deleteReview('{{review.id}}')"><i class="fa-solid fa-trash"></i></button>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="review-card">
+                            <div class="review-header">
+                                <h3>{% trans 'Zatiaľ bez hodnotení' %}</h3>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="spolupraca">
         <h1>{% trans 'Pre firmy' %}</h1>
         <h3>{% trans 'Jedinečná príležitosť dopriať svojim zamestnancom relax od práce' %}</h3>
