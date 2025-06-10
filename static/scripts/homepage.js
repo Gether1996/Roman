@@ -82,13 +82,13 @@ function showTechnique(index) {
     <strong style="font-size: 30px;">IASTM Therapy</strong><br><br>
     Instrument-Assisted Soft Tissue Mobilization is a modern fascial therapy technique using tools to apply pressure and heat.<br><br>
     This stimulates fascia and supports healthy soft tissue function.<br><br>
-    <img style="width: 300px;" src="/static/images/iastm.png">
+    <img style="width: 60%;" src="/static/images/iastm.png">
     `,
         sk: `
     <strong style="font-size: 30px;">IASTM terapia</strong><br><br>
     Moderná terapia fascií pomocou nástrojov, ktoré vytvárajú tlak a teplo vo fasciách.<br><br>
     Stimuluje správne fungovanie mäkkých tkanív.<br><br>
-    <img style="width: 300px;" src="/static/images/iastm.png">
+    <img style="width: 60%;" src="/static/images/iastm.png">
     `
     }
   };
