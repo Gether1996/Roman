@@ -96,9 +96,9 @@ function showTechnique(index) {
     Swal.fire({
         title: '',
         html: `<div style="white-space: wrap; text-align: center; width: 100%;">${texts[index][isEnglish ? 'en' : 'sk']}</div>`,
-        confirmButtonText: 'Zavrieť',
+        confirmButtonText: isEnglish ? 'Close' : 'Zavrieť',
         confirmButtonColor: '#3085d6',
-        width: '600px'
+        width: '80%',
     });
 }
 
