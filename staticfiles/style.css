@@ -149,6 +149,7 @@ body {
 }
 
 .navbar-content {
+  margin: auto;  
   max-width: 200px;
   justify-content: center;
   display: flex;
@@ -182,11 +183,16 @@ body {
     margin-bottom: 0;
     margin-left: 10px;
     cursor: pointer;
-    transition: 0.3s;
+    transition: transform 0.3s ease;
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transform-origin: center;
 }
 
 .avatar-user-icon:hover {
-    scale: 1.15;
+    transform: scale(1.15);
 }
 
 #dropdown-menu {
@@ -215,32 +221,28 @@ body {
   color: black;
   margin: 12px;
   font-size: 18px;
-  transition: 0.3s;
+  transition: transform 0.3s ease;
   display: flex;
+  will-change: transform;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transform-origin: center;
+  backface-visibility: hidden; /* Helps with rendering artifacts */
+  perspective: 1000px;          /* Improves hardware acceleration */
+}
+
+.navbar-button:hover {
+  transform: scale(1.3);
 }
 
 .pre-firmy {
     width: 145px;
 }
 
-.navbar-button:hover {
-  scale: 1.3;
-}
-
 /* Style the social icons and phone info on the right side */
 .nav-contact {
   display: flex;
   align-items: center;
-}
-
-.fa-square-facebook,
-.fa-instagram {
-    transition: 0.3s;
-}
-
-.fa-square-facebook:hover,
-.fa-instagram:hover {
-    scale: 1.3;
 }
 
 .social-icons {
@@ -255,17 +257,48 @@ body {
   font-size: 30px;
 }
 
-.switch-language-button {
+.technique-buttons {
+    display: grid;
+    width: 70%;
+    margin: auto;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.technique-btn {
+    padding: 16px;
+    font-size: 22px;
+    border: 2px solid black;
+    border-radius: 4px;
+    transition: 0.3s;
+    background-color: #e5e5e5;
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
+    text-align: center;
+    margin: 20px;
+}
+
+.technique-btn:hover {
+    background-color: #c9c9c9;
+}
+
+.switch-language-button, .social-icon {
     background-color: transparent;
     border-radius: 50%;
     border: none;
-    transition: 0.3s;
+    transition: transform 0.3s ease;
     margin-bottom: 2px;
     margin-left: 0px;
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-.switch-language-button:hover {
-    scale: 1.3;
+.switch-language-button:hover, .social-icon:hover {
+    transform: scale(1.3);
     cursor: pointer;
 }
 
@@ -293,7 +326,8 @@ body {
 }
 
 #technique {
-    margin-top: 100px;
+    text-align: center;
+    margin-top: 50px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -345,18 +379,6 @@ body {
     font-family: 'Roboto', sans-serif;
     margin-left: 80px;
     font-size: 18px;
-}
-
-.technique-segment {
-  width: 70%;
-  margin: 0 auto;
-  display: flex;
-  margin: 40px;
-  text-align: center;
-}
-
-.technique-segment p{
-    width: 70%;
 }
 
 .reservation-button-about-us {
@@ -1236,12 +1258,24 @@ body {
         margin: auto;
         width: 90%;
     }
-    .technique-segment {
-      width: 90%;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      text-align: center;
+
+    .technique-buttons {
+        display: grid;
+        vertical-align: center;
+        text-align: center;
+        width: 90%;
+        margin: auto;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .technique-btn {
+        width: 100%;
+        height: 70px;
+        font-size: 14px;
+        margin: 0px;
+        padding: 0px;
     }
 
     .gallery-container {

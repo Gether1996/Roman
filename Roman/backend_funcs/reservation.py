@@ -7,8 +7,8 @@ from django.utils.translation import gettext_lazy as _
 import configparser
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
-from unidecode import unidecode
 
+config = configparser.ConfigParser()
 
 def send_email(subject, html_message, to_mail):
     from_email = getattr(settings, 'EMAIL_HOST_USER')
@@ -20,13 +20,12 @@ def send_email(subject, html_message, to_mail):
         html_message=html_message,
     )
 
-
 def prepare_reservation_data(reservation):
     data = {
         'id': str(reservation.id),
         'name_surname': reservation.name_surname,
         'email': reservation.email if reservation.email else '',
-        'phone_number': reservation.phone_number if reservation.phone_number else '',
+        'phone_number': str(reservation.phone_number).replace(" ", "") if reservation.phone_number else '',
         'date': reservation.get_date_string(),
         'slot': reservation.get_time_range_string(),
         'active': reservation.active,
@@ -37,12 +36,7 @@ def prepare_reservation_data(reservation):
         'personal_note': reservation.personal_note if reservation.personal_note else '',
         'cancellation_reason': reservation.cancellation_reason if reservation.cancellation_reason else '',
     }
-
     return data
-
-
-config = configparser.ConfigParser()
-
 
 def create_reservation(request):
     if request.method == 'POST':
@@ -113,13 +107,11 @@ def create_reservation(request):
                                              'button': None,
                                              'accept_link': None,
                                              'all_reservations_link': None,
-                                             'text': '',
+                                             'text': 'Rezervácia potvrdená / Reservation accepted',
                                              })
             send_email(subject, html_message, new_reservation.email)
-
         return JsonResponse({'status': 'success'})
     return JsonResponse({'status': 'error'})
-
 
 def check_available_slots(request):
     if request.method == 'POST':
@@ -199,7 +191,6 @@ def check_available_slots(request):
         return JsonResponse({'status': 'success', 'available_slots': available_slots})
     return JsonResponse({'status': 'error'})
 
-
 def check_available_durations(request, worker):
     if request.method == 'POST':
         config.read('config.ini')
@@ -260,7 +251,6 @@ def check_available_durations(request, worker):
         return JsonResponse({'status': 'success', 'available_durations': available_durations})
     return JsonResponse({'status': 'error'})
 
-
 def check_available_slots_ahead(request, worker):
     if request.method == 'GET':
         config.read('config.ini')
@@ -269,7 +259,7 @@ def check_available_slots_ahead(request, worker):
         worker_config = config['settings-roman'] if worker == 'Roman' else config['settings-evka']
 
         if request.user.is_superuser:
-            days_to_check_ahead = 90
+            days_to_check_ahead = 180
         else:
             days_to_check_ahead = int(worker_config['days_ahead'])
         working_days = worker_config['working_days']
@@ -350,28 +340,32 @@ def check_available_slots_ahead(request, worker):
         return JsonResponse({'status': 'success', 'events': events})
     return JsonResponse({'status': 'error'})
 
-
 def deactivate_reservation(request):
     if request.method == 'DELETE':
         json_data = json.loads(request.body)
-
         try:
             reservation = Reservation.objects.get(id=json_data.get('reservation_id'))
             reservation.active = False
             reservation.status = 'Zrušená zákazníkom'
             reservation.cancellation_reason = json_data.get('reason')
             reservation.save()
-            return JsonResponse({'status': 'success', 'message': _('Rezervácia úspešne zrušená.')})
 
+            subject = f'Rezervácia zrušená zákazníkom'
+            html_message = render_to_string('email_template.html',
+                                            {'reservation': prepare_reservation_data(reservation),
+                                                'button': None,
+                                                'accept_link': None,
+                                                'text': f'Dôvod zrušenia: {reservation.cancellation_reason if reservation.cancellation_reason else "Zrušené zákazníkom bez udania dôvodu."}',
+                                                })
+            send_email(subject, html_message, getattr(settings, 'MAIN_EMAIL'))
+            return JsonResponse({'status': 'success', 'message': _('Rezervácia úspešne zrušená.')})
         except Reservation.DoesNotExist:
             return JsonResponse({'status': 'error', 'message': _('Rezervácia sa nenašla.')})
     return JsonResponse({'status': 'error', 'message': _('Zlý request')})
 
-
 def approve_reservation(request):
     if request.method == 'POST':
         json_data = json.loads(request.body)
-
         try:
             reservation = Reservation.objects.get(id=json_data.get('id'))
             reservation.active = True
@@ -384,16 +378,13 @@ def approve_reservation(request):
                                                 {'reservation': prepare_reservation_data(reservation),
                                                  'button': None,
                                                  'accept_link': None,
-                                                 'text': '',
+                                                 'text': 'Rezervácia potvrdená / Reservation accepted',
                                                  })
                 send_email(subject, html_message, reservation.email)
-
             return JsonResponse({'status': 'success'})
-
         except Reservation.DoesNotExist:
             return JsonResponse({'status': 'error'})
     return JsonResponse({'status': 'error', 'message': _('Zlý request')})
-
 
 def deactivate_reservation_by_admin(request):
     if request.method == 'DELETE':
@@ -407,7 +398,7 @@ def deactivate_reservation_by_admin(request):
             reservation.save()
 
             if reservation.email:
-                subject = f'Rezervácia zamietnutá / Reservation cancelled'
+                subject = f'Rezervácia zrušená / Reservation cancelled'
                 html_message = render_to_string('email_template.html',
                                                 {'reservation': prepare_reservation_data(reservation),
                                                  'button': None,
@@ -420,20 +411,16 @@ def deactivate_reservation_by_admin(request):
             return JsonResponse({'status': 'error'})
     return JsonResponse({'status': 'error', 'message': _('Zlý request')})
 
-
 def delete_reservation(request):
     if request.method == 'DELETE':
         json_data = json.loads(request.body)
-
         try:
             reservation = Reservation.objects.get(id=json_data.get('id'))
             reservation.delete()
             return JsonResponse({'status': 'success'})
-
         except Reservation.DoesNotExist:
             return JsonResponse({'status': 'error'})
     return JsonResponse({'status': 'error', 'message': _('Zlý request')})
-
 
 def add_personal_note(request):
     if request.method == 'POST':

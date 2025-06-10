@@ -1,54 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"></head>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333333;
+            background-color: #ffffff;
+            padding: 20px;
+        }
+        h2 {
+            color: #007bff;
+        }
+        table {
+            border-collapse: collapse;
+            width: 60%;
+            margin-top: 20px;
+        }
+        td {
+            border: 1px solid #dddddd;
+            padding: 10px;
+            vertical-align: top;
+        }
+        td:first-child {
+            background-color: #f7f7f7;
+            font-weight: bold;
+            width: 40%;
+        }
+        .button-container {
+            margin-top: 30px;
+        }
+        .button-container a {
+            display: inline-block;
+            padding: 12px 24px;
+            margin-right: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            color: #ffffff;
+            background-color: #007bff;
+            border-radius: 5px;
+        }
+        .footer {
+            margin-top: 50px;
+            font-size: 14px;
+            color: #555555;
+        }
+        .footer h4 {
+            margin-bottom: 5px;
+            font-weight: normal;
+        }
+        .footer p {
+            margin: 2px 0;
+        }
+    </style>
+</head>
 <body>
 
 <h2>{{ text }}</h2>
 
-<table style="border-collapse: collapse; width: 40%;">
+<table>
     <tbody>
         <tr>
-            <td style="border: 1px solid black;">Meno a Priezvisko / Name and Surname</td>
-            <td style="border: 1px solid black;">{{ reservation.name_surname }}</td>
+            <td>Masér / Massage therapist</td>
+            <td>{{ reservation.worker }}</td>
         </tr>
         <tr>
-            <td style="border: 1px solid black;">Email</td>
-            <td style="border: 1px solid black;">{{ reservation.email }}</td>
+            <td>Meno a Priezvisko / Name and Surname</td>
+            <td>{{ reservation.name_surname }}</td>
         </tr>
         <tr>
-            <td style="border: 1px solid black;">Tel. Č / Phone</td>
-            <td style="border: 1px solid black;">{{ reservation.phone_number }}</td>
+            <td>Email</td>
+            <td>{{ reservation.email }}</td>
         </tr>
         <tr>
-            <td style="border: 1px solid black;">Dátum / Date</td>
-            <td style="border: 1px solid black;">{{ reservation.date }}</td>
+            <td>Tel. Č / Phone</td>
+            <td>{{ reservation.phone_number }}</td>
         </tr>
         <tr>
-            <td style="border: 1px solid black;">Slot</td>
-            <td style="border: 1px solid black;">{{ reservation.slot }}</td>
+            <td>Dátum / Date</td>
+            <td>{{ reservation.date }}</td>
         </tr>
         <tr>
-            <td style="border: 1px solid black;">Vytvorené / Created</td>
-            <td style="border: 1px solid black;">{{ reservation.created_at }}</td>
+            <td>Slot</td>
+            <td>{{ reservation.slot }}</td>
         </tr>
         <tr>
-            <td style="border: 1px solid black;">Poznámka / Note</td>
-            <td style="border: 1px solid black;">{{ reservation.special_request }}</td>
+            <td>Vytvorené / Created</td>
+            <td>{{ reservation.created_at }}</td>
+        </tr>
+        <tr>
+            <td>Poznámka / Note</td>
+            <td>{{ reservation.special_request }}</td>
         </tr>
     </tbody>
 </table>
 
 {% if button %}
-    <br>
-    <table role="presentation" border="0" cellspacing="0" cellpadding="0">
-        <tr>
-            <td>
-                <a href="{{ accept_link }}" style="display: inline-block; padding: 10px 20px; font-family: Arial, sans-serif; font-size: 16px; color: #ffffff; background-color: #28a745; border-radius: 5px; text-decoration: none;">Schváliť rezerváciu</a>
-                <a href="{{ all_reservations_link }}" style="display: inline-block; padding: 10px 20px; font-family: Arial, sans-serif; font-size: 16px; color: #ffffff; background-color: #28a745; border-radius: 5px; text-decoration: none;">Pozrieť rezervácie</a>
-            </td>
-        </tr>
-    </table>
+    <div class="button-container">
+        <a href="{{ accept_link }}">Schváliť rezerváciu</a>
+        <a href="{{ all_reservations_link }}">Pozrieť rezervácie</a>
+    </div>
 {% endif %}
+
+<div class="footer">
+    <h4>Automaticky vygenerované, na tento email neodpovedajte.</h4>
+    <h4>V prípade otázok môžete kontaktovať:</h4>
+    <p><strong>Roman:</strong> +421 902 442 280</p>
+    <p><strong>Evka:</strong> +421 948 953 841</p>
+    <p><strong>Email:</strong> <a href="mailto:salonaminask@gmail.com" style="color: #007bff; text-decoration: none;">salonaminask@gmail.com</a></p>
+</div>
 
 </body>
 </html>

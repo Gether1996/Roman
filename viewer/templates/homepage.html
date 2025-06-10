@@ -16,15 +16,13 @@
     <div class="top-margin-homepage"></div>
 
    <section id="about-us">
-
        <h1 style="margin-bottom: 50px;" class="h1-slogan">"{% trans 'Priateľský a individuálny prístup pre naších klientov' %}"</h1>
-
        <div class="about-us-container">
            <div class="person-container">
                <img class="roman-image" src="{% static 'images/roman.jpg' %}">
                <h3 class="name-surname">
                    Roman Zelník
-                   <a class="social-icons" href="https://l.facebook.com/l.php?u=https%3A%2F%2Finstagram.com%2Froman_zelnik_masaze%3Figshid%3DOGQ5ZDc2ODk2ZA%253D%253D%26utm_source%3Dqr%26fbclid%3DIwAR2jr_9c7zZRw4uuB7x0y7O7IZMpySC2Hxb6E6FCH79HDQg-GZBoER7QcqI&h=AT0oomkdGFaKdBo5IbA0qfIVQ5LiWzTKq3LF43t2eU8IrfBmTgXiSM-kdLrCtGT7u8aFt2s6xplmVThynSJx_EdOA7bHI2vdPTLW6ssCBFug3_2U4p-QlSmCa7LiJb4EsQXBXFDJ3D5AlTUcPFw" target="_blank"><i class="fab fa-instagram" title="Instagram"></i></a>
+                   <a class="social-icons social-icon" href="https://l.facebook.com/l.php?u=https%3A%2F%2Finstagram.com%2Froman_zelnik_masaze%3Figshid%3DOGQ5ZDc2ODk2ZA%253D%253D%26utm_source%3Dqr%26fbclid%3DIwAR2jr_9c7zZRw4uuB7x0y7O7IZMpySC2Hxb6E6FCH79HDQg-GZBoER7QcqI&h=AT0oomkdGFaKdBo5IbA0qfIVQ5LiWzTKq3LF43t2eU8IrfBmTgXiSM-kdLrCtGT7u8aFt2s6xplmVThynSJx_EdOA7bHI2vdPTLW6ssCBFug3_2U4p-QlSmCa7LiJb4EsQXBXFDJ3D5AlTUcPFw" target="_blank"><i class="fab fa-instagram" title="Instagram"></i></a>
                </h3>
                <ul class="technique-list">
                    <li>{% trans 'Klasická masáž' %}</li>
@@ -46,60 +44,22 @@
                </ul>
            </div>
        </div>
-
        <div style="display: flex; justify-content: center">
            <a href="{% url 'reservation' %}" class="reservation-button-about-us"><i class="fa-solid fa-calendar-circle-plus"></i> {% trans 'Rezervovať termín' %}</a>
        </div>
-
    </section>
 
-   <section id="technique">
-       <h1>{% trans 'Techniky' %}</h1>
-
-      <div class="technique-segment">
-        <div class="summary">
-          <h2 style="cursor: pointer;" onclick="showP(1)"><i class="fa-solid fa-square-chevron-down"></i> {% trans 'Klasická masáž' %}</h2>
-          <p id="p1">{% trans 'Klasická masáž aktivuje celkový krvný a lymfatický obeh, ktorý následne zlepšuje okysličenie organizmu a odlev škodlivých látok z tela. Zlepšuje prekrvenie pokožky, podkožia a svalov, pomáha uvoľňovať stuhnuté a bolestivé svaly a podieľa sa na lepšom vyplavovaní odpadových látok z organizmu. Pomáha aj pri emocionálnom napätí a prináša úľavu telu aj duši. Je vhodná takmer pre každého či už na uvoľnenie stresu, odstránenie bolesti alebo pri prevencií či regenerácií.' %}</p>
+    <section id="technique">
+        <h1>{% trans 'Techniky' %}</h1>
+        <div class="technique-buttons">
+            <button onclick="showTechnique(1)" class="technique-btn">{% trans 'Klasická masáž' %}</button>
+            <button onclick="showTechnique(2)" class="technique-btn">{% trans 'Mäkké a myofasciálne techniky' %}</button>
+            <button onclick="showTechnique(3)" class="technique-btn">{% trans 'Športová masáž' %}</button>
+            <button onclick="showTechnique(4)" class="technique-btn">{% trans 'Bankovanie' %}</button>
+            <button onclick="showTechnique(5)" class="technique-btn">{% trans 'Lávové kamene' %}</button>
+            <button onclick="showTechnique(6)" class="technique-btn">IASTM {% trans 'terapia' %}</button>
         </div>
-        <div class="summary">
-          <h2 style="cursor: pointer;" onclick="showP(2)"><i class="fa-solid fa-square-chevron-down"></i> {% trans 'Mäkké a myofasciálne techniky' %}</h2>
-          <p id="p2">{% trans 'Mäkké a myofasciálne techniky sú masážne techniky, ktoré primárne uvoľnujú mäkké tkanivá – svaly. <br><br>V porovnaní s klasickou masážou môže byť mierne bolestivejšia a vykonáva sa bez oleja. Najprv sa uvoľnuje krčná chrbtica v sede a následne sa v ľahu pokračuje dole až ku kostrči. Je výborným doplnkom športovej alebo klasickej masáže. Taktiež je výbornou metódou na zastavenie procesu stuhnutia alebo uvoľňovania svalov.' %}</p>
-        </div>
-        <div class="summary">
-          <h2 style="cursor: pointer;" onclick="showP(3)"><i class="fa-solid fa-square-chevron-down"></i> {% trans 'Športová masáž' %}</h2>
-          <p id="p3">{% trans 'Športová masáž je veľmi podobná klasickej masáži, keďže využíva väčšinu hmatov klasickej relaxačnej masáže, je však prispôsobená špeciálne pre športovcov, ktorí podávajú náročnejšie fyzické výkony, a to na základe typu športu a tým, či sa vykonáva pred alebo po výkone. Od klasickej masáže sa líši najmä v rytme a intenzite masážnych hmatov. Slúži v prvom rade na zvýšenie kondície a uvoľnenie po náročnej fyzickej záťaži. Zároveň je skvelou voľbou ako prevencia pred úrazmi. Samotná masáž vplýva aj na psychickú stránku, uvoľňuje stres pred pretekmi a pozitívne vplýva na podané výkony.' %}</p>
-        </div>
-      </div>
-
-     <div class="technique-segment">
-        <div class="summary">
-          <h2 style="cursor: pointer;" onclick="showP(4)"><i class="fa-solid fa-square-chevron-down"></i> {% trans 'Bankovanie' %}</h2>
-          <p id="p4">{% trans 'Pri bankovaní prikladáme sklenné banky s nahriatym vzduchom, v tých sa ochladzovaním vytvorí podtlak a banka sa na kožu prisaje. Podtlak vtiahne časť kože aj podkožia do banky, čím sa prekrvia, no môže nastať aj popraskanie drobných cievok. Okysličia sa kritické body a odplavia sa škodlivé látky. <br><br> Po bankovaní môžu na mieste priloženia ostať farebné stopy (bezbolestné), ktoré však v priebehu pár dní zmiznú.' %}</p>
-        </div>
-        <div class="summary">
-          <h2 style="cursor: pointer;" onclick="showP(5)"><i class="fa-solid fa-square-chevron-down"></i> {% trans 'Lávové kamene' %}</h2>
-          <p id="p5">{% trans 'Lávové kamene z čadiča absorbujú, udržiavajú a následne odovzdávajú teplo, čo pozitívne pôsobí nielen na pokožku, podkožie a svaly, ale zlepšujú aj prekrvenie ciev, cirkuláciu, stimulujú lymfatický systém, urýchľujú metabolizmus a detoxikujú telo. Výrazným benefitom tejto masáže je priaznivý vplyv na psychiku, pôsobí antistresovo až antidepresívne. Kamene sú istým prepojením človeka so Zemou, harmóniou s prírodou. Ich účinkom sa teda harmonizuje a regeneruje nielen telo ale aj myseľ.' %}</p>
-        </div>
-        <div class="summary">
-          <h2 style="cursor: pointer;" onclick="showP(6)"><i class="fa-solid fa-square-chevron-down"></i> IASTM {% trans 'terapia' %}</h2>
-                <p id="p6" style="text-align: left;">
-                    <span style="text-align: center; width: 100%;">{% trans 'IASTM (Instrument Assisted Soft Tissue Mobilization) predstavuje moderný terapeutický prístup v oblasti fasciálnej mobilizácie a celkovej terapie fascií ľudského tela. Pôsobením IASTM nástrojov dochádza vo fasciách ku vzniku stresového podnetu, tlaku a tepla, čo napomáha v rámci správneho fungovania fascií.' %}</span>
-                    <br><br>
-                    <span>{% trans 'Výhody IASTM' %}:</span>
-                    <br>
-                    <br>
-                    - {% trans 'Zníženie bolesti' %}
-                    <br>
-                    - {% trans 'Zlepšuje rozsah pohybu' %}
-                    <br>
-                    - {% trans 'Zlepšuje pružnosť a elasticitu tkanív' %}
-                    <br>
-                    - {% trans 'Mobilizuje mäkké tkanivá' %}
-                </p>
-        </div>
-      </div>
     </section>
-
 
     <section id="gallery">
         <h1>{% trans 'Galéria' %}</h1>

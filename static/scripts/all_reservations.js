@@ -54,29 +54,38 @@ function updateTable(reservations) {
             '<i style="color: green;" class="fa-solid fa-circle-check"></i>' :
             '<i style="color: red;" class="fa-solid fa-circle-xmark"></i>';
 
-        var actionButton = reservation.active ?
-            `<button class="action-button" style='background-color: #dd3c3c; margin-bottom: 3px;' onclick="deactivateReservation('${reservation.id}', '${reservation.name_surname}')">Deaktivovať</button>` :
-            `<button class="action-button" style='background-color: #238b55; margin-bottom: 3px;' onclick="approveReservation('${reservation.id}', '${reservation.name_surname}')">Schváliť</button>`;
+        var actionButton = '';        
+        if (!reservation.cancellation_reason) {
+            actionButton = reservation.active ?
+                `<button class="action-button" style='background-color: #dd3c3c;' onclick="deactivateReservation('${reservation.id}', '${reservation.name_surname}')">Deaktivovať</button>` :
+                `<button class="action-button" style='background-color: #238b55;' onclick="approveReservation('${reservation.id}', '${reservation.name_surname}')">Schváliť</button>`;
+        }
 
         var row = document.createElement('tr');
         row.className = 'files-row';
         row.innerHTML = `
             <td>${reservation.worker}</td>
             <td>${reservation.date}</td>
-            <td>${reservation.slot}</td>
+            <td style="white-space: nowrap;">${reservation.slot}</td>
             <td>${reservation.name_surname}</td>
             <td>${reservation.email}</td>
-            <td>${reservation.phone_number}</td>
+            <td style="white-space: nowrap;">${reservation.phone_number}</td>
             <td>${reservation.created_at}</td>
             <td>${reservation.special_request}</td>
             <td>${reservation.status}</td>
             <td>${reservation.personal_note}</td>
             <td class="text-align-center">${successIcon}</td>
             <td>${reservation.cancellation_reason}</td>
-            <td class="text-align-center">
+            <td>
+            <div style="display: flex; gap: 4px; align-items: center; justify-content: center;">
                 ${actionButton}
-                <button title="Poznámka" class="action-button" style='background-color: #238b55; margin-left: 2px;' onclick="addNote('${reservation.id}', '${reservation.name_surname}', '${reservation.personal_note}')"><i class="fa-solid fa-pen-to-square"></i></button>
-                <button title="Vymazať" class="action-button" style='background-color: #dd3c3c; margin-left: 2px;' onclick="deleteReservation('${reservation.id}', '${reservation.name_surname}')"><i class="fa-solid fa-trash"></i></button>
+                <button title="Poznámka" class="action-button" style="background-color: #238b55;" onclick="addNote('${reservation.id}', '${reservation.name_surname}', '${reservation.personal_note}')">
+                <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+                <button title="Vymazať" class="action-button" style="background-color: #dd3c3c;" onclick="deleteReservation('${reservation.id}', '${reservation.name_surname}')">
+                <i class="fa-solid fa-trash"></i>
+                </button>
+            </div>
             </td>
         `;
         tbody.appendChild(row);

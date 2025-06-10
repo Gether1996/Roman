@@ -190,28 +190,26 @@ def profile(request):
         return render(request, 'error.html', {'message': message})
     try:
         reservations = Reservation.objects.filter(email=request.user.email).order_by('-datetime_from')
-
         reservation_data = [
             {
                 'id': reservation.id,
                 'name_surname': reservation.name_surname,
-                'email': reservation.email,
-                'phone_number': reservation.phone_number,
+                'email': reservation.email if reservation.email else "",
+                'phone_number': reservation.phone_number if reservation.phone_number else "",
                 'date': reservation.get_date_string(),
                 'time': reservation.get_time_range_string(),
                 'worker': reservation.worker,
-                'status': reservation.status,
-                'special_request': reservation.special_request,
+                'status': reservation.status if reservation.status else "",
+                'special_request': reservation.special_request if reservation.special_request else "",
                 'created_at': reservation.get_created_at_string(),
-                'is_past': datetime.now() > reservation.datetime_to
+                'is_past': datetime.now() > reservation.datetime_to,
+                'cancellation_reason': reservation.cancellation_reason if reservation.cancellation_reason else ""
             }
             for reservation in reservations
         ]
-
         context = {
             'reservation_data': reservation_data
         }
-
         return render(request, 'profile.html', context)
 
     except CustomUser.DoesNotExist:
@@ -240,9 +238,9 @@ def all_reservations(request):
 
     if 'sort_by' not in request.GET:
         if page:
-            return redirect(f'{reverse("all_reservations")}?sort_by=datetime_from&order=asc&page={page}')
+            return redirect(f'{reverse("all_reservations")}?sort_by=datetime_from&order=desc&page={page}')
         else:
-            return redirect(f'{reverse("all_reservations")}?sort_by=datetime_from&order=asc')
+            return redirect(f'{reverse("all_reservations")}?sort_by=datetime_from&order=desc')
     return render(request, 'all_reservations.html', context)
 
 
@@ -353,10 +351,9 @@ def approve_reservation_mail(request, reservation_id):
                                                 {'reservation': prepare_reservation_data(reserv),
                                                  'button': None,
                                                  'accept_link': None,
-                                                 'text': '',
+                                                 'text': 'Rezervácia potvrdená / Reservation accepted',
                                                  })
                 send_email(subject, html_message, reserv.email)
-
             context = {
                 'reservation': prepare_reservation_data(reserv),
             }

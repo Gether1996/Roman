@@ -53,7 +53,7 @@ class Reservation(Model):
         """Returns the time range in HH:MM - HH:MM format."""
         time_from = self.datetime_from.strftime('%H:%M')
         time_to = self.datetime_to.strftime('%H:%M')
-        return f'{time_from} - {time_to}'
+        return f'{time_from}-{time_to}'
 
     def get_created_at_string(self):
         """Returns the created_at timestamp in DD.MM.YYYY HH:MM:SS format."""

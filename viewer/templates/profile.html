@@ -23,6 +23,7 @@
                     <th>{% trans 'Čas' %}</th>
                     <th>{% trans 'Masér' %}</th>
                     <th>{% trans 'Stav' %}</th>
+                    <th>{% trans 'Dôvod zrušenia' %}</th>
                     <th>{% trans 'Poznámka' %}</th>
                     <th>{% trans 'Vytvorené' %}</th>
                     <th></th>
@@ -37,10 +38,11 @@
                         <td>{{reservation.time}}</td>
                         <td>{{reservation.worker}}</td>
                         <td>{{reservation.status}}</td>
+                        <td>{{reservation.cancellation_reason}}</td>
                         <td>{{reservation.special_request}}</td>
                         <td>{{reservation.created_at}}</td>
                         <td>
-                            {% if not reservation.is_past %}
+                            {% if not reservation.is_past and reservation.active %}
                                 <button class="deactivate-btn" onclick="deactivate('{{ reservation.id }}')">{% trans 'Zrušiť' %}</button>
                             {% endif %}
                         </td>

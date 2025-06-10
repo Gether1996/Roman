@@ -20,24 +20,6 @@ function switchLanguage(language_code) {
     });
 }
 
-  function showP(number) {
-    var pElement = document.getElementById('p' + number);
-    if (pElement.classList.contains('visible')) {
-      pElement.style.opacity = '0';
-      setTimeout(function() {
-        pElement.style.display = 'none';
-      }, 10); // Delay display after opacity transition (300ms)
-      pElement.classList.remove('visible');
-    } else {
-      pElement.style.display = 'block';
-      setTimeout(function() {
-        pElement.style.opacity = '1';
-      }, 10);
-      pElement.classList.add('visible');
-    }
-  }
-
-
 document.addEventListener('DOMContentLoaded', function() {
     var avatarIcon = document.getElementById('avatar-user-icon');
     var dropdownMenu = document.getElementById('dropdown-menu');
