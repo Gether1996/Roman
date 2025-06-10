@@ -350,36 +350,18 @@ body {
 #spolupraca h1,
 #gallery h1,
 #technique h1,
-#recenzie h1,
+.recenzie-h1,
 #poukazka h1{
     font-family: 'Luminari', fantasy;
     text-align: center;
     font-size: 35px;
 }
 
-.reviews-split-container {
+.reviews-container {
     display: flex;
-    flex-wrap: wrap;
-    gap: 40px;
     justify-content: center;
-}
-
-.review-column {
-    flex: 1 1 400px;
-    max-width: 600px;
-}
-
-.review-column h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 1.6rem;
-    color: #222;
-}
-
-.reviews-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    align-items: center;
+    margin: auto;
 }
 
 .review-card {
@@ -1237,8 +1219,14 @@ body {
     #spolupraca h1,
     #gallery h1,
     #technique h1,
+    .recenzie-h1,
     #poukazka h1{
         font-size: 20px;
+    }
+
+    .review-button {
+        font-size: 12px;
+        padding: 2px 4px;
     }
 
     .navbar {

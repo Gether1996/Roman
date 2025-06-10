@@ -184,17 +184,21 @@ function openBiggerImage(photoSrc) {
     modalImg.src = photoSrc;
 }
 
-function addReview(worker) {
+function addReview() {
     const isEng = isEnglish;
 
     // Translation map
     const t = {
-        title: isEng ? `Add a Review for ${worker}` : `Pridať hodnotenie pre ${worker}`,
+        title: isEng ? `Add a Review` : `Pridať hodnotenie`,
         namePlaceholder: isEng ? "Your Full Name" : "Vaše meno a priezvisko",
         msgPlaceholder: isEng ? "Your Message" : "Vaša správa",
+        workerLabel: isEng ? "Choose Massage Therapist" : "Vyberte maséra",
         validationError: isEng
             ? "All fields are required, and rating must be selected."
             : "Všetky polia sú povinné a je potrebné zvoliť hodnotenie.",
+        workerValidationError: isEng
+            ? "Please select a massage therapist."
+            : "Prosím, vyberte maséra.",
         confirmText: isEng ? "Submit" : "Odoslať",
         successTitle: isEng ? "Success" : "Hotovo",
         successMsg: isEng ? "Review submitted!" : "Hodnotenie odoslané!",
@@ -214,6 +218,21 @@ function addReview(worker) {
                 <div style="width: 100%; max-width: 500px; margin-bottom: 15px;">
                     <textarea id="messageInput" class="swal2-textarea" placeholder="${t.msgPlaceholder}" style="width: 80%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; min-height: 100px;"></textarea>
                 </div>
+
+                <div style="width: 80%; max-width: 500px; margin-bottom: 15px; text-align: center;">
+                    <label style="font-weight: 600; margin-bottom: 5px; display: block;">${t.workerLabel}:</label>
+                    <div style="display: flex; gap: 20px; justify-content: center;">
+                        <label style="cursor: pointer;">
+                            <input type="radio" name="worker" value="roman" style="margin-right: 5px;">
+                            Roman
+                        </label>
+                        <label style="cursor: pointer;">
+                            <input type="radio" name="worker" value="evka" style="margin-right: 5px;">
+                            Evka
+                        </label>
+                    </div>
+                </div>
+
                 <div id="starRating" style="margin-top: 1em; display: flex; justify-content: center; width: 80%; max-width: 500px;">
                     ${[1,2,3,4,5].map(i => `<i class="fa fa-star" id="star${i}" onclick="rateStars(${i})" style="font-size: 2em; cursor: pointer; color: gray; margin: 0 5px;"></i>`).join('')}
                 </div>
@@ -224,18 +243,27 @@ function addReview(worker) {
             const message = document.getElementById('messageInput').value.trim();
             const stars = parseInt(document.getElementById('starRating').getAttribute('data-stars'));
 
+            // Get selected worker radio value
+            const workerRadio = document.querySelector('input[name="worker"]:checked');
+            const worker = workerRadio ? workerRadio.value : null;
+
             if (!name || !message || !stars) {
                 Swal.showValidationMessage(t.validationError);
                 return false;
             }
 
-            return { name, message, stars };
+            if (!worker) {
+                Swal.showValidationMessage(t.workerValidationError);
+                return false;
+            }
+
+            return { name, message, stars, worker };
         },
         showCancelButton: true,
         confirmButtonText: t.confirmText,
     }).then(result => {
         if (result.isConfirmed && result.value) {
-            const { name, message, stars } = result.value;
+            const { name, message, stars, worker } = result.value;
             fetch('/add_review/', {
                 method: 'POST',
                 headers: {

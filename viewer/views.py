@@ -24,13 +24,13 @@ def homepage(request):
     print(shutil.which("msguniq"))
 
     # Prepare enriched review data
-    reviews = Review.objects.all().order_by('-created_at')
-    roman_reviews = []
-    evka_reviews = []
+    reviews = Review.objects.all().order_by('-created_at')[:15]
+    enriched_reviews = []
 
     for review in reviews:
         enriched_review = {
             'id': review.id,
+            'worker': review.worker,
             'name_surname': review.name_surname,
             'message': review.message,
             'stars': review.stars,
@@ -38,14 +38,11 @@ def homepage(request):
             'empty_stars': range(5 - int(review.stars)),
             'created_at': review.created_at.strftime('%d.%m.%Y %H:%M'),
         }
+        enriched_reviews.append(enriched_review)
 
-        if review.worker == 'roman':
-            roman_reviews.append(enriched_review)
-        elif review.worker == 'evka':
-            evka_reviews.append(enriched_review)
         # Zober len 10 najnovších recenzií a vypočítaj priemer
-    recent_roman_stars = [r['stars'] for r in roman_reviews[:10]]
-    recent_evka_stars = [r['stars'] for r in evka_reviews[:10]]
+    recent_roman_stars = [r['stars'] for r in enriched_reviews[:10] if r['worker'] == "roman"]
+    recent_evka_stars = [r['stars'] for r in enriched_reviews[:10] if r['worker'] == "evka"]
 
     roman_avg = round(mean(recent_roman_stars), 2) if recent_roman_stars else 0
     evka_avg = round(mean(recent_evka_stars), 2) if recent_evka_stars else 0        
@@ -53,8 +50,7 @@ def homepage(request):
     context = {
         'photos': photos,
         'vouchers': vouchers,
-        'roman_reviews': roman_reviews[:10],
-        'evka_reviews': evka_reviews[:10],
+        'reviews': enriched_reviews,
         'roman_avg': roman_avg,
         'evka_avg': evka_avg,
     }
