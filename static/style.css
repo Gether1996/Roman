@@ -438,13 +438,16 @@ body {
 }
 
 .review-delete {
-    font-size: 0.85rem;
-    color: red;
-    text-align: right;
+    font-size: 15px;
     cursor: pointer;
     border: none;
     background-color: transparent;
     padding: 5px;
+    cursor: pointer; 
+    color: #e74c3c; 
+    margin-top: 5px; 
+    text-align: right;
+    margin-bottom: 0px;
 }
 
 .review-button {
