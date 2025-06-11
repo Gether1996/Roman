@@ -357,6 +357,13 @@ body {
     font-size: 35px;
 }
 
+#recenzie {
+    width: 90%; 
+    margin: 80px auto; 
+    margin-bottom: 120px;
+    max-width: 900px;
+}
+
 .reviews-container {
     display: flex;
     justify-content: center;
@@ -364,10 +371,16 @@ body {
     margin: auto;
 }
 
+.my-swal {
+    width: 50% !important;
+}
+
 .review-card {
+    width: 70%;
+    margin: auto;
     background: #ffffff;
     border-radius: 16px;
-    padding: 20px;
+    padding: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -385,9 +398,10 @@ body {
 }
 
 .review-header h3 {
-    font-size: 1.1rem;
     margin: 0;
     color: #333;
+    font-size: 22px; 
+    font-weight: 600;
 }
 
 .stars {
@@ -407,12 +421,20 @@ body {
     font-style: italic;
     color: #555;
     margin-bottom: 10px;
+    font-size: 18px;
+    line-height: 1.4;
+    color: #333;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: wrap;
+    max-width: 100%;
 }
 
 .review-date {
     font-size: 0.85rem;
     color: #999;
     text-align: right;
+    margin-bottom: 0px;
 }
 
 .review-delete {
@@ -534,8 +556,10 @@ body {
 }
 
 #spolupraca h1{
-    margin-bottom: 100px;
+    margin-bottom: 40px;
 }
+
+
 
 .evka-image {
     width: 45%;
@@ -1166,7 +1190,7 @@ body {
     color: white;
 }
 
-@media screen and (max-width: 1700px) {
+@media screen and (max-width: 2000px) {
     .navbar-user-info {
         position: absolute;
         top: 70px;
@@ -1224,9 +1248,21 @@ body {
         font-size: 20px;
     }
 
+    .my-swal {
+        width: 90% !important;
+    }
+
     .review-button {
         font-size: 12px;
         padding: 2px 4px;
+    }
+
+    .review-message {
+        font-size: 14px;
+    }
+
+    .review-header h3 {
+        font-size: 17px; 
     }
 
     .navbar {

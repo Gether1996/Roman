@@ -90,9 +90,9 @@
         </div>
     </section>
 
-    <section id="recenzie" style="width: 90%; margin: 80px auto; max-width: 900px;">
-        <div style="display: flex; gap: 15px; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-            <h1 class="recenzie-h1" style="text-align: center; flex-grow: 1;">{% trans 'Hodnotenia' %}</h1>
+    <section id="recenzie">
+        <div style="display: flex; gap: 15px; justify-content: center; align-items: center; margin-bottom: 30px;">
+            <h1 class="recenzie-h1" style="text-align: center;">{% trans 'Hodnotenia' %}</h1>
             <button class="review-button" onclick="addReview()" style="padding: 10px 20px; font-weight: bold; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
                 {% trans 'Pridať hodnotenie' %}
             </button>
@@ -101,9 +101,9 @@
         <div class="reviews-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px;">
             {% if reviews %}
                 {% for review in reviews %}
-                    <div class="review-card" style="background: #f9f9f9; border-radius: 12px; padding: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); width: 90%;">
+                    <div class="review-card" style="background: #f9f9f9; border-radius: 12px; padding: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                         <div class="review-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                            <h3 style="margin: 0; font-size: 1.1rem; font-weight: 600;">{{ review.name_surname }}</h3>
+                            <h3>{{ review.name_surname }}</h3>
                             <span style="font-weight: 600; color: #555; font-size: 0.9rem; background-color: #e1e1e1; padding: 3px 10px; border-radius: 20px; text-transform: capitalize;">
                                 {{ review.worker }}
                             </span>
@@ -118,19 +118,7 @@
                             {% endfor %}
                         </div>
 
-                        <p class="review-message" style="
-                            font-style: italic;
-                            font-size: 1rem;
-                            line-height: 1.4;
-                            color: #333;
-                            word-wrap: break-word;
-                            overflow-wrap: break-word;
-                            white-space: wrap;
-                            max-width: 100%;
-                        ">
-                            “{{ review.message }}”
-                        </p>
-
+                        <p class="review-message">“{{ review.message }}”</p>
                         <p class="review-date" style="font-size: 0.8rem; color: #999; margin-top: 15px;">{{ review.created_at }}</p>
 
                         {% if request.user.is_superuser %}

@@ -191,7 +191,7 @@ function addReview() {
     const t = {
         title: isEng ? `Add a Review` : `Pridať hodnotenie`,
         namePlaceholder: isEng ? "Your Full Name" : "Vaše meno a priezvisko",
-        msgPlaceholder: isEng ? "Your Message" : "Vaša správa",
+        msgPlaceholder: isEng ? "Your review" : "Vaše hodnotenie",
         workerLabel: isEng ? "Choose Massage Therapist" : "Vyberte maséra",
         validationError: isEng
             ? "All fields are required, and rating must be selected."
@@ -209,28 +209,30 @@ function addReview() {
 
     Swal.fire({
         title: t.title,
-        width: 'auto',
+        customClass: {
+            popup: 'my-swal'
+        },
         html: `
             <div style="display: flex; flex-direction: column; align-items: center; padding: 20px;">
-                <div style="width: 100%; max-width: 500px; margin-bottom: 15px;">
-                    <input id="nameInput" class="swal2-input" placeholder="${t.namePlaceholder}" style="width: 80%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
-                </div>
-                <div style="width: 100%; max-width: 500px; margin-bottom: 15px;">
-                    <textarea id="messageInput" class="swal2-textarea" placeholder="${t.msgPlaceholder}" style="width: 80%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; min-height: 100px;"></textarea>
-                </div>
-
-                <div style="width: 80%; max-width: 500px; margin-bottom: 15px; text-align: center;">
+                <div style="width: 90%; max-width: 500px; margin-bottom: 15px; text-align: center;">
                     <label style="font-weight: 600; margin-bottom: 5px; display: block;">${t.workerLabel}:</label>
                     <div style="display: flex; gap: 20px; justify-content: center;">
-                        <label style="cursor: pointer;">
-                            <input type="radio" name="worker" value="roman" style="margin-right: 5px;">
+                        <label style="cursor: pointer; font-size: 20px;">
+                            <input type="radio" name="worker" value="roman" style="margin-right: 5px; cursor: pointer;">
                             Roman
                         </label>
-                        <label style="cursor: pointer;">
-                            <input type="radio" name="worker" value="evka" style="margin-right: 5px;">
+                        <label style="cursor: pointer; font-size: 20px;">
+                            <input type="radio" name="worker" value="evka" style="margin-right: 5px; cursor: pointer;">
                             Evka
                         </label>
                     </div>
+                </div>
+
+                <div style="width: 100%; max-width: 500px;">
+                    <input id="nameInput" class="swal2-input" placeholder="${t.namePlaceholder}" style="width: 90%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+                </div>
+                <div style="width: 100%; max-width: 500px; margin-bottom: 15px;">
+                    <textarea id="messageInput" class="swal2-textarea" placeholder="${t.msgPlaceholder}" style="width: 90%; padding: 10px; resize: vertical; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; min-height: 100px;"></textarea>
                 </div>
 
                 <div id="starRating" style="margin-top: 1em; display: flex; justify-content: center; width: 80%; max-width: 500px;">
