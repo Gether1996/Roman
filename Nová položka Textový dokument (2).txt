@@ -1,0 +1,38 @@
+[settings-roman]
+days_ahead = 30
+working_days = ['Monday', 'Wednesday', 'Friday']
+monday_starting_hour = 09:00
+monday_ending_hour = 20:00
+tuesday_starting_hour = 09:00
+tuesday_ending_hour = 20:00
+wednesday_starting_hour = 09:00
+wednesday_ending_hour = 20:00
+thursday_starting_hour = 09:00
+thursday_ending_hour = 20:00
+friday_starting_hour = 09:00
+friday_ending_hour = 20:00
+saturday_starting_hour = 08:30
+saturday_ending_hour = 17:00
+sunday_starting_hour = 10:00
+sunday_ending_hour = 15:00
+
+[settings-evka]
+days_ahead = 45
+working_days = ['Monday', 'Thursday', 'Friday']
+monday_starting_hour = 15:30
+monday_ending_hour = 18:00
+tuesday_starting_hour = 09:00
+tuesday_ending_hour = 17:00
+wednesday_starting_hour = 15:30
+wednesday_ending_hour = 19:00
+thursday_starting_hour = 15:30
+thursday_ending_hour = 18:00
+friday_starting_hour = 15:30
+friday_ending_hour = 17:30
+saturday_starting_hour = 09:00
+saturday_ending_hour = 17:00
+sunday_starting_hour = 10:00
+sunday_ending_hour = 15:00
+
+[settings]
+reservations_per_page = 100
