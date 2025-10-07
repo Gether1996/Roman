@@ -104,44 +104,46 @@
 
         <div class="reservation-box-container">
             <div id="reservation-box-container" class="column-container">
-
-                <h2>{% trans 'Vyberte si maséra' %}:</h2>
+                <h2 class="h2-margin-top-bottom">{% trans 'Vyberte si maséra' %}:</h2>
                 <div id="person-selection" class="row-container" style="gap: 50px; margin-top: 0px;">
                     <div>
-                        <h3 style="text-align: center;">Roman</h3>
                         <div id="Roman" class="big-button option-button-person" style="border-radius: 50%;" onclick="updateEvents('Roman')">
                             <img title="Roman" class="miniature-img" src="{% static 'images/roman-mini.jpg' %}">
                         </div>
+                        <h3 style="text-align: center;">Roman</h3>
                     </div>
                     <div>
-                        <h3 style="text-align: center;">Evka</h3>
                         <div id="Evka" class="big-button option-button-person" style="border-radius: 50%;" onclick="updateEvents('Evka')">
                             <img title="Evka" class="miniature-img" src="{% static 'images/evka-mini.jpg' %}">
                         </div>
+                        <h3 style="text-align: center;">Evka</h3>
                     </div>
                 </div>
 
-                <h2 class="hidden-element-first">{% trans 'Vyberte Dátum' %}:</h2>
-                <div class="calendar hidden-element-first" id="calendar"></div>
-                <input type="date" id="date" class="insert-date-add-truck hidden-element-first" onchange="pickDate()" readonly>
+                <div class="hidden-element-first add-hidden-first pick-date-container">
+                    <h2 class="h2-margin-top-bottom">{% trans 'Vyberte Dátum' %}:</h2>
+                    <div class="calendar" id="calendar"></div>
+                    <input type="date" id="date" class="insert-date-add-truck" onchange="pickDate()" readonly>
+                </div>    
 
-                <h2 style="text-align: center;" class="hidden-element-timeSlots add-hidden-timeSlots">{% trans 'Vyberte začiatok masáže' %}:</h2>
-                <div id="time-slot-container" class="hidden-element-timeSlots add-hidden-timeSlots time-slot-container"></div>
+                <div class="hidden-element-second add-hidden-second">
+                    <hr class="hr-basic-style">
+                    <h2 style="text-align: center;" class="h2-margin-top-bottom">{% trans 'Vyberte začiatok masáže' %}:</h2>
+                    <div id="time-slot-container" class="time-slot-container"></div>
+                </div>    
 
-                <hr class="hidden-element-second add-hidden-second hr-basic-style">
-
-                <h2 class="hidden-element-second add-hidden-second" id="choose-duration-h2">{% trans 'Vyberte dĺžku masáže' %}:</h2>
+                <hr class="hr-basic-style hidden-element-third add-hidden-third">
+                <h2 class="h2-margin-top-bottom hidden-element-third add-hidden-third" id="choose-duration-h2">{% trans 'Vyberte dĺžku masáže' %}:</h2>
                 <div class="row-container duration-container" id="duration-container">
-                    <div class="hidden-element-second add-hidden-second big-button option-button-time" id="30">30 min - 20€</div>
-                    <div class="hidden-element-second add-hidden-second big-button option-button-time" id="45">45 min - 28€</div>
-                    <div class="hidden-element-second add-hidden-second big-button option-button-time" id="60">60 min - 35€</div>
-                    <div class="hidden-element-second add-hidden-second big-button option-button-time" id="90">90 min - 50€</div>
-                    <div class="hidden-element-second add-hidden-second big-button option-button-time" id="120">120 min - 65€</div>
+                    <div class="big-button option-button-time hidden-element-third add-hidden-third" id="30">30 min - 20€</div>
+                    <div class="big-button option-button-time hidden-element-third add-hidden-third" id="45">45 min - 28€</div>
+                    <div class="big-button option-button-time hidden-element-third add-hidden-third" id="60">60 min - 35€</div>
+                    <div class="big-button option-button-time hidden-element-third add-hidden-third" id="90">90 min - 50€</div>
+                    <div class="big-button option-button-time hidden-element-third add-hidden-third" id="120">120 min - 75€</div>
                 </div>
 
-                <hr class="hidden-element-third add-hidden-third hr-basic-style">
-
-                <div class="hidden-element-third add-hidden-third">
+                <div class="hidden-element-fourth add-hidden-fourth">
+                    <hr class="hr-basic-style">
                     <div class="column-container">
                         <div class="row-container input-container-reservation">
                             <label for="name_surname">
@@ -169,8 +171,7 @@
                         </div>
                         <p>{% trans 'Polia označené * sú povinné' %}</p>
                     </div>
-                </div>
-
+                </div>    
             </div>
         </div>
     </div>

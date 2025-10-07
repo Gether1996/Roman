@@ -15,39 +15,78 @@
 
     <div class="top-margin-homepage"></div>
 
-   <section id="about-us">
-       <h1 style="margin-bottom: 50px;" class="h1-slogan">"{% trans 'Priateľský a individuálny prístup pre naších klientov' %}"</h1>
-       <div class="about-us-container">
-           <div class="person-container">
-               <img class="roman-image" src="{% static 'images/roman.jpg' %}">
-               <h3 class="name-surname">
-                   Roman Zelník
-                   <a class="social-icons social-icon" href="https://l.facebook.com/l.php?u=https%3A%2F%2Finstagram.com%2Froman_zelnik_masaze%3Figshid%3DOGQ5ZDc2ODk2ZA%253D%253D%26utm_source%3Dqr%26fbclid%3DIwAR2jr_9c7zZRw4uuB7x0y7O7IZMpySC2Hxb6E6FCH79HDQg-GZBoER7QcqI&h=AT0oomkdGFaKdBo5IbA0qfIVQ5LiWzTKq3LF43t2eU8IrfBmTgXiSM-kdLrCtGT7u8aFt2s6xplmVThynSJx_EdOA7bHI2vdPTLW6ssCBFug3_2U4p-QlSmCa7LiJb4EsQXBXFDJ3D5AlTUcPFw" target="_blank"><i class="fab fa-instagram" title="Instagram"></i></a>
-               </h3>
-               <ul class="technique-list">
-                   <li>{% trans 'Klasická masáž' %}</li>
-                   <li>{% trans 'Športová masáž' %}</li>
-                   <li>{% trans 'Mäkké a myofasciálne techniky' %}</li>
-                   <li>{% trans 'Bankovanie' %}</li>
-                   <li>IASTM {% trans 'terapia' %}</li>
-               </ul>
-           </div>
-           <div class="person-container">
-               <img class="evka-image" src="{% static 'images/evka.jpg' %}">
-               <h3 class="name-surname">Evka Koribská</h3>
-               <ul class="technique-list">
-                   <li>{% trans 'Klasická masáž' %}</li>
-                   <li>{% trans 'Športová masáž' %}</li>
-                   <li>{% trans 'Mäkké a myofasciálne techniky' %}</li>
-                   <li>{% trans 'Bankovanie' %}</li>
-                   <li>{% trans 'Lávové kamene' %}</li>
-               </ul>
-           </div>
-       </div>
-       <div style="display: flex; justify-content: center">
-           <a href="{% url 'reservation' %}" class="reservation-button-about-us"><i class="fa-solid fa-calendar-circle-plus"></i> {% trans 'Rezervovať termín' %}</a>
-       </div>
-   </section>
+    <section id="about-us" style="margin-bottom: 100px;">
+        <div class="container">
+            <h1 class="text-center fw-semibold display-5 mb-2 h1-slogan">
+            “{% trans 'Priateľský a individuálny prístup pre našich klientov' %}”
+            </h1>
+
+            <h1 class="text-center display-5 h1-slogan" style="color: #d60000;">
+            {% trans 'Pozor zmena adresy: Matice Slovenskej 6, Vlčince (žltá budova, na poschodí)' %}
+            </h1>
+
+            <!-- People -->
+            <div class="row gy-5 gx-4 justify-content-center">
+            <!-- Person 1 -->
+            <div class="col-12 col-md-6 col-xl-6">
+                <div class="card shadow-lg border-0 h-100 person-card">
+                <div class="ratio ratio-4x3 overflow-hidden">
+                    <img src="{% static 'images/roman.jpg' %}" class="card-img-top object-fit-cover" alt="Roman Zelník">
+                </div>
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h3 class="h4 mb-0 fw-semibold text-dark">Roman Zelník</h3>
+                    <a href="https://l.facebook.com/l.php?u=https%3A%2F%2Finstagram.com%2Froman_zelnik_masaze%3Figshid%3DOGQ5ZDc2ODk2ZA%253D%253D%26utm_source%3Dqr%26fbclid%3DIwAR2jr_9c7zZRw4uuB7x0y7O7IZMpySC2Hxb6E6FCH79HDQg-GZBoER7QcqI&h=AT0oomkdGFaKdBo5IbA0qfIVQ5LiWzTKq3LF43t2eU8IrfBmTgXiSM-kdLrCtGT7u8aFt2s6xplmVThynSJx_EdOA7bHI2vdPTLW6ssCBFug3_2U4p-QlSmCa7LiJb4EsQXBXFDJ3D5AlTUcPFw"
+                        target="_blank" class="text-muted fs-4">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    </div>
+
+                    <!-- Services -->
+                    <ul class="list-unstyled mb-0">
+                    <li class="service-item"><i class="fa-solid fa-check text-success me-2"></i> {% trans 'Klasická masáž' %}</li>
+                    <li class="service-item"><i class="fa-solid fa-check text-success me-2"></i> {% trans 'Športová masáž' %}</li>
+                    <li class="service-item"><i class="fa-solid fa-check text-success me-2"></i> {% trans 'Mäkké a myofasciálne techniky' %}</li>
+                    <li class="service-item"><i class="fa-solid fa-check text-success me-2"></i> {% trans 'Bankovanie' %}</li>
+                    <li class="service-item"><i class="fa-solid fa-check text-success me-2"></i> IASTM {% trans 'terapia' %}</li>
+                    <li class="service-item"><i class="fa-solid fa-check text-success me-2"></i> {% trans 'Ruské kombinované techniky' %}</li>
+                    <li class="service-item"><i class="fa-solid fa-check text-success me-2"></i> {% trans 'Spirálna stabilizácia chrbtice' %}</li>
+                    </ul>
+                </div>
+                </div>
+            </div>
+
+            <!-- Person 2 -->
+            <div class="col-12 col-md-6 col-xl-6">
+                <div class="card shadow-lg border-0 h-100 person-card">
+                <div class="ratio ratio-4x3 overflow-hidden">
+                    <img src="{% static 'images/evka.jpg' %}" class="card-img-top object-fit-cover" alt="Evka Koribská">
+                </div>
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h3 class="h4 mb-0 fw-semibold text-dark">Evka Koribská</h3>
+                    </div>
+
+                    <!-- Services -->
+                    <ul class="list-unstyled mb-0">
+                    <li class="service-item"><i class="fa-solid fa-check text-success me-2"></i> {% trans 'Klasická masáž' %}</li>
+                    <li class="service-item"><i class="fa-solid fa-check text-success me-2"></i> {% trans 'Športová masáž' %}</li>
+                    <li class="service-item"><i class="fa-solid fa-check text-success me-2"></i> {% trans 'Mäkké a myofasciálne techniky' %}</li>
+                    <li class="service-item"><i class="fa-solid fa-check text-success me-2"></i> {% trans 'Bankovanie' %}</li>
+                    <li class="service-item"><i class="fa-solid fa-check text-success me-2"></i> {% trans 'Lávové kamene' %}</li>
+                    </ul>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="text-center">
+        <a href="{% url 'reservation' %}" class="reservation-button-about-us">
+            <i class="fa-solid fa-calendar-circle-plus me-2"></i> {% trans 'Rezervovať termín' %}
+        </a>
+    </div>
 
     <section id="technique">
         <h1>{% trans 'Techniky' %}</h1>
@@ -58,37 +97,77 @@
             <button onclick="showTechnique(4)" class="technique-btn">{% trans 'Bankovanie' %}</button>
             <button onclick="showTechnique(5)" class="technique-btn">{% trans 'Lávové kamene' %}</button>
             <button onclick="showTechnique(6)" class="technique-btn">IASTM {% trans 'terapia' %}</button>
+            <button onclick="showTechnique(7)" class="technique-btn">{% trans 'Ruské kombinované techniky' %}</button>
+            <button onclick="showTechnique(8)" class="technique-btn">{% trans 'Spirálna stabilizácia chrbtice' %}</button>
         </div>
     </section>
 
     <section id="gallery">
-        <h1>{% trans 'Galéria' %}</h1>
-            <div class="gallery-container">
-                {% for photo in photos %}
-                    <img src="{{ photo.photo }}" onclick="openBiggerImage('{{ photo.photo }}')">
-                {% endfor %}
+    <div class="container custom-wide">
+        <h1 class="text-center fw-semibold display-6 mb-5">{% trans 'Galéria' %}</h1>
+
+        <div class="row g-4 row-cols-2 row-cols-md-2 row-cols-lg-3 justify-content-center">
+        {% for photo in photos %}
+        <div class="col">
+            <button
+            type="button"
+            class="btn p-0 border-0 bg-transparent w-100"
+            onclick="openBiggerImage('{{ photo.photo }}','{{ photo.alt|default:'Foto' }}')"
+            aria-label="{% trans 'Zobraziť fotografiu' %}"
+            >
+            <div class="ratio ratio-1x1 rounded overflow-hidden shadow-sm">
+                <img
+                src="{{ photo.photo }}"
+                alt="{{ photo.alt|default:'Foto' }}"
+                loading="lazy"
+                class="w-100 h-100 object-fit-cover"
+                >
             </div>
-            <div id="myModal" class="modal">
-                <span class="close">&times;</span>
-                <img class="modal-content" id="img01">
-            </div>
+            </button>
+        </div>
+        {% endfor %}
+        </div>
+    </div>
     </section>
 
-    <section id="poukazka" style="margin-bottom: 100px;">
-        <h1>{% trans 'Poukážky' %}</h1>
-        <div class="gallery-container-poukazka">
-            {% for voucher in vouchers %}
-                <div class="voucher-download-container">
-                <img src="{{ voucher.photo }}" onclick="openBiggerImage('{{ voucher.photo }}')">
-                <a class="download-button" href="{{ voucher.photo }}" download>{% trans 'Stiahnúť' %}<i class="fa-duotone fa-arrow-down-to-line"></i></a>
+    <section id="poukazka">
+    <div class="container custom-wide">
+        <h1 class="text-center fw-semibold display-6 mb-5">{% trans 'Poukážky' %}</h1>
+
+        <div class="row g-4 row-cols-2 row-cols-md-2 row-cols-lg-3 justify-content-center">
+        {% for voucher in vouchers %}
+        <div class="col">
+            <div class="text-center">
+            <button
+                type="button"
+                class="btn p-0 border-0 bg-transparent w-100"
+                onclick="openBiggerImage('{{ voucher.photo }}', '{{ voucher.alt|default:'Poukážka' }}')"
+                aria-label="{% trans 'Zobraziť poukážku' %}"
+            >
+                <div class="ratio ratio-1x1 rounded overflow-hidden shadow-sm">
+                <img
+                    src="{{ voucher.photo }}"
+                    alt="{{ voucher.alt|default:'Poukážka' }}"
+                    loading="lazy"
+                    class="w-100 h-100 object-fit-cover"
+                >
                 </div>
-            {% endfor %}
+            </button>
+
+            <a class="download-button d-inline-block mt-2" href="{{ voucher.photo }}" download>
+                {% trans 'Stiahnúť' %} <i class="fa-duotone fa-arrow-down-to-line"></i>
+            </a>
+            </div>
         </div>
-        <div id="myModal" class="modal">
-            <span class="close">&times;</span>
-            <img class="modal-content" id="img01">
+        {% endfor %}
         </div>
+    </div>
     </section>
+
+    <div id="myModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="img01">
+    </div>
 
     <section id="recenzie">
         <div style="display: flex; gap: 15px; justify-content: center; align-items: center; margin-bottom: 30px;">
@@ -148,7 +227,7 @@
         <div class="contact-container">
             <div class="contact-info">
                 <p>{% trans 'Masáže Vlčince' %}</p>
-                <p><i class="fa-regular fa-map-location-dot"></i> Dobšinského 1614/8, 010 08 Žilina-Vlčince (OC Kocka)</p>
+                <p><i class="fa-regular fa-map-location-dot"></i> {% trans 'Matice Slovenskej 6, Vlčince (žltá budova, na poschodí)' %}</p>
                 <p><strong>Roman </strong><i class="fa-duotone fa-phone"></i> +421 902 442 280</p>
                 <p><strong>Evka </strong><i class="fa-duotone fa-phone"></i> +421 948 953 841</p>
                 <p><i class="fa-duotone fa-envelope"></i> salonaminask@gmail.com</p>

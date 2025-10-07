@@ -23,7 +23,7 @@ function switchLanguage(language_code) {
 document.addEventListener('DOMContentLoaded', function() {
     var avatarIcon = document.getElementById('avatar-user-icon');
     var dropdownMenu = document.getElementById('dropdown-menu');
-    var languageButton = document.querySelector('.navbar-language-button');
+    var languageButton = document.querySelector('.switch-language-button');
     var dropdownMenuLanguages = document.getElementById('dropdown-menu-languages');
 
     function toggleDropdown(dropdown, menu) {
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 dropdown.display = 'none';
             }, 300);
         } else {
-            dropdown.display = 'block';
+            dropdown.display = 'flex';
             setTimeout(function() {
                 dropdown.opacity = '1';
             }, 10);

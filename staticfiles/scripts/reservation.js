@@ -21,6 +21,61 @@ function resetDateInput() {
     }
 }
 
+function revealFirst() {
+    document.querySelectorAll('.add-hidden-first').forEach(element => {
+        element.classList.remove('hidden-element-first');
+    });
+}
+
+function revealSecond() {
+    document.querySelectorAll('.add-hidden-second').forEach(element => {
+        element.classList.remove('hidden-element-second');
+    });
+}
+
+function revealThird() {
+    document.querySelectorAll('.add-hidden-third').forEach(element => {
+        element.classList.remove('hidden-element-third');
+    });
+}
+
+function revealFourth() {
+    document.querySelectorAll('.add-hidden-fourth').forEach(element => {
+        element.classList.remove('hidden-element-fourth');
+    });
+}
+
+function hideFirst() {
+    document.querySelectorAll('.add-hidden-first').forEach(element => {
+        element.classList.add('hidden-element-first');
+    });
+}
+
+function hideSecond() {
+    document.querySelectorAll('.add-hidden-second').forEach(element => {
+        element.classList.add('hidden-element-second');
+    });
+}
+
+function hideThird() {
+    document.querySelectorAll('.add-hidden-third').forEach(element => {
+        element.classList.add('hidden-element-third');
+    });
+}
+
+function hideFourth() {
+    document.querySelectorAll('.add-hidden-fourth').forEach(element => {
+        element.classList.add('hidden-element-fourth');
+    });
+}
+
+function hideAll() {
+    hideFirst();
+    hideSecond();
+    hideThird();
+    hideFourth();
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const bigButtons = document.querySelectorAll('.option-button-person');
     bigButtons.forEach(button => {
@@ -30,29 +85,8 @@ document.addEventListener('DOMContentLoaded', function() {
             this.classList.add('selected');
             worker = this.id;
 
-            hiddenTimeSlotAll = document.querySelectorAll('.add-hidden-timeSlots');
-            hiddenSlotsSecondAll = document.querySelectorAll('.add-hidden-second');
-            hiddenSlotsThirdAll = document.querySelectorAll('.add-hidden-third');
-            hiddenTimeSlotAll.forEach(element => {
-                if (!element.classList.contains('hidden-element-timeSlots')) {
-                    element.classList.add('hidden-element-timeSlots');
-                }
-            });
-            hiddenSlotsSecondAll.forEach(element => {
-                if (!element.classList.contains('hidden-element-second')) {
-                    element.classList.add('hidden-element-second');
-                }
-            });
-            hiddenSlotsThirdAll.forEach(element => {
-                if (!element.classList.contains('hidden-element-third')) {
-                    element.classList.add('hidden-element-third');
-                }
-            });
-
-            var hiddenElements = document.querySelectorAll('.hidden-element-first');
-            hiddenElements.forEach(element => {
-                element.classList.remove('hidden-element-first');
-            });
+            hideAll();
+            revealFirst();
             resetDateInput();
         });
     });
@@ -90,17 +124,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 finishButton.innerHTML = isEnglish
                     ? `Create reservation`
                     : `Vytvoriť rezerváciu`;
-                finishButton.classList.add('finish-reservation-button', 'add-hidden-third', 'big-button');
+                finishButton.classList.add('finish-reservation-button', 'add-hidden-fourth', 'big-button');
                 finishButton.onclick = createReservation;
 
                 mainContainer.appendChild(finishButton);
             }
 
-            const hiddenElements = document.querySelectorAll('.hidden-element-third');
-            hiddenElements.forEach(element => {
-                element.classList.remove('hidden-element-third');
-            });
-
+            revealFourth();
             moveToBottom();
         });
     });
@@ -258,11 +288,11 @@ function pickDate(clickedDateElement = null) {
     var mainContainer = document.getElementById('time-slot-container');
     var selectedDate = document.getElementById('date');
     pickedDateGeneralData = selectedDate.value;
+    document.getElementById('date').textContent = formatDateToSK(pickedDateGeneralData);
 
-    hiddenTimeSlotAll = document.querySelectorAll('.add-hidden-timeSlots');
-    hiddenTimeSlotAll.forEach(element => {
-        element.classList.remove('hidden-element-timeSlots');
-    });
+    revealSecond();
+    hideThird();
+    hideFourth();
 
     mainContainer.innerHTML = '';
     selectedDate.style.border = '1px solid black';
@@ -335,20 +365,14 @@ function pickDate(clickedDateElement = null) {
     }
 }
 
-function formatDate(date) {
-  var dateObj = new Date(date); // Create a Date object
-  var day = String(dateObj.getDate()).padStart(2, '0'); // Get day with padding
-  var month = String(dateObj.getMonth() + 1).padStart(2, '0'); // Get month with padding (starts at 0)
-  var year = dateObj.getFullYear();
-  return `${day}.${month}.${year}`; // Return formatted date
-}
-
 function selectTimeSlot(button) {
     var previouslySelectedButton = document.getElementById('picked-time-slot');
     if (previouslySelectedButton) {
       previouslySelectedButton.removeAttribute('id');
       previouslySelectedButton.classList.remove('selected');
     }
+
+    hideFourth();
 
     button.id = 'picked-time-slot';
     button.classList.add('selected');
@@ -367,20 +391,20 @@ function selectTimeSlot(button) {
         // Hide all duration options initially
         var allDurations = document.querySelectorAll('.option-button-time');
         allDurations.forEach(element => {
-            element.classList.add('hidden-element-second');
+            element.classList.add('hidden-element-third');
             element.classList.remove('selected');
         });
         duration = null;
 
         var heading = document.getElementById('choose-duration-h2');
-        heading.classList.remove('hidden-element-second');
+        heading.classList.remove('hidden-element-third');
 
         // Show only available duration options
         var availableDurations = data.available_durations; // This is the array of available durations from the response
         availableDurations.forEach(duration => {
             var durationElement = document.getElementById(duration.toString()); // Select the element by ID
             if (durationElement) {
-                durationElement.classList.remove('hidden-element-second');
+                durationElement.classList.remove('hidden-element-third');
             }
         });
 
@@ -405,41 +429,39 @@ function createReservation() {
     email.style.border = '1px solid black';
     phone.style.border = '1px solid black';
 
-    function showError(field, message) {
-        field.style.border = '2px solid red';
-        Swal.fire({
-            icon: 'error',
-            title: message,
-        });
-    }
+    const errors = [];
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    var errorMessage = null;
+    function flag(field, message) {
+        field.style.border = '2px solid red';
+        errors.push(message);
+    }
 
     if (superUser === "true") {
-        if (!nameSurname.value) {
-            errorMessage = isEnglish ? `Please enter your name and surname` : `Zadajte svoje meno a priezvisko`;
-            showError(nameSurname, errorMessage);
+        if (!nameSurname.value.trim()) {
+            flag(nameSurname, isEnglish ? `Please enter your name and surname` : `Zadajte svoje meno a priezvisko`);
         }
-    } else {
-        if (!nameSurname.value) {
-            errorMessage = isEnglish ? `Please enter your name and surname` : `Zadajte svoje meno a priezvisko`;
-            showError(nameSurname, errorMessage);
-        } else if (!email.value) {
-            errorMessage = isEnglish ? `Please enter your email address` : `Zadajte svoju e-mailovú adresu`;
-            showError(email, errorMessage);
-        } else if (!phone.value) {
-            errorMessage = isEnglish ? `Please enter your phone number` : `Zadajte svoje telefónne číslo`;
-            showError(phone, errorMessage);
+        } else {
+        if (!nameSurname.value.trim()) {
+            flag(nameSurname, isEnglish ? `Please enter your name and surname` : `Zadajte svoje meno a priezvisko`);
         }
 
-        var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailPattern.test(email.value)) {
-            errorMessage = isEnglish ? `Enter a valid email, please` : `Zadajte prosím správny email`;
-            showError(email, errorMessage);
+        if (!email.value.trim()) {
+            flag(email, isEnglish ? `Please enter your email address` : `Zadajte svoju e-mailovú adresu`);
+        } else if (!emailPattern.test(email.value.trim())) {
+            flag(email, isEnglish ? `Enter a valid email, please` : `Zadajte prosím správny email`);
+        }
+
+        if (!phone.value.trim()) {
+            flag(phone, isEnglish ? `Please enter your phone number` : `Zadajte svoje telefónne číslo`);
         }
     }
 
-    if (errorMessage) {
+    if (errors.length) {
+        Swal.fire({
+            icon: 'error',
+            html: errors.map(e => `<div>${e}</div>`).join('')
+        });
         return;
     }
 
@@ -558,7 +580,13 @@ function createReservation() {
     });
 }
 
-
+function formatDateToSK(isoString) {
+  const date = new Date(isoString);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  return `${day}.${month}.${year}`;
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');

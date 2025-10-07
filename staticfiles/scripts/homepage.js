@@ -90,6 +90,84 @@ function showTechnique(index) {
     Stimuluje správne fungovanie mäkkých tkanív.<br><br>
     <img style="width: 60%; max-width: 300px;" src="/static/images/iastm.png">
     `
+    },
+
+    7: {
+        en: `
+    <strong style="font-size: 30px;">RKT Therapy</strong><br><br>
+    RKT (Rehabilitation Complex Techniques) originated from physiotherapeutic and rehabilitation methods developed in the former USSR.<br><br>
+    It combines manual techniques, mobilizations, tractions, and specific exercises into one comprehensive system.<br><br>
+    <strong>Goal:</strong><br>
+    • release of spinal and joint blockages,<br>
+    • restore proper mobility,<br>
+    • eliminate muscle spasms,<br>
+    • improve neuromuscular coordination.<br><br>
+    <strong>Used for:</strong> back pain, scoliosis, post-injury recovery, and functional musculoskeletal disorders.<br><br>
+    <strong>Advantages:</strong><br>
+    • faster pain relief,<br>
+    • combines relaxation and strengthening,<br>
+    • acts simultaneously on muscles, joints, and the nervous system.<br><br>
+    <strong>Disadvantages:</strong><br>
+    • not suitable for acute inflammation or recent injuries.<br><br>
+    👉 <em>In short:</em> RKT = combination of manual therapy + exercise + mobilization → a comprehensive approach to the spine and musculoskeletal system.<br><br>
+    `,
+        sk: `
+    <strong style="font-size: 30px;">RKT terapia</strong><br><br>
+    RKT (Rehabilitačné komplexné techniky) pochádzajú z fyzioterapeutických a rehabilitačných metód vyvinutých v bývalom ZSSR.<br><br>
+    Spájajú manuálne techniky, mobilizácie, trakcie a špecifické cvičenia do jedného celku.<br><br>
+    <strong>Cieľ:</strong><br>
+    • uvoľnenie blokád chrbtice a kĺbov,<br>
+    • obnovenie správnej pohyblivosti,<br>
+    • odstránenie svalových spazmov,<br>
+    • zlepšenie nervosvalovej koordinácie.<br><br>
+    <strong>Použitie:</strong> pri bolestiach chrbta, skolióze, po úrazoch a pri funkčných poruchách pohybového aparátu.<br><br>
+    <strong>Výhody:</strong><br>
+    • rýchlejšia úľava od bolesti,<br>
+    • kombinuje uvoľnenie aj posilnenie,<br>
+    • pôsobí na svaly, kĺby aj nervový systém naraz.<br><br>
+    <strong>Nevýhody:</strong><br>
+    • nie je vhodná pri akútnych zápaloch alebo čerstvých úrazoch.<br><br>
+    👉 <em>V skratke:</em> RKT = kombinácia manuálnej terapie + cvičenia + mobilizácie → komplexný prístup k chrbtici a pohybovému aparátu.<br><br>
+    `
+    },
+
+    8: {
+    en: `
+        <strong style="font-size: 30px;">SM System (Spiral Spinal Stabilization)</strong><br><br>
+        The SM System was developed by <strong>MUDr. Richard Smíšek</strong>, a Czech physician.<br><br>
+        The method is based on the <em>natural walking pattern</em> and focuses on activating spiral muscle chains that relieve pressure from the spine.<br><br>
+        <strong>Goal:</strong><br>
+        • improve posture and spinal stability,<br>
+        • eliminate back pain,<br>
+        • prevent intervertebral disc damage.<br><br>
+        <strong>How it’s practiced:</strong> dynamic exercises using a rope or elastic band, always performed while standing or in motion.<br><br>
+        <strong>Effects:</strong><br>
+        • relaxation of shortened muscles,<br>
+        • strengthening of weakened muscles,<br>
+        • prevention and treatment of disc problems, scoliosis, back, shoulder, and knee issues.<br><br>
+        <strong>Advantages:</strong><br>
+        • suitable for rehabilitation and athletes alike,<br>
+        • simple to learn,<br>
+        • short daily sessions (about 10–15 minutes).<br><br>
+        `,
+            sk: `
+        <strong style="font-size: 30px;">SM systém (Spirálna stabilizácia chrbtice)</strong><br><br>
+        Autorom metódy je <strong>MUDr. Richard Smíšek</strong> (český lekár).<br><br>
+        Metóda je založená na <em>prirodzenom stereotype chôdze</em> a aktivácii špirálových svalových reťazcov, ktoré odľahčujú chrbticu.<br><br>
+        <strong>Cieľ:</strong><br>
+        • zlepšiť držanie tela a stabilitu,<br>
+        • odstrániť bolesti chrbta,<br>
+        • predchádzať poškodeniu medzistavcových platničiek.<br><br>
+        <strong>Ako sa cvičí:</strong> dynamické cviky s lanom alebo gumičkou, vždy v stoji alebo v pohybe.<br><br>
+        <strong>Účinky:</strong><br>
+        • uvoľnenie skrátených svalov,<br>
+        • posilnenie oslabených svalov,<br>
+        • prevencia a liečba problémov s platničkami, skoliózou, chrbtom, ramenami a kolenami.<br><br>
+        <strong>Výhody:</strong><br>
+        • vhodné pre rehabilitáciu aj športovcov,<br>
+        • jednoduché na naučenie,<br>
+        • cvičí sa krátko (cca 10–15 minút denne).<br><br>
+        `
     }
   };
 
@@ -102,38 +180,43 @@ function showTechnique(index) {
     });
 }
 
-function smoothScroll(targetId) {
-    var target = document.getElementById(targetId);
-    if (target) {
-      var targetPosition = target.offsetTop - 170; // Get the target element's position with an additional 100px offset from the top
-      var startPosition = window.pageYOffset; // Get current position
-      var distance = targetPosition - startPosition;
-      var duration = 1000; // Set the duration of the scroll in milliseconds
-      let start = null;
+function smoothScroll(targetId, { offset = 170, duration = 600, easing = "easeOutQuad" } = {}) {
+  const targetEl = document.getElementById(targetId);
+  if (!targetEl) return;
 
-      // Function to perform the scrolling animation
-      function animation(currentTime) {
-        if (start === null) {
-          start = currentTime;
-        }
-        var timeElapsed = currentTime - start;
-        var run = ease(timeElapsed, startPosition, distance, duration);
-        window.scrollTo(0, run);
-        if (timeElapsed < duration) {
-          requestAnimationFrame(animation);
-        }
-      }
+  const startY = window.pageYOffset;
+  const targetY = startY + targetEl.getBoundingClientRect().top - offset;
+  const distance = targetY - startY;
 
-      // Easing function for smooth scrolling
-      function ease(t, b, c, d) {
-        t /= d / 2;
-        if (t < 1) return c / 2 * t * t + b;
-        t--;
-        return -c / 2 * (t * (t - 2) - 1) + b;
-      }
+  // Easing functions with t in [0,1]
+  const easers = {
+    linear: t => t,
+    easeOutQuad: t => t * (2 - t),
+    easeOutCubic: t => 1 - Math.pow(1 - t, 3),
+    easeOutQuart: t => 1 - Math.pow(1 - t, 4),
+  };
 
-      requestAnimationFrame(animation);
+  const ease = easers[easing] || easers.easeOutQuad;
+
+  let startTime = null;
+
+  function tick(now) {
+    if (startTime === null) startTime = now;
+    const elapsed = now - startTime;
+    const t = Math.min(1, elapsed / duration);        // clamp 0..1
+    const y = startY + distance * ease(t);
+
+    window.scrollTo(0, y);
+
+    if (t < 1) {
+      requestAnimationFrame(tick);
+    } else {
+      // snap to exact target to avoid any sub-pixel off-by-one
+      window.scrollTo(0, targetY);
     }
+  }
+
+  requestAnimationFrame(tick);
 }
 
 function scrollToTop() {
