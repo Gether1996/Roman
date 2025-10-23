@@ -296,7 +296,7 @@ def check_available_slots_ahead(request, worker):
                 continue
 
             # Get all reservations and partial turned-off slots for that day
-            reservations = Reservation.objects.filter(datetime_from__date=single_date, active=True)
+            reservations = Reservation.objects.filter(worker=worker, datetime_from__date=single_date, active=True)
             turned_off_slots = TurnedOffDay.objects.filter(worker=worker, date=single_date, whole_day=False)
 
             available_slots_count = 0
