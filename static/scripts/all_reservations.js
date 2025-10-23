@@ -320,13 +320,13 @@ function filterTable() {
 }
 
 function toggleClearButtonVisibility() {
-    var hasValue = Array.from(document.querySelectorAll('.searching-input-table')).some(input => input.value.trim() !== '');
-    var clearButton = document.querySelector('.cancel-filter-button');
-    if (hasValue) {
-        clearButton.classList.remove('hidden-initially');
-    } else {
-        clearButton.classList.add('hidden-initially');
-    }
+  const hasValue = Array.from(document.querySelectorAll('.searching-input-table'))
+    .some(input => input.value.trim() !== '');
+
+  const clearButton = document.querySelector('.cancel-filter-button');
+  if (!clearButton) return; // nothing to toggle if it's not on the page
+
+  clearButton.classList.toggle('hidden-initially', !hasValue);
 }
 
 function removeAllFilters() {
