@@ -156,7 +156,7 @@ def settings(request):
     ending_slot_hour_evka_sunday = str(config['settings-evka']['sunday_ending_hour'])
 
     working_days_evka = config['settings-evka']['working_days']
-    turned_off_days = TurnedOffDay.objects.all()
+    turned_off_days = TurnedOffDay.objects.all().order_by("-date")
     turned_off_days_data = [
         {
             'id': day.id,
@@ -272,6 +272,7 @@ def get_all_reservations_data(request):
         'phone_number': request.GET.get('phone_number', ''),
         'date': request.GET.get('date', ''),
         'slot': request.GET.get('slot', ''),
+        'type': request.GET.get('type', ''),
         'worker': request.GET.get('worker', ''),
         'created_at': request.GET.get('created_at', ''),
         'special_request': request.GET.get('special_request', ''),
@@ -294,6 +295,9 @@ def get_all_reservations_data(request):
 
     if filters['worker']:
         all_reservations_obj = all_reservations_obj.filter(worker__icontains=filters['worker'])
+
+    if filters['type']:
+        all_reservations_obj = all_reservations_obj.filter(massage_name__icontains=filters['type'])    
 
     if filters['special_request']:
         all_reservations_obj = all_reservations_obj.filter(special_request__icontains=filters['special_request'])

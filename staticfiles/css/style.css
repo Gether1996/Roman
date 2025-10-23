@@ -865,13 +865,6 @@ a {
     line-height: 40px;
 }
 
-.searching-input-table {
-    width: 90%;
-    height: 30px;
-    border-radius: 5px;
-    margin: auto;
-}
-
 .add-employee-th-table-button {
     color: white;
     cursor: pointer;
@@ -935,42 +928,6 @@ a {
 
 .action-button-all-reservations {
     font-size: 20px;
-}
-
-.paginator {
-    position: absolute; /* Ensures it's positioned relative to its closest positioned ancestor */
-    width: 93%; /* Width of the paginator */
-    display: flex;
-    align-items: center;
-    justify-content: center; /* Centers the content horizontally */
-    margin: 0 auto;
-    top: 140px; /* Aligns it relative to the top of the page */
-    left: 50%; /* Moves it to the center of the page */
-    transform: translateX(-50%); /* Offsets it back by 50% of its width to ensure true centering */
-    font-family: Arial, sans-serif;
-    margin-top: 40px; /* Space from the top of the page */
-    margin-bottom: 20px; /* Space from the bottom of the paginator (not effective when using margin-top and transform) */
-}
-
-.paginator-button {
-    margin: 0px 3px;
-    padding: 5px 10px;
-    cursor: pointer;
-    font-size: 12px;
-}
-
-.paginator .current-page {
-    font-weight: bold;
-    margin: 0 10px;
-}
-
-.paginator button:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-}
-
-.paginator button:focus {
-    outline: none;
 }
 
 .employee-count {
@@ -1082,17 +1039,6 @@ a {
     cursor: pointer;
 }
 
-.btn {
-    background-color: #cbd3e8;
-    color: black;
-    font-size: 20px;
-}
-
-.btn:hover {
-    background-color: #244b90;
-    color: white;
-}
-
 .swal2-popup {
     width: auto;
     max-width: 95%;
@@ -1101,27 +1047,6 @@ a {
 
 .hidden-initially {
     visibility: hidden;
-}
-
-.cancel-filter-button {
-    background-color: #ff808ef7;
-    color: black;
-    transition: 0.3s;
-    padding: 5px 10px;
-    cursor: pointer;
-    border-radius: 5px;
-    position: absolute; /* Ensures it's positioned relative to its closest positioned ancestor */
-    top: 105px; /* Aligns it relative to the top of the page */
-    left: 128px; /* Moves it to the center of the page */
-    transform: translateX(-50%); /* Offsets it back by 50% of its width to ensure true centering */
-    font-family: Arial, sans-serif;
-    margin-top: 40px; /* Space from the top of the page */
-    margin-bottom: 20px; /* Space from the bottom of the paginator (not effective when using margin-top and transform) */
-}
-
-.cancel-filter-button:hover {
-    background-color: #d13041;
-    color: white;
 }
 
 @media screen and (max-width: 2000px) {
@@ -1476,23 +1401,6 @@ a {
         line-height: 40px;
     }
 
-    .searching-input-table {
-        width: 90%;
-        height: 20px;
-        border-radius: 5px;
-        margin: auto;
-    }
-
-    .paginator {
-        position: absolute; /* Ensures it's positioned relative to its closest positioned ancestor */
-        width: 90%; /* Width of the paginator */
-        margin: 0 auto;
-        top: 180px; /* Aligns it relative to the top of the page */
-        left: 50%; /* Moves it to the center of the page */
-        transform: translateX(-50%); /* Offsets it back by 50% of its width to ensure true centering */
-        font-size: 10px;
-    }
-
     .all-reservations-action-buttons-container {
         position: absolute; /* Ensures it's positioned relative to its closest positioned ancestor */
         width: 93%; /* Width of the paginator */
@@ -1532,30 +1440,6 @@ a {
         color: black;
         font-size: 12px;
         margin-left: 3px;
-    }
-
-    .cancel-filter-button {
-        background-color: #ff808ef7;
-        color: black;
-        transition: 0.3s;
-        padding: 5px 10px;
-        cursor: pointer;
-        border-radius: 5px;
-        position: absolute; /* Ensures it's positioned relative to its closest positioned ancestor */
-        top: 95px; /* Aligns it relative to the top of the page */
-        left: 300px; /* Moves it to the center of the page */
-        transform: translateX(-50%); /* Offsets it back by 50% of its width to ensure true centering */
-        font-family: Arial, sans-serif;
-        margin-top: 40px; /* Space from the top of the page */
-        margin-bottom: 20px; /* Space from the bottom of the paginator (not effective when using margin-top and transform) */
-        font-size: 10px;
-    }
-
-    .paginator-button {
-        margin: 0px 3px;
-        padding: 2px 4px;
-        cursor: pointer;
-        font-size: 10px;
     }
 
     .insert-date-add-truck {

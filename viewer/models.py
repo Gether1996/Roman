@@ -28,8 +28,8 @@ class TurnedOffDay(Model):
         else:
             return f"-"
 
-
 class Reservation(Model):
+    massage_name = CharField(max_length=250, default="Masáž", null=True, blank=True)
     user = ForeignKey(CustomUser, on_delete=CASCADE, default=None, blank=True, null=True)
     name_surname = CharField(max_length=150)
     email = EmailField(default=None, blank=True, null=True)

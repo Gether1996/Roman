@@ -1,6 +1,7 @@
 let worker = null;
 let duration = null;
 let timeSlot = null;
+let massageName = null;
 let pickedDateGeneralData = null;
 
 function moveToBottom() {
@@ -96,7 +97,8 @@ document.addEventListener('DOMContentLoaded', function() {
         button.addEventListener('click', function() {
             optionButtons.forEach(btn => btn.classList.remove('selected'));
             this.classList.add('selected');
-            duration = this.id;
+            duration = this.dataset.time;
+            massageName = this.dataset.name;
 
             const mainContainer = document.getElementById('reservation-box-container');
             let finishButton = document.querySelector('.finish-reservation-button');
@@ -107,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (superUser === "true" && !userSelectButton) {
                 // Create the button only if it does not exist
                 userSelectButton = document.createElement('button');
-                userSelectButton.classList.add('user-select', 'big-button');
+                userSelectButton.classList.add('user-select', 'big-button', 'add-hidden-fourth');
                 userSelectButton.textContent = 'Vybrať uživateľa';
 
                 // Append the button to the main container
@@ -135,6 +137,104 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+function openSmSystemMessage(isEnglish = false) {
+  const t = isEnglish
+    ? {
+        heading: 'SM System "Season Pass"',
+        sectionTitle: "Current pass options",
+        oneEntry: "Single entry",
+        threeEntries: "3 entries",
+        fiveEntries: "5 entries",
+        note1: "On your first visit we will issue a paper season pass.",
+        note2:
+          "This notice is for informational purposes. We’ll gladly provide more details in person or by phone.",
+        close: "Close",
+      }
+    : {
+        heading: "SM systém „permanentka“",
+        sectionTitle: "Aktuálne možnosti permanentky",
+        oneEntry: "Jeden vstup",
+        threeEntries: "3 vstupy",
+        fiveEntries: "5 vstupov",
+        note1: "Pri prvej návšteve Vám vystavíme papierovú permanentku.",
+        note2:
+          "Toto oznámenie má informatívny charakter. Podrobnejšie informácie vám radi poskytneme osobne alebo telefonicky.",
+        close: "Zavrieť",
+      };
+
+  const html = `
+    <div>
+      <div style="margin-bottom:12px;">
+        <div style="margin-top:8px;font-size:18px;font-weight:700;">
+          ${t.heading}
+        </div>
+      </div>
+
+      <div style="
+        padding:10px 12px;
+        border:1px solid #e6e6e6;
+        border-radius:8px;
+        background:#fafafa;
+        margin-bottom:12px;
+        font-weight:600;
+      ">
+        ${t.sectionTitle}
+      </div>
+
+      <ul style="
+        list-style:none;
+        padding:0;
+        margin:0 0 12px 0;
+        border:1px solid #eee;
+        border-radius:8px;
+        overflow:hidden;
+      ">
+        <li style="
+          display:flex;justify-content:space-between;align-items:center;
+          padding:10px 12px;border-bottom:1px solid #eee;
+        ">
+          <span>${t.oneEntry}</span><span style="font-weight:600;">20&nbsp;€</span>
+        </li>
+        <li style="
+          display:flex;justify-content:space-between;align-items:center;
+          padding:10px 12px;border-bottom:1px solid #eee;
+        ">
+          <span>${t.threeEntries}</span><span style="font-weight:600;">45&nbsp;€</span>
+        </li>
+        <li style="
+          display:flex;justify-content:space-between;align-items:center;
+          padding:10px 12px;
+        ">
+          <span>${t.fiveEntries}</span><span style="font-weight:600;">75&nbsp;€</span>
+        </li>
+      </ul>
+
+      <div style="
+        border:1px solid #eee;
+        border-radius:8px;
+        padding:10px 12px;
+        background:#f7f7f7;
+        color:#444;
+        font-size:12px;
+      ">
+        <p style="margin:0 0 6px 0;">${t.note1}</p>
+        <p style="margin:0;">${t.note2}</p>
+      </div>
+    </div>
+  `;
+
+  Swal.fire({
+    title: "",            // keep empty; we render our own header in html
+    html,
+    icon: undefined,      // no icon
+    showConfirmButton: true,
+    confirmButtonText: t.close,
+    width: 520,
+    background: "#fff",
+    color: "#212529",
+  });
+}
 
 function displayUserSelect(userOptions) {
     // Create the HTML structure for the Swal.fire modal content
@@ -366,57 +466,65 @@ function pickDate(clickedDateElement = null) {
 }
 
 function selectTimeSlot(button) {
-    var previouslySelectedButton = document.getElementById('picked-time-slot');
-    if (previouslySelectedButton) {
-      previouslySelectedButton.removeAttribute('id');
-      previouslySelectedButton.classList.remove('selected');
-    }
+  console.log(worker);
+  var previouslySelectedButton = document.getElementById('picked-time-slot');
+  if (previouslySelectedButton) {
+    previouslySelectedButton.removeAttribute('id');
+    previouslySelectedButton.classList.remove('selected');
+  }
 
-    hideFourth();
+  hideFourth();
 
-    button.id = 'picked-time-slot';
-    button.classList.add('selected');
-    timeSlot = button.textContent.trim();
+  button.id = 'picked-time-slot';
+  button.classList.add('selected');
+  timeSlot = button.textContent.trim();
 
-    fetch(`/check_available_durations/${worker}/`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': csrfToken
-        },
-        body: JSON.stringify({ timeSlot: timeSlot, pickedDateGeneralData: pickedDateGeneralData })
+  fetch(`/check_available_durations/${worker}/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': csrfToken
+    },
+    body: JSON.stringify({
+      timeSlot: timeSlot,
+      pickedDateGeneralData: pickedDateGeneralData
     })
+  })
     .then(response => response.json())
     .then(data => {
-        // Hide all duration options initially
-        var allDurations = document.querySelectorAll('.option-button-time');
-        allDurations.forEach(element => {
-            element.classList.add('hidden-element-third');
-            element.classList.remove('selected');
+      // Hide all duration options initially
+      const allDurations = document.querySelectorAll('.option-button-time');
+      allDurations.forEach(element => {
+        element.classList.add('hidden-element-third');
+        element.classList.remove('selected');
+      });
+      duration = null;
+
+      const heading = document.getElementById('choose-duration-h2');
+      heading.classList.remove('hidden-element-third');
+
+    const availableDurations = data.available_durations;
+
+    // Optional: dedupe the array if the API can return repeats
+    const durationsToShow = [...new Set(availableDurations.map(String))];
+
+    durationsToShow.forEach(d => {
+    const matches = document.querySelectorAll(`.option-button-time[data-time="${d}"]`);
+        matches.forEach(el => {
+            // If this is the SM systém button, only show for Roman
+            if (el.classList.contains('roman-only-button') && worker !== 'Roman') return;
+            el.classList.remove('hidden-element-third');
         });
-        duration = null;
-
-        var heading = document.getElementById('choose-duration-h2');
-        heading.classList.remove('hidden-element-third');
-
-        // Show only available duration options
-        var availableDurations = data.available_durations; // This is the array of available durations from the response
-        availableDurations.forEach(duration => {
-            var durationElement = document.getElementById(duration.toString()); // Select the element by ID
-            if (durationElement) {
-                durationElement.classList.remove('hidden-element-third');
-            }
-        });
-
-        console.log('Available durations:', availableDurations);
-    })
-    .catch(error => {
-        console.error('Error:', error);
     });
 
-    moveToBottom();
-}
+      console.log('Available durations:', availableDurations);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
 
+  moveToBottom();
+}
 
 function createReservation() {
     var selectedDate = document.getElementById('date').value;
@@ -499,6 +607,10 @@ function createReservation() {
                 <td>${timeSlot} - ${endTime}</td>
             </tr>
             <tr>
+                <td>${isEnglish ? 'Type' : 'Typ'}</td>
+                <td>${massageName}</td>
+            </tr>
+            <tr>
                 <td>${isEnglish ? 'Name and Surname' : 'Meno a priezvisko'}</td>
                 <td>${nameSurname.value}</td>
             </tr>
@@ -547,6 +659,7 @@ function createReservation() {
                     'X-CSRFToken': csrfToken
                 },
                 body: JSON.stringify({
+                    massageName: massageName,
                     selectedDate: selectedDate,
                     worker: worker,
                     duration: duration,

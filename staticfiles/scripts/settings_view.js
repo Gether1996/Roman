@@ -470,7 +470,28 @@ function toggleCancelAllDaysRow() {
     }
 }
 
-// Attach the toggleCancelAllDaysRow function to checkbox change events
-document.querySelectorAll('.turned-off-day-checkbox').forEach(checkbox => {
-    checkbox.addEventListener('change', toggleCancelAllDaysRow);
+const selectAllCheckbox = document.getElementById('select-all-checkbox');
+const checkboxes = document.querySelectorAll('.turned-off-day-checkbox');
+
+// Toggle all checkboxes when main one is clicked
+selectAllCheckbox.addEventListener('change', () => {
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = selectAllCheckbox.checked;
+    });
+    toggleCancelAllDaysRow(); // Update visibility of cancel button
+});
+
+// Existing listener for individual checkboxes
+checkboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', () => {
+        // If any checkbox gets unchecked, uncheck the main one
+        if (!checkbox.checked) {
+            selectAllCheckbox.checked = false;
+        } 
+        // If all checkboxes are checked, check the main one
+        else if (document.querySelectorAll('.turned-off-day-checkbox:checked').length === checkboxes.length) {
+            selectAllCheckbox.checked = true;
+        }
+        toggleCancelAllDaysRow();
+    });
 });

@@ -5,6 +5,7 @@ function fetchFilteredData(page = 1, sort_by, order, reload) {
         phone_number: document.getElementById('sort_phone_number').value,
         date: document.getElementById('sort_date').value,
         slot: document.getElementById('sort_slot').value,
+        type: document.getElementById('sort_type').value,
         worker: document.getElementById('sort_worker').value,
         created_at: document.getElementById('sort_created_at').value,
         special_request: document.getElementById('sort_special_request').value,
@@ -67,6 +68,7 @@ function updateTable(reservations) {
             <td>${reservation.worker}</td>
             <td>${reservation.date}</td>
             <td style="white-space: nowrap;">${reservation.slot}</td>
+            <td style="white-space: nowrap;">${reservation.massage_name}</td>
             <td>${reservation.name_surname}</td>
             <td>${reservation.email}</td>
             <td style="white-space: nowrap;">${reservation.phone_number}</td>
@@ -93,98 +95,117 @@ function updateTable(reservations) {
 }
 
 function updatePaginateElements(pagination) {
-    var paginators = document.getElementsByClassName('paginator');
+  const paginators = document.getElementsByClassName('paginator');
 
-    for (var i = 0; i < paginators.length; i++) {
-        var paginator = paginators[i];
+  const totalPages  = Number(pagination.total_pages) || 1;
+  const currentPage = Number(pagination.current_page) || 1;
+  const perPage     = Number(pagination.files_per_page) || 10;
+  const totalFiles  = Number(pagination.total_files) || 0;
 
-        paginator.innerHTML = '';
+  // i18n
+  const t = isEnglish ? {
+    first: 'First', prev: 'Previous', next: 'Next', last: 'Last',
+    showing: 'Showing', clear: 'Clear filter'
+  } : {
+    first: 'Prvá', prev: 'Predchádzajúca', next: 'Nasledujúca', last: 'Posledná',
+    showing: 'Zobrazené', clear: 'Zrušiť filter'
+  };
 
-        if (pagination.current_page > 1) {
-            paginator.innerHTML += `<button class="btn paginator-button" title="${isEnglish? 'First' : 'Prvá'}" onclick="fetchFilteredData(1, '${current_sort_by}', '${current_order}', 'reload')"><i class="fa-regular fa-arrow-left-to-line"></i></button>`;
-        }
+  // windowed pages
+  const maxVisible = 7;
+  let startPage, endPage;
+  if (totalPages <= maxVisible) {
+    startPage = 1; endPage = totalPages;
+  } else {
+    startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+    endPage   = Math.min(totalPages, currentPage + Math.floor(maxVisible / 2));
+    if (startPage === 1) endPage = maxVisible;
+    if (endPage === totalPages) startPage = totalPages - maxVisible + 1;
+  }
 
-        if (pagination.has_previous) {
-            paginator.innerHTML += `<button class="btn paginator-button" title="${isEnglish? 'Previous' : 'Predchádzajúca'}" onclick="fetchFilteredData(${pagination.current_page - 1}, '${current_sort_by}', '${current_order}', 'reload')"><i class="fa-solid fa-arrow-left"></i></button>`;
-        }
+  // range text
+  const startFile = totalFiles === 0 ? 0 : (currentPage - 1) * perPage + 1;
+  const endFile   = totalFiles === 0 ? 0 : Math.min(currentPage * perPage, totalFiles);
 
-        const total_pages = pagination.total_pages;
-        const current_page = pagination.current_page;
-        const max_visible_pages = 7;
-        let start_page, end_page;
+  // (optional) detect if filters are active (customize if you have your own flag)
+  const filtersActive =
+    (typeof areFiltersActive === 'function' && areFiltersActive()) ||
+    !!document.querySelector('.cancel-filter-button:not(.hidden-initially)');
 
-        // Always try to center the current page within the visible range
-        if (total_pages <= max_visible_pages) {
-            // If there are fewer pages than the max visible, show them all
-            start_page = 1;
-            end_page = total_pages;
-        } else {
-            // Calculate start and end pages to keep the current page centered
-            start_page = Math.max(1, current_page - Math.floor(max_visible_pages / 2));
-            end_page = Math.min(total_pages, current_page + Math.floor(max_visible_pages / 2));
+  // helper to make a pagination li
+  const li = (label, page, {disabled=false, active=false, title='' } = {}) => {
+    const cls = ['page-item', disabled ? 'disabled' : '', active ? 'active' : ''].join(' ').trim();
+    const onclick = (!disabled && !active)
+      ? `onclick="fetchFilteredData(${page}, '${current_sort_by}', '${current_order}', 'reload')"`
+      : '';
+    return `<li class="${cls}" ${onclick}>
+              <span class="page-link" role="button" ${title ? `title="${title}"` : ''}>${label}</span>
+            </li>`;
+  };
 
-            // Adjust if we are at the beginning of the pagination range
-            if (start_page === 1) {
-                end_page = max_visible_pages;
-            }
+  // build list
+  let ul = `
+    <nav aria-label="Page navigation">
+      <ul class="pagination pagination-sm mb-0 flex-wrap">
+        ${li('«', 1, {disabled: currentPage <= 1, title: t.first})}
+        ${li('‹', currentPage - 1, {disabled: currentPage <= 1, title: t.prev})}
+  `;
 
-            // Adjust if we are at the end of the pagination range
-            if (end_page === total_pages) {
-                start_page = total_pages - max_visible_pages + 1;
-            }
-        }
+  for (let p = startPage; p <= endPage; p++) ul += li(String(p), p, {active: p === currentPage});
 
-        // Add page numbers
-        for (let page = start_page; page <= end_page; page++) {
-            if (page === current_page) {
-                paginator.innerHTML += `<span style="background-color: #a7b8e7;" class="paginator-button btn">${page}</span>`;
-            } else {
-                paginator.innerHTML += `<button class="btn paginator-button" onclick="fetchFilteredData(${page}, '${current_sort_by}', '${current_order}', 'reload')">${page}</button>`;
-            }
-        }
+  ul += `
+        ${li('›', currentPage + 1, {disabled: currentPage >= totalPages, title: t.next})}
+        ${li('»', totalPages, {disabled: currentPage >= totalPages, title: t.last})}
+  `;
 
-        if (pagination.has_next) {
-            paginator.innerHTML += `<button class="btn paginator-button" title="${isEnglish? 'Next' : 'Nasledujúca'}" onclick="fetchFilteredData(${pagination.current_page + 1}, '${current_sort_by}', '${current_order}', 'reload')"><i class="fa-solid fa-arrow-right"></i></button>`;
-        }
+  // items-per-page select
+  const predefined = [5, 10, 20, 50, 100];
+  const extraOpt = predefined.includes(perPage) ? '' : `<option value="${perPage}" selected>${perPage}</option>`;
 
-        if (pagination.current_page < pagination.total_pages) {
-            paginator.innerHTML += `<button class="btn paginator-button" title="${isEnglish? 'Last' : 'Posledná'}" onclick="fetchFilteredData(${pagination.total_pages}, '${current_sort_by}', '${current_order}', 'reload')"><i class="fa-regular fa-arrow-right-to-line"></i></button>`;
-        }
-    }
+  ul += `
+        <li class="page-item ms-2">
+          <div class="d-flex align-items-center">
+            <select id="items-per-page-select" class="form-select form-select-sm w-auto" style="cursor:pointer;"
+                    onchange="saveFilesPerPage(this.value)">
+              ${extraOpt}
+              <option value="5" ${perPage == 5 ? 'selected' : ''}>5</option>
+              <option value="10" ${perPage == 10 ? 'selected' : ''}>10</option>
+              <option value="20" ${perPage == 20 ? 'selected' : ''}>20</option>
+              <option value="50" ${perPage == 50 ? 'selected' : ''}>50</option>
+              <option value="100" ${perPage == 100 ? 'selected' : ''}>100</option>
+            </select>
+          </div>
+        </li>
 
-    var predefinedOptions = [5, 10, 20, 50, 100];
-    let additionalOption = '';
+        <!-- counter as a disabled page item -->
+        <li class="page-item disabled ms-2">
+          <span class="page-link bg-transparent border-0 text-muted">
+            ${t.showing} ${startFile}&ndash;${endFile} (${totalFiles})
+          </span>
+        </li>
 
-    if (!predefinedOptions.includes(pagination.files_per_page)) {
-        additionalOption = `<option value="${pagination.files_per_page}" selected>${pagination.files_per_page}</option>`;
-    }
+        <!-- clear filter button inside the paginator -->
+        <li class="page-item ms-2 ${filtersActive ? '' : 'd-none'}">
+            <button type="button"
+                    class="btn btn-danger btn-sm py-0 px-2 d-inline-flex align-items-center cancel-filter-button"
+                    style="line-height: 1.2; height: calc(1.5em + .5rem + 2px);"
+                    onclick="removeAllFilters()">
+                <i class="fa-solid fa-filter me-1"></i> ${t.clear}
+            </button>
+        </li>
+      </ul>
+    </nav>
+  `;
 
-    paginator.innerHTML += `
-        <select id="items-per-page-select" onchange="saveFilesPerPage(this.value)">
-            ${additionalOption}
-            <option value="5" ${pagination.files_per_page == 5 ? 'selected' : ''}>5</option>
-            <option value="10" ${pagination.files_per_page == 10 ? 'selected' : ''}>10</option>
-            <option value="20" ${pagination.files_per_page == 20 ? 'selected' : ''}>20</option>
-            <option value="50" ${pagination.files_per_page == 50 ? 'selected' : ''}>50</option>
-            <option value="100" ${pagination.files_per_page == 100 ? 'selected' : ''}>100</option>
-        </select>
-    `;
+  const html = `
+    <div class="d-flex flex-wrap align-items-center justify-content-between w-100 gap-2">
+      ${ul}
+    </div>
+  `;
 
-    let startFile, endFile;
-
-    if (pagination.total_files === 0) {
-        startFile = 0;
-        endFile = 0;
-    } else {
-        startFile = (pagination.current_page - 1) * pagination.files_per_page + 1;
-        endFile = Math.min(pagination.current_page * pagination.files_per_page, pagination.total_files);
-    }
-
-    paginator.innerHTML += `
-        <span class="employee-count">
-            Zobrazené ${startFile}-${endFile} (${pagination.total_files})
-        </span>
-    `;
+  for (let i = 0; i < paginators.length; i++) {
+    paginators[i].innerHTML = html;
+  }
 }
 
 function saveFilesPerPage(value) {
@@ -256,12 +277,13 @@ function filterTable() {
         var worker = removeDiacritics(row.children[0].textContent.toLowerCase());      // Updated: Worker
         var date = row.children[1].textContent.toLowerCase();                         // Updated: Date
         var slot = row.children[2].textContent.toLowerCase();                         // Updated: Slot
-        var name_surname = removeDiacritics(row.children[3].textContent.toLowerCase()); // Updated: Name and Surname
-        var email = removeDiacritics(row.children[4].textContent.toLowerCase());       // Updated: Email
-        var phone_number = row.children[5].textContent.toLowerCase();                  // Updated: Phone Number
-        var created_at = row.children[6].textContent.toLowerCase();                    // Updated: Created At
-        var special_request = removeDiacritics(row.children[7].textContent.toLowerCase()); // Updated: Special Request
-        var status = removeDiacritics(row.children[8].textContent.toLowerCase());       // Updated: Status
+        var type = row.children[3].textContent.toLowerCase();                         // Updated: Slot
+        var name_surname = removeDiacritics(row.children[4].textContent.toLowerCase()); // Updated: Name and Surname
+        var email = removeDiacritics(row.children[5].textContent.toLowerCase());       // Updated: Email
+        var phone_number = row.children[6].textContent.toLowerCase();                  // Updated: Phone Number
+        var created_at = row.children[7].textContent.toLowerCase();                    // Updated: Created At
+        var special_request = removeDiacritics(row.children[8].textContent.toLowerCase()); // Updated: Special Request
+        var status = removeDiacritics(row.children[9].textContent.toLowerCase());       // Updated: Status
 
         // Determine if the row matches the filter criteria
         var matches = Object.keys(filters).every(key => {
@@ -273,6 +295,8 @@ function filterTable() {
                     return date.includes(filterValue);
                 case 'slot':
                     return slot.includes(filterValue);
+                case 'type':
+                    return type.includes(filterValue);
                 case 'name_surname':
                     return name_surname.includes(filterValue);
                 case 'email':

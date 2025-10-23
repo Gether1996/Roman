@@ -24,6 +24,7 @@ def prepare_reservation_data(reservation):
     data = {
         'id': str(reservation.id),
         'name_surname': reservation.name_surname,
+        'massage_name': reservation.massage_name if reservation.massage_name else "",
         'email': reservation.email if reservation.email else '',
         'phone_number': str(reservation.phone_number).replace(" ", "") if reservation.phone_number else '',
         'date': reservation.get_date_string(),
@@ -55,6 +56,7 @@ def create_reservation(request):
         selected_date = json_data.get('selectedDate')
         time_slot = json_data.get('timeSlot')
         duration = json_data.get('duration')
+        massage_name = json_data.get('massageName')
 
         datetime_from_obj = datetime.strptime(f"{selected_date} {time_slot}", "%Y-%m-%d %H:%M")
         date_time_to_obj = datetime_from_obj + timedelta(minutes=int(duration))
@@ -62,6 +64,7 @@ def create_reservation(request):
         user = request.user if request.user.is_authenticated else None
 
         new_reservation = Reservation.objects.create(
+            massage_name=massage_name,
             user=user,
             name_surname=json_data.get('nameSurname'),
             email=json_data.get('email'),

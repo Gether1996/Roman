@@ -135,11 +135,13 @@
                 <hr class="hr-basic-style hidden-element-third add-hidden-third">
                 <h2 class="h2-margin-top-bottom hidden-element-third add-hidden-third" id="choose-duration-h2">{% trans 'Vyberte dĺžku masáže' %}:</h2>
                 <div class="row-container duration-container" id="duration-container">
-                    <div class="big-button option-button-time hidden-element-third add-hidden-third" id="30">30 min - 20€</div>
-                    <div class="big-button option-button-time hidden-element-third add-hidden-third" id="45">45 min - 28€</div>
-                    <div class="big-button option-button-time hidden-element-third add-hidden-third" id="60">60 min - 35€</div>
-                    <div class="big-button option-button-time hidden-element-third add-hidden-third" id="90">90 min - 50€</div>
-                    <div class="big-button option-button-time hidden-element-third add-hidden-third" id="120">120 min - 75€</div>
+                    <div class="big-button option-button-time hidden-element-third add-hidden-third" data-time="30" data-name="30 min masáž">30 min - 20€</div>
+                    <div class="big-button option-button-time hidden-element-third add-hidden-third" data-time="45" data-name="45 min masáž">45 min - 28€</div>
+                    <div class="big-button option-button-time hidden-element-third add-hidden-third roman-only-button" onclick="openSmSystemMessage()" data-time="45" data-name="45 min SM systém">{% trans '45 min SM individuálne cvičenie' %}</div>
+                    <div class="big-button option-button-time hidden-element-third add-hidden-third" data-time="60" data-name="60 min masáž">60 min - 35€</div>
+                    <div class="big-button option-button-time hidden-element-third add-hidden-third" data-time="90" data-name="90 min masáž">90 min - 50€</div>
+                    <div class="big-button option-button-time hidden-element-third add-hidden-third roman-only-button" data-time="90" data-name="90 min masáž + SM systém">{% trans '90 min masáž + SM systém - 50€' %}</div>
+                    <div class="big-button option-button-time hidden-element-third add-hidden-third" data-time="120" data-name="120 min masáž">120 min - 75€</div>
                 </div>
 
                 <div class="hidden-element-fourth add-hidden-fourth">

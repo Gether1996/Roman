@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-07 12:39+0200\n"
+"POT-Creation-Date: 2025-10-23 18:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,32 +18,32 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\Roman\backend_funcs\general.py:54 .\Roman\backend_funcs\reservation.py:364
-#: .\Roman\backend_funcs\reservation.py:387
-#: .\Roman\backend_funcs\reservation.py:412
-#: .\Roman\backend_funcs\reservation.py:423
-#: .\Roman\backend_funcs\reservation.py:437 .\Roman\backend_funcs\users.py:26
+#: .\Roman\backend_funcs\general.py:54 .\Roman\backend_funcs\reservation.py:367
+#: .\Roman\backend_funcs\reservation.py:390
+#: .\Roman\backend_funcs\reservation.py:415
+#: .\Roman\backend_funcs\reservation.py:426
+#: .\Roman\backend_funcs\reservation.py:440 .\Roman\backend_funcs\users.py:26
 #: .\Roman\backend_funcs\users.py:63
 msgid "Zlý request"
 msgstr "Wrong request"
 
-#: .\Roman\backend_funcs\reservation.py:326
+#: .\Roman\backend_funcs\reservation.py:329
 msgid "voľný"
 msgstr "available"
 
-#: .\Roman\backend_funcs\reservation.py:328
+#: .\Roman\backend_funcs\reservation.py:331
 msgid "voľné"
 msgstr "available"
 
-#: .\Roman\backend_funcs\reservation.py:330
+#: .\Roman\backend_funcs\reservation.py:333
 msgid "voľných"
 msgstr "available"
 
-#: .\Roman\backend_funcs\reservation.py:361
+#: .\Roman\backend_funcs\reservation.py:364
 msgid "Rezervácia úspešne zrušená."
 msgstr "Reservation cancelled successfully."
 
-#: .\Roman\backend_funcs\reservation.py:363
+#: .\Roman\backend_funcs\reservation.py:366
 msgid "Rezervácia sa nenašla."
 msgstr "Reservation not found."
 
@@ -851,10 +851,8 @@ msgid "April"
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:29
-#, fuzzy
-#| msgid "My"
 msgid "May"
-msgstr "Us"
+msgstr ""
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:30
 msgid "June"
@@ -1310,7 +1308,9 @@ msgstr "Friendly and individual approach for our clients"
 #: .\viewer\templates\homepage.html:25
 msgid ""
 "Pozor zmena adresy: Matice Slovenskej 6, Vlčince (žltá budova, na poschodí)"
-msgstr "Attention address change: Matice Slovenskej 6, Vlčince (yellow building, up stairs)"
+msgstr ""
+"Attention address change: Matice Slovenskej 6, Vlčince (yellow building, up "
+"stairs)"
 
 #: .\viewer\templates\homepage.html:47 .\viewer\templates\homepage.html:72
 #: .\viewer\templates\homepage.html:94
@@ -1517,7 +1517,7 @@ msgstr "Status"
 msgid "Dôvod zrušenia"
 msgstr "Cancellation reason"
 
-#: .\viewer\templates\profile.html:27 .\viewer\templates\reservation.html:168
+#: .\viewer\templates\profile.html:27 .\viewer\templates\reservation.html:170
 msgid "Poznámka"
 msgstr "Note"
 
@@ -1550,15 +1550,23 @@ msgstr "Pick massage start"
 msgid "Vyberte dĺžku masáže"
 msgstr "Pick massage duration"
 
-#: .\viewer\templates\reservation.html:150
+#: .\viewer\templates\reservation.html:140
+msgid "45 min SM individuálne cvičenie"
+msgstr "45 min SM system individual workout"
+
+#: .\viewer\templates\reservation.html:143
+msgid "90 min masáž + SM systém - 50€"
+msgstr "90 min massage + SM system - 50€"
+
+#: .\viewer\templates\reservation.html:152
 msgid "Meno a Priezvisko"
 msgstr "Name and Surname"
 
-#: .\viewer\templates\reservation.html:162
+#: .\viewer\templates\reservation.html:164
 msgid "Telefónne číslo"
 msgstr "Phone number"
 
-#: .\viewer\templates\reservation.html:172
+#: .\viewer\templates\reservation.html:174
 msgid "Polia označené * sú povinné"
 msgstr "Fields with * are mandatory"
 
