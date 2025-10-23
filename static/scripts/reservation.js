@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-function openSmSystemMessage(isEnglish = false) {
+function openSmSystemMessage() {
   const t = isEnglish
     ? {
         heading: 'SM System "Season Pass"',
