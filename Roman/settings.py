@@ -25,11 +25,17 @@ SECRET_KEY = 'django-insecure-sx5t9b&tpm9y0r+8(er1459^l2#tkplzq%2&#bu2wt_g-kuk7!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = [
+    'masazevlcince.sk', 'www.masazevlcince.sk',
+    'localhost', '127.0.0.1'
+]
 
-DOMAINS = ['https://masazevlcince.sk', 'https://www.masazevlcince.sk', 'https://localhost:9000']
-
-CSRF_TRUSTED_ORIGINS = DOMAINS
+CSRF_TRUSTED_ORIGINS = [
+    'https://masazevlcince.sk',
+    'https://www.masazevlcince.sk',
+    'http://localhost:9000',
+    'http://127.0.0.1:9000',
+]
 
 MAIN_EMAIL = 'gether1996@gmail.com'   #'salonaminask@gmail.com'
 
@@ -48,13 +54,13 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # move here
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = 'Roman.urls'
