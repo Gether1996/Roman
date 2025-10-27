@@ -23,19 +23,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-sx5t9b&tpm9y0r+8(er1459^l2#tkplzq%2&#bu2wt_g-kuk7!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
-DOMAINS = ['https://masazevlcince.sk', 'https://www.masazevlcince.sk']
+DOMAINS = ['https://masazevlcince.sk', 'https://www.masazevlcince.sk', 'https://localhost:9000']
 
 CSRF_TRUSTED_ORIGINS = DOMAINS
 
-MAIN_EMAIL = 'salonaminask@gmail.com'
+MAIN_EMAIL = 'gether1996@gmail.com'   #'salonaminask@gmail.com'
 
 LOGIN_URL = '/admin/login/'
-
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -56,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = 'Roman.urls'
@@ -144,7 +143,11 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = "/app/staticfiles"
+STORAGES = {
+    "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

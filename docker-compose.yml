@@ -9,4 +9,5 @@ services:
     volumes:
       - .:/app
     environment:
-      - DEBUG=0
+      - PYTHONUNBUFFERED=1
+      - DJANGO_SETTINGS_MODULE=Roman.settings
