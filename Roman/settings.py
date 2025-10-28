@@ -37,7 +37,7 @@ CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1:9000',
 ]
 
-MAIN_EMAIL = 'gether1996@gmail.com'   #'salonaminask@gmail.com'
+MAIN_EMAIL = 'salonaminask@gmail.com'   #'salonaminask@gmail.com'
 
 LOGIN_URL = '/admin/login/'
 
