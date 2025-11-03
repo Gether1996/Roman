@@ -194,6 +194,122 @@ def check_available_slots(request):
         return JsonResponse({'status': 'success', 'available_slots': available_slots})
     return JsonResponse({'status': 'error'})
 
+def check_available_slots_ahead(request, worker):
+    if request.method == 'GET':
+        config.read('config.ini')
+        today = datetime.now().date()
+        tomorrow = today + timedelta(days=1)
+        worker_config = config['settings-roman'] if worker == 'Roman' else config['settings-evka']
+
+        if request.user.is_superuser:
+            days_to_check_ahead = 180
+        else:
+            days_to_check_ahead = int(worker_config['days_ahead'])
+        working_days = worker_config['working_days']
+        end_date = today + timedelta(days=days_to_check_ahead)
+
+        def intervals_overlap(start1, end1, start2, end2):
+            # true if any overlap at all (half-open intervals [start, end))
+            return start1 < end2 and start2 < end1
+
+        slot_duration = timedelta(minutes=30)
+        start_step = timedelta(minutes=15)   # (NEW) match POST
+        buffer = timedelta(minutes=15)       # (NEW) match POST
+        events = []
+
+        for single_date in (today + timedelta(n) for n in range((end_date - today).days + 1)):
+            if single_date == today or single_date == tomorrow:
+                continue
+            weekday_name = single_date.strftime('%A')
+
+            if weekday_name not in working_days:
+                continue
+
+            starting_hour_str = worker_config.get(f'{weekday_name}_starting_hour')
+            ending_hour_str = worker_config.get(f'{weekday_name}_ending_hour')
+            if not starting_hour_str or not ending_hour_str:
+                continue
+
+            starting_hour = datetime.strptime(starting_hour_str, '%H:%M').time()
+            ending_hour = datetime.strptime(ending_hour_str, '%H:%M').time()
+            day_start = datetime.combine(single_date, starting_hour)
+            day_end = datetime.combine(single_date, ending_hour)
+
+            # 1) Entire day turned off?
+            turned_off_day = TurnedOffDay.objects.filter(
+                worker=worker, date=single_date, whole_day=True
+            ).first()
+            if turned_off_day:
+                continue
+
+            # 2) Build blocked intervals (as datetimes)
+            blocked = []
+
+            # Reservations (active only) — (CHANGED) apply ±15 min buffer and clip to work window
+            reservations = Reservation.objects.filter(
+                datetime_from__date=single_date, active=True
+            )
+            for r in reservations:
+                b_start = max(day_start, r.datetime_from - buffer)  # (NEW)
+                b_end   = min(day_end,   r.datetime_to   + buffer)  # (NEW)
+                if b_start < b_end:                                  # (NEW)
+                    blocked.append((b_start, b_end))                 # (NEW)
+
+            # Partial turned-off slots (unchanged)
+            turned_off_slots = TurnedOffDay.objects.filter(
+                worker=worker, date=single_date, whole_day=False
+            )
+            for off in turned_off_slots:
+                off_start = datetime.combine(single_date, off.time_from)
+                off_end = datetime.combine(single_date, off.time_to)
+                blocked.append((off_start, off_end))
+
+            # Merge (unchanged)
+            blocked.sort(key=lambda x: x[0])
+            merged = []
+            for b_start, b_end in blocked:
+                if not merged or b_start > merged[-1][1]:
+                    merged.append([b_start, b_end])
+                else:
+                    merged[-1][1] = max(merged[-1][1], b_end)
+            blocked = [(s, e) for s, e in merged]
+
+            # 3) Count only full 30-min slots, starting every 15 minutes (CHANGED)
+            available_slots_count = 0
+            t = day_start
+            last_possible_start = day_end - slot_duration
+            while t <= last_possible_start:
+                slot_start = t
+                slot_end = t + slot_duration
+
+                overlaps = any(
+                    intervals_overlap(slot_start, slot_end, b_start, b_end)
+                    for (b_start, b_end) in blocked
+                )
+                if not overlaps:
+                    available_slots_count += 1
+
+                t += start_step  # (CHANGED) 15-min step to mirror POST
+
+            # 4) Slovak plurals (unchanged)
+            if available_slots_count == 1:
+                possible = _('voľný')
+            elif 2 <= available_slots_count <= 4:
+                possible = _('voľné')
+            else:
+                possible = _('voľných')
+
+            if available_slots_count > 0:
+                events.append({
+                    'start': single_date.strftime('%Y-%m-%d'),
+                    'end': single_date.strftime('%Y-%m-%d'),
+                    'title': f"{available_slots_count} {possible}",
+                    'className': 'allowed-events-day'
+                })
+
+        return JsonResponse({'status': 'success', 'events': events})
+    return JsonResponse({'status': 'error'})
+
 def check_available_durations(request, worker):
     if request.method == 'POST':
         config.read('config.ini')
@@ -252,95 +368,6 @@ def check_available_durations(request, worker):
 
         print("Available durations:", available_durations)
         return JsonResponse({'status': 'success', 'available_durations': available_durations})
-    return JsonResponse({'status': 'error'})
-
-def check_available_slots_ahead(request, worker):
-    if request.method == 'GET':
-        config.read('config.ini')
-        today = datetime.now().date()
-        tomorrow = today + timedelta(days=1)
-        worker_config = config['settings-roman'] if worker == 'Roman' else config['settings-evka']
-
-        if request.user.is_superuser:
-            days_to_check_ahead = 180
-        else:
-            days_to_check_ahead = int(worker_config['days_ahead'])
-        working_days = worker_config['working_days']
-        end_date = today + timedelta(days=days_to_check_ahead)
-        slot_duration = 30  # Assuming 30 minutes per slot
-
-        events = []
-
-        for single_date in (today + timedelta(n) for n in range((end_date - today).days + 1)):
-            if single_date == today or single_date == tomorrow:
-                continue
-            weekday_name = single_date.strftime('%A')
-
-            # Skip if the day is not a working day
-            if weekday_name not in working_days:
-                continue
-
-            # Retrieve start and end working hours for the specific day
-            starting_hour_str = worker_config.get(f'{weekday_name}_starting_hour')
-            ending_hour_str = worker_config.get(f'{weekday_name}_ending_hour')
-
-            if not starting_hour_str or not ending_hour_str:
-                continue
-
-            starting_hour = datetime.strptime(starting_hour_str, '%H:%M').time()
-            ending_hour = datetime.strptime(ending_hour_str, '%H:%M').time()
-
-            # Check if the day is turned off for the whole day
-            turned_off_day = TurnedOffDay.objects.filter(worker=worker, date=single_date, whole_day=True).first()
-            if turned_off_day:
-                continue
-
-            # Get all reservations and partial turned-off slots for that day
-            reservations = Reservation.objects.filter(worker=worker, datetime_from__date=single_date, active=True)
-            turned_off_slots = TurnedOffDay.objects.filter(worker=worker, date=single_date, whole_day=False)
-
-            available_slots_count = 0
-            current_time = datetime.combine(single_date, starting_hour)
-
-            while current_time.time() < ending_hour:
-                next_time = current_time + timedelta(minutes=slot_duration)
-                slot_start = current_time.time()
-                slot_end = next_time.time()
-
-                # Check if the slot overlaps with any turned-off time
-                slot_is_available = True
-                for off in turned_off_slots:
-                    if off.time_from <= slot_start < off.time_to or off.time_from < slot_end <= off.time_to:
-                        slot_is_available = False
-                        break
-
-                # Check if the slot overlaps with any reservation
-                for reservation in reservations:
-                    if reservation.datetime_from.time() < slot_end and reservation.datetime_to.time() > slot_start:
-                        slot_is_available = False
-                        break
-
-                if slot_is_available:
-                    available_slots_count += 1
-
-                current_time = next_time
-
-            if available_slots_count == 1:
-                possible = _('voľný')
-            elif 2 <= available_slots_count <= 4:
-                possible = _('voľné')
-            else:
-                possible = _('voľných')
-
-            if available_slots_count > 0:
-                events.append({
-                    'start': single_date.strftime('%Y-%m-%d'),
-                    'end': single_date.strftime('%Y-%m-%d'),
-                    'title': f"{available_slots_count} {possible}",
-                    'className': 'allowed-events-day'
-                })
-
-        return JsonResponse({'status': 'success', 'events': events})
     return JsonResponse({'status': 'error'})
 
 def deactivate_reservation(request):
