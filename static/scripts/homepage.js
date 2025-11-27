@@ -432,6 +432,7 @@ function addReview() {
     // Translation map
     const t = {
         title: isEng ? `Add a Review` : `Pridať hodnotenie`,
+        subtitle: isEng ? "Share your experience with us" : "Podeľte sa o svoju skúsenosť",
         namePlaceholder: isEng ? "Your Full Name" : "Vaše meno a priezvisko",
         msgPlaceholder: isEng ? "Your review" : "Vaše hodnotenie",
         workerLabel: isEng ? "Choose Massage Therapist" : "Vyberte maséra",
@@ -442,6 +443,7 @@ function addReview() {
             ? "Please select a massage therapist."
             : "Prosím, vyberte maséra.",
         confirmText: isEng ? "Submit" : "Odoslať",
+        cancelText: isEng ? "Cancel" : "Zrušiť",
         successTitle: isEng ? "Success" : "Hotovo",
         successMsg: isEng ? "Review submitted!" : "Hodnotenie odoslané!",
         errorTitle: isEng ? "Error" : "Chyba",
@@ -450,40 +452,163 @@ function addReview() {
     };
 
     Swal.fire({
-        title: t.title,
-        customClass: {
-            popup: 'my-swal'
-        },
+        title: '',
         html: `
-            <div style="display: flex; flex-direction: column; align-items: center; padding: 20px;">
-                <div style="width: 90%; max-width: 500px; margin-bottom: 15px; text-align: center;">
-                    <label style="font-weight: 600; margin-bottom: 5px; display: block;">${t.workerLabel}:</label>
-                    <div style="display: flex; gap: 20px; justify-content: center;">
-                        <label style="cursor: pointer; font-size: 20px;">
-                            <input type="radio" name="worker" value="roman" style="margin: 0 5px 0 0; cursor: pointer;">
+            <div style="text-align: center; padding: 1.5rem 1rem;">
+                <!-- Header Icon -->
+                <div style="
+                    width: 80px;
+                    height: 80px;
+                    margin: 0 auto 1.5rem;
+                    background: linear-gradient(135deg, rgba(0, 128, 255, 0.1) 0%, rgba(0, 128, 255, 0.15) 100%);
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border: 2px solid rgba(0, 128, 255, 0.2);
+                ">
+                    <i class="fa-solid fa-star" style="font-size: 2rem; color: #0080ff;"></i>
+                </div>
+
+                <!-- Title -->
+                <h2 style="
+                    font-size: 1.75rem;
+                    font-weight: 700;
+                    color: #2c3e50;
+                    margin-bottom: 0.5rem;
+                ">${t.title}</h2>
+                
+                <!-- Subtitle -->
+                <p style="
+                    font-size: 1rem;
+                    color: #6c757d;
+                    margin-bottom: 2rem;
+                ">${t.subtitle}</p>
+
+                <!-- Worker Selection -->
+                <div style="
+                    background: white;
+                    border: 2px solid #e9ecef;
+                    border-radius: 16px;
+                    padding: 1.5rem;
+                    margin-bottom: 1.5rem;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+                ">
+                    <label style="
+                        display: block;
+                        font-weight: 600;
+                        color: #2c3e50;
+                        margin-bottom: 1rem;
+                        font-size: 1rem;
+                    ">
+                        <i class="fa-solid fa-user-doctor" style="margin-right: 0.5rem; color: #0080ff;"></i>
+                        ${t.workerLabel}
+                    </label>
+                    <div style="display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;">
+                        <label style="
+                            cursor: pointer;
+                            padding: 0.75rem 1.5rem;
+                            border: 2px solid #e9ecef;
+                            border-radius: 12px;
+                            transition: all 0.3s ease;
+                            background: white;
+                            font-size: 1rem;
+                            font-weight: 500;
+                            color: #2c3e50;
+                        " onmouseover="this.style.borderColor='#0080ff'; this.style.background='linear-gradient(135deg, rgba(0, 128, 255, 0.05) 0%, rgba(0, 128, 255, 0.1) 100%)'" onmouseout="if(!this.querySelector('input').checked) { this.style.borderColor='#e9ecef'; this.style.background='white'; }">
+                            <input type="radio" name="worker" value="roman" style="margin-right: 0.5rem; cursor: pointer;" onchange="this.parentElement.style.borderColor='#0080ff'; this.parentElement.style.background='linear-gradient(135deg, rgba(0, 128, 255, 0.1) 0%, rgba(0, 128, 255, 0.15) 100%)'; document.querySelectorAll('input[name=worker]').forEach(r => { if(r !== this) { r.parentElement.style.borderColor='#e9ecef'; r.parentElement.style.background='white'; } })">
                             Roman
                         </label>
-                        <label style="cursor: pointer; font-size: 20px;">
-                            <input type="radio" name="worker" value="evka" style="margin: 0 5px 0 0; cursor: pointer;">
+                        <label style="
+                            cursor: pointer;
+                            padding: 0.75rem 1.5rem;
+                            border: 2px solid #e9ecef;
+                            border-radius: 12px;
+                            transition: all 0.3s ease;
+                            background: white;
+                            font-size: 1rem;
+                            font-weight: 500;
+                            color: #2c3e50;
+                        " onmouseover="this.style.borderColor='#0080ff'; this.style.background='linear-gradient(135deg, rgba(0, 128, 255, 0.05) 0%, rgba(0, 128, 255, 0.1) 100%)'" onmouseout="if(!this.querySelector('input').checked) { this.style.borderColor='#e9ecef'; this.style.background='white'; }">
+                            <input type="radio" name="worker" value="evka" style="margin-right: 0.5rem; cursor: pointer;" onchange="this.parentElement.style.borderColor='#0080ff'; this.parentElement.style.background='linear-gradient(135deg, rgba(0, 128, 255, 0.1) 0%, rgba(0, 128, 255, 0.15) 100%)'; document.querySelectorAll('input[name=worker]').forEach(r => { if(r !== this) { r.parentElement.style.borderColor='#e9ecef'; r.parentElement.style.background='white'; } })">
                             Evka
                         </label>
                     </div>
                 </div>
 
-                <div style="width: 100%; max-width: 500px;">
-                    <input id="nameInput" class="swal2-input" placeholder="${t.namePlaceholder}" 
-                        style="margin-left: 0; margin-right: 0; width: 90%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
-                </div>
-                <div style="width: 100%; max-width: 500px; margin-bottom: 15px;">
-                    <textarea id="messageInput" class="swal2-textarea" placeholder="${t.msgPlaceholder}" 
-                            style="margin-left: 0; margin-right: 0; width: 90%; padding: 10px; resize: vertical; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; min-height: 100px;"></textarea>
+                <!-- Name Input -->
+                <div style="margin-bottom: 1.5rem;">
+                    <input id="nameInput" placeholder="${t.namePlaceholder}" style="
+                        width: 100%;
+                        padding: 1rem;
+                        border: 2px solid #e9ecef;
+                        border-radius: 12px;
+                        box-sizing: border-box;
+                        font-size: 1rem;
+                        transition: all 0.3s ease;
+                        background: white;
+                    " onfocus="this.style.borderColor='#0080ff'; this.style.boxShadow='0 4px 12px rgba(0, 128, 255, 0.15)'" onblur="this.style.borderColor='#e9ecef'; this.style.boxShadow='none'">
                 </div>
 
-                <div id="starRating" style="margin-top: 1em; display: flex; justify-content: center; width: 80%; max-width: 500px;">
-                    ${[1,2,3,4,5].map(i => `<i class="fa fa-star" id="star${i}" onclick="rateStars(${i})" style="font-size: 2em; cursor: pointer; color: gray; margin: 0 5px;"></i>`).join('')}
+                <!-- Message Textarea -->
+                <div style="margin-bottom: 1.5rem;">
+                    <textarea id="messageInput" placeholder="${t.msgPlaceholder}" style="
+                        width: 100%;
+                        padding: 1rem;
+                        border: 2px solid #e9ecef;
+                        border-radius: 12px;
+                        box-sizing: border-box;
+                        font-size: 1rem;
+                        min-height: 120px;
+                        resize: vertical;
+                        transition: all 0.3s ease;
+                        background: white;
+                        font-family: inherit;
+                    " onfocus="this.style.borderColor='#0080ff'; this.style.boxShadow='0 4px 12px rgba(0, 128, 255, 0.15)'" onblur="this.style.borderColor='#e9ecef'; this.style.boxShadow='none'"></textarea>
+                </div>
+
+                <!-- Star Rating -->
+                <div style="
+                    background: white;
+                    border: 2px solid #e9ecef;
+                    border-radius: 16px;
+                    padding: 1.5rem;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+                ">
+                    <label style="
+                        display: block;
+                        font-weight: 600;
+                        color: #2c3e50;
+                        margin-bottom: 1rem;
+                        font-size: 1rem;
+                    ">
+                        <i class="fa-solid fa-star" style="margin-right: 0.5rem; color: #ffc107;"></i>
+                        ${isEng ? 'Your Rating' : 'Vaše hodnotenie'}
+                    </label>
+                    <div id="starRating" data-stars="0" style="display: flex; justify-content: center; gap: 0.75rem;">
+                        ${[1,2,3,4,5].map(i => `
+                            <i class="fa fa-star" id="star${i}" onclick="rateStars(${i})" style="
+                                font-size: 2.5rem;
+                                cursor: pointer;
+                                color: #dee2e6;
+                                transition: all 0.2s ease;
+                            " onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'"></i>
+                        `).join('')}
+                    </div>
                 </div>
             </div>
         `,
+        width: 650,
+        showCancelButton: true,
+        confirmButtonText: `<i class="fa-solid fa-paper-plane" style="margin-right: 0.5rem;"></i>${t.confirmText}`,
+        cancelButtonText: t.cancelText,
+        confirmButtonColor: '#0080ff',
+        cancelButtonColor: '#6c757d',
+        customClass: {
+            popup: 'review-modal',
+            confirmButton: 'btn-modal-confirm',
+            cancelButton: 'btn-modal-cancel'
+        },
         preConfirm: () => {
             const name = document.getElementById('nameInput').value.trim();
             const message = document.getElementById('messageInput').value.trim();
@@ -504,9 +629,7 @@ function addReview() {
             }
 
             return { name, message, stars, worker };
-        },
-        showCancelButton: true,
-        confirmButtonText: t.confirmText,
+        }
     }).then(result => {
         if (result.isConfirmed && result.value) {
             const { name, message, stars, worker } = result.value;

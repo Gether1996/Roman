@@ -373,13 +373,57 @@ document.addEventListener('DOMContentLoaded', attachEventListeners);
 
 function deactivateReservation(reservationId, name) {
     Swal.fire({
-        title: `Naozaj deaktivovať rezerváciu na meno ${name}?`,
-        text: "Môžete uviesť poznámku k zrušeniu (voliteľné):",
+        title: '',
+        html: `
+            <div style="text-align: center; padding: 1.5rem 1rem;">
+                <div style="
+                    width: 80px;
+                    height: 80px;
+                    margin: 0 auto 1.5rem;
+                    background: linear-gradient(135deg, rgba(255, 193, 7, 0.1) 0%, rgba(255, 193, 7, 0.15) 100%);
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border: 2px solid rgba(255, 193, 7, 0.2);
+                ">
+                    <i class="fa-solid fa-circle-xmark" style="font-size: 2rem; color: #ffc107;"></i>
+                </div>
+                <h2 style="
+                    font-size: 1.75rem;
+                    font-weight: 700;
+                    color: #2c3e50;
+                    margin-bottom: 0.5rem;
+                ">Deaktivovať rezerváciu?</h2>
+                <p style="
+                    font-size: 1rem;
+                    color: #6c757d;
+                    margin-bottom: 1.5rem;
+                ">${name}</p>
+                <p style="
+                    font-size: 0.95rem;
+                    color: #6c757d;
+                    margin-bottom: 1rem;
+                ">Môžete uviesť poznámku k zrušeniu (voliteľné):</p>
+            </div>
+        `,
         input: 'text',
+        inputAttributes: {
+            style: 'padding: 1rem; border: 2px solid #e9ecef; border-radius: 12px; font-size: 1rem; width: 90%; box-sizing: border-box; transition: all 0.3s ease;',
+            onfocus: 'this.style.borderColor="#ffc107"; this.style.boxShadow="0 4px 12px rgba(255, 193, 7, 0.15)"',
+            onblur: 'this.style.borderColor="#e9ecef"; this.style.boxShadow="none"'
+        },
         showCancelButton: true,
-        confirmButtonText: "Áno",
-        cancelButtonText: "Zrušiť",
-        icon: "question",
+        confirmButtonText: '<i class="fa-solid fa-check" style="margin-right: 0.5rem;"></i>Áno, deaktivovať',
+        cancelButtonText: 'Zrušiť',
+        confirmButtonColor: '#ffc107',
+        cancelButtonColor: '#6c757d',
+        width: 550,
+        customClass: {
+            popup: 'deactivate-modal',
+            confirmButton: 'btn-modal-confirm',
+            cancelButton: 'btn-modal-cancel'
+        }
     }).then((result) => {
         if (result.isConfirmed) {
             // Fetch the note input from the user
@@ -397,18 +441,29 @@ function deactivateReservation(reservationId, name) {
             .then(data => {
                 if (data.status === 'success') {
                     Swal.fire({
-                        icon: "success",
-                        timer: 600,
-                        showConfirmButton: false
+                        html: '<div style="text-align: center; padding: 1rem;"><i class="fa-solid fa-circle-check" style="font-size: 3rem; color: #28a745;"></i><h3 style="margin-top: 1rem; font-weight: 600; color: #2c3e50;">Úspešne deaktivované!</h3></div>',
+                        timer: 1000,
+                        showConfirmButton: false,
+                        width: 400
                     }).then(() => {
                         fetchFilteredData(page, current_sort_by, current_order, 'no');
                     });
                 } else {
-                    Swal.fire("Chyba", "Vyskytol sa problém pri rušení rezervácie.", "error");
+                    Swal.fire({
+                        html: '<div style="text-align: center; padding: 1rem;"><i class="fa-solid fa-circle-xmark" style="font-size: 3rem; color: #dc3545;"></i><h3 style="margin-top: 1rem; font-weight: 600; color: #2c3e50;">Chyba</h3><p style="color: #6c757d; margin-top: 0.5rem;">Vyskytol sa problém pri rušení rezervácie.</p></div>',
+                        confirmButtonText: 'Zavrieť',
+                        confirmButtonColor: '#0080ff',
+                        width: 450
+                    });
                 }
             })
             .catch(error => {
-                Swal.fire("Chyba", "Vyskytol sa problém s požiadavkou.", "error");
+                Swal.fire({
+                    html: '<div style="text-align: center; padding: 1rem;"><i class="fa-solid fa-circle-xmark" style="font-size: 3rem; color: #dc3545;"></i><h3 style="margin-top: 1rem; font-weight: 600; color: #2c3e50;">Chyba</h3><p style="color: #6c757d; margin-top: 0.5rem;">Vyskytol sa problém s požiadavkou.</p></div>',
+                    confirmButtonText: 'Zavrieť',
+                    confirmButtonColor: '#0080ff',
+                    width: 450
+                });
             });
         }
     });
@@ -416,12 +471,54 @@ function deactivateReservation(reservationId, name) {
 
 function addNote(reservationId, name, note) {
     Swal.fire({
-        title: `Pridať poznámku rezervácii na meno ${name}`,
+        title: '',
+        html: `
+            <div style="text-align: center; padding: 1.5rem 1rem;">
+                <div style="
+                    width: 80px;
+                    height: 80px;
+                    margin: 0 auto 1.5rem;
+                    background: linear-gradient(135deg, rgba(0, 128, 255, 0.1) 0%, rgba(0, 128, 255, 0.15) 100%);
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border: 2px solid rgba(0, 128, 255, 0.2);
+                ">
+                    <i class="fa-solid fa-pen-to-square" style="font-size: 2rem; color: #0080ff;"></i>
+                </div>
+                <h2 style="
+                    font-size: 1.75rem;
+                    font-weight: 700;
+                    color: #2c3e50;
+                    margin-bottom: 0.5rem;
+                ">Pridať poznámku</h2>
+                <p style="
+                    font-size: 1rem;
+                    color: #6c757d;
+                    margin-bottom: 1.5rem;
+                ">${name}</p>
+            </div>
+        `,
         input: 'text',
-        inputPlaceholder: note ? note : 'Zadajte poznámku',
+        inputValue: note || '',
+        inputPlaceholder: 'Zadajte poznámku',
+        inputAttributes: {
+            style: 'padding: 1rem; border: 2px solid #e9ecef; border-radius: 12px; font-size: 1rem; width: 90%; box-sizing: border-box; transition: all 0.3s ease;',
+            onfocus: 'this.style.borderColor="#0080ff"; this.style.boxShadow="0 4px 12px rgba(0, 128, 255, 0.15)"',
+            onblur: 'this.style.borderColor="#e9ecef"; this.style.boxShadow="none"'
+        },
         showCancelButton: true,
-        confirmButtonText: "Uložiť",
-        cancelButtonText: "Zrušiť",
+        confirmButtonText: '<i class="fa-solid fa-save" style="margin-right: 0.5rem;"></i>Uložiť',
+        cancelButtonText: 'Zrušiť',
+        confirmButtonColor: '#0080ff',
+        cancelButtonColor: '#6c757d',
+        width: 550,
+        customClass: {
+            popup: 'note-modal',
+            confirmButton: 'btn-modal-confirm',
+            cancelButton: 'btn-modal-cancel'
+        },
         preConfirm: (note) => {
             if (!note) {
                 return 'Pridajte poznámku';
@@ -439,18 +536,29 @@ function addNote(reservationId, name, note) {
             .then(data => {
                 if (data.status === 'success') {
                     Swal.fire({
-                        icon: "success",
-                        timer: 600,
-                        showConfirmButton: false
+                        html: '<div style="text-align: center; padding: 1rem;"><i class="fa-solid fa-circle-check" style="font-size: 3rem; color: #28a745;"></i><h3 style="margin-top: 1rem; font-weight: 600; color: #2c3e50;">Poznámka uložená!</h3></div>',
+                        timer: 1000,
+                        showConfirmButton: false,
+                        width: 400
                     }).then(() => {
                         fetchFilteredData(page, current_sort_by, current_order, 'no');
                     });
                 } else {
-                    Swal.fire("Chyba", "Vyskytol sa problém pri rušení rezervácie.", "error");
+                    Swal.fire({
+                        html: '<div style="text-align: center; padding: 1rem;"><i class="fa-solid fa-circle-xmark" style="font-size: 3rem; color: #dc3545;"></i><h3 style="margin-top: 1rem; font-weight: 600; color: #2c3e50;">Chyba</h3><p style="color: #6c757d; margin-top: 0.5rem;">Vyskytol sa problém pri ukladaní poznámky.</p></div>',
+                        confirmButtonText: 'Zavrieť',
+                        confirmButtonColor: '#0080ff',
+                        width: 450
+                    });
                 }
             })
             .catch(error => {
-                Swal.fire("Chyba", "Vyskytol sa problém s požiadavkou.", "error");
+                Swal.fire({
+                    html: '<div style="text-align: center; padding: 1rem;"><i class="fa-solid fa-circle-xmark" style="font-size: 3rem; color: #dc3545;"></i><h3 style="margin-top: 1rem; font-weight: 600; color: #2c3e50;">Chyba</h3><p style="color: #6c757d; margin-top: 0.5rem;">Vyskytol sa problém s požiadavkou.</p></div>',
+                    confirmButtonText: 'Zavrieť',
+                    confirmButtonColor: '#0080ff',
+                    width: 450
+                });
             });
         }
     });
@@ -458,10 +566,51 @@ function addNote(reservationId, name, note) {
 
 function deleteReservation(reservationId, name) {
     Swal.fire({
-        title: `Vymazať natrvalo rezerváciu na meno ${name}?`,
+        title: '',
+        html: `
+            <div style="text-align: center; padding: 1.5rem 1rem;">
+                <div style="
+                    width: 80px;
+                    height: 80px;
+                    margin: 0 auto 1.5rem;
+                    background: linear-gradient(135deg, rgba(220, 53, 69, 0.1) 0%, rgba(220, 53, 69, 0.15) 100%);
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border: 2px solid rgba(220, 53, 69, 0.2);
+                ">
+                    <i class="fa-solid fa-trash" style="font-size: 2rem; color: #dc3545;"></i>
+                </div>
+                <h2 style="
+                    font-size: 1.75rem;
+                    font-weight: 700;
+                    color: #2c3e50;
+                    margin-bottom: 0.5rem;
+                ">Vymazať rezerváciu?</h2>
+                <p style="
+                    font-size: 1rem;
+                    color: #6c757d;
+                    margin-bottom: 0.5rem;
+                ">${name}</p>
+                <p style="
+                    font-size: 0.9rem;
+                    color: #dc3545;
+                    font-weight: 600;
+                ">Táto akcia je definitívna!</p>
+            </div>
+        `,
         showCancelButton: true,
-        confirmButtonText: "Áno",
-        cancelButtonText: "Zrušiť",
+        confirmButtonText: '<i class="fa-solid fa-trash" style="margin-right: 0.5rem;"></i>Áno, vymazať',
+        cancelButtonText: 'Zrušiť',
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#6c757d',
+        width: 500,
+        customClass: {
+            popup: 'delete-modal',
+            confirmButton: 'btn-modal-confirm',
+            cancelButton: 'btn-modal-cancel'
+        }
     }).then((result) => {
         if (result.isConfirmed) {
             fetch(`/delete_reservation/`, {
@@ -476,18 +625,29 @@ function deleteReservation(reservationId, name) {
             .then(data => {
                 if (data.status === 'success') {
                     Swal.fire({
-                        icon: "success",
-                        timer: 600,
-                        showConfirmButton: false
+                        html: '<div style="text-align: center; padding: 1rem;"><i class="fa-solid fa-circle-check" style="font-size: 3rem; color: #28a745;"></i><h3 style="margin-top: 1rem; font-weight: 600; color: #2c3e50;">Úspešne vymazané!</h3></div>',
+                        timer: 1000,
+                        showConfirmButton: false,
+                        width: 400
                     }).then(() => {
                         fetchFilteredData(page, current_sort_by, current_order, 'no');
                     });
                 } else {
-                    Swal.fire("Chyba", "Vyskytol sa problém pri mazaní rezervácie.", "error");
+                    Swal.fire({
+                        html: '<div style="text-align: center; padding: 1rem;"><i class="fa-solid fa-circle-xmark" style="font-size: 3rem; color: #dc3545;"></i><h3 style="margin-top: 1rem; font-weight: 600; color: #2c3e50;">Chyba</h3><p style="color: #6c757d; margin-top: 0.5rem;">Vyskytol sa problém pri mazaní rezervácie.</p></div>',
+                        confirmButtonText: 'Zavrieť',
+                        confirmButtonColor: '#0080ff',
+                        width: 450
+                    });
                 }
             })
             .catch(error => {
-                Swal.fire("Chyba", "Vyskytol sa problém s požiadavkou.", "error");
+                Swal.fire({
+                    html: '<div style="text-align: center; padding: 1rem;"><i class="fa-solid fa-circle-xmark" style="font-size: 3rem; color: #dc3545;"></i><h3 style="margin-top: 1rem; font-weight: 600; color: #2c3e50;">Chyba</h3><p style="color: #6c757d; margin-top: 0.5rem;">Vyskytol sa problém s požiadavkou.</p></div>',
+                    confirmButtonText: 'Zavrieť',
+                    confirmButtonColor: '#0080ff',
+                    width: 450
+                });
             });
         }
     });
@@ -495,11 +655,46 @@ function deleteReservation(reservationId, name) {
 
 function approveReservation(reservationId, name) {
     Swal.fire({
-        title: `Naozaj schváliť rezerváciu na meno ${name}?`,
-        icon: "question",
+        title: '',
+        html: `
+            <div style="text-align: center; padding: 1.5rem 1rem;">
+                <div style="
+                    width: 80px;
+                    height: 80px;
+                    margin: 0 auto 1.5rem;
+                    background: linear-gradient(135deg, rgba(40, 167, 69, 0.1) 0%, rgba(40, 167, 69, 0.15) 100%);
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border: 2px solid rgba(40, 167, 69, 0.2);
+                ">
+                    <i class="fa-solid fa-circle-check" style="font-size: 2rem; color: #28a745;"></i>
+                </div>
+                <h2 style="
+                    font-size: 1.75rem;
+                    font-weight: 700;
+                    color: #2c3e50;
+                    margin-bottom: 0.5rem;
+                ">Schváliť rezerváciu?</h2>
+                <p style="
+                    font-size: 1rem;
+                    color: #6c757d;
+                    margin-bottom: 0.5rem;
+                ">${name}</p>
+            </div>
+        `,
         showCancelButton: true,
-        confirmButtonText: "Áno, schváliť",
-        cancelButtonText: "Zrušiť",
+        confirmButtonText: '<i class="fa-solid fa-check" style="margin-right: 0.5rem;"></i>Áno, schváliť',
+        cancelButtonText: 'Zrušiť',
+        confirmButtonColor: '#28a745',
+        cancelButtonColor: '#6c757d',
+        width: 500,
+        customClass: {
+            popup: 'approve-modal',
+            confirmButton: 'btn-modal-confirm',
+            cancelButton: 'btn-modal-cancel'
+        }
     }).then((result) => {
         if (result.isConfirmed) {
             fetch(`/approve_reservation/`, {
@@ -514,18 +709,29 @@ function approveReservation(reservationId, name) {
             .then(data => {
                 if (data.status === 'success') {
                     Swal.fire({
-                        icon: "success",
-                        timer: 600,
-                        showConfirmButton: false
+                        html: '<div style="text-align: center; padding: 1rem;"><i class="fa-solid fa-circle-check" style="font-size: 3rem; color: #28a745;"></i><h3 style="margin-top: 1rem; font-weight: 600; color: #2c3e50;">Rezervácia schválená!</h3></div>',
+                        timer: 1000,
+                        showConfirmButton: false,
+                        width: 400
                     }).then(() => {
                         fetchFilteredData(page, current_sort_by, current_order, 'no');
                     });
                 } else {
-                    Swal.fire("Chyba", "Vyskytol sa problém pri schvaľovaní rezervácie.", "error");
+                    Swal.fire({
+                        html: '<div style="text-align: center; padding: 1rem;"><i class="fa-solid fa-circle-xmark" style="font-size: 3rem; color: #dc3545;"></i><h3 style="margin-top: 1rem; font-weight: 600; color: #2c3e50;">Chyba</h3><p style="color: #6c757d; margin-top: 0.5rem;">Vyskytol sa problém pri schvaľovaní rezervácie.</p></div>',
+                        confirmButtonText: 'Zavrieť',
+                        confirmButtonColor: '#0080ff',
+                        width: 450
+                    });
                 }
             })
             .catch(error => {
-                Swal.fire("Chyba", "Vyskytol sa problém s požiadavkou.", "error");
+                Swal.fire({
+                    html: '<div style="text-align: center; padding: 1rem;"><i class="fa-solid fa-circle-xmark" style="font-size: 3rem; color: #dc3545;"></i><h3 style="margin-top: 1rem; font-weight: 600; color: #2c3e50;">Chyba</h3><p style="color: #6c757d; margin-top: 0.5rem;">Vyskytol sa problém s požiadavkou.</p></div>',
+                    confirmButtonText: 'Zavrieť',
+                    confirmButtonColor: '#0080ff',
+                    width: 450
+                });
             });
         }
     });

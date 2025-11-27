@@ -225,14 +225,153 @@ function openSmSystemMessage() {
   `;
 
   Swal.fire({
-    title: "",            // keep empty; we render our own header in html
-    html,
-    icon: undefined,      // no icon
+    title: "",
+    html: `
+    <div style="text-align: center;">
+      <div style="
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 1.5rem;
+        background: linear-gradient(135deg, rgba(0, 128, 255, 0.1) 0%, rgba(0, 128, 255, 0.15) 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      ">
+        <i class="fa-solid fa-arrows-spin" style="font-size: 2rem; color: #0080ff;"></i>
+      </div>
+      <h2 style="
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+      ">
+        ${t.heading}
+      </h2>
+      <p style="
+        font-size: 1rem;
+        color: #6c757d;
+        margin-bottom: 2rem;
+        line-height: 1.5;
+      ">
+        ${t.sectionTitle}
+      </p>
+      <div style="
+        display: inline-block;
+        padding: 0.5rem 1.25rem;
+        background: linear-gradient(135deg, rgba(0, 128, 255, 0.1) 0%, rgba(0, 128, 255, 0.15) 100%);
+        color: #0080ff;
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border-radius: 50px;
+        margin-bottom: 1.5rem;
+      ">
+        ${isEnglish ? 'Price list' : 'Cenník'}
+      </div>
+      <ul style="
+        list-style: none;
+        padding: 0;
+        margin: 0 0 2rem 0;
+        background: white;
+        border: 2px solid #e9ecef;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      ">
+        <li style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 1rem 1.5rem;
+          border-bottom: 1px solid #f0f0f0;
+          transition: background-color 0.2s ease;
+        " onmouseover="this.style.background='linear-gradient(135deg, rgba(0, 128, 255, 0.03) 0%, rgba(0, 128, 255, 0.05) 100%)'" onmouseout="this.style.background='white'">
+          <span style="font-size: 1rem; color: #2c3e50; font-weight: 500;">${t.oneEntry}</span>
+          <span style="
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #0080ff;
+            background: linear-gradient(135deg, rgba(0, 128, 255, 0.1) 0%, rgba(0, 128, 255, 0.15) 100%);
+            padding: 0.35rem 1rem;
+            border-radius: 50px;
+          ">20&nbsp;€</span>
+        </li>
+        <li style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 1rem 1.5rem;
+          border-bottom: 1px solid #f0f0f0;
+          transition: background-color 0.2s ease;
+        " onmouseover="this.style.background='linear-gradient(135deg, rgba(0, 128, 255, 0.03) 0%, rgba(0, 128, 255, 0.05) 100%)'" onmouseout="this.style.background='white'">
+          <span style="font-size: 1rem; color: #2c3e50; font-weight: 500;">${t.threeEntries}</span>
+          <span style="
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #0080ff;
+            background: linear-gradient(135deg, rgba(0, 128, 255, 0.1) 0%, rgba(0, 128, 255, 0.15) 100%);
+            padding: 0.35rem 1rem;
+            border-radius: 50px;
+          ">45&nbsp;€</span>
+        </li>
+        <li style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 1rem 1.5rem;
+          transition: background-color 0.2s ease;
+        " onmouseover="this.style.background='linear-gradient(135deg, rgba(0, 128, 255, 0.03) 0%, rgba(0, 128, 255, 0.05) 100%)'" onmouseout="this.style.background='white'">
+          <span style="font-size: 1rem; color: #2c3e50; font-weight: 500;">${t.fiveEntries}</span>
+          <span style="
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #0080ff;
+            background: linear-gradient(135deg, rgba(0, 128, 255, 0.1) 0%, rgba(0, 128, 255, 0.15) 100%);
+            padding: 0.35rem 1rem;
+            border-radius: 50px;
+          ">75&nbsp;€</span>
+        </li>
+      </ul>
+      <div style="
+        border: 2px solid rgba(0, 128, 255, 0.15);
+        border-radius: 16px;
+        padding: 1.25rem 1.5rem;
+        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        color: #495057;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        text-align: left;
+        box-shadow: 0 2px 8px rgba(0, 128, 255, 0.08);
+      ">
+        <div style="
+          display: flex;
+          align-items: flex-start;
+          gap: 0.75rem;
+          margin-bottom: 0.75rem;
+        ">
+          <i class="fa-solid fa-circle-info" style="color: #0080ff; font-size: 1.2rem; margin-top: 0.15rem; flex-shrink: 0;"></i>
+          <p style="margin: 0; font-weight: 500;">${t.note1}</p>
+        </div>
+        <div style="
+          display: flex;
+          align-items: flex-start;
+          gap: 0.75rem;
+        ">
+          <i class="fa-solid fa-phone" style="color: #0080ff; font-size: 1.2rem; margin-top: 0.15rem; flex-shrink: 0;"></i>
+          <p style="margin: 0;">${t.note2}</p>
+        </div>
+      </div>
+    </div>
+  `,
+    icon: undefined,
     showConfirmButton: true,
     confirmButtonText: t.close,
-    width: 520,
+    width: 600,
     background: "#fff",
     color: "#212529",
+    confirmButtonColor: "#0080ff",
   });
 }
 

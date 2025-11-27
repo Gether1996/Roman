@@ -144,21 +144,7 @@ a {
 
 /* Business section styles moved to homepage-modern.css */
 
-.contact-container {
-    display: flex;
-    align-items: center; /* Vertically center the child elements */
-    justify-content: center; /* Horizontally center the child elements */
-    font-size: 18px;
-    background-color: white;
-    width: 100%;
-    height: 240px;
-    margin: 0;
-}
-
-.contact-info {
-    text-align: center;
-    max-width: 90%;
-}
+/* Contact container styles moved to homepage-modern.css */
 
 /* ============================================
    MODERN NAVBAR STYLES
@@ -536,7 +522,6 @@ a {
     cursor: pointer;
     font-size: 20px;
     transition: 0.3s;
-    margin-top: 15px;
 }
 
 /* Technique, voucher and other homepage styles moved to homepage-modern.css */
@@ -576,53 +561,7 @@ a {
 
 /* Review detail styles moved to homepage-modern.css */
 
-.h1-slogan {
-    font-size: 28px;
-    font-family: 'Luminari', fantasy;
-}
-
-.reservation-button-about-us {
-    padding: 15px 250px !important;
-    border: 2px solid black;
-    border-radius: 3px;
-    transition: 0.3s;
-    background-color: #e5e5e5;
-    text-decoration: none;
-    color: black;
-    cursor: pointer;
-    font-size: 30px;
-    width: 40%;
-    text-align: center;
-}
-
-.reservation-button-about-us:hover {
-    background-color: #c9c9c9;
-}
-
-.summary {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    width: 100%;
-}
-
-.summary p {
-    opacity: 0;
-    display: none;
-    transition: opacity 0.5s ease;
-}
-
-.visible {
-    opacity: 1;
-    transition-delay: 0.5s;
-}
-
-.about-us-container {
-    display: flex;
-    margin: auto;
-    width: 85%;
-}
+/* h1-slogan, reservation-button-about-us, summary, and about-us-container styles moved to homepage-modern.css */
 
 /* Business section heading styles moved to homepage-modern.css */
 
@@ -857,28 +796,33 @@ a {
     border-color: #007bff;
 }
 
-.option-button-person, .option-button-time, .time-slot-select, .user-select {
-    padding: 10px 20px;
-    border: 2px solid #ddd;
-    border-radius: 5px;
-    background-color: #f0f0f0;
+/* Common styles for time-slot-select and user-select buttons */
+.time-slot-select, .user-select {
+    padding: 12px 20px;
+    border: 2px solid #e9ecef;
+    border-radius: 14px;
+    background-color: white;
     transition: all 0.3s ease;
     cursor: pointer;
+    font-weight: 500;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 /* Hover effect */
-.option-button-person:hover, .option-button-time:hover, .finish-reservation-button:hover, .time-slot-select:hover, .user-select:hover {
-    background-color: #e0e0e0; /* Slightly darker background on hover */
-    border-color: #ccc; /* Change border color on hover */
-    transform: scale(1.05); /* Slight scale up on hover */
+.time-slot-select:hover, .user-select:hover, .finish-reservation-button:hover {
+    background-color: #f8f9fa;
+    border-color: #0080ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 128, 255, 0.15);
 }
 
 /* Style for selected buttons */
-.option-button-person.selected, .option-button-time.selected {
-    background-color: #007BFF; /* Change background color when selected */
-    color: white; /* Change text color when selected */
-    border-color: #0056b3; /* Change border color when selected */
-    transform: scale(1.1); /* Slightly larger scale for selected buttons */
+.time-slot-select.selected, .user-select.selected {
+    background: linear-gradient(135deg, #0080ff 0%, #0056b3 100%);
+    color: white;
+    border-color: #0080ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 128, 255, 0.3);
 }
 
 .saved-person-container {
@@ -917,7 +861,8 @@ a {
     scale: 1.2;
 }
 
-.big-button {
+/* Big button - used for person selection (Roman/Evka) - circular */
+.big-button.option-button-person {
     padding: 0;
     margin: 10px 0;
     font-size: 24px;
@@ -934,14 +879,49 @@ a {
     transition: all 0.3s ease;
 }
 
-.big-button.selected {
+.big-button.option-button-person.selected {
     border-color: #0080ff;
     box-shadow: 0 0 0 2px rgba(0, 128, 255, 0.2);
 }
 
-.big-button:hover {
+.big-button.option-button-person:hover {
     border-color: #0080ff;
     transform: scale(1.05);
+}
+
+/* Big button for time/duration - rectangular */
+.big-button.option-button-time {
+    padding: 12px 20px;
+    margin: 10px;
+    font-size: 1rem;
+    border: 2px solid #e9ecef;
+    border-radius: 14px;
+    cursor: pointer;
+    text-align: center;
+    width: auto;
+    height: auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.big-button.option-button-time:hover {
+    background-color: #f8f9fa;
+    border-color: #0080ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 128, 255, 0.15);
+}
+
+.big-button.option-button-time.selected {
+    background: linear-gradient(135deg, #0080ff 0%, #0056b3 100%);
+    color: white;
+    border-color: #0080ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 128, 255, 0.3);
 }
 
 .option-button.selected {
@@ -1324,113 +1304,16 @@ a {
 
 @media screen and (max-width: 500px) {
 
-    .person-container {
-        width: 100%;
-    }
-
-    .evka-image {
-        width: 50%;
-    }
-
-    .roman-image {
-        width: 50%;
-    }
-
-    .h1-slogan,
-    #spolupraca h1,
-    #gallery h1,
-    #technique h1,
-    .recenzie-h1,
-    #poukazka h1{
-        font-size: 20px;
-    }
+    /* Homepage-specific styles moved to homepage-modern.css */
 
     .my-swal {
         width: 90% !important;
     }
 
-    .review-button {
-        font-size: 12px;
-        padding: 2px 4px;
-    }
+    /* Homepage navbar, contact, and about-us styles moved to homepage-modern.css */
 
-    .review-message {
-        font-size: 14px;
-    }
-
-    .review-header h3 {
-        font-size: 17px; 
-    }
-
-    #spolupraca h3 {
-        font-weight: normal;
-        font-size: 13px;
-    }
-
-    .logo-image {
-        width: 80px;
-    }
-
-    .navbar {
-        height: 60px;
-    }
-
-    .nav-links {
-        top: 60px;
-        height: calc(100vh - 60px);
-    }
-
-    .summary h2{
-        font-size: 18px;
-    }
-
-    .contact-container {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 0.9rem;
-        background-color: white;
-        width: 100%;
-        height: auto;
-        min-height: 120px;
-        margin: 0;
-        padding: 20px 15px;
-    }
-
-    .contact-container p{
-        margin: 5px 0;
-        padding: 0;
-        line-height: 1.6;
-    }
-
-    .column-container {
-        padding: 0x;
-    }
-
-    .row-container {
-        padding: 0 10px;
-    }
-
-    .reservation-button-about-us {
-        padding: 10px 60px !important;
-        font-size: 20px;
-        width: 60%;
-        text-align: center;
-        margin: 20px;
-    }
-
-    .about-us-container {
-        display: flex;
-        flex-direction: column;
-        margin: auto;
-        width: 90%;
-    }
-
-    /* Technique buttons mobile styles moved to homepage-modern.css */
-
-    /* Voucher container mobile styles moved to homepage-modern.css */
-
-    .big-button {
+    /* Person buttons - circular on mobile */
+    .big-button.option-button-person {
         padding: 0;
         margin: 8px;
         font-size: 16px;
@@ -1447,20 +1330,44 @@ a {
         transition: all 0.3s ease;
     }
 
-    .big-button:active {
+    .big-button.option-button-person:active {
         transform: scale(0.95);
     }
 
-    .big-button.selected {
+    .big-button.option-button-person.selected {
         border-color: #0080ff;
         box-shadow: 0 0 0 2px rgba(0, 128, 255, 0.2);
     }
 
-    .big-button img.miniature-img {
+    .big-button.option-button-person img.miniature-img {
         width: 82px;
         height: 82px;
         border-radius: 50%;
         object-fit: cover;
+    }
+
+    /* Time/duration buttons - rectangular on mobile */
+    .big-button.option-button-time {
+        padding: 12px 18px;
+        margin: 8px;
+        font-size: 0.95rem;
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        width: auto;
+        height: auto;
+        background: white;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .big-button.option-button-time:active {
+        transform: scale(0.97);
+    }
+
+    .big-button.option-button-time.selected {
+        background: linear-gradient(135deg, #0080ff 0%, #0056b3 100%);
+        color: white;
+        border-color: #0080ff;
+        box-shadow: 0 4px 12px rgba(0, 128, 255, 0.3);
     }
 
     #person-selection {
@@ -1745,30 +1652,7 @@ a {
         font-size: 10px;
     }
 
-    .option-button-time {
-        padding: 14px 18px;
-        border: 2px solid #e9ecef;
-        border-radius: 14px;
-        background-color: white;
-        transition: all 0.3s ease;
-        font-size: 0.9rem;
-        font-weight: 500;
-        cursor: pointer;
-        text-align: center;
-        min-width: 140px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    }
-
-    .option-button-time:active {
-        transform: scale(0.97);
-    }
-
-    .option-button-time.selected {
-        background: linear-gradient(135deg, #0080ff 0%, #0056b3 100%);
-        color: white;
-        border-color: #0080ff;
-        box-shadow: 0 4px 12px rgba(0, 128, 255, 0.3);
-    }
+    /* option-button-time styles are handled by .big-button.option-button-time above */
 
     /* all-reservations-h2 mobile styles moved to all-reservations-modern.css */
 

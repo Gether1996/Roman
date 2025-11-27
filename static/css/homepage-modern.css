@@ -562,34 +562,56 @@
 
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+}
+
+@media (max-width: 1400px) {
+  .gallery-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 992px) {
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .gallery-grid {
+    grid-template-columns: 1fr;
+    gap: 0.875rem;
+  }
 }
 
 .gallery-item {
   position: relative;
-  border-radius: 16px;
+  border-radius: 20px;
   overflow: hidden;
   aspect-ratio: 1;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: all 0.4s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid transparent;
 }
 
 .gallery-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 12px 35px rgba(0, 128, 255, 0.2);
+  border-color: rgba(0, 128, 255, 0.3);
 }
 
 .gallery-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s ease;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .gallery-item:hover .gallery-image {
-  transform: scale(1.1);
+  transform: scale(1.15);
 }
 
 .gallery-overlay {
@@ -598,12 +620,12 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, rgba(0, 128, 255, 0.8) 0%, rgba(0, 86, 179, 0.9) 100%);
+  background: linear-gradient(135deg, rgba(0, 128, 255, 0.85) 0%, rgba(0, 86, 179, 0.95) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .gallery-item:hover .gallery-overlay {
@@ -612,12 +634,13 @@
 
 .gallery-overlay i {
   color: white;
-  font-size: 3rem;
-  transition: transform 0.3s ease;
+  font-size: 3.5rem;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
 }
 
 .gallery-item:hover .gallery-overlay i {
-  transform: scale(1.2);
+  transform: scale(1.3) rotate(5deg);
 }
 
 /* Vouchers Section */
@@ -628,39 +651,60 @@
 
 .vouchers-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+@media (max-width: 1200px) {
+  .vouchers-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .vouchers-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
 }
 
 .voucher-card {
   background: white;
-  border-radius: 16px;
+  border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-  transition: all 0.4s ease;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid transparent;
 }
 
 .voucher-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+  transform: translateY(-12px);
+  box-shadow: 0 16px 45px rgba(0, 128, 255, 0.2);
+  border-color: rgba(0, 128, 255, 0.3);
 }
 
 .voucher-image-wrapper {
   position: relative;
   overflow: hidden;
   cursor: pointer;
-  background: #f8f9fa;
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  aspect-ratio: 16/10;
 }
 
 .voucher-image {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: contain;
   display: block;
-  transition: transform 0.5s ease;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 1rem;
 }
 
 .voucher-card:hover .voucher-image {
-  transform: scale(1.05);
+  transform: scale(1.08);
 }
 
 .voucher-overlay {
@@ -669,12 +713,14 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 128, 255, 0.9);
+  background: linear-gradient(135deg, rgba(0, 128, 255, 0.92) 0%, rgba(0, 86, 179, 0.96) 100%);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 0.75rem;
   opacity: 0;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .voucher-image-wrapper:hover .voucher-overlay {
@@ -683,25 +729,43 @@
 
 .voucher-overlay i {
   color: white;
-  font-size: 2.5rem;
+  font-size: 3.5rem;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+  transition: transform 0.3s ease;
+}
+
+.voucher-image-wrapper:hover .voucher-overlay i {
+  transform: scale(1.2);
 }
 
 .voucher-download {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 1rem;
-  background: #f8f9fa;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
   color: #2c3e50 !important;
   font-weight: 600;
+  font-size: 1rem;
   text-decoration: none;
   transition: all 0.3s ease;
+  border-top: 2px solid #e9ecef;
+}
+
+.voucher-download i {
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
 }
 
 .voucher-download:hover {
   background: linear-gradient(135deg, #0080ff 0%, #0056b3 100%);
   color: white !important;
+  border-top-color: transparent;
+}
+
+.voucher-download:hover i {
+  transform: translateY(3px);
 }
 
 /* Reviews Section */
@@ -1044,65 +1108,243 @@
   border-radius: 16px;
 }
 
+/* Container Improvements for Mobile */
+@media (max-width: 768px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
+  .hero-section {
+    padding: 20px 0 50px;
+  }
+
+  .hero-section::before {
+    width: 400px;
+    height: 400px;
+    right: -30%;
+  }
+
   .hero-title {
-    font-size: 2rem;
+    font-size: 1.75rem;
+    line-height: 1.3;
+    margin-bottom: 1rem;
   }
 
   .hero-subtitle {
     font-size: 1rem;
+    margin-bottom: 1.5rem;
   }
 
   .hero-cta {
     flex-direction: column;
+    gap: 0.75rem;
   }
 
   .btn-hero-primary,
   .btn-hero-secondary {
     width: 100%;
     justify-content: center;
+    padding: 0.875rem 2rem;
+    font-size: 1rem;
   }
 
   .hero-alert {
-    padding: 1rem 1.5rem;
-    font-size: 0.95rem;
+    padding: 1rem 1.25rem;
+    font-size: 0.9rem;
     gap: 0.75rem;
+    flex-direction: column;
+    text-align: center;
   }
 
   .hero-alert i {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
+  }
+
+  .section-header {
+    margin-bottom: 2.5rem;
+  }
+
+  .section-subtitle {
+    font-size: 0.8rem;
+    padding: 0.4rem 1rem;
   }
 
   .section-title {
-    font-size: 2rem;
+    font-size: 1.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .section-description {
+    font-size: 1rem;
+    padding: 0 1rem;
+  }
+
+  .techniques-section {
+    padding: 40px 0;
   }
 
   .techniques-grid {
     grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .technique-card {
+    padding: 1.5rem;
+  }
+
+  .technique-icon {
+    width: 65px;
+    height: 65px;
+    margin-bottom: 1rem;
+  }
+
+  .technique-icon i {
+    font-size: 1.75rem;
+  }
+
+  .technique-title {
+    font-size: 1.1rem;
+  }
+
+  .technique-description {
+    font-size: 0.9rem;
+  }
+
+  .gallery-section {
+    padding: 40px 0;
   }
 
   .gallery-grid {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.875rem;
+  }
+
+  .gallery-item {
+    border-radius: 16px;
+  }
+
+  .gallery-overlay i {
+    font-size: 2.5rem;
+  }
+
+  .vouchers-section {
+    padding: 40px 0;
+  }
+
+  .vouchers-grid {
+    gap: 1.5rem;
+  }
+
+  .voucher-download {
+    padding: 1rem;
+    font-size: 0.95rem;
+  }
+
+  .reviews-section {
+    padding: 40px 0;
   }
 
   .reviews-grid {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .modern-review-card {
+    padding: 1.5rem;
+  }
+
+  .review-card-header {
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .review-avatar {
+    width: 45px;
+    height: 45px;
+  }
+
+  .review-avatar i {
+    font-size: 1.3rem;
+  }
+
+  .review-author {
+    font-size: 1rem;
+  }
+
+  .review-text {
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+  }
+
+  .business-section {
+    padding: 40px 0;
+  }
+
+  .business-section::before {
+    width: 400px;
+    height: 400px;
+  }
+
+  .business-icon {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 1.5rem;
+  }
+
+  .business-icon i {
+    font-size: 2.5rem;
+  }
+
+  .business-title {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .business-description {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    padding: 0 1rem;
+  }
+
+  .business-highlight {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    padding: 0 1rem;
+  }
+
+  .btn-business {
+    padding: 0.875rem 2rem;
+    font-size: 1rem;
+  }
+
+  .contact-section {
+    padding: 40px 0;
   }
 
   .contact-grid-three {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 1.25rem;
   }
 
   .contact-column {
-    padding: 1.5rem 1rem;
+    padding: 1.5rem 1.25rem;
   }
 
   .contact-icon-compact {
     width: 55px;
     height: 55px;
+    margin-bottom: 1rem;
   }
 
   .contact-icon-compact i {
@@ -1111,10 +1353,16 @@
 
   .contact-label-compact {
     font-size: 1rem;
+    margin-bottom: 0.75rem;
   }
 
   .contact-value-compact {
     font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .contact-note-compact {
+    font-size: 0.8rem;
   }
 
   .therapist-services {
@@ -1124,6 +1372,10 @@
   .service-tag {
     font-size: 0.8rem;
     padding: 0.5rem 1rem;
+  }
+
+  .service-tag i {
+    font-size: 0.9rem;
   }
 
   .therapist-card {
@@ -1143,6 +1395,10 @@
     margin-bottom: 1.5rem;
   }
 
+  .therapist-image-wrapper-pro {
+    aspect-ratio: 4/3;
+  }
+
   .therapist-name-overlay {
     font-size: 1.5rem;
   }
@@ -1153,6 +1409,12 @@
 
   .therapist-info-overlay {
     padding: 1.5rem;
+  }
+
+  .social-link-pro {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
   }
 
   .service-tag-pro {
@@ -1167,15 +1429,54 @@
 
 @media (max-width: 480px) {
   .hero-section {
-    padding: 20px 0;
+    padding: 15px 0 40px;
+  }
+
+  .hero-content {
+    padding: 0 0.75rem;
   }
 
   .hero-title {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.95rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .btn-hero-primary,
+  .btn-hero-secondary {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  .hero-alert {
+    padding: 0.875rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .hero-alert i {
+    font-size: 1.5rem;
   }
 
   .section-header {
     margin-bottom: 2rem;
+    padding: 0 0.75rem;
+  }
+
+  .section-subtitle {
+    font-size: 0.75rem;
+    padding: 0.35rem 0.875rem;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .section-description {
+    font-size: 0.95rem;
   }
 
   .therapists-section,
@@ -1185,7 +1486,167 @@
   .reviews-section,
   .business-section,
   .contact-section {
-    padding: 20px 0;
+    padding: 30px 0;
+  }
+
+  .therapist-card-pro {
+    margin-bottom: 1.25rem;
+  }
+
+  .therapist-name-overlay {
+    font-size: 1.35rem;
+  }
+
+  .therapist-content-pro {
+    padding: 1.25rem;
+  }
+
+  .service-tag-pro {
+    padding: 0.75rem 0.875rem;
+    font-size: 0.85rem;
+    gap: 0.75rem;
+  }
+
+  .service-tag-pro i {
+    font-size: 1rem;
+  }
+
+  .technique-card {
+    padding: 1.25rem;
+  }
+
+  .technique-icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .technique-icon i {
+    font-size: 1.6rem;
+  }
+
+  .technique-title {
+    font-size: 1rem;
+  }
+
+  .technique-description {
+    font-size: 0.85rem;
+  }
+
+  .gallery-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .gallery-item {
+    border-radius: 14px;
+  }
+
+  .gallery-overlay i {
+    font-size: 2rem;
+  }
+
+  .vouchers-grid {
+    gap: 1.25rem;
+  }
+
+  .voucher-download {
+    padding: 0.875rem;
+    font-size: 0.9rem;
+  }
+
+  .btn-add-review {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  .modern-review-card {
+    padding: 1.25rem;
+  }
+
+  .review-card-header {
+    gap: 0.65rem;
+  }
+
+  .review-avatar {
+    width: 40px;
+    height: 40px;
+  }
+
+  .review-avatar i {
+    font-size: 1.2rem;
+  }
+
+  .review-author {
+    font-size: 0.95rem;
+  }
+
+  .review-therapist-badge {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.875rem;
+  }
+
+  .review-text {
+    font-size: 0.9rem;
+  }
+
+  .review-timestamp {
+    font-size: 0.8rem;
+  }
+
+  .business-icon {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 1.25rem;
+  }
+
+  .business-icon i {
+    font-size: 2.25rem;
+  }
+
+  .business-title {
+    font-size: 1.5rem;
+  }
+
+  .business-description {
+    font-size: 0.95rem;
+  }
+
+  .business-highlight {
+    font-size: 0.95rem;
+  }
+
+  .btn-business {
+    padding: 0.75rem 1.75rem;
+    font-size: 0.95rem;
+  }
+
+  .contact-grid-three {
+    gap: 1rem;
+  }
+
+  .contact-column {
+    padding: 1.25rem 1rem;
+  }
+
+  .contact-icon-compact {
+    width: 50px;
+    height: 50px;
+  }
+
+  .contact-icon-compact i {
+    font-size: 1.2rem;
+  }
+
+  .contact-label-compact {
+    font-size: 0.95rem;
+  }
+
+  .contact-value-compact {
+    font-size: 0.85rem;
+  }
+
+  .contact-note-compact {
+    font-size: 0.75rem;
   }
 }
 
