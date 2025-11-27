@@ -2,54 +2,132 @@
 {% load static %}
 {% load language_switch %}
 
-<nav class="navbar">
-    <div class="navbar-content">
-        <a href="{% url 'homepage' %}">
-            <img class="logo-image" src="{% static 'images/logo1.png' %}" title="{% trans 'Domov' %}">
-        </a>
-        <div class="nav-links">
-            <a href="{% url 'homepage' %}" class="navbar-button">{% trans 'Domov' %}</a>
-            <a href="{% url 'reservation' %}" class="navbar-button"><i class="fa-solid fa-calendar-circle-plus"></i> {% trans 'Rezervácia/Cenník' %}</a>
-        </div>
-        <div class="d-flex align-items-center gap-2">
-            <a href="https://www.instagram.com/masazevlcince/" target="_blank"><i class="fab fa-instagram nav-button" title="Instagram"></i></a>
-            <a href="https://www.facebook.com/salonAminaSK" target="_blank"><i class="fa-brands fa-square-facebook nav-button" title="Facebook"></i></a>
-            {% if language_code == 'en' %}
-                <button class="switch-language-button nav-button"><img src="{% static 'images/united-kingdom.png' %}" alt="" title="{% trans 'Prepnúť jazyk' %}"></button>
-            {% else %}
-                <button class="switch-language-button nav-button"><img src="{% static 'images/slovakia.png' %}" alt="" title="{% trans 'Prepnúť jazyk' %}"></button>
-            {% endif %}
-            <div class="dropdown" id="dropdown-menu-languages">
-                {% if language_code == 'en' %}
-                    <button class="dropdown-item nav-button" onclick="switchLanguage('sk')"><img src="{% static 'images/slovakia.png' %}" alt="" title="{% trans 'Slovenčina' %}"></button>
-                {% else %}
-                    <button class="dropdown-item nav-button" onclick="switchLanguage('en')"><img src="{% static 'images/united-kingdom.png' %}" alt="" title="{% trans 'Angličtina' %}"></button>
-                {% endif %}
+<nav class="modern-navbar">
+    <div class="mobile-menu-overlay"></div>
+    <div class="container-fluid">
+        <div class="navbar-wrapper">
+            <!-- Logo -->
+            <div class="navbar-brand-section">
+                <a href="{% url 'homepage' %}">
+                    <img class="navbar-logo" src="{% static 'images/logo1.png' %}" alt="{% trans 'Domov' %}">
+                </a>
             </div>
-        </div>
-    {% if request.user.is_authenticated %}
-        <div class="navbar-user-info">
-            <b>{{ user.email }} <i class="fa-duotone fa-user avatar-user-icon" id="avatar-user-icon"></i></b>
-            <div style="background-color: white;" id="dropdown-menu">
-                {% if user.is_superuser %}
-                    <a class="dropdown-link" href="{% url 'settings_view' %}">{% trans 'Nastavenia' %}</a>
-                    <a class="dropdown-link" href="{% url 'all_reservations' %}">{% trans 'Prehľad rezervácií' %}</a>
-                    <a class="dropdown-link" href="{% url 'calendar_view_admin' %}">{% trans 'Kalendár' %}</a>
-                    <a class="dropdown-link" href="#" onclick="logoutConfirmation()"><i class="fas fa-sign-out-alt"></i> {% trans 'Odhlásiť sa' %}</a>
-                {% else %}
-                    <a class="dropdown-link" href="{% url 'profile' %}">{% trans 'Môj profil' %}</a>
-                    <a class="dropdown-link" href="#" onclick="logoutConfirmation()"><i class="fas fa-sign-out-alt"></i> {% trans 'Odhlásiť sa' %}</a>
-                {% endif %}
+            
+            <!-- Hamburger Menu -->
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <!-- Navigation Links -->
+            <div class="navbar-nav-center">
+                <a href="{% url 'homepage' %}" class="nav-link-item">
+                    <i class="fa-solid fa-home"></i>
+                    <span>{% trans 'Domov' %}</span>
+                </a>
             </div>
-        </div>
-    {% else %}
-        <div class="navbar-user-info">
-            <b>{% trans 'Účet' %} <i class="fa-duotone fa-user avatar-user-icon" id="avatar-user-icon"></i></b>
-                <div style="background-color: white;" id="dropdown-menu">
-                    <a class="dropdown-link" href="#" onclick="login()"><i class="fa-duotone fa-right-to-bracket"></i> {% trans 'Prihlásiť sa' %}</a>
-                    <a class="dropdown-link" href="#" onclick="registration()"><i class="fa-duotone fa-user-plus"></i> {% trans 'Registrácia' %}</a>
+            
+            <!-- Right Section -->
+            <div class="navbar-actions">
+                <!-- CTA Button -->
+                <a href="{% url 'reservation' %}" class="btn-reservation">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    <span>{% trans 'Rezervovať' %}</span>
+                </a>
+                
+                <!-- Social Links -->
+                <div class="navbar-social d-none d-lg-flex">
+                    <a href="https://www.instagram.com/masazevlcince/" target="_blank" rel="noopener" class="social-icon" aria-label="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://www.facebook.com/salonAminaSK" target="_blank" rel="noopener" class="social-icon" aria-label="Facebook">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </a>
                 </div>
+                
+                <!-- Language Switcher -->
+                <div class="navbar-language dropdown">
+                    <button class="language-toggle" aria-label="{% trans 'Prepnúť jazyk' %}">
+                        {% if language_code == 'en' %}
+                            <img src="{% static 'images/united-kingdom.png' %}" alt="EN" width="24" height="18">
+                        {% else %}
+                            <img src="{% static 'images/slovakia.png' %}" alt="SK" width="24" height="18">
+                        {% endif %}
+                    </button>
+                    <div class="dropdown-menu-custom" id="dropdown-menu-languages">
+                        {% if language_code == 'en' %}
+                            <button class="dropdown-item-custom" onclick="switchLanguage('sk')">
+                                <img src="{% static 'images/slovakia.png' %}" alt="SK" width="20" height="15"> 
+                                <span>Slovenčina</span>
+                            </button>
+                        {% else %}
+                            <button class="dropdown-item-custom" onclick="switchLanguage('en')">
+                                <img src="{% static 'images/united-kingdom.png' %}" alt="EN" width="20" height="15"> 
+                                <span>English</span>
+                            </button>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- User Menu -->
+                {% if request.user.is_authenticated %}
+                    <div class="navbar-user dropdown">
+                        <button class="user-avatar" id="avatar-user-icon" aria-label="User menu">
+                            <i class="fa-solid fa-user"></i>
+                            <span class="user-name d-none d-xl-inline">{{ user.email|truncatechars:15 }}</span>
+                        </button>
+                        <div class="dropdown-menu-custom" id="dropdown-menu">
+                            <div class="dropdown-header">
+                                <i class="fa-solid fa-circle-user"></i>
+                                <span>{{ user.email }}</span>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            {% if user.is_superuser %}
+                                <a class="dropdown-item-custom" href="{% url 'settings_view' %}">
+                                    <i class="fa-solid fa-gear"></i> 
+                                    <span>{% trans 'Nastavenia' %}</span>
+                                </a>
+                                <a class="dropdown-item-custom" href="{% url 'all_reservations' %}">
+                                    <i class="fa-solid fa-list-check"></i> 
+                                    <span>{% trans 'Prehľad rezervácií' %}</span>
+                                </a>
+                                <a class="dropdown-item-custom" href="{% url 'calendar_view_admin' %}">
+                                    <i class="fa-solid fa-calendar-days"></i> 
+                                    <span>{% trans 'Kalendár' %}</span>
+                                </a>
+                            {% else %}
+                                <a class="dropdown-item-custom" href="{% url 'profile' %}">
+                                    <i class="fa-solid fa-user-circle"></i> 
+                                    <span>{% trans 'Môj profil' %}</span>
+                                </a>
+                            {% endif %}
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item-custom text-danger" href="#" onclick="logoutConfirmation()">
+                                <i class="fas fa-sign-out-alt"></i> 
+                                <span>{% trans 'Odhlásiť sa' %}</span>
+                            </a>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="navbar-user dropdown">
+                        <button class="user-avatar" id="avatar-user-icon" aria-label="Account menu">
+                            <i class="fa-solid fa-user"></i>
+                            <span class="user-name d-none d-xl-inline">{% trans 'Účet' %}</span>
+                        </button>
+                        <div class="dropdown-menu-custom" id="dropdown-menu">
+                            <a class="dropdown-item-custom" href="#" onclick="login()">
+                                <i class="fa-solid fa-right-to-bracket"></i> 
+                                <span>{% trans 'Prihlásiť sa' %}</span>
+                            </a>
+                            <a class="dropdown-item-custom" href="#" onclick="registration()">
+                                <i class="fa-solid fa-user-plus"></i> 
+                                <span>{% trans 'Registrácia' %}</span>
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
         </div>
-    {% endif %}
     </div>
 </nav>

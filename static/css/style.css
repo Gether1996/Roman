@@ -6,11 +6,21 @@ body {
 }
 
 .top-margin-homepage {
-    margin-top: 170px;
+    margin-top: 85px;
 }
 
 .top-margin-reservation {
-    margin-top: 130px;
+    margin-top: 105px;
+}
+
+@media screen and (max-width: 768px) {
+    .top-margin-homepage {
+        margin-top: 65px;
+    }
+    
+    .top-margin-reservation {
+        margin-top: 85px;
+    }
 }
 
 .selected-date {
@@ -130,15 +140,7 @@ a {
     align-items: center;
 }
 
-.logo-image {
-    width: 150px;
-    cursor: pointer;
-}
-
-#spolupraca {
-    width: 80%;
-    margin: auto;
-}
+/* Business section styles moved to homepage-modern.css */
 
 .contact-container {
     display: flex;
@@ -156,82 +158,376 @@ a {
     max-width: 90%;
 }
 
-.navbar {
+/* ============================================
+   MODERN NAVBAR STYLES
+   ============================================ */
+
+.modern-navbar {
   position: fixed;
   top: 0;
+  left: 0;
   width: 100%;
-  height: 120px;
-  background: white;
-  font-weight: bold;
-  justify-content: center;
-  display: flex;
-  align-items: center;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
   z-index: 1000;
+  transition: all 0.3s ease;
 }
 
-.navbar-content {
-  margin: auto;  
-  max-width: 200px;
-  justify-content: center;
+.modern-navbar .container-fluid {
+  padding: 0 2rem;
+}
+
+.navbar-wrapper {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  height: 85px;
+  gap: 1.5rem;
 }
 
-.nav-links {
+/* Brand / Logo */
+.navbar-brand-section {
+  flex-shrink: 0;
+}
+
+.navbar-logo {
+  height: 60px;
+  width: auto;
+  cursor: pointer;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.navbar-logo:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+/* Navigation Links - Left aligned */
+.navbar-nav-center {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  justify-content: flex-start;
+}
+
+.nav-link-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  color: #2c3e50;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 50px;
+  background: white;
+  border: 2px solid transparent;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  position: relative;
+  white-space: nowrap;
+}
+
+.nav-link-item i {
+  font-size: 1.1rem;
+  transition: transform 0.3s ease;
+}
+
+.nav-link-item:hover {
+  background: linear-gradient(135deg, #0080ff 0%, #0056b3 100%);
+  color: white !important;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 128, 255, 0.35);
+  border-color: transparent;
+}
+
+.nav-link-item:hover i {
+  transform: scale(1.1);
+}
+
+/* Navbar Actions (Right Side) */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+/* CTA Reservation Button */
+.btn-reservation {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background: linear-gradient(135deg, #0080ff 0%, #0056b3 100%);
+  color: white !important;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 50px;
+  box-shadow: 0 6px 20px rgba(0, 128, 255, 0.35);
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.btn-reservation:hover {
+  background: linear-gradient(135deg, #0056b3 0%, #003d82 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 128, 255, 0.4);
+}
+
+.btn-reservation i {
+  font-size: 1.1rem;
+}
+
+/* Social Icons */
+.navbar-social {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.social-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 50px;
+  width: 40px;
+  height: 40px;
+  background: #f8f9fa;
+  color: #2c3e50;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  text-decoration: none;
 }
 
-.navbar-user-info {
-    position: absolute;
-    top: 35px;
-    right: 130px;
-    font-size: 19px;
-    background-color: transparent;
-    border: none;
-    margin-bottom: 0;
-    padding: 0px;
+.social-icon:hover {
+  background: linear-gradient(135deg, #0080ff 0%, #0056b3 100%);
+  color: white !important;
+  transform: translateY(-2px) scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 128, 255, 0.3);
 }
 
-.avatar-user-icon {
-    font-size: 20px;
-    border: none;
-    background-color: #e5e5e5;
-    padding: 14px;
-    border-radius: 50%;
-    margin-bottom: 0;
-    margin-left: 10px;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-    will-change: transform;
-    backface-visibility: hidden;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    transform-origin: center;
+/* Language Toggle */
+.navbar-language {
+  position: relative;
 }
 
-.avatar-user-icon:hover {
-    transform: scale(1.15);
+.language-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: #f8f9fa;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
 }
 
-#dropdown-menu {
-    position: absolute;
-    display: none;
-    flex-direction: column;
-    justify-content: right;
-    align-items: right;
-    top: 85px;
-    right: 3px;
-    width: 200px;
-    font-size: 18px;
-    transition: 0.3s;
-    text-align: right;
-    padding: 5px;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    overflow: hidden;
+.language-toggle:hover {
+  background: white;
+  border-color: #0080ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 128, 255, 0.2);
+}
+
+.language-toggle img {
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+/* User Avatar */
+.navbar-user {
+  position: relative;
+}
+
+.user-avatar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border: 2px solid transparent;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+.user-avatar:hover {
+  background: linear-gradient(135deg, #0080ff 0%, #0056b3 100%);
+  color: white;
+  border-color: #0080ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 128, 255, 0.3);
+}
+
+.user-avatar i {
+  font-size: 1.2rem;
+}
+
+.user-name {
+  font-size: 0.9rem;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Dropdown Menus */
+.dropdown-menu-custom {
+  position: absolute;
+  display: none;
+  flex-direction: column;
+  top: calc(100% + 12px);
+  right: 0;
+  min-width: 240px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  padding: 0.5rem 0;
+  z-index: 1001;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+}
+
+.dropdown-menu-custom.show {
+  display: flex;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.dropdown-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 8px 8px 0 0;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.dropdown-header i {
+  font-size: 1.5rem;
+  color: #0080ff;
+}
+
+.dropdown-header span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.9rem;
+}
+
+.dropdown-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, #dee2e6 50%, transparent 100%);
+  margin: 0.5rem 0;
+}
+
+.dropdown-item-custom {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  color: #2c3e50;
+  font-size: 0.95rem;
+  text-decoration: none;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dropdown-item-custom:hover {
+  background: linear-gradient(135deg, rgba(0, 128, 255, 0.1) 0%, rgba(0, 128, 255, 0.15) 100%);
+  color: #0080ff;
+  padding-left: 1.5rem;
+}
+
+.dropdown-item-custom.text-danger {
+  color: #dc3545;
+}
+
+.dropdown-item-custom.text-danger:hover {
+  background: linear-gradient(135deg, rgba(220, 53, 69, 0.1) 0%, rgba(220, 53, 69, 0.15) 100%);
+  color: #dc3545;
+}
+
+.dropdown-item-custom i {
+  font-size: 1.1rem;
+  width: 20px;
+  text-align: center;
+}
+
+.dropdown-item-custom img {
+  object-fit: cover;
+}
+
+/* Mobile Menu Toggle */
+.mobile-menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 32px;
+  height: 28px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1002;
+}
+
+.mobile-menu-toggle span {
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(135deg, #0080ff 0%, #0056b3 100%);
+  border-radius: 3px;
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+.mobile-menu-toggle.active span:nth-child(1) {
+  transform: rotate(45deg) translateY(11px);
+}
+
+.mobile-menu-toggle.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.mobile-menu-toggle.active span:nth-child(3) {
+  transform: rotate(-45deg) translateY(-11px);
+}
+
+/* Mobile Overlay */
+.mobile-menu-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 998;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.mobile-menu-overlay.active {
+  display: block;
+  opacity: 1;
 }
 
 .toggle-password {
@@ -241,109 +537,7 @@ a {
     margin-top: 15px;
 }
 
-.navbar-button {
-  text-decoration: none;
-  color: black;
-  margin: 12px;
-  font-size: 18px;
-  transition: transform 0.3s ease;
-  display: flex;
-  will-change: transform;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  transform-origin: center;
-  backface-visibility: hidden; /* Helps with rendering artifacts */
-  perspective: 1000px;          /* Improves hardware acceleration */
-}
-
-.navbar-button:hover {
-  transform: scale(1.3);
-}
-
-.pre-firmy {
-    width: 145px;
-}
-
-/* Style the social icons and phone info on the right side */
-.nav-buttons {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.technique-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;   /* centers the last row */
-  gap: 16px;
-  width: 60%;
-  margin: 20px auto 0;
-}
-
-.technique-btn {
-    flex: 1 1 calc(33.333% - 16px); /* 3 per row, with gap accounted for */
-    min-width: 180px; 
-    padding: 16px;
-    font-size: 22px;
-    border: 2px solid black;
-    border-radius: 4px;
-    transition: 0.3s;
-    background-color: #e5e5e5;
-    text-decoration: none;
-    color: black;
-    cursor: pointer;
-    text-align: center;
-    margin: 20px;
-}
-
-.technique-btn:hover {
-    background-color: #c9c9c9;
-}
-
-.dropdown {
-    display: none;
-    flex-direction: column;
-    justify-content: right;
-    align-items: center;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-    border-radius: 5px;
-    z-index: 999;
-}
-
-.nav-button {
-    width: 30px;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 25px;
-    border: none !important;
-    background-color: transparent;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-    will-change: transform; /* helps GPU rendering = smoother */
-}
-
-.nav-button:hover {
-    transform: scale(1.2); /* makes it bigger smoothly */
-}
-
-#technique {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-#technique, #gallery, #poukazka, #recenzie, #spolupraca {
-    margin-top: 100px;
-}
-
-#poukazka img {
-  max-height: 350px;
-  object-fit: contain;
-}
+/* Technique, voucher and other homepage styles moved to homepage-modern.css */
 
 .swal-layout {
     display: flex;
@@ -357,61 +551,12 @@ a {
     align-items: center;
 }
 
-.h1-slogan,
-#spolupraca h1,
-#gallery h1,
-#technique h1,
-.recenzie-h1,
-#poukazka h1{
-    font-family: 'Luminari', fantasy;
-    text-align: center;
-    font-size: 35px;
-}
+/* Homepage heading styles moved to homepage-modern.css */
 
-#recenzie {
-    width: 90%; 
-    margin: 80px auto;
-    max-width: 900px;
-}
-
-.reviews-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: auto;
-}
+/* Review section styles moved to homepage-modern.css */
 
 .my-swal {
     width: 50% !important;
-}
-
-.review-card {
-    width: 70%;
-    margin: auto;
-    background: #ffffff;
-    border-radius: 16px;
-    padding: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.review-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-}
-
-.review-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
-}
-
-.review-header h3 {
-    margin: 0;
-    color: #333;
-    font-size: 22px; 
-    font-weight: 600;
 }
 
 .stars {
@@ -427,60 +572,7 @@ a {
     color: #FFD700;
 }
 
-.review-message {
-    font-style: italic;
-    color: #555;
-    margin-bottom: 10px;
-    font-size: 18px;
-    line-height: 1.4;
-    color: #333;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    white-space: wrap;
-    max-width: 100%;
-}
-
-.review-date {
-    font-size: 0.85rem;
-    color: #999;
-    text-align: right;
-    margin-bottom: 0px;
-}
-
-.review-delete {
-    font-size: 15px;
-    cursor: pointer;
-    border: none;
-    background-color: transparent;
-    padding: 5px;
-    cursor: pointer; 
-    color: #e74c3c; 
-    margin-top: 5px; 
-    text-align: right;
-    margin-bottom: 0px;
-}
-
-.review-button {
-    padding: 0.5rem 1rem;
-    background-color: #0080ff66;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.review-button:hover {
-    background-color: #0080ff66;
-    transform: translateY(-2px);
-}
-
-.review-button:active {
-    background-color: #0080ff66;
-    transform: translateY(0);
-}
+/* Review detail styles moved to homepage-modern.css */
 
 .h1-slogan {
     font-size: 28px;
@@ -530,35 +622,9 @@ a {
     width: 85%;
 }
 
-#spolupraca h3 {
-    font-weight: normal;
-}
+/* Business section heading styles moved to homepage-modern.css */
 
-#spolupraca h1{
-    margin-bottom: 40px;
-}
-
-#spolupraca {
-    margin-top: 100px;
-    text-align: center;
-    margin-bottom: 150px;
-}
-
-.voucher-download-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: calc(33% - 20px);
-}
-
-.voucher-download-container img {
-    height: 400px;
-    width: 97%;
-    margin: 15px;
-    box-sizing: border-box;
-    border-radius: 3%;
-    cursor: zoom-in;
-}
+/* Voucher container styles moved to homepage-modern.css */
 
 .modal {
     position: relative;
@@ -585,22 +651,7 @@ a {
     max-height: 80%;
 }
 
-.download-button {
-    text-decoration: none;
-    color: black;
-    font-size: 20px;
-    font-weight: bold;
-    transition: 0.3s;
-}
-
-.download-button i{
-    font-size: 25px;
-    margin-left: 10px;
-}
-
-.download-button:hover {
-    text-decoration: underline;
-}
+/* Download button styles moved to homepage-modern.css */
 
 .close {
     position: absolute;
@@ -634,21 +685,35 @@ a {
 }
 
 .table-container-profile {
-    width: 95%;
-    max-width: 95%;
-    margin: auto;
-    background-color: #fff;
-    border-radius: 8px;
-    padding: 20px;
+    width: 90%;
+    max-width: 1400px;
+    margin: 30px auto 50px;
+    background: white;
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
 }
 
 .table-container-settings h2, .table-container-profile h2 {
-    width: 95%;
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #0056b3;
-    border-bottom: 2px solid #0056b3;
-    padding-bottom: 10px;
+    width: 100%;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: #2c3e50;
+    border-bottom: none;
+    padding-bottom: 0;
+    position: relative;
+}
+
+.table-container-profile h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(135deg, #0080ff 0%, #0056b3 100%);
+    border-radius: 2px;
 }
 
 .table-settings {
@@ -659,12 +724,55 @@ a {
 .table-profile {
     width: 100%;
     text-align: left;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 20px;
 }
 
-.table-profile th, .table-profile td {
-    padding: 5px;
-    margin: 5px;
+.table-profile thead {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.table-profile th {
+    padding: 16px 20px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #2c3e50;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.table-profile th:first-child {
+    border-radius: 12px 0 0 0;
+}
+
+.table-profile th:last-child {
+    border-radius: 0 12px 0 0;
+}
+
+.table-profile td {
+    padding: 16px 20px;
+    font-size: 0.95rem;
+    color: #495057;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.2s ease;
+}
+
+.table-profile tbody tr:hover {
+    background: linear-gradient(135deg, rgba(0, 128, 255, 0.03) 0%, rgba(0, 128, 255, 0.05) 100%);
+}
+
+.table-profile tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.table-profile tbody tr:last-child td:first-child {
+    border-radius: 0 0 0 12px;
+}
+
+.table-profile tbody tr:last-child td:last-child {
+    border-radius: 0 0 12px 0;
 }
 
 .table-settings td, .table-settings th {
@@ -692,30 +800,35 @@ a {
 .table-settings .btn,
 .table-settings .deactivate-btn,
 .table-profile .deactivate-btn {
-    background-color: #0056b3;
+    background: linear-gradient(135deg, #0080ff 0%, #0056b3 100%);
     color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
+    padding: 10px 24px;
+    border-radius: 50px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    font-size: 16px;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0, 128, 255, 0.25);
 }
 
 .table-settings .btn:hover,
 .table-settings .deactivate-btn:hover,
 .table-profile .deactivate-btn:hover {
-    background-color: #003d80;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 128, 255, 0.3);
 }
 
 .table-settings .deactivate-btn,
 .table-profile .deactivate-btn {
-    background-color: #dc3545;
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.25);
 }
 
 .table-settings .deactivate-btn:hover,
 .table-profile .deactivate-btn:hover {
-    background-color: #c82333;
+    background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
+    box-shadow: 0 6px 16px rgba(220, 53, 69, 0.35);
 }
 
 .fa-duotone.fa-circle-check {
@@ -824,29 +937,7 @@ a {
     border-color: #007bff;
 }
 
-.all-reservations-h2 {
-    text-align: center;
-}
-
-.date-input-all-reservations {
-    font-size: 10px;
-    width: 100px;
-    padding: 10px;
-}
-
-.emp-table {
-    width: 98%;
-    margin: 0 auto;
-    border-collapse: collapse;
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-    margin-top: 70px;
-    padding: 50px;
-}
-
-.emp-table th, td {
-    padding: 2px;
-}
+/* All reservations styles moved to all-reservations-modern.css */
 
 .text-align-left {
     text-align: left;
@@ -886,54 +977,9 @@ a {
     text-decoration: none;
 }
 
-.emp-table tbody td {
-    padding: 8px;
-    border: 1px solid #ddd;
-    vertical-align: middle;
-}
+/* Table body and action button styles moved to all-reservations-modern.css */
 
-.action-button {
-    color: white;
-    border: none;
-    padding: 8px 10px;
-    text-decoration: none;
-    font-size: 12px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: 0.3s;
-}
-
-.action-button:hover {
-    opacity: 0.8;
-}
-
-.emp-table tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-.emp-table tbody tr:hover {
-    background-color: #ddd;
-}
-
-.all-reservations-action-buttons-container {
-    position: absolute; /* Ensures it's positioned relative to its closest positioned ancestor */
-    width: 93%; /* Width of the paginator */
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    justify-content: left; /* Centers the content horizontally */
-    margin: 0 auto;
-    top: 180px; /* Aligns it relative to the top of the page */
-    left: 50%; /* Moves it to the center of the page */
-    transform: translateX(-50%); /* Offsets it back by 50% of its width to ensure true centering */
-    font-family: Arial, sans-serif;
-    margin-top: 40px; /* Space from the top of the page */
-    margin-bottom: 20px; /* Space from the bottom of the paginator (not effective when using margin-top and transform) */
-}
-
-.action-button-all-reservations {
-    font-size: 20px;
-}
+/* Action buttons container styles moved to all-reservations-modern.css */
 
 .employee-count {
     margin-left: auto; /* Pushes the employee count span to the right */
@@ -1054,38 +1100,212 @@ a {
     visibility: hidden;
 }
 
-@media screen and (max-width: 2000px) {
-    .navbar-user-info {
-        position: absolute;
+
+
+/* ============================================
+   RESPONSIVE STYLES - TABLET & MOBILE
+   ============================================ */
+
+@media screen and (max-width: 992px) {
+    .modern-navbar .container-fluid {
+        padding: 0 1.5rem;
+    }
+
+    .navbar-wrapper {
+        height: 75px;
+        gap: 1rem;
+    }
+
+    .navbar-logo {
+        height: 50px;
+    }
+
+    .navbar-nav-center {
+        gap: 0.25rem;
+    }
+
+    .nav-link-item {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .nav-link-item span {
+        display: none;
+    }
+
+    .nav-link-item i {
+        font-size: 1.3rem;
+    }
+
+    .btn-reservation {
+        padding: 0.7rem 1.5rem;
+        font-size: 0.95rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .mobile-menu-toggle {
+        display: flex;
+        order: 2;
+    }
+
+    .modern-navbar .container-fluid {
+        padding: 0 1rem;
+    }
+
+    .navbar-wrapper {
+        height: 70px;
+        flex-wrap: nowrap;
+    }
+
+    .navbar-brand-section {
+        order: 1;
+    }
+
+    .navbar-logo {
+        height: 45px;
+    }
+
+    .navbar-nav-center {
+        position: fixed;
         top: 70px;
-        right: 130px;
-        font-size: 15px;
-        background-color: transparent;
-        border: none;
-        margin-bottom: 0;
-        padding: 0px;
+        left: -100%;
+        width: 85%;
+        max-width: 320px;
+        height: calc(100vh - 70px);
+        background: white;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 1.5rem;
+        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+        transition: left 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        z-index: 999;
+        overflow-y: auto;
+        gap: 0;
     }
 
-    .avatar-user-icon {
-        font-size: 18px;
-        border: none;
-        background-color: #e5e5e5;
-        padding: 9px;
-        border-radius: 50%;
-        margin-bottom: 0;
-        margin-left: 10px;
-        cursor: pointer;
-        transition: 0.3s;
+    .navbar-nav-center.active {
+        left: 0;
     }
 
-    #dropdown-menu {
-        position: absolute;
-        top: 50px;
-        right: 3px;
-        width: 200px;
-        font-size: 18px;
-        transition: 0.3s;
-        text-align: right;
+    .nav-link-item {
+        width: 100%;
+        padding: 1rem 1.25rem;
+        font-size: 1.05rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        border-radius: 0;
+        justify-content: flex-start;
+    }
+
+    .nav-link-item span {
+        display: inline;
+    }
+
+    .nav-link-item:hover {
+        transform: translateX(8px);
+        background: linear-gradient(90deg, rgba(0, 128, 255, 0.1) 0%, rgba(0, 128, 255, 0.05) 100%);
+    }
+
+    .nav-link-item i {
+        font-size: 1.2rem;
+        width: 24px;
+    }
+
+    .navbar-actions {
+        order: 3;
+        gap: 0.5rem;
+    }
+
+    .btn-reservation {
+        padding: 0.65rem 1.25rem;
+        font-size: 0.9rem;
+    }
+
+    .btn-reservation span {
+        display: none;
+    }
+
+    .btn-reservation i {
+        font-size: 1.3rem;
+    }
+
+    .navbar-social {
+        position: fixed;
+        bottom: 2rem;
+        left: 1.5rem;
+        flex-direction: row;
+        gap: 1rem;
+        z-index: 999;
+    }
+
+    .navbar-nav-center.active ~ .navbar-actions .navbar-social {
+        display: flex;
+    }
+
+    .social-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 1.4rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .language-toggle {
+        width: 40px;
+        height: 40px;
+    }
+
+    .user-avatar {
+        padding: 0.5rem 0.75rem;
+    }
+
+    .user-name {
+        display: none !important;
+    }
+
+    .dropdown-menu-custom {
+        min-width: 220px;
+        right: -10px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .modern-navbar .container-fluid {
+        padding: 0 0.75rem;
+    }
+
+    .navbar-wrapper {
+        height: 65px;
+    }
+
+    .navbar-logo {
+        height: 40px;
+    }
+
+    .navbar-nav-center {
+        top: 65px;
+        height: calc(100vh - 65px);
+        width: 90%;
+        max-width: 280px;
+    }
+
+    .btn-reservation {
+        padding: 0.6rem 1rem;
+    }
+
+    .language-toggle,
+    .user-avatar {
+        width: 38px;
+        height: 38px;
+        padding: 0.4rem;
+    }
+
+    .dropdown-menu-custom {
+        min-width: 200px;
+        font-size: 0.9rem;
+    }
+
+    .dropdown-item-custom {
+        padding: 0.65rem 1rem;
     }
 }
 
@@ -1129,48 +1349,22 @@ a {
         font-size: 17px; 
     }
 
-    .navbar {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      height: 120px;
-      background: white;
-      font-weight: bold;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-right: 10px;
-      flex-wrap: wrap;
-      flex-direction: column;
-    }
-
-    .pre-firmy {
-        width: 100px;
-        margin-left: 80px;
-    }
-
     #spolupraca h3 {
         font-weight: normal;
         font-size: 13px;
     }
 
-    .navbar-button {
-      text-decoration: none;
-      color: black;
-      margin: 2px;
-      font-size: 10px;
-      transition: 0.3s;
+    .logo-image {
+        width: 80px;
     }
 
-    .logo-image {
-        width: 110px;
-        margin-right: 10px;
+    .navbar {
+        height: 60px;
+    }
+
+    .nav-links {
+        top: 60px;
+        height: calc(100vh - 60px);
     }
 
     .summary h2{
@@ -1179,8 +1373,8 @@ a {
 
     .contact-container {
         display: flex;
-        align-items: center; /* Vertically center the child elements */
-        justify-content: center; /* Horizontally center the child elements */
+        align-items: center;
+        justify-content: center;
         font-size: 12px;
         background-color: white;
         width: 100%;
@@ -1209,79 +1403,9 @@ a {
         width: 90%;
     }
 
-    .technique-buttons {
-        display: grid;
-        vertical-align: center;
-        text-align: center;
-        width: 90%;
-        margin: auto;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-        margin-top: 20px;
-    }
+    /* Technique buttons mobile styles moved to homepage-modern.css */
 
-    .technique-btn {
-        width: 100%;
-        height: 70px;
-        font-size: 14px;
-        margin: 0px;
-        padding: 0px;
-    }
-
-    .voucher-download-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: calc(70% - 5px);
-    }
-
-    .voucher-download-container img {
-        height: 130px;
-        width: 92%;
-        margin: 15px;
-        box-sizing: border-box;
-        border-radius: 10%;
-        cursor: zoom-in;
-    }
-
-    .download-button {
-        text-decoration: none;
-        color: black;
-        font-size: 12px;
-        font-weight: bold;
-        transition: 0.3s;
-    }
-
-    .download-button i{
-        font-size: 17px;
-        margin-left: 10px;
-    }
-
-    .navbar-user-info {
-        position: absolute;
-        top: 90px;
-        right: 10px;
-        font-size: 9px;
-        background-color: transparent;
-    }
-
-    .avatar-user-icon {
-        font-size: 10px;
-        padding: 8px;
-        margin-left: 2px;
-        cursor: pointer;
-        transition: 0.3s;
-    }
-
-    #dropdown-menu {
-        position: absolute;
-        top: 30px;
-        right: 3px;
-        width: 120px;
-        font-size: 10px;
-        transition: 0.3s;
-        text-align: right;
-    }
+    /* Voucher container mobile styles moved to homepage-modern.css */
 
     .big-button {
         padding: 6px;
@@ -1335,32 +1459,45 @@ a {
 
     .table-container-settings h2, .table-container-profile h2 {
         width: 100%;
-        font-size: 20px;
-        margin-bottom: 10px;
-        color: #0056b3;
-        border-bottom: 2px solid #0056b3;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        color: #2c3e50;
+        border-bottom: none;
+    }
+
+    .table-container-profile h2::after {
+        width: 60px;
+        height: 3px;
     }
 
     .table-container-profile {
-        width: 88%;
-        max-width: 90%;
-        margin: auto;
-        background-color: #fff;
-        border-radius: 8px;
+        width: 95%;
+        max-width: 95%;
+        margin: 20px auto 40px;
+        background: white;
+        border-radius: 16px;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
-        padding: 5px;
+        padding: 20px 15px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
     }
 
     .table-settings .btn,
     .table-settings .deactivate-btn,
     .table-profile .deactivate-btn {
-        font-size: 10px;
+        font-size: 0.8rem;
+        padding: 8px 16px;
+        border-radius: 50px;
     }
 
     .table-profile th, .table-profile td {
-        padding: 10px;
-        margin: 10px;
+        padding: 12px 10px;
+        font-size: 0.85rem;
+    }
+
+    .table-profile th {
+        font-size: 0.8rem;
     }
 
     .container-settings-tables {
@@ -1381,21 +1518,7 @@ a {
         -webkit-overflow-scrolling: touch;
     }
 
-    .emp-table {
-        width: 95%;
-        margin: 0 auto;
-        border-collapse: collapse;
-        font-family: Arial, sans-serif;
-        background-color: #f9f9f9;
-        margin-top: 75px;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        font-size: 10px;
-    }
-
-    .emp-table th, td {
-        padding: 2px;
-    }
+    /* emp-table mobile styles moved to all-reservations-modern.css */
 
     .table-second-tr-with-background {
         background-color: #244b90;
@@ -1406,40 +1529,7 @@ a {
         line-height: 40px;
     }
 
-    .all-reservations-action-buttons-container {
-        position: absolute; /* Ensures it's positioned relative to its closest positioned ancestor */
-        width: 93%; /* Width of the paginator */
-        display: flex;
-        gap: 5px;
-        align-items: center;
-        justify-content: left; /* Centers the content horizontally */
-        margin: 0 auto;
-        top: 175px; /* Aligns it relative to the top of the page */
-        left: 50%; /* Moves it to the center of the page */
-        transform: translateX(-50%); /* Offsets it back by 50% of its width to ensure true centering */
-        margin-top: 40px; /* Space from the top of the page */
-        margin-left: 10px;
-    }
-
-    .date-input-all-reservations {
-        font-size: 10px;
-        width: 100px;
-        padding: 2px;
-    }
-
-    .saved-person-container {
-        margin: 5px;
-        font-size: 15px;
-    }
-
-    .saved-person-text {
-        width: 140px;
-        padding: 5px 10px;
-    }
-
-    .action-button-all-reservations {
-        font-size: 8px;
-    }
+    /* All reservations mobile styles moved to all-reservations-modern.css */
 
     .ordering-link {
         color: black;
@@ -1478,85 +1568,20 @@ a {
         cursor: pointer;
     }
 
-    .all-reservations-h2 {
-        text-align: left;
-        margin-left: 40px;
-    }
+    /* all-reservations-h2 mobile styles moved to all-reservations-modern.css */
 
 }
 
-.person-card {
-border-radius: 1rem;
-transition: transform .25s ease, box-shadow .25s ease;
-}
-.person-card:hover {
-transform: translateY(-6px);
-box-shadow: 0 16px 40px rgba(0,0,0,.1);
-}
+/* Person card and service item styles moved to homepage-modern.css */
 
-.object-fit-cover {
-object-fit: cover;
-transition: transform .4s ease;
-}
-.person-card:hover .object-fit-cover {
-transform: scale(1.03);
-}
-
-.service-item {
-font-size: 1rem;
-color: #444;
-margin-bottom: .35rem;
-display: flex;
-align-items: center;
-}
-
-.h1-slogan {
-color: #333;
-font-style: italic;
-}
+/* h1-slogan styles moved to homepage-modern.css */
 
 .btn-primary {
 font-weight: 600;
 border-radius: 50px;
 }
 
-.object-fit-cover {
-object-fit: cover;
-transition: transform 0.3s ease;
-}
-.ratio:hover img {
-transform: scale(1.05);
-}
-
-#sharedGalleryModal .modal-content {
-background: rgba(0, 0, 0, 0.95);
-}
-
-.gallery-image {
-max-width: 100vw;
-max-height: 90vh;
-object-fit: contain;
-margin: auto;
-display: block;
-}
-
-body.modal-open {
-overflow: hidden;
-}
-
-.carousel-item {
-height: 100vh;
-}
-
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-width: 3rem;
-height: 3rem;
-}
-
-.bg-gradient {
-background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
-}
+/* Gallery and modal styles moved to homepage-modern.css */
 
   .custom-wide {
     max-width: 60vw;       /* 70% of viewport width */

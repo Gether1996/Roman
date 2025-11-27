@@ -2,138 +2,244 @@ function showTechnique(index) {
     const texts = {
         1: {
             en: `
-    <strong style="font-size: 30px;">Classic Massage</strong><br><br>
-    Stimulates blood and lymph circulation, improves oxygenation and detoxification.<br><br>
-    Enhances skin, subcutaneous tissue, and muscle perfusion. Relieves stiffness and tension, and helps emotionally and physically.<br><br>
-    Suitable for almost everyone – stress relief, pain removal, or regeneration.
-    `,
+                <strong>Classic Massage</strong>
+                <p style="margin-top: 1.5rem; font-size: 1.05rem;">
+                    Stimulates blood and lymph circulation, improves oxygenation and detoxification.
+                </p>
+                <p style="margin-top: 1rem; font-size: 1.05rem;">
+                    Enhances skin, subcutaneous tissue, and muscle perfusion. Relieves stiffness and tension, 
+                    and helps emotionally and physically.
+                </p>
+                <p style="margin-top: 1rem; font-size: 1.05rem; font-weight: 600; color: #0080ff;">
+                    Suitable for almost everyone – stress relief, pain removal, or regeneration.
+                </p>
+            `,
             sk: `
-    <strong style="font-size: 30px;">Klasická masáž</strong><br><br>
-    Aktivuje krvný a lymfatický obeh, zlepšuje okysličenie a odvod škodlivín z tela.<br><br>
-    Zlepšuje prekrvenie pokožky a svalov, uvoľňuje stuhnuté svaly a uvoľňuje telo aj myseľ.<br><br>
-    Vhodná takmer pre každého – na uvoľnenie stresu, odstránenie bolesti alebo regeneráciu.
-    `
+                <strong>Klasická masáž</strong>
+                <p style="margin-top: 1.5rem; font-size: 1.05rem;">
+                    Aktivuje krvný a lymfatický obeh, zlepšuje okysličenie a odvod škodlivín z tela.
+                </p>
+                <p style="margin-top: 1rem; font-size: 1.05rem;">
+                    Zlepšuje prekrvenie pokožky a svalov, uvoľňuje stuhnuté svaly a uvoľňuje telo aj myseľ.
+                </p>
+                <p style="margin-top: 1rem; font-size: 1.05rem; font-weight: 600; color: #0080ff;">
+                    Vhodná takmer pre každého – na uvoľnenie stresu, odstránenie bolesti alebo regeneráciu.
+                </p>
+            `
         },
 
         2: {
             en: `
-    <strong style="font-size: 30px;">Soft Tissue & Myofascial Techniques</strong><br><br>
-    Primarily target soft tissue (muscles). Compared to classic massage, these may be slightly more painful and are performed without oil.<br><br>
-    Treatment starts seated at the neck and proceeds downward to the tailbone while lying down.<br><br>
-    An excellent complement to sport or classic massages; helps prevent stiffness and releases tension.
-    `,
+                <strong>Soft Tissue & Myofascial Techniques</strong>
+                <p style="margin-top: 1.5rem; font-size: 1.05rem;">
+                    Primarily target soft tissue (muscles). Compared to classic massage, these may be slightly 
+                    more painful and are performed without oil.
+                </p>
+                <p style="margin-top: 1rem; font-size: 1.05rem;">
+                    Treatment starts seated at the neck and proceeds downward to the tailbone while lying down.
+                </p>
+                <p style="margin-top: 1rem; font-size: 1.05rem; font-weight: 600; color: #0080ff;">
+                    An excellent complement to sport or classic massages; helps prevent stiffness and releases tension.
+                </p>
+            `,
             sk: `
-    <strong style="font-size: 30px;">Mäkké a myofasciálne techniky</strong><br><br>
-    Zamerané najmä na mäkké tkanivá – svaly. V porovnaní s klasickou masážou môžu byť mierne bolestivejšie a vykonávajú sa bez oleja.<br><br>
-    Začína sa v sede uvoľnením krčnej chrbtice, potom sa pokračuje v ľahu až ku kostrči.<br><br>
-    Výborný doplnok ku klasickej alebo športovej masáži. Zastavuje stuhnutie a uvoľňuje napätie.
-    `
+                <strong>Mäkké a myofasciálne techniky</strong>
+                <p style="margin-top: 1.5rem; font-size: 1.05rem;">
+                    Zamerané najmä na mäkké tkanivá – svaly. V porovnaní s klasickou masážou môžu byť 
+                    mierne bolestivejšie a vykonávajú sa bez oleja.
+                </p>
+                <p style="margin-top: 1rem; font-size: 1.05rem;">
+                    Začína sa v sede uvoľnením krčnej chrbtice, potom sa pokračuje v ľahu až ku kostrči.
+                </p>
+                <p style="margin-top: 1rem; font-size: 1.05rem; font-weight: 600; color: #0080ff;">
+                    Výborný doplnok ku klasickej alebo športovej masáži. Zastavuje stuhnutie a uvoľňuje napätie.
+                </p>
+            `
         },
 
         3: {
             en: `
-    <strong style="font-size: 30px;">Sports Massage</strong><br><br>
-    Similar to classic massage but adapted for athletes based on sport type and timing (before or after performance).<br><br>
-    Differs in rhythm and intensity. Enhances conditioning and speeds up recovery after exertion.<br><br>
-    Also helps with mental readiness and stress relief before competitions.
-    `,
+                <strong>Sports Massage</strong>
+                <p style="margin-top: 1.5rem; font-size: 1.05rem;">
+                    Similar to classic massage but adapted for athletes based on sport type and timing 
+                    (before or after performance).
+                </p>
+                <p style="margin-top: 1rem; font-size: 1.05rem;">
+                    Differs in rhythm and intensity. Enhances conditioning and speeds up recovery after exertion.
+                </p>
+                <p style="margin-top: 1rem; font-size: 1.05rem; font-weight: 600; color: #0080ff;">
+                    Also helps with mental readiness and stress relief before competitions.
+                </p>
+            `,
             sk: `
-    <strong style="font-size: 30px;">Športová masáž</strong><br><br>
-    Podobná klasickej masáži, ale prispôsobená športovcom podľa druhu športu a načasovania (pred alebo po výkone).<br><br>
-    Líši sa rytmom a intenzitou hmatov. Zvyšuje kondíciu a pomáha po fyzickej záťaži.<br><br>
-    Pôsobí aj na psychiku – uvoľňuje stres a zvyšuje výkonnosť.
-    `
+                <strong>Športová masáž</strong>
+                <p style="margin-top: 1.5rem; font-size: 1.05rem;">
+                    Podobná klasickej masáži, ale prispôsobená športovcom podľa druhu športu a načasovania 
+                    (pred alebo po výkone).
+                </p>
+                <p style="margin-top: 1rem; font-size: 1.05rem;">
+                    Líši sa rytmom a intenzitou hmatov. Zvyšuje kondíciu a pomáha po fyzickej záťaži.
+                </p>
+                <p style="margin-top: 1rem; font-size: 1.05rem; font-weight: 600; color: #0080ff;">
+                    Pôsobí aj na psychiku – uvoľňuje stres a zvyšuje výkonnosť.
+                </p>
+            `
         },
 
         4: {
             en: `
-    <strong style="font-size: 30px;">Cupping Therapy</strong><br><br>
-    Glass cups with heated air are applied to the skin. Cooling air creates suction, drawing the skin and underlying tissue into the cup.<br><br>
-    Improves circulation and oxygenation of critical points. Toxins are removed from the body.<br><br>
-    Temporary painless marks may remain but disappear within a few days.<br><br>
-    <img style="width: 60%; max-width: 300px;" src="/static/images/cupping.png">
-    `,
+                <strong>Cupping Therapy</strong>
+                <p style="margin-top: 1.5rem; font-size: 1.05rem;">
+                    Glass cups with heated air are applied to the skin. Cooling air creates suction, 
+                    drawing the skin and underlying tissue into the cup.
+                </p>
+                <p style="margin-top: 1rem; font-size: 1.05rem;">
+                    Improves circulation and oxygenation of critical points. Toxins are removed from the body.
+                </p>
+                <p style="margin-top: 1rem; font-size: 1.05rem; font-weight: 600; color: #0080ff;">
+                    Temporary painless marks may remain but disappear within a few days.
+                </p>
+                <img style="width: 70%; max-width: 350px; margin-top: 1.5rem; border-radius: 12px;" 
+                     src="/static/images/cupping.png" alt="Cupping Therapy">
+            `,
             sk: `
-    <strong style="font-size: 30px;">Bankovanie</strong><br><br>
-    Sklenené banky s nahriatym vzduchom sa prisajú na kožu a vytvárajú podtlak, ktorý vtiahne pokožku a podkožie do banky.<br><br>
-    Prekrvuje a okysličuje dôležité miesta, pomáha odplavovať škodliviny.<br><br>
-    Zostávajú dočasné bezbolestné stopy, ktoré zmiznú za pár dní.<br><br>
-    <img style="width: 60%; max-width: 300px;" src="/static/images/cupping.png">
-    `
+                <strong>Bankovanie</strong>
+                <p style="margin-top: 1.5rem; font-size: 1.05rem;">
+                    Sklenené banky s nahriatym vzduchom sa prisajú na kožu a vytvárajú podtlak, 
+                    ktorý vtiahne pokožku a podkožie do banky.
+                </p>
+                <p style="margin-top: 1rem; font-size: 1.05rem;">
+                    Prekrvuje a okysličuje dôležité miesta, pomáha odplavovať škodliviny.
+                </p>
+                <p style="margin-top: 1rem; font-size: 1.05rem; font-weight: 600; color: #0080ff;">
+                    Zostávajú dočasné bezbolestné stopy, ktoré zmiznú za pár dní.
+                </p>
+                <img style="width: 70%; max-width: 350px; margin-top: 1.5rem; border-radius: 12px;" 
+                     src="/static/images/cupping.png" alt="Bankovanie">
+            `
         },
 
         5: {
             en: `
-    <strong style="font-size: 30px;">Hot Stone Therapy</strong><br><br>
-    Basalt stones retain and release heat, benefiting skin, muscles, and circulation.<br><br>
-    Stimulates lymphatic system, boosts metabolism, and detoxifies.<br><br>
-    Also has mental benefits: reduces stress and promotes emotional balance and harmony with nature.
-    `,
+                <strong>Hot Stone Therapy</strong>
+                <p style="margin-top: 1.5rem; font-size: 1.05rem;">
+                    Basalt stones retain and release heat, benefiting skin, muscles, and circulation.
+                </p>
+                <p style="margin-top: 1rem; font-size: 1.05rem;">
+                    Stimulates lymphatic system, boosts metabolism, and detoxifies.
+                </p>
+                <p style="margin-top: 1rem; font-size: 1.05rem; font-weight: 600; color: #0080ff;">
+                    Also has mental benefits: reduces stress and promotes emotional balance and harmony with nature.
+                </p>
+            `,
             sk: `
-    <strong style="font-size: 30px;">Lávové kamene</strong><br><br>
-    Čadičové kamene absorbujú a odovzdávajú teplo – pozitívne ovplyvňujú pokožku, svaly a krvný obeh.<br><br>
-    Stimulujú lymfu, detoxikujú telo a urýchľujú metabolizmus.<br><br>
-    Pôsobia antistresovo a harmonizujú telo aj myseľ.
-    `
+                <strong>Lávové kamene</strong>
+                <p style="margin-top: 1.5rem; font-size: 1.05rem;">
+                    Čadičové kamene absorbujú a odovzdávajú teplo – pozitívne ovplyvňujú pokožku, 
+                    svaly a krvný obeh.
+                </p>
+                <p style="margin-top: 1rem; font-size: 1.05rem;">
+                    Stimulujú lymfu, detoxikujú telo a urýchľujú metabolizmus.
+                </p>
+                <p style="margin-top: 1rem; font-size: 1.05rem; font-weight: 600; color: #0080ff;">
+                    Pôsobia antistresovo a harmonizujú telo aj myseľ.
+                </p>
+            `
         },
 
-    6: {
-        en: `
-    <strong style="font-size: 30px;">IASTM Therapy</strong><br><br>
-    Instrument-Assisted Soft Tissue Mobilization is a modern fascial therapy technique using tools to apply pressure and heat.<br><br>
-    This stimulates fascia and supports healthy soft tissue function.<br><br>
-    <img style="width: 60%; max-width: 300px;" src="/static/images/iastm.png">
-    `,
-        sk: `
-    <strong style="font-size: 30px;">IASTM terapia</strong><br><br>
-    Moderná terapia fascií pomocou nástrojov, ktoré vytvárajú tlak a teplo vo fasciách.<br><br>
-    Stimuluje správne fungovanie mäkkých tkanív.<br><br>
-    <img style="width: 60%; max-width: 300px;" src="/static/images/iastm.png">
-    `
-    },
+        6: {
+            en: `
+                <strong>IASTM Therapy</strong>
+                <p style="margin-top: 1.5rem; font-size: 1.05rem;">
+                    Instrument-Assisted Soft Tissue Mobilization is a modern fascial therapy technique 
+                    using tools to apply pressure and heat.
+                </p>
+                <p style="margin-top: 1rem; font-size: 1.05rem; font-weight: 600; color: #0080ff;">
+                    This stimulates fascia and supports healthy soft tissue function.
+                </p>
+                <img style="width: 70%; max-width: 350px; margin-top: 1.5rem; border-radius: 12px;" 
+                     src="/static/images/iastm.png" alt="IASTM Therapy">
+            `,
+            sk: `
+                <strong>IASTM terapia</strong>
+                <p style="margin-top: 1.5rem; font-size: 1.05rem;">
+                    Moderná terapia fascií pomocou nástrojov, ktoré vytvárajú tlak a teplo vo fasciách.
+                </p>
+                <p style="margin-top: 1rem; font-size: 1.05rem; font-weight: 600; color: #0080ff;">
+                    Stimuluje správne fungovanie mäkkých tkanív.
+                </p>
+                <img style="width: 70%; max-width: 350px; margin-top: 1.5rem; border-radius: 12px;" 
+                     src="/static/images/iastm.png" alt="IASTM terapia">
+            `
+        },
 
-    7: {
-        en: `
-    <strong style="font-size: 30px;">RKT Therapy</strong><br><br>
-    RKT (Rehabilitation Complex Techniques) originated from physiotherapeutic and rehabilitation methods developed in the former USSR.<br><br>
-    It combines manual techniques, mobilizations, tractions, and specific exercises into one comprehensive system.<br><br>
-    <strong>Goal:</strong><br>
-    • release of spinal and joint blockages,<br>
-    • restore proper mobility,<br>
-    • eliminate muscle spasms,<br>
-    • improve neuromuscular coordination.<br><br>
-    <strong>Used for:</strong> back pain, scoliosis, post-injury recovery, and functional musculoskeletal disorders.<br><br>
-    <strong>Advantages:</strong><br>
-    • faster pain relief,<br>
-    • combines relaxation and strengthening,<br>
-    • acts simultaneously on muscles, joints, and the nervous system.<br><br>
-    <strong>Disadvantages:</strong><br>
-    • not suitable for acute inflammation or recent injuries.<br><br>
-    👉 <em>In short:</em> RKT = combination of manual therapy + exercise + mobilization → a comprehensive approach to the spine and musculoskeletal system.<br><br>
-    `,
-        sk: `
-    <strong style="font-size: 30px;">RKT terapia</strong><br><br>
-    RKT (Rehabilitačné komplexné techniky) pochádzajú z fyzioterapeutických a rehabilitačných metód vyvinutých v bývalom ZSSR.<br><br>
-    Spájajú manuálne techniky, mobilizácie, trakcie a špecifické cvičenia do jedného celku.<br><br>
-    <strong>Cieľ:</strong><br>
-    • uvoľnenie blokád chrbtice a kĺbov,<br>
-    • obnovenie správnej pohyblivosti,<br>
-    • odstránenie svalových spazmov,<br>
-    • zlepšenie nervosvalovej koordinácie.<br><br>
-    <strong>Použitie:</strong> pri bolestiach chrbta, skolióze, po úrazoch a pri funkčných poruchách pohybového aparátu.<br><br>
-    <strong>Výhody:</strong><br>
-    • rýchlejšia úľava od bolesti,<br>
-    • kombinuje uvoľnenie aj posilnenie,<br>
-    • pôsobí na svaly, kĺby aj nervový systém naraz.<br><br>
-    <strong>Nevýhody:</strong><br>
-    • nie je vhodná pri akútnych zápaloch alebo čerstvých úrazoch.<br><br>
-    👉 <em>V skratke:</em> RKT = kombinácia manuálnej terapie + cvičenia + mobilizácie → komplexný prístup k chrbtici a pohybovému aparátu.<br><br>
-    `
-    },
+        7: {
+            en: `
+                <strong>RKT Therapy</strong>
+                <p style="margin-top: 1.5rem; font-size: 1.05rem;">
+                    RKT (Rehabilitation Complex Techniques) originated from physiotherapeutic and rehabilitation 
+                    methods developed in the former USSR.
+                </p>
+                <p style="margin-top: 1rem; font-size: 1.05rem;">
+                    It combines manual techniques, mobilizations, tractions, and specific exercises 
+                    into one comprehensive system.
+                </p>
+                <div style="margin-top: 1.5rem; text-align: left; max-width: 600px; margin-left: auto; margin-right: auto;">
+                    <p style="font-weight: 700; color: #2c3e50; margin-bottom: 0.5rem;">Goal:</p>
+                    <ul style="list-style: none; padding-left: 1rem; margin-bottom: 1rem;">
+                        <li style="margin-bottom: 0.3rem;">• Release of spinal and joint blockages</li>
+                        <li style="margin-bottom: 0.3rem;">• Restore proper mobility</li>
+                        <li style="margin-bottom: 0.3rem;">• Eliminate muscle spasms</li>
+                        <li style="margin-bottom: 0.3rem;">• Improve neuromuscular coordination</li>
+                    </ul>
+                    <p style="font-weight: 700; color: #2c3e50; margin-bottom: 0.5rem; margin-top: 1rem;">Used for:</p>
+                    <p style="margin-bottom: 1rem;">Back pain, scoliosis, post-injury recovery, and functional musculoskeletal disorders</p>
+                    <p style="font-weight: 700; color: #2c3e50; margin-bottom: 0.5rem; margin-top: 1rem;">Advantages:</p>
+                    <ul style="list-style: none; padding-left: 1rem; margin-bottom: 1rem;">
+                        <li style="margin-bottom: 0.3rem;">• Faster pain relief</li>
+                        <li style="margin-bottom: 0.3rem;">• Combines relaxation and strengthening</li>
+                        <li style="margin-bottom: 0.3rem;">• Acts simultaneously on muscles, joints, and the nervous system</li>
+                    </ul>
+                </div>
+                <p style="margin-top: 1rem; font-size: 1.05rem; font-weight: 600; color: #0080ff;">
+                    💡 In short: RKT = manual therapy + exercise + mobilization → comprehensive approach to spine health
+                </p>
+            `,
+            sk: `
+                <strong>RKT terapia</strong>
+                <p style="margin-top: 1.5rem; font-size: 1.05rem;">
+                    RKT (Rehabilitačné komplexné techniky) pochádzajú z fyzioterapeutických a rehabilitačných 
+                    metód vyvinutých v bývalom ZSSR.
+                </p>
+                <p style="margin-top: 1rem; font-size: 1.05rem;">
+                    Spájajú manuálne techniky, mobilizácie, trakcie a špecifické cvičenia do jedného celku.
+                </p>
+                <div style="margin-top: 1.5rem; text-align: left; max-width: 600px; margin-left: auto; margin-right: auto;">
+                    <p style="font-weight: 700; color: #2c3e50; margin-bottom: 0.5rem;">Cieľ:</p>
+                    <ul style="list-style: none; padding-left: 1rem; margin-bottom: 1rem;">
+                        <li style="margin-bottom: 0.3rem;">• Uvoľnenie blokád chrbtice a kĺbov</li>
+                        <li style="margin-bottom: 0.3rem;">• Obnovenie správnej pohyblivosti</li>
+                        <li style="margin-bottom: 0.3rem;">• Odstránenie svalových spazmov</li>
+                        <li style="margin-bottom: 0.3rem;">• Zlepšenie nervosvalovej koordinácie</li>
+                    </ul>
+                    <p style="font-weight: 700; color: #2c3e50; margin-bottom: 0.5rem; margin-top: 1rem;">Použitie:</p>
+                    <p style="margin-bottom: 1rem;">Pri bolestiach chrbta, skolióze, po úrazoch a pri funkčných poruchách pohybového aparátu</p>
+                    <p style="font-weight: 700; color: #2c3e50; margin-bottom: 0.5rem; margin-top: 1rem;">Výhody:</p>
+                    <ul style="list-style: none; padding-left: 1rem; margin-bottom: 1rem;">
+                        <li style="margin-bottom: 0.3rem;">• Rýchlejšia úľava od bolesti</li>
+                        <li style="margin-bottom: 0.3rem;">• Kombinuje uvoľnenie aj posilnenie</li>
+                        <li style="margin-bottom: 0.3rem;">• Pôsobí na svaly, kĺby aj nervový systém naraz</li>
+                    </ul>
+                </div>
+                <p style="margin-top: 1rem; font-size: 1.05rem; font-weight: 600; color: #0080ff;">
+                    💡 V skratke: RKT = manuálna terapia + cvičenie + mobilizácia → komplexný prístup k chrbtici
+                </p>
+            `
+        },
 
-    8: {
-    en: `
-        <strong style="font-size: 30px;">SM System (Spiral Spinal Stabilization)</strong><br><br>
+        8: {
+            en: `
+                <strong>SM System (Spiral Spinal Stabilization)</strong><br><br>
         The SM System was developed by <strong>MUDr. Richard Smíšek</strong>, a Czech physician.<br><br>
         The method is based on the <em>natural walking pattern</em> and focuses on activating spiral muscle chains that relieve pressure from the spine.<br><br>
         <strong>Goal:</strong><br>
@@ -151,40 +257,87 @@ function showTechnique(index) {
         • short daily sessions (about 10–15 minutes).<br><br>
         `,
             sk: `
-        <strong style="font-size: 30px;">SM systém (Spirálna stabilizácia chrbtice)</strong><br><br>
-        Autorom metódy je <strong>MUDr. Richard Smíšek</strong> (český lekár).<br><br>
+                <strong>SM systém (Spirálna stabilizácia chrbtice)</strong>
+                <p style="margin-top: 1.5rem; font-size: 1.05rem;">
+                    Autorom metódy je <span style="font-weight: 600;">MUDr. Richard Smíšek</span> (český lekár).
+                </p>
         Metóda je založená na <em>prirodzenom stereotype chôdze</em> a aktivácii špirálových svalových reťazcov, ktoré odľahčujú chrbticu.<br><br>
         <strong>Cieľ:</strong><br>
         • zlepšiť držanie tela a stabilitu,<br>
         • odstrániť bolesti chrbta,<br>
         • predchádzať poškodeniu medzistavcových platničiek.<br><br>
-        <strong>Ako sa cvičí:</strong> dynamické cviky s lanom alebo gumičkou, vždy v stoji alebo v pohybe.<br><br>
-        <strong>Účinky:</strong><br>
-        • uvoľnenie skrátených svalov,<br>
-        • posilnenie oslabených svalov,<br>
-        • prevencia a liečba problémov s platničkami, skoliózou, chrbtom, ramenami a kolenami.<br><br>
-        <strong>Výhody:</strong><br>
-        • vhodné pre rehabilitáciu aj športovcov,<br>
-        • jednoduché na naučenie,<br>
-        • cvičí sa krátko (cca 10–15 minút denne).<br><br>
-        `
-    }
-  };
+                <p style="margin-top: 1rem; font-size: 1.05rem;">
+                    Metóda je založená na <em>prirodzenom stereotype chôdze</em> a aktivácii špirálových 
+                    svalových reťazcov, ktoré odľahčujú chrbticu.
+                </p>
+                <div style="margin-top: 1.5rem; text-align: left; max-width: 600px; margin-left: auto; margin-right: auto;">
+                    <p style="font-weight: 700; color: #2c3e50; margin-bottom: 0.5rem;">Cieľ:</p>
+                    <ul style="list-style: none; padding-left: 1rem; margin-bottom: 1rem;">
+                        <li style="margin-bottom: 0.3rem;">• Zlepšiť držanie tela a stabilitu</li>
+                        <li style="margin-bottom: 0.3rem;">• Odstrániť bolesti chrbta</li>
+                        <li style="margin-bottom: 0.3rem;">• Predchádzať poškodeniu medzistavcových platničiek</li>
+                    </ul>
+                    <p style="font-weight: 700; color: #2c3e50; margin-bottom: 0.5rem; margin-top: 1rem;">Ako sa cvičí:</p>
+                    <p style="margin-bottom: 1rem;">Dynamické cviky s lanom alebo gumičkou, vždy v stoji alebo v pohybe</p>
+                    <p style="font-weight: 700; color: #2c3e50; margin-bottom: 0.5rem; margin-top: 1rem;">Výhody:</p>
+                    <ul style="list-style: none; padding-left: 1rem;">
+                        <li style="margin-bottom: 0.3rem;">• Vhodné pre rehabilitáciu aj športovcov</li>
+                        <li style="margin-bottom: 0.3rem;">• Jednoduché na naučenie</li>
+                        <li style="margin-bottom: 0.3rem;">• Cvičí sa krátko (cca 10–15 minút denne)</li>
+                    </ul>
+                </div>
+            `
+        }
+    };
 
     Swal.fire({
         title: '',
-        html: `<div style="white-space: wrap; text-align: center; width: 100%;">${texts[index][isEnglish ? 'en' : 'sk']}</div>`,
-        confirmButtonText: isEnglish ? 'Close' : 'Zavrieť',
-        confirmButtonColor: '#3085d6',
-        width: '80%',
+        html: `
+            <div style="
+                background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+                border-radius: 16px;
+                padding: 2.5rem;
+                text-align: center;
+                line-height: 1.8;
+                color: #2c3e50;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            ">
+                ${texts[index][isEnglish ? 'en' : 'sk']}
+            </div>
+        `,
+        confirmButtonText: `<i class="fa-solid fa-circle-check me-2"></i>${isEnglish ? 'Close' : 'Zavrieť'}`,
+        confirmButtonColor: '#0080ff',
+        width: '90%',
+        maxWidth: '800px',
+        customClass: {
+            popup: 'technique-modal',
+            confirmButton: 'btn-modal-confirm',
+            htmlContainer: 'modal-content-wrapper'
+        },
+        backdrop: `
+            rgba(0,0,0,0.6)
+            left top
+            no-repeat
+        `,
+        showClass: {
+            popup: 'swal2-show',
+            backdrop: 'swal2-backdrop-show'
+        },
+        hideClass: {
+            popup: 'swal2-hide',
+            backdrop: 'swal2-backdrop-hide'
+        }
     });
 }
 
-function smoothScroll(targetId, { offset = 170, duration = 600, easing = "easeOutQuad" } = {}) {
+function smoothScroll(targetId, { offset = 100, duration = 600, easing = "easeOutQuad" } = {}) {
   const targetEl = document.getElementById(targetId);
-  if (!targetEl) return;
+  if (!targetEl) {
+    console.warn(`Element with id "${targetId}" not found`);
+    return;
+  }
 
-  const startY = window.pageYOffset;
+  const startY = window.scrollY || window.pageYOffset;
   const targetY = startY + targetEl.getBoundingClientRect().top - offset;
   const distance = targetY - startY;
 
@@ -206,13 +359,19 @@ function smoothScroll(targetId, { offset = 170, duration = 600, easing = "easeOu
     const t = Math.min(1, elapsed / duration);        // clamp 0..1
     const y = startY + distance * ease(t);
 
-    window.scrollTo(0, y);
+    window.scrollTo({
+      top: y,
+      behavior: 'instant'
+    });
 
     if (t < 1) {
       requestAnimationFrame(tick);
     } else {
       // snap to exact target to avoid any sub-pixel off-by-one
-      window.scrollTo(0, targetY);
+      window.scrollTo({
+        top: targetY,
+        behavior: 'instant'
+      });
     }
   }
 

@@ -58,8 +58,8 @@ function updateTable(reservations) {
         var actionButton = '';        
         if (!reservation.cancellation_reason) {
             actionButton = reservation.active ?
-                `<button class="action-button" style='background-color: #dd3c3c;' onclick="deactivateReservation('${reservation.id}', '${reservation.name_surname}')">Deaktivovať</button>` :
-                `<button class="action-button" style='background-color: #238b55;' onclick="approveReservation('${reservation.id}', '${reservation.name_surname}')">Schváliť</button>`;
+                `<button class="btn-action btn-action-deactivate" onclick="deactivateReservation('${reservation.id}', '${reservation.name_surname}')">Deaktivovať</button>` :
+                `<button class="btn-action btn-action-approve" onclick="approveReservation('${reservation.id}', '${reservation.name_surname}')">Schváliť</button>`;
         }
 
         var row = document.createElement('tr');
@@ -79,12 +79,12 @@ function updateTable(reservations) {
             <td class="text-align-center">${successIcon}</td>
             <td>${reservation.cancellation_reason}</td>
             <td>
-            <div style="display: flex; gap: 4px; align-items: center; justify-content: center;">
+            <div class="actions-cell">
                 ${actionButton}
-                <button title="Poznámka" class="action-button" style="background-color: #238b55;" onclick="addNote('${reservation.id}', '${reservation.name_surname}', '${reservation.personal_note}')">
+                <button title="Poznámka" class="btn-action btn-action-edit" onclick="addNote('${reservation.id}', '${reservation.name_surname}', '${reservation.personal_note}')">
                 <i class="fa-solid fa-pen-to-square"></i>
                 </button>
-                <button title="Vymazať" class="action-button" style="background-color: #dd3c3c;" onclick="deleteReservation('${reservation.id}', '${reservation.name_surname}')">
+                <button title="Vymazať" class="btn-action btn-action-delete" onclick="deleteReservation('${reservation.id}', '${reservation.name_surname}')">
                 <i class="fa-solid fa-trash"></i>
                 </button>
             </div>

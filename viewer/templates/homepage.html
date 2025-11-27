@@ -6,6 +6,7 @@
     <title>{% trans 'Masáže Vlčince' %}</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Brush+Script+MT&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Luminari&display=swap">
+    <link rel="stylesheet" href="{% static 'css/homepage-modern.css' %}">
     <meta name="google-site-verification" content="RBYjh0_gAGhqf_K4wPSsz79kxLVAUMPng7TD-a0jQcY" />
 {% endblock %}
 
@@ -15,153 +16,239 @@
 
     <div class="top-margin-homepage"></div>
 
-    <section id="about-us" style="margin-bottom: 100px;">
+    <!-- Hero & About Us Section -->
+    <section id="about-us" class="hero-section">
         <div class="container">
-            <h1 class="text-center fw-semibold display-5 mb-2 h1-slogan">
-            “{% trans 'Priateľský a individuálny prístup pre našich klientov' %}”
-            </h1>
-
-            <h1 class="text-center display-5 h1-slogan" style="color: #d60000;">
-            {% trans 'Pozor zmena adresy: Matice Slovenskej 6, Vlčince (žltá budova, na poschodí)' %}
-            </h1>
-
-            <!-- People -->
-            <div class="row gy-5 gx-4 justify-content-center">
-            <!-- Person 1 -->
-            <div class="col-12 col-md-6 col-xl-6">
-                <div class="card shadow-lg border-0 h-100 person-card">
-                <div class="ratio ratio-4x3 overflow-hidden">
-                    <img src="{% static 'images/roman.jpg' %}" class="card-img-top object-fit-cover" alt="Roman Zelník">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fa-solid fa-spa"></i>
+                    <span>{% trans 'Profesionálne masážne služby' %}</span>
                 </div>
-                <div class="card-body p-4">
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                    <h3 class="h4 mb-0 fw-semibold text-dark">Roman Zelník</h3>
-                    <a href="https://l.facebook.com/l.php?u=https%3A%2F%2Finstagram.com%2Froman_zelnik_masaze%3Figshid%3DOGQ5ZDc2ODk2ZA%253D%253D%26utm_source%3Dqr%26fbclid%3DIwAR2jr_9c7zZRw4uuB7x0y7O7IZMpySC2Hxb6E6FCH79HDQg-GZBoER7QcqI&h=AT0oomkdGFaKdBo5IbA0qfIVQ5LiWzTKq3LF43t2eU8IrfBmTgXiSM-kdLrCtGT7u8aFt2s6xplmVThynSJx_EdOA7bHI2vdPTLW6ssCBFug3_2U4p-QlSmCa7LiJb4EsQXBXFDJ3D5AlTUcPFw"
-                        target="_blank" class="text-muted fs-4">
-                        <i class="fab fa-instagram"></i>
+                <h1 class="hero-title">
+                    {% trans 'Priateľský a individuálny prístup pre našich klientov' %}
+                </h1>
+                <div class="hero-cta">
+                    <a href="{% url 'reservation' %}" class="btn-hero-primary">
+                        <i class="fa-solid fa-calendar-check me-2"></i>
+                        {% trans 'Rezervovať termín' %}
                     </a>
-                    </div>
-
-                    <!-- Services -->
-                    <ul class="list-unstyled mb-0">
-                    <li class="service-item"><i class="fa-solid fa-check text-success me-2"></i> {% trans 'Klasická masáž' %}</li>
-                    <li class="service-item"><i class="fa-solid fa-check text-success me-2"></i> {% trans 'Športová masáž' %}</li>
-                    <li class="service-item"><i class="fa-solid fa-check text-success me-2"></i> {% trans 'Mäkké a myofasciálne techniky' %}</li>
-                    <li class="service-item"><i class="fa-solid fa-check text-success me-2"></i> {% trans 'Bankovanie' %}</li>
-                    <li class="service-item"><i class="fa-solid fa-check text-success me-2"></i> IASTM {% trans 'terapia' %}</li>
-                    <li class="service-item"><i class="fa-solid fa-check text-success me-2"></i> {% trans 'Ruské kombinované techniky' %}</li>
-                    <li class="service-item"><i class="fa-solid fa-check text-success me-2"></i> {% trans 'Spirálna stabilizácia chrbtice' %}</li>
-                    </ul>
                 </div>
+                <div class="hero-alert">
+                    <i class="fa-solid fa-gift"></i>
+                    <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 1rem;">
+                        <span>{% trans '🎄 Vianočný tip: Darčeková poukážka alebo permanentka – ideálny darček pre vašich blízkych!' %}</span>
+                        <a href="#poukazka" class="btn-hero-secondary" style="align-self: center; padding: 0.75rem 2rem; font-size: 1rem; background: white; color: #d35400; border: 2px solid rgba(211, 84, 0, 0.3);" onclick="smoothScroll('poukazka'); return false;">
+                            <i class="fa-solid fa-gift me-2"></i>
+                            {% trans 'Zobraziť poukážky' %}
+                        </a>
+                    </div>
                 </div>
             </div>
 
-            <!-- Person 2 -->
-            <div class="col-12 col-md-6 col-xl-6">
-                <div class="card shadow-lg border-0 h-100 person-card">
-                <div class="ratio ratio-4x3 overflow-hidden">
-                    <img src="{% static 'images/evka.jpg' %}" class="card-img-top object-fit-cover" alt="Evka Koribská">
-                </div>
-                <div class="card-body p-4">
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                    <h3 class="h4 mb-0 fw-semibold text-dark">Evka Koribská</h3>
+            <!-- Therapists Cards -->
+            <div class="row g-4 justify-content-center" style="margin-top: 4rem;">
+                <!-- Person 1 -->
+                <div class="col-12 col-lg-6">
+                    <div class="therapist-card-pro">
+                        <div class="therapist-image-wrapper-pro">
+                            <img src="{% static 'images/roman.jpg' %}" class="therapist-image-pro" alt="Roman Zelník">
+                            <div class="therapist-gradient-overlay"></div>
+                            <div class="therapist-info-overlay">
+                                <h3 class="therapist-name-overlay">Roman Zelník</h3>
+                                <a href="https://l.facebook.com/l.php?u=https%3A%2F%2Finstagram.com%2Froman_zelnik_masaze%3Figshid%3DOGQ5ZDc2ODk2ZA%253D%253D%26utm_source%3Dqr%26fbclid%3DIwAR2jr_9c7zZRw4uuB7x0y7O7IZMpySC2Hxb6E6FCH79HDQg-GZBoER7QcqI&h=AT0oomkdGFaKdBo5IbA0qfIVQ5LiWzTKq3LF43t2eU8IrfBmTgXiSM-kdLrCtGT7u8aFt2s6xplmVThynSJx_EdOA7bHI2vdPTLW6ssCBFug3_2U4p-QlSmCa7LiJb4EsQXBXFDJ3D5AlTUcPFw"
+                                   target="_blank" class="social-link-pro">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="therapist-content-pro">
+                            <div class="therapist-services-pro">
+                                <div class="service-tag-pro">
+                                    <i class="fa-solid fa-spa"></i>
+                                    <span>{% trans 'Klasická masáž' %}</span>
+                                </div>
+                                <div class="service-tag-pro">
+                                    <i class="fa-solid fa-dumbbell"></i>
+                                    <span>{% trans 'Športová masáž' %}</span>
+                                </div>
+                                <div class="service-tag-pro">
+                                    <i class="fa-solid fa-hand-sparkles"></i>
+                                    <span>{% trans 'Myofasciálne techniky' %}</span>
+                                </div>
+                                <div class="service-tag-pro">
+                                    <i class="fa-solid fa-fire-flame-curved"></i>
+                                    <span>{% trans 'Bankovanie' %}</span>
+                                </div>
+                                <div class="service-tag-pro">
+                                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                                    <span>IASTM</span>
+                                </div>
+                                <div class="service-tag-pro">
+                                    <i class="fa-solid fa-stethoscope"></i>
+                                    <span>{% trans 'RKT techniky' %}</span>
+                                </div>
+                                <div class="service-tag-pro">
+                                    <i class="fa-solid fa-arrows-spin"></i>
+                                    <span>{% trans 'SM systém' %}</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                </div>
 
-                    <!-- Services -->
-                    <ul class="list-unstyled mb-0">
-                    <li class="service-item"><i class="fa-solid fa-check text-success me-2"></i> {% trans 'Klasická masáž' %}</li>
-                    <li class="service-item"><i class="fa-solid fa-check text-success me-2"></i> {% trans 'Športová masáž' %}</li>
-                    <li class="service-item"><i class="fa-solid fa-check text-success me-2"></i> {% trans 'Mäkké a myofasciálne techniky' %}</li>
-                    <li class="service-item"><i class="fa-solid fa-check text-success me-2"></i> {% trans 'Bankovanie' %}</li>
-                    <li class="service-item"><i class="fa-solid fa-check text-success me-2"></i> {% trans 'Lávové kamene' %}</li>
-                    </ul>
+                <!-- Person 2 -->
+                <div class="col-12 col-lg-6">
+                    <div class="therapist-card-pro">
+                        <div class="therapist-image-wrapper-pro">
+                            <img src="{% static 'images/evka.jpg' %}" class="therapist-image-pro" alt="Evka Koribská">
+                            <div class="therapist-gradient-overlay"></div>
+                            <div class="therapist-info-overlay">
+                                <h3 class="therapist-name-overlay">Evka Koribská</h3>
+                            </div>
+                        </div>
+                        <div class="therapist-content-pro">
+                            <div class="therapist-services-pro">
+                                <div class="service-tag-pro">
+                                    <i class="fa-solid fa-spa"></i>
+                                    <span>{% trans 'Klasická masáž' %}</span>
+                                </div>
+                                <div class="service-tag-pro">
+                                    <i class="fa-solid fa-dumbbell"></i>
+                                    <span>{% trans 'Športová masáž' %}</span>
+                                </div>
+                                <div class="service-tag-pro">
+                                    <i class="fa-solid fa-hand-sparkles"></i>
+                                    <span>{% trans 'Myofasciálne techniky' %}</span>
+                                </div>
+                                <div class="service-tag-pro">
+                                    <i class="fa-solid fa-fire-flame-curved"></i>
+                                    <span>{% trans 'Bankovanie' %}</span>
+                                </div>
+                                <div class="service-tag-pro">
+                                    <i class="fa-solid fa-gem"></i>
+                                    <span>{% trans 'Lávové kamene' %}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                </div>
-            </div>
             </div>
         </div>
     </section>
 
-    <div class="text-center">
-        <a href="{% url 'reservation' %}" class="reservation-button-about-us">
-            <i class="fa-solid fa-calendar-circle-plus me-2"></i> {% trans 'Rezervovať termín' %}
-        </a>
-    </div>
-
-    <section id="technique">
-        <h1>{% trans 'Techniky' %}</h1>
-        <div class="technique-buttons">
-            <button onclick="showTechnique(1)" class="technique-btn">{% trans 'Klasická masáž' %}</button>
-            <button onclick="showTechnique(2)" class="technique-btn">{% trans 'Mäkké a myofasciálne techniky' %}</button>
-            <button onclick="showTechnique(3)" class="technique-btn">{% trans 'Športová masáž' %}</button>
-            <button onclick="showTechnique(4)" class="technique-btn">{% trans 'Bankovanie' %}</button>
-            <button onclick="showTechnique(5)" class="technique-btn">{% trans 'Lávové kamene' %}</button>
-            <button onclick="showTechnique(6)" class="technique-btn">IASTM {% trans 'terapia' %}</button>
-            <button onclick="showTechnique(7)" class="technique-btn">{% trans 'Ruské kombinované techniky' %}</button>
-            <button onclick="showTechnique(8)" class="technique-btn">{% trans 'Spirálna stabilizácia chrbtice' %}</button>
-        </div>
-    </section>
-
-    <section id="gallery">
-        <div class="container custom-wide">
-            <h1 class="text-center fw-semibold display-6 mb-5">{% trans 'Galéria' %}</h1>
-
-            <div class="row g-4 row-cols-2 row-cols-md-2 row-cols-lg-3 justify-content-center">
-            {% for photo in photos %}
-            <div class="col">
-                <button
-                type="button"
-                class="btn p-0 border-0 bg-transparent w-100"
-                onclick="openBiggerImage('{{ photo.photo }}','{{ photo.alt|default:'Foto' }}')"
-                aria-label="{% trans 'Zobraziť fotografiu' %}"
-                >
-                <div class="ratio ratio-1x1 rounded overflow-hidden shadow-sm">
-                    <img
-                    src="{{ photo.photo }}"
-                    alt="{{ photo.alt|default:'Foto' }}"
-                    loading="lazy"
-                    class="w-100 h-100 object-fit-cover"
-                    >
-                </div>
+    <!-- Techniques Section -->
+    <section id="technique" class="techniques-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-subtitle">{% trans 'Naše špeciality' %}</span>
+                <h2 class="section-title">{% trans 'Masážne techniky' %}</h2>
+                <p class="section-description">
+                    {% trans 'Široké spektrum profesionálnych masážnych techník prispôsobených vašim potrebám' %}
+                </p>
+            </div>
+            <div class="techniques-grid">
+                <button onclick="showTechnique(1)" class="technique-card">
+                    <div class="technique-icon">
+                        <i class="fa-solid fa-spa"></i>
+                    </div>
+                    <h3 class="technique-title">{% trans 'Klasická masáž' %}</h3>
+                    <p class="technique-description">{% trans 'Relaxačná a regeneračná' %}</p>
+                </button>
+                <button onclick="showTechnique(2)" class="technique-card">
+                    <div class="technique-icon">
+                        <i class="fa-solid fa-hand-sparkles"></i>
+                    </div>
+                    <h3 class="technique-title">{% trans 'Mäkké techniky' %}</h3>
+                    <p class="technique-description">{% trans 'Myofasciálne uvoľnenie' %}</p>
+                </button>
+                <button onclick="showTechnique(3)" class="technique-card">
+                    <div class="technique-icon">
+                        <i class="fa-solid fa-dumbbell"></i>
+                    </div>
+                    <h3 class="technique-title">{% trans 'Športová masáž' %}</h3>
+                    <p class="technique-description">{% trans 'Pre aktívnych športovcov' %}</p>
+                </button>
+                <button onclick="showTechnique(4)" class="technique-card">
+                    <div class="technique-icon">
+                        <i class="fa-solid fa-fire-flame-curved"></i>
+                    </div>
+                    <h3 class="technique-title">{% trans 'Bankovanie' %}</h3>
+                    <p class="technique-description">{% trans 'Detoxikácia organizmu' %}</p>
+                </button>
+                <button onclick="showTechnique(5)" class="technique-card">
+                    <div class="technique-icon">
+                        <i class="fa-solid fa-gem"></i>
+                    </div>
+                    <h3 class="technique-title">{% trans 'Lávové kamene' %}</h3>
+                    <p class="technique-description">{% trans 'Hĺbková relaxácia' %}</p>
+                </button>
+                <button onclick="showTechnique(6)" class="technique-card">
+                    <div class="technique-icon">
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
+                    </div>
+                    <h3 class="technique-title">IASTM</h3>
+                    <p class="technique-description">{% trans 'Moderná terapia' %}</p>
+                </button>
+                <button onclick="showTechnique(7)" class="technique-card">
+                    <div class="technique-icon">
+                        <i class="fa-solid fa-stethoscope"></i>
+                    </div>
+                    <h3 class="technique-title">{% trans 'RKT techniky' %}</h3>
+                    <p class="technique-description">{% trans 'Ruské metódy' %}</p>
+                </button>
+                <button onclick="showTechnique(8)" class="technique-card">
+                    <div class="technique-icon">
+                        <i class="fa-solid fa-arrows-spin"></i>
+                    </div>
+                    <h3 class="technique-title">{% trans 'SM systém' %}</h3>
+                    <p class="technique-description">{% trans 'Stabilizácia chrbtice' %}</p>
                 </button>
             </div>
-            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="gallery-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-subtitle">{% trans 'Naše priestory' %}</span>
+                <h2 class="section-title">{% trans 'Galéria' %}</h2>
+            </div>
+            <div class="gallery-grid">
+                {% for photo in photos %}
+                <div class="gallery-item" onclick="openBiggerImage('{{ photo.photo }}','{{ photo.alt|default:'Foto' }}')">
+                    <img src="{{ photo.photo }}" alt="{{ photo.alt|default:'Foto' }}" loading="lazy" class="gallery-image">
+                    <div class="gallery-overlay">
+                        <i class="fa-solid fa-expand"></i>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
         </div>
     </section>
 
-    <section id="poukazka">
-        <div class="container custom-wide">
-            <h1 class="text-center fw-semibold display-6 mb-5">{% trans 'Poukážky' %}</h1>
-
-            <div class="row g-4 row-cols-1 row-cols-md-2 row-cols-lg-3 justify-content-center">
-            {% for voucher in vouchers %}
-            <div class="col">
-                <div class="text-center">
-                <button
-                    type="button"
-                    class="btn p-0 border-0 bg-transparent w-100"
-                    onclick="openBiggerImage('{{ voucher.photo }}', '{{ voucher.alt|default:'Poukážka' }}')"
-                    aria-label="{% trans 'Zobraziť poukážku' %}"
-                >
-                    <!-- Removed ratio, use fluid image -->
-                    <div class="rounded overflow-hidden shadow-sm">
-                    <img
-                        src="{{ voucher.photo }}"
-                        alt="{{ voucher.alt|default:'Poukážka' }}"
-                        loading="lazy"
-                        class="img-fluid w-100"
-                        style="height: auto; object-fit: contain;"
-                    >
-                    </div>
-                </button>
-
-                <a class="download-button d-inline-block mt-2" href="{{ voucher.photo }}" download>
-                    {% trans 'Stiahnúť' %} <i class="fa-duotone fa-arrow-down-to-line"></i>
-                </a>
-                </div>
+    <!-- Vouchers Section -->
+    <section id="poukazka" class="vouchers-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-subtitle">{% trans 'Darčeky' %}</span>
+                <h2 class="section-title">{% trans 'Darčekové poukážky' %}</h2>
             </div>
-            {% endfor %}
+            <div class="vouchers-grid">
+                {% for voucher in vouchers %}
+                <div class="voucher-card">
+                    <div class="voucher-image-wrapper" onclick="openBiggerImage('{{ voucher.photo }}', '{{ voucher.alt|default:'Poukážka' }}')">
+                        <img src="{{ voucher.photo }}" alt="{{ voucher.alt|default:'Poukážka' }}" loading="lazy" class="voucher-image">
+                        <div class="voucher-overlay">
+                            <i class="fa-solid fa-expand"></i>
+                        </div>
+                    </div>
+                    <a class="voucher-download" href="{{ voucher.photo }}" download>
+                        <i class="fa-solid fa-download me-2"></i>
+                        {% trans 'Stiahnúť poukážku' %}
+                    </a>
+                </div>
+                {% endfor %}
             </div>
         </div>
     </section>
@@ -171,15 +258,21 @@
         <img class="modal-content" id="img01">
     </div>
 
-    <section id="recenzie">
-        <div style="display: flex; gap: 15px; justify-content: center; align-items: center; margin-bottom: 30px;">
-            <h1 class="recenzie-h1" style="text-align: center;">{% trans 'Hodnotenia' %}</h1>
-            <button class="review-button" onclick="addReview()" style="padding: 10px 20px; font-weight: bold; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
-                {% trans 'Pridať hodnotenie' %}
-            </button>
-        </div>
-
-        <div class="reviews-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px;">
+    <!-- Reviews Section -->
+    <section id="recenzie" class="reviews-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-subtitle">{% trans 'Spokojnosť klientov' %}</span>
+                <h2 class="section-title">{% trans 'Hodnotenia' %}</h2>
+                <p class="section-description">
+                    {% trans 'Prečítajte si, čo o nás hovoria naši klienti' %}
+                </p>
+                <button class="btn-add-review" onclick="addReview()">
+                    <i class="fa-solid fa-plus me-2"></i>
+                    {% trans 'Pridať hodnotenie' %}
+                </button>
+            </div>
+            <div class="reviews-grid">
             {% if reviews %}
                 {% for review in reviews %}
                     <div class="review-card" style="background: #f9f9f9; border-radius: 12px; padding: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
@@ -217,22 +310,65 @@
         </div>
     </section>
 
-    <section id="spolupraca">
-        <h1>{% trans 'Pre firmy' %}</h1>
-        <h3>{% trans 'Jedinečná príležitosť dopriať svojim zamestnancom relax od práce' %}</h3>
-        <h3>{% trans 'prostredníctvom poukážok upravených pre Vašu firmu na mieru.' %}</h3>
-        <h3>{% trans 'Spolupracujte s nami a prineste do svojho pracovného prostredia novú úroveň pohody.' %}</h3>
-        <h3>{% trans 'Pre viac informácii nás kontaktujte.' %}</h3>
+    <!-- Business Section -->
+    <section id="spolupraca" class="business-section">
+        <div class="container">
+            <div class="business-card">
+                <div class="business-icon">
+                    <i class="fa-solid fa-building"></i>
+                </div>
+                <h2 class="business-title">{% trans 'Pre firmy' %}</h2>
+                <p class="business-description">
+                    {% trans 'Jedinečná príležitosť dopriať svojim zamestnancom relax od práce prostredníctvom poukážok upravených pre vašu firmu na mieru.' %}
+                </p>
+                <p class="business-highlight">
+                    {% trans 'Spolupracujte s nami a prineste do svojho pracovného prostredia novú úroveň pohody.' %}
+                </p>
+                <a href="#contact" class="btn-business" onclick="smoothScroll('contact'); return false;">
+                    <i class="fa-solid fa-handshake me-2"></i>
+                    {% trans 'Kontaktujte nás' %}
+                </a>
+            </div>
+        </div>
     </section>
 
-    <section id="contact">
-        <div class="contact-container">
-            <div class="contact-info">
-                <p>{% trans 'Masáže Vlčince' %}</p>
-                <p><i class="fa-regular fa-map-location-dot"></i> {% trans 'Matice Slovenskej 6, Vlčince (žltá budova, na poschodí)' %}</p>
-                <p><strong>Roman </strong><i class="fa-duotone fa-phone"></i> +421 902 442 280</p>
-                <p><strong>Evka </strong><i class="fa-duotone fa-phone"></i> +421 948 953 841</p>
-                <p><i class="fa-duotone fa-envelope"></i> salonaminask@gmail.com</p>
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-subtitle">{% trans 'Sme tu pre vás' %}</span>
+                <h2 class="section-title">{% trans 'Kontakt' %}</h2>
+                <p class="section-description">
+                    {% trans 'Neváhajte nás kontaktovať, radi vám poradíme' %}
+                </p>
+            </div>
+            <div class="contact-grid-three">
+                <div class="contact-column">
+                    <div class="contact-icon-compact">
+                        <i class="fa-solid fa-location-dot"></i>
+                    </div>
+                    <h3 class="contact-label-compact">{% trans 'Adresa' %}</h3>
+                    <p class="contact-value-compact">{% trans 'Matice Slovenskej 6' %}</p>
+                    <p class="contact-value-compact">{% trans 'Vlčince' %}</p>
+                    <p class="contact-note-compact">{% trans '(žltá budova, poschodie)' %}</p>
+                </div>
+                <div class="contact-column">
+                    <div class="contact-icon-compact">
+                        <i class="fa-solid fa-phone"></i>
+                    </div>
+                    <h3 class="contact-label-compact">{% trans 'Telefón' %}</h3>
+                    <p class="contact-value-compact"><strong>Roman:</strong></p>
+                    <p class="contact-value-compact">+421 902 442 280</p>
+                    <p class="contact-value-compact"><strong>Evka:</strong></p>
+                    <p class="contact-value-compact">+421 948 953 841</p>
+                </div>
+                <div class="contact-column">
+                    <div class="contact-icon-compact">
+                        <i class="fa-solid fa-envelope"></i>
+                    </div>
+                    <h3 class="contact-label-compact">Email</h3>
+                    <p class="contact-value-compact">salonaminask@gmail.com</p>
+                </div>
             </div>
         </div>
     </section>

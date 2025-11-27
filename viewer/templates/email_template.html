@@ -5,137 +5,138 @@
     <meta name="x-apple-disable-message-reformatting">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Rezervácia / Reservation</title>
-    <!-- no external css/js; email-safe only -->
     <style>
-      /* progressive enhancement: some clients honor <style>, many do not */
       @media (max-width:600px){
         .container{width:100% !important}
         .px{padding-left:16px!important;padding-right:16px!important}
-        .stack{display:block!important;width:100%!important}
-        .text-center-sm{text-align:center!important}
+        .stack{display:block!important;width:100%!important;margin-top:8px!important;}
+        .btn{width:100%!important;display:block!important;}
       }
     </style>
   </head>
-  <body style="margin:0;padding:0;background:#f5f7fb;">
-    <!-- preheader (hidden preview text) -->
+  <body style="margin:0;padding:0;background:#f0f2f5;font-family:Arial,Helvetica,sans-serif;">
     <div style="display:none;max-height:0;overflow:hidden;opacity:0;">
       Automatická notifikácia o rezervácii / Automatic reservation notification
     </div>
 
-    <!-- full-width wrapper -->
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#f5f7fb;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#f0f2f5;">
       <tr>
-        <td align="center" style="padding:24px 12px;">
-          <!-- fixed-width container -->
-          <table role="presentation" class="container" width="600" cellspacing="0" cellpadding="0" border="0" style="width:600px;max-width:600px;background:#ffffff;border-radius:12px;overflow:hidden;">
-            <!-- header -->
+        <td align="center" style="padding:32px 12px;">
+          <table role="presentation" class="container" width="600" cellspacing="0" cellpadding="0" border="0" style="width:600px;max-width:600px;background:#ffffff;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
             <tr>
-              <td class="px" style="padding:24px 24px 8px 24px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;">
-                <h1 style="margin:0;font-size:24px;line-height:1.3;color:#1565ff;">{{ text }}</h1>
-                <p style="margin:6px 0 0 0;font-size:13px;color:#6b7280;">Automatická notifikácia / Automatic notification</p>
+              <td style="background:#0080ff;padding:40px 24px;text-align:center;">
+                <h1 style="margin:0;font-size:32px;line-height:1.2;font-weight:700;color:#ffffff;font-family:Arial,Helvetica,sans-serif;">{{ text }}</h1>
+                <p style="margin:12px 0 0 0;font-size:14px;color:#e3f2fd;font-family:Arial,Helvetica,sans-serif;">Automatická notifikácia / Automatic notification</p>
               </td>
             </tr>
 
-            <!-- address change alert -->
             <tr>
-              <td class="px" style="padding:12px 24px;">
-                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#fdecea;border:1px solid #f5c2c7;border-radius:10px;">
+              <td class="px" style="padding:24px 24px 16px 24px;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#fff3e6;border-radius:12px;">
                   <tr>
-                    <td style="padding:14px 16px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#6b2a2a;">
-                      <div style="font-weight:700;color:#7f1d1d;margin-bottom:4px;">Zmena adresy</div>
-                      <div style="color:#7f1d1d;">Matice Slovenskej 6, Vlčince <span style="color:#a16262;">(žltá budova, na poschodí)</span></div>
-                      <hr style="border:none;border-top:1px solid #f5c2c7;margin:10px 0;">
-                      <div style="font-weight:700;color:#7f1d1d;margin-bottom:4px;">Address change</div>
-                      <div style="color:#7f1d1d;">Matice Slovenskej 6, Vlčince <span style="color:#a16262;">(yellow building, upstairs)</span></div>
+                    <td style="padding:24px;font-family:Arial,Helvetica,sans-serif;text-align:center;">
+                      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                        <tr>
+                          <td align="center" style="font-size:36px;padding-bottom:12px;">🎄</td>
+                        </tr>
+                        <tr>
+                          <td align="center" style="font-size:16px;line-height:24px;color:#d35400;font-weight:700;padding-bottom:8px;font-family:Arial,Helvetica,sans-serif;">
+                            Vianočný tip: Darčeková poukážka alebo permanentka<br>– ideálny darček pre vašich blízkych!
+                          </td>
+                        </tr>
+                        <tr>
+                          <td align="center" style="font-size:13px;color:#b34500;font-style:italic;font-family:Arial,Helvetica,sans-serif;">
+                            Christmas gift tip: Gift voucher or permanent card – the perfect gift for your loved ones!
+                          </td>
+                        </tr>
+                      </table>
                     </td>
                   </tr>
                 </table>
               </td>
             </tr>
 
-            <!-- details card -->
             <tr>
-              <td class="px" style="padding:0 24px 16px 24px;">
-                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border:1px solid #eef2f7;border-radius:10px;overflow:hidden;">
-                  <!-- row template -->
+              <td class="px" style="padding:8px 24px 24px 24px;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border:2px solid #0080ff;border-radius:12px;">
                   <tr>
-                    <td valign="top" width="40%" style="background:#f8fafc;padding:12px 14px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;line-height:18px;color:#111827;">
-                      <div style="font-weight:600;">Masér</div>
-                      <div style="font-size:12px;color:#6b7280;">Massage therapist</div>
+                    <td valign="top" width="40%" style="background:#e3f2fd;padding:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:20px;color:#1e3a5f;border-bottom:1px solid #bbdefb;">
+                      <strong style="font-weight:700;display:block;margin-bottom:4px;">Masér</strong>
+                      <span style="font-size:12px;color:#5c7a99;">Massage therapist</span>
                     </td>
-                    <td valign="top" style="padding:12px 14px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;color:#111827;">
+                    <td valign="top" style="padding:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1e3a5f;font-weight:600;border-bottom:1px solid #e3f2fd;">
                       {{ reservation.worker }}
                     </td>
                   </tr>
                   <tr>
-                    <td valign="top" width="40%" style="background:#f8fafc;padding:12px 14px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;color:#111827;">
-                      <div style="font-weight:600;">Typ</div>
-                      <div style="font-size:12px;color:#6b7280;">Type</div>
+                    <td valign="top" width="40%" style="background:#e3f2fd;padding:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:20px;color:#1e3a5f;border-bottom:1px solid #bbdefb;">
+                      <strong style="font-weight:700;display:block;margin-bottom:4px;">Typ</strong>
+                      <span style="font-size:12px;color:#5c7a99;">Type</span>
                     </td>
-                    <td valign="top" style="padding:12px 14px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;color:#111827;">
+                    <td valign="top" style="padding:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1e3a5f;font-weight:600;border-bottom:1px solid #e3f2fd;">
                       {{ reservation.massage_name }}
                     </td>
                   </tr>
                   <tr>
-                    <td valign="top" width="40%" style="background:#f8fafc;padding:12px 14px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;color:#111827;">
-                      <div style="font-weight:600;">Meno a priezvisko</div>
-                      <div style="font-size:12px;color:#6b7280;">Name and surname</div>
+                    <td valign="top" width="40%" style="background:#e3f2fd;padding:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:20px;color:#1e3a5f;border-bottom:1px solid #bbdefb;">
+                      <strong style="font-weight:700;display:block;margin-bottom:4px;">Meno a priezvisko</strong>
+                      <span style="font-size:12px;color:#5c7a99;">Name and surname</span>
                     </td>
-                    <td valign="top" style="padding:12px 14px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;color:#111827;">
+                    <td valign="top" style="padding:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1e3a5f;font-weight:600;border-bottom:1px solid #e3f2fd;">
                       {{ reservation.name_surname }}
                     </td>
                   </tr>
                   <tr>
-                    <td valign="top" width="40%" style="background:#f8fafc;padding:12px 14px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;color:#111827;">
-                      <div style="font-weight:600;">Email</div>
-                      <div style="font-size:12px;color:#6b7280;">Email</div>
+                    <td valign="top" width="40%" style="background:#e3f2fd;padding:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:20px;color:#1e3a5f;border-bottom:1px solid #bbdefb;">
+                      <strong style="font-weight:700;display:block;margin-bottom:4px;">Email</strong>
+                      <span style="font-size:12px;color:#5c7a99;">Email</span>
                     </td>
-                    <td valign="top" style="padding:12px 14px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;color:#111827;">
-                      <a href="mailto:{{ reservation.email }}" style="color:#1565ff;text-decoration:none;">{{ reservation.email }}</a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td valign="top" width="40%" style="background:#f8fafc;padding:12px 14px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;color:#111827;">
-                      <div style="font-weight:600;">Tel. číslo</div>
-                      <div style="font-size:12px;color:#6b7280;">Phone</div>
-                    </td>
-                    <td valign="top" style="padding:12px 14px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;color:#111827;">
-                      <a href="tel:{{ reservation.phone_number }}" style="color:#111827;text-decoration:none;">{{ reservation.phone_number }}</a>
+                    <td valign="top" style="padding:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:15px;border-bottom:1px solid #e3f2fd;">
+                      <a href="mailto:{{ reservation.email }}" style="color:#0080ff;text-decoration:none;font-weight:600;">{{ reservation.email }}</a>
                     </td>
                   </tr>
                   <tr>
-                    <td valign="top" width="40%" style="background:#f8fafc;padding:12px 14px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;color:#111827;">
-                      <div style="font-weight:600;">Dátum</div>
-                      <div style="font-size:12px;color:#6b7280;">Date</div>
+                    <td valign="top" width="40%" style="background:#e3f2fd;padding:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:20px;color:#1e3a5f;border-bottom:1px solid #bbdefb;">
+                      <strong style="font-weight:700;display:block;margin-bottom:4px;">Tel. číslo</strong>
+                      <span style="font-size:12px;color:#5c7a99;">Phone</span>
                     </td>
-                    <td valign="top" style="padding:12px 14px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;color:#111827;">
+                    <td valign="top" style="padding:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:15px;border-bottom:1px solid #e3f2fd;">
+                      <a href="tel:{{ reservation.phone_number }}" style="color:#0080ff;text-decoration:none;font-weight:600;">{{ reservation.phone_number }}</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td valign="top" width="40%" style="background:#e3f2fd;padding:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:20px;color:#1e3a5f;border-bottom:1px solid #bbdefb;">
+                      <strong style="font-weight:700;display:block;margin-bottom:4px;">Dátum</strong>
+                      <span style="font-size:12px;color:#5c7a99;">Date</span>
+                    </td>
+                    <td valign="top" style="padding:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1e3a5f;font-weight:600;border-bottom:1px solid #e3f2fd;">
                       {{ reservation.date }}
                     </td>
                   </tr>
                   <tr>
-                    <td valign="top" width="40%" style="background:#f8fafc;padding:12px 14px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;color:#111827;">
-                      <div style="font-weight:600;">Čas</div>
-                      <div style="font-size:12px;color:#6b7280;">Time slot</div>
+                    <td valign="top" width="40%" style="background:#e3f2fd;padding:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:20px;color:#1e3a5f;border-bottom:1px solid #bbdefb;">
+                      <strong style="font-weight:700;display:block;margin-bottom:4px;">Čas</strong>
+                      <span style="font-size:12px;color:#5c7a99;">Time slot</span>
                     </td>
-                    <td valign="top" style="padding:12px 14px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;color:#111827;">
+                    <td valign="top" style="padding:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1e3a5f;font-weight:600;border-bottom:1px solid #e3f2fd;">
                       {{ reservation.slot }}
                     </td>
                   </tr>
                   <tr>
-                    <td valign="top" width="40%" style="background:#f8fafc;padding:12px 14px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;color:#111827;">
-                      <div style="font-weight:600;">Vytvorené</div>
-                      <div style="font-size:12px;color:#6b7280;">Created</div>
+                    <td valign="top" width="40%" style="background:#e3f2fd;padding:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:20px;color:#1e3a5f;border-bottom:1px solid #bbdefb;">
+                      <strong style="font-weight:700;display:block;margin-bottom:4px;">Vytvorené</strong>
+                      <span style="font-size:12px;color:#5c7a99;">Created</span>
                     </td>
-                    <td valign="top" style="padding:12px 14px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;color:#111827;">
+                    <td valign="top" style="padding:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1e3a5f;font-weight:600;border-bottom:1px solid #e3f2fd;">
                       {{ reservation.created_at }}
                     </td>
                   </tr>
                   <tr>
-                    <td valign="top" width="40%" style="background:#f8fafc;padding:12px 14px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;color:#111827;">
-                      <div style="font-weight:600;">Poznámka</div>
-                      <div style="font-size:12px;color:#6b7280;">Note</div>
+                    <td valign="top" width="40%" style="background:#e3f2fd;padding:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:20px;color:#1e3a5f;">
+                      <strong style="font-weight:700;display:block;margin-bottom:4px;">Poznámka</strong>
+                      <span style="font-size:12px;color:#5c7a99;">Note</span>
                     </td>
-                    <td valign="top" style="padding:12px 14px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;color:#111827;">
+                    <td valign="top" style="padding:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1e3a5f;font-weight:600;">
                       {{ reservation.special_request }}
                     </td>
                   </tr>
@@ -144,39 +145,31 @@
             </tr>
 
             {% if button %}
-            <!-- buttons -->
             <tr>
-              <td align="left" class="px" style="padding:6px 24px 18px 24px;">
-                <!-- button row -->
-                <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+              <td class="px" style="padding:24px 24px 20px 24px;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                   <tr>
-                    <td class="stack" style="padding-right:8px;">
-                      <!--[if mso]>
-                      <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" href="{{ accept_link }}" style="height:40px;v-text-anchor:middle;width:220px;" arcsize="12%" stroke="f" fillcolor="#1565ff">
-                        <w:anchorlock/>
-                        <center style="color:#ffffff;font-family:Segoe UI,Arial,sans-serif;font-size:14px;font-weight:700;">
-                          Schváliť rezerváciu
-                        </center>
-                      </v:roundrect>
-                      <![endif]-->
-                      <a href="{{ accept_link }}"
-                         style="background:#1565ff;border-radius:5px;color:#ffffff;display:inline-block;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;font-weight:700;line-height:40px;text-align:center;text-decoration:none;width:220px;-webkit-text-size-adjust:none;mso-hide:all;">
-                        Schváliť rezerváciu
-                      </a>
+                    <td class="stack btn" align="center" style="padding:0 4px 0 0;">
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                        <tr>
+                          <td style="border-radius:30px;background:#0080ff;">
+                            <a href="{{ accept_link }}" style="background:#0080ff;border:2px solid #0080ff;border-radius:30px;color:#ffffff;display:inline-block;font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:700;line-height:20px;text-align:center;text-decoration:none;padding:12px 28px;-webkit-text-size-adjust:none;">
+                              Schváliť rezerváciu
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
                     </td>
-                    <td class="stack">
-                      <!--[if mso]>
-                      <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" href="{{ all_reservations_link }}" style="height:40px;v-text-anchor:middle;width:220px;" arcsize="12%" stroke="t" strokecolor="#cbd5e1" fillcolor="#ffffff">
-                        <w:anchorlock/>
-                        <center style="color:#111827;font-family:Segoe UI,Arial,sans-serif;font-size:14px;font-weight:600;">
-                          Pozrieť rezervácie
-                        </center>
-                      </v:roundrect>
-                      <![endif]-->
-                      <a href="{{ all_reservations_link }}"
-                         style="background:#ffffff;border:1px solid #cbd5e1;border-radius:5px;color:#111827;display:inline-block;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;font-weight:600;line-height:40px;text-align:center;text-decoration:none;width:220px;-webkit-text-size-adjust:none;mso-hide:all;">
-                        Pozrieť rezervácie
-                      </a>
+                    <td class="stack btn" align="center" style="padding:0 0 0 4px;">
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                        <tr>
+                          <td style="border-radius:30px;background:#ffffff;">
+                            <a href="{{ all_reservations_link }}" style="background:#ffffff;border:2px solid #0080ff;border-radius:30px;color:#0080ff;display:inline-block;font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:700;line-height:20px;text-align:center;text-decoration:none;padding:12px 28px;-webkit-text-size-adjust:none;">
+                              Pozrieť rezervácie
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
                     </td>
                   </tr>
                 </table>
@@ -184,22 +177,20 @@
             </tr>
             {% endif %}
 
-            <!-- footer -->
             <tr>
-              <td class="px" style="padding:8px 24px 22px 24px;">
-                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:12px;color:#6b7280;">
+              <td style="background:#f8f9fa;padding:24px;border-top:3px solid #0080ff;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                   <tr>
-                    <td align="center" style="padding:6px 0;">
-                      Automaticky vygenerované, na tento e-mail neodpovedajte. / Automatically generated, do not reply to this e-mail.
+                    <td align="center" style="padding:0 0 16px 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#6c757d;font-style:italic;">
+                      Automaticky vygenerované, na tento e-mail neodpovedajte.<br>
+                      Automatically generated, do not reply to this e-mail.
                     </td>
                   </tr>
                   <tr>
-                    <td align="center" style="padding:4px 0;">
-                      <strong style="color:#374151;">Roman:</strong> <a href="tel:+421902442280" style="color:#6b7280;text-decoration:none;">+421 902 442 280</a>
-                      &nbsp;&nbsp;&nbsp;
-                      <strong style="color:#374151;">Evka:</strong> <a href="tel:+421948953841" style="color:#6b7280;text-decoration:none;">+421 948 953 841</a>
-                      &nbsp;&nbsp;&nbsp;
-                      <strong style="color:#374151;">Email:</strong> <a href="mailto:salonaminask@gmail.com" style="color:#1565ff;text-decoration:none;">salonaminask@gmail.com</a>
+                    <td align="center" style="padding:8px 0 0 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:22px;color:#1e3a5f;">
+                      <strong>Roman:</strong> <a href="tel:+421902442280" style="color:#0080ff;text-decoration:none;font-weight:600;">+421 902 442 280</a><br>
+                      <strong>Evka:</strong> <a href="tel:+421948953841" style="color:#0080ff;text-decoration:none;font-weight:600;">+421 948 953 841</a><br>
+                      <strong>Email:</strong> <a href="mailto:salonaminask@gmail.com" style="color:#0080ff;text-decoration:none;font-weight:600;">salonaminask@gmail.com</a>
                     </td>
                   </tr>
                 </table>
