@@ -1301,10 +1301,6 @@ msgstr "Log-in"
 msgid "Masáže Vlčince"
 msgstr "Massages Vlčince"
 
-#: .\viewer\templates\homepage.html:25
-msgid "Profesionálne masážne služby"
-msgstr "Professional massage services"
-
 #: .\viewer\templates\homepage.html:28
 msgid "Priateľský a individuálny prístup pre našich klientov"
 msgstr "Friendly and individual approach for our clients"
