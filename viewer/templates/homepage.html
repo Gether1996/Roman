@@ -20,20 +20,30 @@
     <section id="about-us" class="hero-section">
         <div class="container">
             <div class="hero-content">
-                <span class="section-subtitle">{% trans 'Priateľský a individuálny prístup pre našich klientov' %}</span>
-                <div class="hero-cta">
-                    <a href="{% url 'reservation' %}" class="btn-hero-primary">
-                        <i class="fa-solid fa-calendar-check me-2"></i>
-                        {% trans 'Rezervovať termín' %}
-                    </a>
-                </div>
+                <!-- Vianočný tip ako prvý -->
                 <div class="hero-alert">
-                    <i class="fa-solid fa-gift"></i>
-                    <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 1rem;">
-                        <span>{% trans '🎄 Vianočný tip: Darčeková poukážka alebo permanentka – ideálny darček pre vašich blízkych!' %}</span>
-                        <a href="#poukazka" class="btn-hero-secondary" style="align-self: center; padding: 0.75rem 2rem; font-size: 1rem; background: white; color: #d35400; border: 2px solid rgba(211, 84, 0, 0.3);" onclick="smoothScroll('poukazka'); return false;">
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.75rem; text-align: center;">
+                        <span style="font-size: 1.1rem; line-height: 1.6;">{% trans '🎄 Vianočný tip: Darčeková poukážka alebo permanentka – ideálny darček pre vašich blízkych!' %}</span>
+                        <a href="#poukazka" class="btn-hero-secondary" style="padding: 0.875rem 2.5rem; font-size: 1.05rem; background: white; color: #d35400; border: 2px solid rgba(211, 84, 0, 0.3); box-shadow: 0 4px 15px rgba(211, 84, 0, 0.2);" onclick="smoothScroll('poukazka'); return false;">
                             <i class="fa-solid fa-gift me-2"></i>
                             {% trans 'Zobraziť poukážky' %}
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Hlavný nadpis a popis -->
+                <div style="margin-top: 3rem;">
+                    <h1 class="hero-title" style="margin-bottom: 1rem;">{% trans 'Masáže Vlčince' %}</h1>
+                    <p class="hero-subtitle" style="margin-bottom: 2rem;">{% trans 'Priateľský a individuálny prístup pre našich klientov' %}</p>
+                    
+                    <div class="hero-cta">
+                        <a href="{% url 'reservation' %}" class="btn-hero-primary">
+                            <i class="fa-solid fa-calendar-check me-2"></i>
+                            {% trans 'Rezervovať termín' %}
+                        </a>
+                        <a href="#technique" class="btn-hero-secondary" onclick="smoothScroll('technique'); return false;">
+                            <i class="fa-solid fa-spa me-2"></i>
+                            {% trans 'Naše služby' %}
                         </a>
                     </div>
                 </div>
@@ -134,7 +144,7 @@
     <section id="technique" class="techniques-section">
         <div class="container">
             <div class="section-header text-center">
-                <span class="section-subtitle">{% trans 'Naše špeciality' %}</span>
+                <span class="section-subtitle">{% trans 'Naše služby' %}</span>
                 <h2 class="section-title">{% trans 'Masážne techniky' %}</h2>
                 <p class="section-description">
                     {% trans 'Široké spektrum profesionálnych masážnych techník prispôsobených vašim potrebám' %}
