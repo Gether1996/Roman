@@ -200,8 +200,9 @@ def check_available_slots_ahead(request, worker):
         today = datetime.now().date()
         tomorrow = today + timedelta(days=1)
         worker_config = config['settings-roman'] if worker == 'Roman' else config['settings-evka']
+        admin_logged_in = request.user.is_superuser
 
-        if request.user.is_superuser:
+        if admin_logged_in:
             days_to_check_ahead = 180
         else:
             days_to_check_ahead = int(worker_config['days_ahead'])
@@ -218,7 +219,7 @@ def check_available_slots_ahead(request, worker):
         events = []
 
         for single_date in (today + timedelta(n) for n in range((end_date - today).days + 1)):
-            if single_date == today or single_date == tomorrow:
+            if not admin_logged_in and (single_date == today or single_date == tomorrow):
                 continue
             weekday_name = single_date.strftime('%A')
 
