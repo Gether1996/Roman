@@ -65,9 +65,11 @@
             height: 50px;
         }
 
+        {% if not request.user.is_superuser %}
         .fc-daygrid-day.fc-day-today {
             background-color: #bebebe !important;
         }
+        {% endif %}
 
         .swal2-user-select-list {
             display: grid;
