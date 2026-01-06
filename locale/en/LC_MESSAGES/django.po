@@ -1635,8 +1635,8 @@ msgid "45 min SM individuálne cvičenie"
 msgstr "45 min SM system individual workout"
 
 #: .\viewer\templates\reservation.html:143
-msgid "90 min masáž + SM systém - 50€"
-msgstr "90 min massage + SM system - 50€"
+msgid "90 min masáž + SM systém - 60€"
+msgstr "90 min massage + SM system - 60€"
 
 #: .\viewer\templates\reservation.html:152
 msgid "Meno a Priezvisko"
