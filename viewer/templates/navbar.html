@@ -6,19 +6,19 @@
     <div class="mobile-menu-overlay"></div>
     <div class="container-fluid">
         <div class="navbar-wrapper">
-            <!-- Logo -->
-            <div class="navbar-brand-section">
-                <a href="{% url 'homepage' %}">
-                    <img class="navbar-logo" src="{% static 'images/logo1.png' %}" alt="{% trans 'Domov' %}">
-                </a>
-            </div>
-            
             <!-- Hamburger Menu -->
             <button class="mobile-menu-toggle" aria-label="Toggle menu">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
+            
+            <!-- Logo -->
+            <div class="navbar-brand-section">
+                <a href="{% url 'homepage' %}">
+                    <img class="navbar-logo" src="{% static 'images/logo1.png' %}" alt="{% trans 'Domov' %}">
+                </a>
+            </div>
             
             <!-- Navigation Links -->
             <div class="navbar-nav-center">

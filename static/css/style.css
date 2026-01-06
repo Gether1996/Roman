@@ -115,12 +115,21 @@ a {
 }
 
 .finish-reservation-button {
-    margin: 20px;
-    padding: 20px 120px;
-    font-size: 30px;
-    font-weight: bold;
-    transition: 0.3s;
+    margin: 25px auto 20px;
+    padding: 16px 40px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
     cursor: pointer;
+    width: 90%;
+    max-width: 320px;
+    display: block;
+    background: linear-gradient(135deg, #0080ff 0%, #0056b3 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    box-shadow: 0 6px 20px rgba(0, 128, 255, 0.35);
+    text-align: center;
 }
 
 .hr-basic-style {
@@ -809,11 +818,22 @@ a {
 }
 
 /* Hover effect */
-.time-slot-select:hover, .user-select:hover, .finish-reservation-button:hover {
+.time-slot-select:hover, .user-select:hover {
     background-color: #f8f9fa;
     border-color: #0080ff;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 128, 255, 0.15);
+}
+
+.finish-reservation-button:hover {
+    background: linear-gradient(135deg, #0056b3 0%, #003d82 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 128, 255, 0.4);
+}
+
+.finish-reservation-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 4px 12px rgba(0, 128, 255, 0.3);
 }
 
 /* Style for selected buttons */
@@ -1139,7 +1159,7 @@ a {
 @media screen and (max-width: 768px) {
     .mobile-menu-toggle {
         display: flex;
-        order: 2;
+        order: 1;
     }
 
     .modern-navbar .container-fluid {
@@ -1152,7 +1172,15 @@ a {
     }
 
     .navbar-brand-section {
-        order: 1;
+        order: 2;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .navbar-actions {
+        order: 3;
+        margin-left: auto;
     }
 
     .navbar-logo {
@@ -1268,6 +1296,11 @@ a {
 
     .navbar-wrapper {
         height: 65px;
+    }
+
+    .navbar-brand-section {
+        left: 50%;
+        transform: translateX(-50%);
     }
 
     .navbar-logo {
