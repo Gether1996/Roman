@@ -23,7 +23,7 @@
                 <!-- Vianočný tip ako prvý -->
                 <div class="hero-alert">
                     <div style="display: flex; flex-direction: column; align-items: center; gap: 0.75rem; text-align: center;">
-                        <span style="font-size: 1.1rem; line-height: 1.6;">{% trans '🎄 Vianočný tip: Darčeková poukážka alebo permanentka – ideálny darček pre vašich blízkych!' %}</span>
+                        <span style="font-size: 1.1rem; line-height: 1.6;">{% trans 'Darčeková poukážka alebo permanentka – ideálny darček pre vašich blízkych!' %}</span>
                         <a href="#poukazka" class="btn-hero-secondary" style="padding: 0.875rem 2.5rem; font-size: 1.05rem; background: white; color: #d35400; border: 2px solid rgba(211, 84, 0, 0.3); box-shadow: 0 4px 15px rgba(211, 84, 0, 0.2);" onclick="smoothScroll('poukazka'); return false;">
                             <i class="fa-solid fa-gift me-2"></i>
                             {% trans 'Zobraziť poukážky' %}
@@ -67,31 +67,31 @@
                         </div>
                         <div class="therapist-content-pro">
                             <div class="therapist-services-pro">
-                                <div class="service-tag-pro">
+                                <div class="service-tag-pro" onclick="showTechnique(1)" style="cursor: pointer;">
                                     <i class="fa-solid fa-spa"></i>
                                     <span>{% trans 'Klasická masáž' %}</span>
                                 </div>
-                                <div class="service-tag-pro">
+                                <div class="service-tag-pro" onclick="showTechnique(3)" style="cursor: pointer;">
                                     <i class="fa-solid fa-dumbbell"></i>
                                     <span>{% trans 'Športová masáž' %}</span>
                                 </div>
-                                <div class="service-tag-pro">
+                                <div class="service-tag-pro" onclick="showTechnique(2)" style="cursor: pointer;">
                                     <i class="fa-solid fa-hand-sparkles"></i>
                                     <span>{% trans 'Myofasciálne techniky' %}</span>
                                 </div>
-                                <div class="service-tag-pro">
+                                <div class="service-tag-pro" onclick="showTechnique(4)" style="cursor: pointer;">
                                     <i class="fa-solid fa-fire-flame-curved"></i>
                                     <span>{% trans 'Bankovanie' %}</span>
                                 </div>
-                                <div class="service-tag-pro">
+                                <div class="service-tag-pro" onclick="showTechnique(6)" style="cursor: pointer;">
                                     <i class="fa-solid fa-screwdriver-wrench"></i>
                                     <span>IASTM</span>
                                 </div>
-                                <div class="service-tag-pro">
+                                <div class="service-tag-pro" onclick="showTechnique(7)" style="cursor: pointer;">
                                     <i class="fa-solid fa-stethoscope"></i>
                                     <span>{% trans 'RKT techniky' %}</span>
                                 </div>
-                                <div class="service-tag-pro">
+                                <div class="service-tag-pro" onclick="showTechnique(8)" style="cursor: pointer;">
                                     <i class="fa-solid fa-arrows-spin"></i>
                                     <span>{% trans 'SM systém' %}</span>
                                 </div>
@@ -112,23 +112,23 @@
                         </div>
                         <div class="therapist-content-pro">
                             <div class="therapist-services-pro">
-                                <div class="service-tag-pro">
+                                <div class="service-tag-pro" onclick="showTechnique(1)" style="cursor: pointer;">
                                     <i class="fa-solid fa-spa"></i>
                                     <span>{% trans 'Klasická masáž' %}</span>
                                 </div>
-                                <div class="service-tag-pro">
+                                <div class="service-tag-pro" onclick="showTechnique(3)" style="cursor: pointer;">
                                     <i class="fa-solid fa-dumbbell"></i>
                                     <span>{% trans 'Športová masáž' %}</span>
                                 </div>
-                                <div class="service-tag-pro">
+                                <div class="service-tag-pro" onclick="showTechnique(2)" style="cursor: pointer;">
                                     <i class="fa-solid fa-hand-sparkles"></i>
                                     <span>{% trans 'Myofasciálne techniky' %}</span>
                                 </div>
-                                <div class="service-tag-pro">
+                                <div class="service-tag-pro" onclick="showTechnique(4)" style="cursor: pointer;">
                                     <i class="fa-solid fa-fire-flame-curved"></i>
                                     <span>{% trans 'Bankovanie' %}</span>
                                 </div>
-                                <div class="service-tag-pro">
+                                <div class="service-tag-pro" onclick="showTechnique(5)" style="cursor: pointer;">
                                     <i class="fa-solid fa-gem"></i>
                                     <span>{% trans 'Lávové kamene' %}</span>
                                 </div>
