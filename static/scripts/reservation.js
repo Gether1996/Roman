@@ -525,16 +525,20 @@ function pickDate(clickedDateElement = null) {
         clickedDateElement.classList.add('selected-date');
     }
     var mainContainer = document.getElementById('time-slot-container');
-    var selectedDate = document.getElementById('date');
-    pickedDateGeneralData = selectedDate.value;
-    document.getElementById('date').textContent = formatDateToSK(pickedDateGeneralData);
+    var dateInput = document.getElementById('date');
+    
+    // Get the raw date value (YYYY-MM-DD format)
+    pickedDateGeneralData = dateInput.value;
+    
+    // Display formatted date in the input (DD.MM.YYYY)
+    dateInput.setAttribute('data-value', pickedDateGeneralData);
+    dateInput.value = formatDateToSK(pickedDateGeneralData);
 
     revealSecond();
     hideThird();
     hideFourth();
 
     mainContainer.innerHTML = '';
-    selectedDate.style.border = '1px solid black';
 
     if (worker) {
 
@@ -553,7 +557,7 @@ function pickDate(clickedDateElement = null) {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': csrfToken
             },
-            body: JSON.stringify({selectedDate: selectedDate.value, worker: worker}),
+            body: JSON.stringify({selectedDate: pickedDateGeneralData, worker: worker}),
         })
         .then(response => response.json())
         .then(data => {
@@ -666,7 +670,9 @@ function selectTimeSlot(button) {
 }
 
 function createReservation() {
-    var selectedDate = document.getElementById('date').value;
+    // Get the raw date in YYYY-MM-DD format (stored globally from pickDate)
+    var selectedDate = pickedDateGeneralData;
+    var dateInput = document.getElementById('date');
     var nameSurname = document.getElementById('name_surname');
     var email = document.getElementById('email');
     var phone = document.getElementById('phone');
@@ -683,14 +689,29 @@ function createReservation() {
         field.style.border = '2px solid red';
         errors.push(message);
     }
+    
+    // Check if date is selected
+    if (!selectedDate) {
+        Swal.fire({
+            icon: 'error',
+            title: isEnglish ? `Please select a date` : `Prosím, vyberte dátum`,
+        });
+        return;
+    }
 
     if (superUser === "true") {
         if (!nameSurname.value.trim()) {
             flag(nameSurname, isEnglish ? `Please enter your name and surname` : `Zadajte svoje meno a priezvisko`);
         }
+        if (nameSurname.value.trim().length > 150) {
+            flag(nameSurname, isEnglish ? `Name is too long (max 150 characters)` : `Meno je príliš dlhé (max 150 znakov)`);
+        }
         } else {
         if (!nameSurname.value.trim()) {
             flag(nameSurname, isEnglish ? `Please enter your name and surname` : `Zadajte svoje meno a priezvisko`);
+        }
+        if (nameSurname.value.trim().length > 150) {
+            flag(nameSurname, isEnglish ? `Name is too long (max 150 characters)` : `Meno je príliš dlhé (max 150 znakov)`);
         }
 
         if (!email.value.trim()) {
@@ -702,6 +723,15 @@ function createReservation() {
         if (!phone.value.trim()) {
             flag(phone, isEnglish ? `Please enter your phone number` : `Zadajte svoje telefónne číslo`);
         }
+        if (phone.value.trim().length > 20) {
+            flag(phone, isEnglish ? `Phone number is too long (max 20 characters)` : `Telefónne číslo je príliš dlhé (max 20 znakov)`);
+        }
+    }
+
+    // Validate note length (for both superuser and regular user)
+    if (note.value.trim().length > 200) {
+        note.style.border = '2px solid red';
+        errors.push(isEnglish ? `Note is too long (max 200 characters)` : `Poznámka je príliš dlhá (max 200 znakov)`);
     }
 
     if (errors.length) {
@@ -809,23 +839,59 @@ function createReservation() {
                     note: note.value
                 }),
             }).then((response) => {
-                if (response.ok) {
-                    Swal.close();
-                    Swal.fire({
-                        icon: 'success',
-                        title: isEnglish ? `Reservation created` : `Rezervácia vytvorená`,
-                    }).then(() => {
-                        window.location.href = `/`;
-                    });
-                } else {
-                    throw new Error('Failed to create reservation');
-                }
+                return response.json().then(data => {
+                    if (response.ok && data.status === 'success') {
+                        Swal.close();
+                        Swal.fire({
+                            icon: 'success',
+                            title: isEnglish ? data.message_en : data.message_sk,
+                        }).then(() => {
+                            window.location.href = `/`;
+                        });
+                    } else {
+                        // Handle error response
+                        throw {
+                            status: response.status,
+                            data: data
+                        };
+                    }
+                });
             }).catch((error) => {
                 Swal.close();
+                
+                // Default error messages
+                let errorTitle = isEnglish ? 'Reservation failed' : 'Rezervácia zlyhala';
+                let errorMessage = isEnglish 
+                    ? 'An unexpected error occurred. Please try again.' 
+                    : 'Vyskytla sa neočakávaná chyba. Skúste to prosím znova.';
+                
+                // If we have structured error data from backend
+                if (error.data) {
+                    errorMessage = isEnglish ? error.data.message_en : error.data.message_sk;
+                    
+                    // Add error code for debugging if available
+                    if (error.data.error_code) {
+                        console.error('Reservation error:', error.data.error_code, error.data);
+                    }
+                    
+                    // Special handling for specific error types
+                    if (error.data.error_code === 'TIME_SLOT_TAKEN') {
+                        errorTitle = isEnglish ? 'Time slot unavailable' : 'Časový slot nie je dostupný';
+                    } else if (error.data.error_code === 'INVALID_EMAIL') {
+                        errorTitle = isEnglish ? 'Invalid email' : 'Neplatný email';
+                    } else if (error.data.error_code === 'FIELD_TOO_LONG') {
+                        errorTitle = isEnglish ? 'Input too long' : 'Príliš dlhý vstup';
+                    }
+                } else if (error.message) {
+                    // Fallback for network errors or other exceptions
+                    console.error('Network or other error:', error);
+                }
+                
                 Swal.fire({
                     icon: 'error',
-                    title: isEnglish ? `Reservation failed` : `Rezervácia zlyhala`,
-                    text: error.message
+                    title: errorTitle,
+                    text: errorMessage,
+                    confirmButtonText: isEnglish ? 'OK' : 'OK'
                 });
             });
         }
@@ -843,6 +909,9 @@ function formatDateToSK(isoString) {
 document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
     var dateInput = document.getElementById('date');
+    
+    // Detect mobile
+    const isMobile = window.innerWidth <= 500;
 
     calendar = new FullCalendar.Calendar(calendarEl, {
 
@@ -852,6 +921,12 @@ document.addEventListener('DOMContentLoaded', function() {
             hour: 'numeric',
             minute: 'numeric'
         },
+        // Mobile-specific settings
+        height: 'auto',
+        contentHeight: 'auto',
+        aspectRatio: isMobile ? 1 : 1.35,
+        handleWindowResize: true,
+        windowResizeDelay: 200,
         firstDay: 1,
         dayHeaderFormat: { weekday: 'short' },
         locale: isEnglish ? 'en': 'sk',
@@ -877,8 +952,8 @@ document.addEventListener('DOMContentLoaded', function() {
               return;
           }
 
-          const formattedDate = info.dateStr;
-          dateInput.value = formattedDate;
+          // Store raw date value
+          dateInput.value = info.dateStr;
           pickDate(info.dayEl);
         },
 
@@ -892,10 +967,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            const formattedDate = info.event.startStr;
-            dateInput.value = formattedDate;
+            // Store raw date value
+            const rawDate = info.event.startStr.split('T')[0];
+            dateInput.value = rawDate;
 
-            const dayCellSelector = `.fc-day[data-date="${info.event.startStr.split('T')[0]}"]`;
+            const dayCellSelector = `.fc-day[data-date="${rawDate}"]`;
             const dayCellElement = document.querySelector(dayCellSelector);
 
             // Pass the day cell element to pickDate if found
@@ -936,6 +1012,30 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+    
+    // Handle window resize to update event display
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+            // Update calendar dimensions on mobile
+            const isMobileNow = window.innerWidth <= 500;
+            if (isMobileNow) {
+                calendar.setOption('height', 'auto');
+                calendar.setOption('contentHeight', 'auto');
+                calendar.setOption('aspectRatio', 1);
+            } else {
+                calendar.setOption('height', 'auto');
+                calendar.setOption('contentHeight', 'auto');
+                calendar.setOption('aspectRatio', 1.35);
+            }
+            
+            // Refresh events if worker is selected
+            if (worker) {
+                updateEvents(worker);
+            }
+        }, 250);
+    });
 });
 
 function updateEvents(worker) {
@@ -966,7 +1066,26 @@ function updateEvents(worker) {
                 calendar.getEvents().forEach(function(event) {
                     event.remove();
                 });
-                calendar.addEventSource(response.events);
+                
+                // Detect if mobile device
+                const isMobile = window.innerWidth <= 500;
+                
+                // Process events and set correct language title
+                const processedEvents = response.events.map(function(event) {
+                    // Choose language
+                    if (event.extendedProps && event.extendedProps.title_en && isEnglish) {
+                        event.title = event.extendedProps.title_en;
+                    }
+                    
+                    // Simplify for mobile - show only number
+                    if (isMobile && event.extendedProps && event.extendedProps.available_count) {
+                        event.title = String(event.extendedProps.available_count);
+                    }
+                    
+                    return event;
+                });
+                
+                calendar.addEventSource(processedEvents);
 
                 const allDays = document.querySelectorAll('.fc-day');
                 allDays.forEach(function(dayElement) {

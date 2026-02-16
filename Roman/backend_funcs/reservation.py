@@ -40,81 +40,270 @@ def prepare_reservation_data(reservation):
     return data
 
 def create_reservation(request):
-    if request.method == 'POST':
+    if request.method != 'POST':
+        return JsonResponse({
+            'status': 'error',
+            'error_code': 'METHOD_NOT_ALLOWED',
+            'message_sk': 'Nesprávna metóda požiadavky',
+            'message_en': 'Invalid request method'
+        }, status=405)
+    
+    try:
+        # Parse JSON data
+        try:
+            json_data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse({
+                'status': 'error',
+                'error_code': 'INVALID_JSON',
+                'message_sk': 'Neplatný formát dát',
+                'message_en': 'Invalid data format'
+            }, status=400)
+        
+        # Determine user type
         active = False
         status = 'Čaká sa schválenie'
         note = 'user'
         user = request.user if request.user.is_authenticated else None
-        if user and user.is_superuser:
+        is_superuser = user and user.is_superuser
+        
+        if is_superuser:
             active = True
             status = 'Schválená'
             note = 'admin'
-
-        config.read('config.ini')
-        json_data = json.loads(request.body)
-
-        selected_date = json_data.get('selectedDate')
-        time_slot = json_data.get('timeSlot')
+        
+        # Validate required fields
+        required_fields = {
+            'selectedDate': ('Dátum nie je vyplnený', 'Date is required'),
+            'timeSlot': ('Časový slot nie je vyplnený', 'Time slot is required'),
+            'duration': ('Dĺžka rezervácie nie je vyplnená', 'Duration is required'),
+            'massageName': ('Typ masáže nie je vyplnený', 'Massage type is required'),
+            'nameSurname': ('Meno a priezvisko nie je vyplnené', 'Name and surname is required'),
+            'worker': ('Masér nie je vyplnený', 'Worker is required'),
+        }
+        
+        # For non-superusers, email and phone are required
+        if not is_superuser:
+            required_fields['email'] = ('Email nie je vyplnený', 'Email is required')
+            required_fields['phone'] = ('Telefónne číslo nie je vyplnené', 'Phone number is required')
+        
+        # Check all required fields
+        for field, (msg_sk, msg_en) in required_fields.items():
+            value = json_data.get(field)
+            if not value or (isinstance(value, str) and not value.strip()):
+                return JsonResponse({
+                    'status': 'error',
+                    'error_code': 'MISSING_FIELD',
+                    'field': field,
+                    'message_sk': msg_sk,
+                    'message_en': msg_en
+                }, status=400)
+        
+        # Extract and validate data
+        selected_date = json_data.get('selectedDate', '').strip()
+        time_slot = json_data.get('timeSlot', '').strip()
         duration = json_data.get('duration')
-        massage_name = json_data.get('massageName')
-
-        datetime_from_obj = datetime.strptime(f"{selected_date} {time_slot}", "%Y-%m-%d %H:%M")
-        date_time_to_obj = datetime_from_obj + timedelta(minutes=int(duration))
-
-        user = request.user if request.user.is_authenticated else None
-
+        massage_name = json_data.get('massageName', '').strip()
+        name_surname = json_data.get('nameSurname', '').strip()
+        email = json_data.get('email', '').strip()
+        phone = json_data.get('phone', '').strip()
+        worker = json_data.get('worker', '').strip()
+        note_text = json_data.get('note', '').strip()
+        
+        # Validate email format for non-superusers
+        if not is_superuser and email:
+            import re
+            email_pattern = r'^[^\s@]+@[^\s@]+\.[^\s@]+$'
+            if not re.match(email_pattern, email):
+                return JsonResponse({
+                    'status': 'error',
+                    'error_code': 'INVALID_EMAIL',
+                    'message_sk': 'Neplatný formát emailu',
+                    'message_en': 'Invalid email format'
+                }, status=400)
+        
+        # Validate date format
+        try:
+            date_obj = datetime.strptime(selected_date, '%Y-%m-%d').date()
+        except ValueError:
+            return JsonResponse({
+                'status': 'error',
+                'error_code': 'INVALID_DATE',
+                'message_sk': 'Neplatný formát dátumu',
+                'message_en': 'Invalid date format'
+            }, status=400)
+        
+        # Validate time format
+        try:
+            time_obj = datetime.strptime(time_slot, '%H:%M').time()
+        except ValueError:
+            return JsonResponse({
+                'status': 'error',
+                'error_code': 'INVALID_TIME',
+                'message_sk': 'Neplatný formát času',
+                'message_en': 'Invalid time format'
+            }, status=400)
+        
+        # Validate duration
+        try:
+            duration_int = int(duration)
+            if duration_int not in [30, 45, 60, 90, 120]:
+                raise ValueError
+        except (ValueError, TypeError):
+            return JsonResponse({
+                'status': 'error',
+                'error_code': 'INVALID_DURATION',
+                'message_sk': 'Neplatná dĺžka rezervácie',
+                'message_en': 'Invalid reservation duration'
+            }, status=400)
+        
+        # Validate text fields length (must match model field max_length)
+        max_lengths = {
+            'name_surname': (150, 'Meno a priezvisko je príliš dlhé (max 150 znakov)', 'Name and surname is too long (max 150 characters)'),
+            'email': (254, 'Email je príliš dlhý (max 254 znakov)', 'Email is too long (max 254 characters)'),
+            'phone': (20, 'Telefónne číslo je príliš dlhé (max 20 znakov)', 'Phone number is too long (max 20 characters)'),
+            'massage_name': (250, 'Názov masáže je príliš dlhý (max 250 znakov)', 'Massage name is too long (max 250 characters)'),
+            'worker': (100, 'Meno maséra je príliš dlhé (max 100 znakov)', 'Worker name is too long (max 100 characters)'),
+            'note_text': (200, 'Poznámka je príliš dlhá (max 200 znakov)', 'Note is too long (max 200 characters)'),
+        }
+        
+        for field_name, (max_len, msg_sk, msg_en) in max_lengths.items():
+            value = locals()[field_name]
+            if value and len(value) > max_len:
+                return JsonResponse({
+                    'status': 'error',
+                    'error_code': 'FIELD_TOO_LONG',
+                    'field': field_name,
+                    'message_sk': msg_sk,
+                    'message_en': msg_en
+                }, status=400)
+        
+        # Validate worker value
+        valid_workers = ['Roman', 'Evka']
+        if worker not in valid_workers:
+            return JsonResponse({
+                'status': 'error',
+                'error_code': 'INVALID_WORKER',
+                'message_sk': f'Neplatný masér. Povolené hodnoty: {", ".join(valid_workers)}',
+                'message_en': f'Invalid worker. Allowed values: {", ".join(valid_workers)}'
+            }, status=400)
+        
+        # Check if date is not in the past
+        today = datetime.now().date()
+        if date_obj < today:
+            return JsonResponse({
+                'status': 'error',
+                'error_code': 'DATE_IN_PAST',
+                'message_sk': 'Nemôžete vytvoriť rezerváciu v minulosti',
+                'message_en': 'Cannot create reservation in the past'
+            }, status=400)
+        
+        # Create datetime objects
+        datetime_from_obj = datetime.combine(date_obj, time_obj)
+        date_time_to_obj = datetime_from_obj + timedelta(minutes=duration_int)
+        
+        # Check for conflicting reservations
+        conflicting_reservations = Reservation.objects.filter(
+            worker=worker,
+            datetime_from__date=date_obj,
+            active=True
+        ).exclude(
+            datetime_to__lte=datetime_from_obj
+        ).exclude(
+            datetime_from__gte=date_time_to_obj
+        )
+        
+        if conflicting_reservations.exists():
+            return JsonResponse({
+                'status': 'error',
+                'error_code': 'TIME_SLOT_TAKEN',
+                'message_sk': 'Tento časový slot už nie je dostupný. Prosím, obnovte stránku a vyberte iný čas.',
+                'message_en': 'This time slot is no longer available. Please refresh the page and select another time.'
+            }, status=409)
+        
+        # Load config
+        config.read('config.ini')
+        
+        # Create reservation
         new_reservation = Reservation.objects.create(
             massage_name=massage_name,
             user=user,
-            name_surname=json_data.get('nameSurname'),
-            email=json_data.get('email'),
-            phone_number=json_data.get('phone'),
-            worker=json_data.get('worker'),
+            name_surname=name_surname,
+            email=email if email else None,
+            phone_number=phone if phone else None,
+            worker=worker,
             status=status,
             active=active,
-            special_request=json_data.get('note') if note == 'user' else '',
-            personal_note=json_data.get('note') if note == 'admin' else '',
+            special_request=note_text if note == 'user' else '',
+            personal_note=note_text if note == 'admin' else '',
             datetime_from=datetime_from_obj,
             datetime_to=date_time_to_obj,
             created_at=datetime.now(),
             updated_at=datetime.now(),
         )
-
+        
+        # Save to AlreadyMadeReservation (using update_or_create for safety)
         try:
-            already_created_reservation = AlreadyMadeReservation.objects.get(name_surname=json_data.get('nameSurname'))
-        except AlreadyMadeReservation.DoesNotExist:
-            already_created_reservation = AlreadyMadeReservation.objects.create(
-                name_surname=json_data.get('nameSurname'),
-                email=json_data.get('email'),
-                phone_number=json_data.get('phone'),
+            already_created_reservation, created = AlreadyMadeReservation.objects.update_or_create(
+                name_surname=name_surname,
+                defaults={
+                    'email': email if email else None,
+                    'phone_number': phone if phone else None,
+                }
             )
+        except Exception as e:
+            # Log but don't fail the reservation if AlreadyMadeReservation fails
+            print(f"Failed to save to AlreadyMadeReservation: {e}")
+        
+        # Send email notifications
+        try:
+            if note == 'user':
+                subject = f'Nová rezervácia ({new_reservation.worker})'
+                accept_link = f'https://masazevlcince.sk/approve_reservation_mail/{new_reservation.id}/'
+                all_reservations_link = f'https://masazevlcince.sk/all_reservations/'
+                text = f'Nová rezervácia pre maséra {new_reservation.worker}'
+                html_message = render_to_string('email_template.html',
+                                                {'reservation': prepare_reservation_data(new_reservation),
+                                                 'button': True,
+                                                 'accept_link': accept_link,
+                                                 'all_reservations_link': all_reservations_link,
+                                                 'text': text,
+                                                 })
+                send_email(subject, html_message, getattr(settings, 'MAIN_EMAIL'))
 
-        if note == 'user':
-            subject = f'Nová rezervácia ({new_reservation.worker})'
-            accept_link = f'https://masazevlcince.sk/approve_reservation_mail/{new_reservation.id}/'
-            all_reservations_link = f'https://masazevlcince.sk/all_reservations/'
-            text = f'Nová rezervácia pre maséra {new_reservation.worker}'
-            html_message = render_to_string('email_template.html',
-                                            {'reservation': prepare_reservation_data(new_reservation),
-                                             'button': True,
-                                             'accept_link': accept_link,
-                                             'all_reservations_link': all_reservations_link,
-                                             'text': text,
-                                             })
-            send_email(subject, html_message, getattr(settings, 'MAIN_EMAIL'))
-
-        if note == 'admin' and new_reservation.email:
-            subject = f'Rezervácia potvrdená / Reservation accepted'
-            html_message = render_to_string('email_template.html',
-                                            {'reservation': prepare_reservation_data(new_reservation),
-                                             'button': None,
-                                             'accept_link': None,
-                                             'all_reservations_link': None,
-                                             'text': 'Rezervácia potvrdená / Reservation accepted',
-                                             })
-            send_email(subject, html_message, new_reservation.email)
-        return JsonResponse({'status': 'success'})
-    return JsonResponse({'status': 'error'})
+            if note == 'admin' and new_reservation.email:
+                subject = f'Rezervácia potvrdená / Reservation accepted'
+                html_message = render_to_string('email_template.html',
+                                                {'reservation': prepare_reservation_data(new_reservation),
+                                                 'button': None,
+                                                 'accept_link': None,
+                                                 'all_reservations_link': None,
+                                                 'text': 'Rezervácia potvrdená / Reservation accepted',
+                                                 })
+                send_email(subject, html_message, new_reservation.email)
+        except Exception as email_error:
+            # Log email error but don't fail the reservation
+            print(f"Email sending failed: {email_error}")
+        
+        return JsonResponse({
+            'status': 'success',
+            'reservation_id': str(new_reservation.id),
+            'message_sk': 'Rezervácia bola úspešne vytvorená',
+            'message_en': 'Reservation created successfully'
+        })
+        
+    except Exception as e:
+        # Log the error for debugging
+        import traceback
+        print(f"Error creating reservation: {str(e)}")
+        print(traceback.format_exc())
+        
+        return JsonResponse({
+            'status': 'error',
+            'error_code': 'SERVER_ERROR',
+            'message_sk': 'Vyskytla sa chyba pri vytváraní rezervácie. Skúste to prosím znova alebo nás kontaktujte.',
+            'message_en': 'An error occurred while creating the reservation. Please try again or contact us.'
+        }, status=500)
 
 def check_available_slots(request):
     if request.method == 'POST':
@@ -292,20 +481,32 @@ def check_available_slots_ahead(request, worker):
 
                 t += start_step  # (CHANGED) 15-min step to mirror POST
 
-            # 4) Slovak plurals (unchanged)
+            # 4) Format event title for modern display
             if available_slots_count == 1:
                 possible = _('voľný')
+                possible_en = 'available'
             elif 2 <= available_slots_count <= 4:
                 possible = _('voľné')
+                possible_en = 'available'
             else:
                 possible = _('voľných')
+                possible_en = 'available'
 
             if available_slots_count > 0:
+                # Create bilingual title with emoji/icon
+                title_sk = f"✓ {available_slots_count} {possible}"
+                title_en = f"✓ {available_slots_count} {possible_en}"
+                
                 events.append({
                     'start': single_date.strftime('%Y-%m-%d'),
                     'end': single_date.strftime('%Y-%m-%d'),
-                    'title': f"{available_slots_count} {possible}",
-                    'className': 'allowed-events-day'
+                    'title': title_sk,  # Backend sends SK, JS can handle language switching if needed
+                    'className': 'allowed-events-day',
+                    'extendedProps': {
+                        'available_count': available_slots_count,
+                        'title_en': title_en,
+                        'title_sk': title_sk
+                    }
                 })
 
         return JsonResponse({'status': 'success', 'events': events})
