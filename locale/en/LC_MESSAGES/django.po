@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-27 16:23+0100\n"
+"POT-Creation-Date: 2026-02-16 09:41+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,32 +18,32 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\Roman\backend_funcs\general.py:54 .\Roman\backend_funcs\reservation.py:394
-#: .\Roman\backend_funcs\reservation.py:417
-#: .\Roman\backend_funcs\reservation.py:442
-#: .\Roman\backend_funcs\reservation.py:453
-#: .\Roman\backend_funcs\reservation.py:467 .\Roman\backend_funcs\users.py:26
+#: .\Roman\backend_funcs\general.py:54 .\Roman\backend_funcs\reservation.py:596
+#: .\Roman\backend_funcs\reservation.py:619
+#: .\Roman\backend_funcs\reservation.py:644
+#: .\Roman\backend_funcs\reservation.py:655
+#: .\Roman\backend_funcs\reservation.py:669 .\Roman\backend_funcs\users.py:26
 #: .\Roman\backend_funcs\users.py:63
 msgid "Zlý request"
 msgstr "Wrong request"
 
-#: .\Roman\backend_funcs\reservation.py:296
+#: .\Roman\backend_funcs\reservation.py:486
 msgid "voľný"
 msgstr "available"
 
-#: .\Roman\backend_funcs\reservation.py:298
+#: .\Roman\backend_funcs\reservation.py:489
 msgid "voľné"
 msgstr "available"
 
-#: .\Roman\backend_funcs\reservation.py:300
+#: .\Roman\backend_funcs\reservation.py:492
 msgid "voľných"
 msgstr "available"
 
-#: .\Roman\backend_funcs\reservation.py:391
+#: .\Roman\backend_funcs\reservation.py:593
 msgid "Rezervácia úspešne zrušená."
 msgstr "Reservation cancelled successfully."
 
-#: .\Roman\backend_funcs\reservation.py:393
+#: .\Roman\backend_funcs\reservation.py:595
 msgid "Rezervácia sa nenašla."
 msgstr "Reservation not found."
 
@@ -951,11 +951,9 @@ msgid "April"
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:57
-#, fuzzy
-#| msgid "My"
 msgctxt "abbrev. month"
 msgid "May"
-msgstr "Us"
+msgstr ""
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:58
 msgctxt "abbrev. month"
@@ -1013,11 +1011,9 @@ msgid "April"
 msgstr ""
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:71
-#, fuzzy
-#| msgid "My"
 msgctxt "alt. month"
 msgid "May"
-msgstr "Us"
+msgstr ""
 
 #: .\venv\Lib\site-packages\django\utils\dates.py:72
 msgctxt "alt. month"
@@ -1297,158 +1293,155 @@ msgstr "Homepage"
 msgid "Prihlásenie"
 msgstr "Log-in"
 
-#: .\viewer\templates\homepage.html:6 .\viewer\templates\homepage.html:37
+#: .\viewer\templates\homepage.html:6 .\viewer\templates\homepage.html:36
 msgid "Masáže Vlčince"
 msgstr "Massages Vlčince"
 
-#: .\viewer\templates\homepage.html:27
+#: .\viewer\templates\homepage.html:26
 msgid ""
-"Darčeková poukážka alebo permanentka – ideálny darček pre "
-"vašich blízkych!"
-msgstr ""
-"Gift voucher or season pass – perfect gift for your loved "
-"ones!"
+"Darčeková poukážka alebo permanentka – ideálny darček pre vašich blízkych!"
+msgstr "Gift voucher or season pass – perfect gift for your loved ones!"
 
-#: .\viewer\templates\homepage.html:30
+#: .\viewer\templates\homepage.html:29
 msgid "Zobraziť poukážky"
 msgstr "Show vouchers"
 
-#: .\viewer\templates\homepage.html:38
+#: .\viewer\templates\homepage.html:37
 msgid "Priateľský a individuálny prístup pre našich klientov"
 msgstr "Friendly and individual approach for our clients"
 
-#: .\viewer\templates\homepage.html:43
+#: .\viewer\templates\homepage.html:42
 msgid "Rezervovať termín"
 msgstr "Make reservation"
 
-#: .\viewer\templates\homepage.html:47 .\viewer\templates\homepage.html:148
+#: .\viewer\templates\homepage.html:46 .\viewer\templates\homepage.html:147
 msgid "Naše služby"
 msgstr "Our services"
 
-#: .\viewer\templates\homepage.html:73 .\viewer\templates\homepage.html:118
-#: .\viewer\templates\homepage.html:159
+#: .\viewer\templates\homepage.html:72 .\viewer\templates\homepage.html:117
+#: .\viewer\templates\homepage.html:158
 msgid "Klasická masáž"
 msgstr "Classic massage"
 
-#: .\viewer\templates\homepage.html:77 .\viewer\templates\homepage.html:122
-#: .\viewer\templates\homepage.html:173
+#: .\viewer\templates\homepage.html:76 .\viewer\templates\homepage.html:121
+#: .\viewer\templates\homepage.html:172
 msgid "Športová masáž"
 msgstr "Sport massage"
 
-#: .\viewer\templates\homepage.html:81 .\viewer\templates\homepage.html:126
+#: .\viewer\templates\homepage.html:80 .\viewer\templates\homepage.html:125
 msgid "Myofasciálne techniky"
 msgstr "Myofascial techniques"
 
-#: .\viewer\templates\homepage.html:85 .\viewer\templates\homepage.html:130
-#: .\viewer\templates\homepage.html:180
+#: .\viewer\templates\homepage.html:84 .\viewer\templates\homepage.html:129
+#: .\viewer\templates\homepage.html:179
 msgid "Bankovanie"
 msgstr "Cupping"
 
-#: .\viewer\templates\homepage.html:93 .\viewer\templates\homepage.html:201
+#: .\viewer\templates\homepage.html:92 .\viewer\templates\homepage.html:200
 msgid "RKT techniky"
 msgstr "RKT techniques"
 
-#: .\viewer\templates\homepage.html:97 .\viewer\templates\homepage.html:208
+#: .\viewer\templates\homepage.html:96 .\viewer\templates\homepage.html:207
 msgid "SM systém"
 msgstr "SM system"
 
-#: .\viewer\templates\homepage.html:134 .\viewer\templates\homepage.html:187
+#: .\viewer\templates\homepage.html:133 .\viewer\templates\homepage.html:186
 msgid "Lávové kamene"
 msgstr "Lava stones"
 
-#: .\viewer\templates\homepage.html:149
+#: .\viewer\templates\homepage.html:148
 msgid "Masážne techniky"
 msgstr "Massage techniques"
 
-#: .\viewer\templates\homepage.html:151
+#: .\viewer\templates\homepage.html:150
 msgid ""
 "Široké spektrum profesionálnych masážnych techník prispôsobených vašim "
 "potrebám"
 msgstr "Wide range of professional massage techniques tailored to your needs"
 
-#: .\viewer\templates\homepage.html:160
+#: .\viewer\templates\homepage.html:159
 msgid "Relaxačná a regeneračná"
 msgstr "Relaxing and regenerative"
 
-#: .\viewer\templates\homepage.html:166
+#: .\viewer\templates\homepage.html:165
 msgid "Mäkké techniky"
 msgstr "Soft techniques"
 
-#: .\viewer\templates\homepage.html:167
+#: .\viewer\templates\homepage.html:166
 msgid "Myofasciálne uvoľnenie"
 msgstr "Myofascial release"
 
-#: .\viewer\templates\homepage.html:174
+#: .\viewer\templates\homepage.html:173
 msgid "Pre aktívnych športovcov"
 msgstr "For active athletes"
 
-#: .\viewer\templates\homepage.html:181
+#: .\viewer\templates\homepage.html:180
 msgid "Detoxikácia organizmu"
 msgstr "Body detoxification"
 
-#: .\viewer\templates\homepage.html:188
+#: .\viewer\templates\homepage.html:187
 msgid "Hĺbková relaxácia"
 msgstr "Deep relaxation"
 
-#: .\viewer\templates\homepage.html:195
+#: .\viewer\templates\homepage.html:194
 msgid "Moderná terapia"
 msgstr "Modern therapy"
 
-#: .\viewer\templates\homepage.html:202
+#: .\viewer\templates\homepage.html:201
 msgid "Ruské metódy"
 msgstr "Russian methods"
 
-#: .\viewer\templates\homepage.html:209
+#: .\viewer\templates\homepage.html:208
 msgid "Stabilizácia chrbtice"
 msgstr "Spine stabilization"
 
-#: .\viewer\templates\homepage.html:219
+#: .\viewer\templates\homepage.html:218
 msgid "Naše priestory"
 msgstr "Our premises"
 
-#: .\viewer\templates\homepage.html:220
+#: .\viewer\templates\homepage.html:219
 #: .\viewer\templates\navbar-homepage.html:29
 msgid "Galéria"
 msgstr "Gallery"
 
-#: .\viewer\templates\homepage.html:239
+#: .\viewer\templates\homepage.html:238
 msgid "Darčeky"
 msgstr "Gifts"
 
-#: .\viewer\templates\homepage.html:240
+#: .\viewer\templates\homepage.html:239
 msgid "Darčekové poukážky"
 msgstr "Gift vouchers"
 
-#: .\viewer\templates\homepage.html:253
+#: .\viewer\templates\homepage.html:252
 msgid "Stiahnúť poukážku"
 msgstr "Download voucher"
 
-#: .\viewer\templates\homepage.html:270
+#: .\viewer\templates\homepage.html:269
 msgid "Spokojnosť klientov"
 msgstr "Client satisfaction"
 
-#: .\viewer\templates\homepage.html:271
+#: .\viewer\templates\homepage.html:270
 #: .\viewer\templates\navbar-homepage.html:37
 msgid "Hodnotenia"
 msgstr "Reviews"
 
-#: .\viewer\templates\homepage.html:273
+#: .\viewer\templates\homepage.html:272
 msgid "Prečítajte si, čo o nás hovoria naši klienti"
 msgstr "Read what our clients say about us"
 
-#: .\viewer\templates\homepage.html:277
+#: .\viewer\templates\homepage.html:276
 msgid "Pridať hodnotenie"
 msgstr "Add review"
 
-#: .\viewer\templates\homepage.html:312
+#: .\viewer\templates\homepage.html:311
 msgid "Zatiaľ bez hodnotení"
 msgstr "No reviews yet"
 
-#: .\viewer\templates\homepage.html:325
+#: .\viewer\templates\homepage.html:324
 msgid "Pre firmy"
 msgstr "For companies"
 
-#: .\viewer\templates\homepage.html:327
+#: .\viewer\templates\homepage.html:326
 msgid ""
 "Jedinečná príležitosť dopriať svojim zamestnancom relax od práce "
 "prostredníctvom poukážok upravených pre vašu firmu na mieru."
@@ -1456,7 +1449,7 @@ msgstr ""
 "A unique opportunity to provide your employees with relaxation from work "
 "through vouchers tailored to your company."
 
-#: .\viewer\templates\homepage.html:330
+#: .\viewer\templates\homepage.html:329
 msgid ""
 "Spolupracujte s nami a prineste do svojho pracovného prostredia novú úroveň "
 "pohody."
@@ -1464,40 +1457,40 @@ msgstr ""
 "Collaborate with us and bring a new level of comfort to your work "
 "environment."
 
-#: .\viewer\templates\homepage.html:334
+#: .\viewer\templates\homepage.html:333
 msgid "Kontaktujte nás"
 msgstr "Contact us"
 
-#: .\viewer\templates\homepage.html:344
+#: .\viewer\templates\homepage.html:343
 msgid "Sme tu pre vás"
 msgstr "We are here for you"
 
-#: .\viewer\templates\homepage.html:345
+#: .\viewer\templates\homepage.html:344
 #: .\viewer\templates\navbar-homepage.html:41
 msgid "Kontakt"
 msgstr "Contact"
 
-#: .\viewer\templates\homepage.html:347
+#: .\viewer\templates\homepage.html:346
 msgid "Neváhajte nás kontaktovať, radi vám poradíme"
 msgstr "Don't hesitate to contact us, we will be happy to help"
 
-#: .\viewer\templates\homepage.html:355
+#: .\viewer\templates\homepage.html:354
 msgid "Adresa"
 msgstr "Address"
 
-#: .\viewer\templates\homepage.html:356
+#: .\viewer\templates\homepage.html:355
 msgid "Matice Slovenskej 6"
 msgstr "Matice Slovenskej 6"
 
-#: .\viewer\templates\homepage.html:357
+#: .\viewer\templates\homepage.html:356
 msgid "Vlčince"
 msgstr "Vlčince"
 
-#: .\viewer\templates\homepage.html:358
+#: .\viewer\templates\homepage.html:357
 msgid "(žltá budova, poschodie)"
 msgstr "(yellow building, upstairs)"
 
-#: .\viewer\templates\homepage.html:364
+#: .\viewer\templates\homepage.html:363
 msgid "Telefón"
 msgstr "Phone"
 
@@ -1557,7 +1550,7 @@ msgstr "Log-in"
 msgid "Registrácia"
 msgstr "Registration"
 
-#: .\viewer\templates\navbar.html:12 .\viewer\templates\navbar.html:27
+#: .\viewer\templates\navbar.html:19 .\viewer\templates\navbar.html:27
 msgid "Domov"
 msgstr "Homepage"
 
@@ -1597,7 +1590,7 @@ msgstr "Status"
 msgid "Dôvod zrušenia"
 msgstr "Cancellation reason"
 
-#: .\viewer\templates\profile.html:27 .\viewer\templates\reservation.html:170
+#: .\viewer\templates\profile.html:27 .\viewer\templates\reservation.html:582
 msgid "Poznámka"
 msgstr "Note"
 
@@ -1610,43 +1603,47 @@ msgid "Zrušiť"
 msgstr "Cancel"
 
 #: .\viewer\templates\reservation.html:6
-#: .\viewer\templates\reservation.html:103
+#: .\viewer\templates\reservation.html:515
 msgid "Rezervácia"
 msgstr "Reservation"
 
-#: .\viewer\templates\reservation.html:107
+#: .\viewer\templates\reservation.html:519
 msgid "Vyberte si maséra"
 msgstr "Pick your massager"
 
-#: .\viewer\templates\reservation.html:124
+#: .\viewer\templates\reservation.html:536
 msgid "Vyberte Dátum"
 msgstr "Pick a date"
 
-#: .\viewer\templates\reservation.html:131
+#: .\viewer\templates\reservation.html:538
+msgid "Vyberte dátum"
+msgstr "Pick a date"
+
+#: .\viewer\templates\reservation.html:543
 msgid "Vyberte začiatok masáže"
 msgstr "Pick massage start"
 
-#: .\viewer\templates\reservation.html:136
+#: .\viewer\templates\reservation.html:548
 msgid "Vyberte dĺžku masáže"
 msgstr "Pick massage duration"
 
-#: .\viewer\templates\reservation.html:140
+#: .\viewer\templates\reservation.html:552
 msgid "45 min SM individuálne cvičenie"
 msgstr "45 min SM system individual workout"
 
-#: .\viewer\templates\reservation.html:143
+#: .\viewer\templates\reservation.html:555
 msgid "90 min masáž + SM systém - 60€"
 msgstr "90 min massage + SM system - 60€"
 
-#: .\viewer\templates\reservation.html:152
+#: .\viewer\templates\reservation.html:564
 msgid "Meno a Priezvisko"
 msgstr "Name and Surname"
 
-#: .\viewer\templates\reservation.html:164
+#: .\viewer\templates\reservation.html:576
 msgid "Telefónne číslo"
 msgstr "Phone number"
 
-#: .\viewer\templates\reservation.html:174
+#: .\viewer\templates\reservation.html:586
 msgid "Polia označené * sú povinné"
 msgstr "Fields with * are mandatory"
 
@@ -1661,40 +1658,3 @@ msgstr "Access only for admin."
 #: .\viewer\views.py:214 .\viewer\views.py:240
 msgid "Najskôr sa prihláste."
 msgstr "Log-in first."
-
-#~ msgid "Naše špeciality"
-#~ msgstr "Our specialties"
-
-#~ msgid ""
-#~ "Pozor zmena adresy: Matice Slovenskej 6, Vlčince (žltá budova, na "
-#~ "poschodí)"
-#~ msgstr ""
-#~ "Attention address change: Matice Slovenskej 6, Vlčince (yellow building, "
-#~ "up stairs)"
-
-#~ msgid "Ruské kombinované techniky"
-#~ msgstr "Russian combined techniques"
-
-#~ msgid "Zobraziť fotografiu"
-#~ msgstr "Show photography"
-
-#~ msgid "Stiahnúť"
-#~ msgstr "Download"
-
-#~ msgid "prostredníctvom poukážok upravených pre Vašu firmu na mieru."
-#~ msgstr "through vouchers tailored specifically for your company."
-
-#~ msgid "Pre viac informácii nás kontaktujte."
-#~ msgstr "Contact us for more informations."
-
-#~ msgid "Matice Slovenskej 6, Vlčince (žltá budova, na poschodí)"
-#~ msgstr "Matice Slovenskej 6, Vlčince (yellow building, up stairs)"
-
-#~ msgid "Rezervácia/Cenník"
-#~ msgstr "Reservation/Prices"
-
-#~ msgid "Slovenčina"
-#~ msgstr "Slovak"
-
-#~ msgid "Angličtina"
-#~ msgstr "English"
