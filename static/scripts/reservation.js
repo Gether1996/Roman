@@ -89,6 +89,9 @@ document.addEventListener('DOMContentLoaded', function() {
             hideAll();
             revealFirst();
             resetDateInput();
+            
+            // Call updateEvents to load calendar data
+            updateEvents(worker);
         });
     });
 
@@ -1015,9 +1018,28 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Handle window resize to update event display
     let resizeTimer;
+    let lastWidth = window.innerWidth;
+    let lastHeight = window.innerHeight;
+    
     window.addEventListener('resize', function() {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(function() {
+            const currentWidth = window.innerWidth;
+            const currentHeight = window.innerHeight;
+            
+            // On mobile, ignore resize events caused by keyboard (height change only)
+            // Only respond to actual orientation changes or significant width changes
+            if (window.innerWidth <= 500) {
+                // If width hasn't changed significantly, it's likely just the keyboard
+                if (Math.abs(currentWidth - lastWidth) < 50) {
+                    lastHeight = currentHeight;
+                    return; // Skip this resize event
+                }
+            }
+            
+            lastWidth = currentWidth;
+            lastHeight = currentHeight;
+            
             // Update calendar dimensions on mobile
             const isMobileNow = window.innerWidth <= 500;
             if (isMobileNow) {
@@ -1030,7 +1052,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 calendar.setOption('aspectRatio', 1.35);
             }
             
-            // Refresh events if worker is selected
+            // Refresh events if worker is selected (only on real resize)
             if (worker) {
                 updateEvents(worker);
             }
