@@ -386,6 +386,10 @@ def check_available_slots(request):
 def check_available_slots_ahead(request, worker):
     if request.method == 'GET':
         config.read('config.ini')
+
+        if 'settings-roman' not in config or 'settings-evka' not in config:
+            return JsonResponse({'status': 'error', 'message': 'Server configuration missing (config.ini).'}, status=503)
+
         today = datetime.now().date()
         tomorrow = today + timedelta(days=1)
         worker_config = config['settings-roman'] if worker == 'Roman' else config['settings-evka']

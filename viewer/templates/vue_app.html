@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masáže Vlčince</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.png' %}">
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@500;600;700&display=swap">
+    <link rel="stylesheet" href="{% static 'css/vue-app.css' %}">
+</head>
+<body>
+    <div id="app"></div>
+
+    <script src="{% static 'scripts/sweetalert2@11.js' %}"></script>
+    <script src="{% static 'scripts/fullcalendar-6.1.9/dist/index.global.min.js' %}"></script>
+    <script src="{% static 'scripts/fullcalendar-6.1.9/packages/core/locales-all.global.min.js' %}"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <script src="https://unpkg.com/vue-router@4/dist/vue-router.global.prod.js"></script>
+    <script src="https://unpkg.com/vue-i18n@9/dist/vue-i18n.global.prod.js"></script>
+    <script type="module" src="{% static 'vue/main.js' %}"></script>
+</body>
+</html>

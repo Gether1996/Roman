@@ -7,10 +7,12 @@ from django.shortcuts import redirect
 from accounts.models import CustomUser
 from viewer.models import AlreadyMadeReservation
 from django.utils.translation import gettext_lazy as _
+from django.utils.translation import activate
 import re
 
 
 def login_api(request):
+    activate(request.session.get('django_language', 'sk'))
     if request.method == 'POST':
         json_data = json.loads(request.body.decode('utf-8'))
         user_in_db_exists = CustomUser.objects.filter(email=json_data['email']).exists()
@@ -18,20 +20,22 @@ def login_api(request):
             user = authenticate(request, email=json_data['email'], password=json_data['password'])
             if user is not None:
                 login(request, user)
-                return JsonResponse({'status': 'success', 'message': _('Prihlásenie úspešné.')})
+                return JsonResponse({'status': 'success', 'message_sk': 'Prihlásenie úspešné.', 'message_en': 'Login successful.'})
             else:
-                return JsonResponse({'status': 'error', 'message': _('Nesprávne heslo.')})
+                return JsonResponse({'status': 'error', 'message_sk': 'Nesprávne heslo.', 'message_en': 'Incorrect password.'}, status=400)
         else:
-            return JsonResponse({'status': 'error', 'message': _('Užívateľ s týmto emailom neexistuje.')})
-    return JsonResponse({'status': 'error', 'message': _('Zlý request')})
+            return JsonResponse({'status': 'error', 'message_sk': 'Užívateľ s týmto emailom neexistuje.', 'message_en': 'No user with this email exists.'}, status=400)
+    return JsonResponse({'status': 'error', 'message_sk': 'Zlý request.', 'message_en': 'Bad request.'}, status=405)
 
 
 def logout(request):
+    activate(request.session.get('django_language', 'sk'))
     django_logout(request)
     return redirect('homepage')
 
 
 def registration(request):
+    activate(request.session.get('django_language', 'sk'))
     if request.method == 'POST':
         try:
             json_data = json.loads(request.body.decode('utf-8'))
@@ -44,7 +48,7 @@ def registration(request):
 
             # Check if the user already exists
             if CustomUser.objects.filter(email=email).exists():
-                return JsonResponse({'status': 'error', 'message': _('Email už existuje.')})
+                return JsonResponse({'status': 'error', 'message_sk': 'Email už existuje.', 'message_en': 'This email is already registered.'}, status=400)
 
             user = CustomUser.objects.create(
                 name=name,
@@ -55,15 +59,16 @@ def registration(request):
             )
 
             login(request, user)
-            return JsonResponse({'status': 'success', 'message': _('Registrácia úspešná - prihlasujem.')})
+            return JsonResponse({'status': 'success', 'message_sk': 'Registrácia úspešná.', 'message_en': 'Registration successful.'})
 
         except Exception as e:
-            return JsonResponse({'status': 'error', 'message': f'{e}'})
+            return JsonResponse({'status': 'error', 'message_sk': str(e), 'message_en': str(e)}, status=500)
 
-    return JsonResponse({'status': 'error', 'message': _('Zlý request')})
+    return JsonResponse({'status': 'error', 'message_sk': 'Zlý request.', 'message_en': 'Bad request.'}, status=405)
 
 
 def delete_saved_person(request):
+    activate(request.session.get('django_language', 'sk'))
     if request.method == 'DELETE':
         json_data = json.loads(request.body.decode('utf-8'))
 

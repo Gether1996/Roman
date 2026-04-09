@@ -60,13 +60,13 @@ class Reservation(Model):
         return self.created_at.strftime('%d.%m.%Y %H:%M:%S')
 
     def get_color(self):
+        if self.cancellation_reason:
+            return '#9ca3af'  # grey - cancelled
         if not self.active:
-            return '#8B0000'
-        else:
-            if self.worker == "Evka":
-                return '#ff1493'
-            else:
-                return '#007bff'
+            return '#d97706'  # amber - pending approval
+        if self.worker == "Evka":
+            return '#db2777'  # pink - Evka approved
+        return '#0f7e7a'  # teal - Roman approved
 
 class AlreadyMadeReservation(Model):
     name_surname = CharField(max_length=150, unique=True)

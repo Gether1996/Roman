@@ -382,3 +382,7 @@ def approve_reservation_mail(request, reservation_id):
             return render(request, 'error.html', {'message': message})
     message = 'Zlý request'
     return render(request, 'error.html', {'message': message})
+def vue_app(request):
+    language_code = request.session.get('django_language', 'sk')
+    activate(language_code)
+    return render(request, 'vue_app.html')
