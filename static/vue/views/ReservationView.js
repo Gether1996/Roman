@@ -55,9 +55,9 @@ export const ReservationView = defineComponent({
     const filteredUsers = computed(() => {
       const query = normalizeText(userSearch.value);
       if (!query) {
-        return userOptions.value.slice(0, 8);
+        return userOptions.value;
       }
-      return userOptions.value.filter((option) => normalizeText(option.name_surname).includes(query)).slice(0, 8);
+      return userOptions.value.filter((option) => normalizeText(option.name_surname).includes(query));
     });
 
     const availableServices = computed(() => {

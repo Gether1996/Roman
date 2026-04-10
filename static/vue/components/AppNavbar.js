@@ -121,17 +121,19 @@ export const AppNavbar = defineComponent({
               <span>{{ t('nav.reserve') }}</span>
             </button>
 
-            <a href="https://www.instagram.com/masazevlcince/" target="_blank" rel="noopener" class="social-pill" aria-label="Instagram">
-              <i class="fa-brands fa-instagram"></i>
-            </a>
-            <a href="https://www.facebook.com/salonAminaSK" target="_blank" rel="noopener" class="social-pill" aria-label="Facebook">
-              <i class="fa-brands fa-facebook-f"></i>
-            </a>
+            <div class="nav-quick-row">
+              <a href="https://www.instagram.com/masazevlcince/" target="_blank" rel="noopener" class="social-pill" aria-label="Instagram">
+                <i class="fa-brands fa-instagram"></i>
+              </a>
+              <a href="https://www.facebook.com/salonAminaSK" target="_blank" rel="noopener" class="social-pill" aria-label="Facebook">
+                <i class="fa-brands fa-facebook-f"></i>
+              </a>
 
-            <button class="lang-pill" @click="switchLanguage(store.language === 'sk' ? 'en' : 'sk')">
-              <img :src="store.language === 'sk' ? '/static/images/slovakia.png' : '/static/images/united-kingdom.png'" alt="" />
-              <span>{{ store.language.toUpperCase() }}</span>
-            </button>
+              <button class="lang-pill" @click="switchLanguage(store.language === 'sk' ? 'en' : 'sk')">
+                <img :src="store.language === 'sk' ? '/static/images/slovakia.png' : '/static/images/united-kingdom.png'" alt="" />
+                <span>{{ store.language.toUpperCase() }}</span>
+              </button>
+            </div>
 
             <template v-if="store.isAuthenticated">
               <div class="user-menu-wrapper">
