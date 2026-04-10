@@ -222,7 +222,7 @@ def create_reservation(request):
             }, status=409)
         
         # Load config
-        config.read('config.ini')
+        config.read(settings.CONFIG_INI_PATH)
         
         # Create reservation
         new_reservation = Reservation.objects.create(
@@ -309,7 +309,7 @@ def create_reservation(request):
 
 def check_available_slots(request):
     if request.method == 'POST':
-        config.read('config.ini')
+        config.read(settings.CONFIG_INI_PATH)
         try:
             json_data = json.loads(request.body)
         except (json.JSONDecodeError, ValueError):
@@ -400,7 +400,7 @@ def check_available_slots_ahead(request, worker):
         if worker not in ('Roman', 'Evka'):
             return JsonResponse({'status': 'error', 'message': 'Invalid worker.'}, status=400)
 
-        config.read('config.ini')
+        config.read(settings.CONFIG_INI_PATH)
 
         if 'settings-roman' not in config or 'settings-evka' not in config:
             return JsonResponse({'status': 'error', 'message': 'Server configuration missing (config.ini).'}, status=503)
@@ -536,7 +536,7 @@ def check_available_durations(request, worker):
         if worker not in ('Roman', 'Evka'):
             return JsonResponse({'status': 'error', 'message': 'Invalid worker.'}, status=400)
 
-        config.read('config.ini')
+        config.read(settings.CONFIG_INI_PATH)
         try:
             json_data = json.loads(request.body)
         except (json.JSONDecodeError, ValueError):

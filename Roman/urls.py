@@ -36,14 +36,7 @@ from Roman.backend_funcs.users import delete_saved_person, login_api, logout, re
 from viewer.views import approve_reservation_mail, get_all_reservations_data, vue_app
 
 
-static_document_root = settings.STATIC_ROOT
-if settings.DEBUG and getattr(settings, 'STATICFILES_DIRS', None):
-    static_document_root = settings.STATICFILES_DIRS[0]
-
-
 urlpatterns = [
-    re_path(r'^static/(?P<path>.*)$', serve, {'document_root': static_document_root}),
-
     path('', vue_app, name='homepage'),
     path('reservation/', vue_app, name='reservation'),
     path('profile/', vue_app, name='profile'),
@@ -83,5 +76,9 @@ urlpatterns = [
     path('delete_review/<id>/', delete_review, name='delete_review'),
 ]
 
-if hasattr(settings, 'MEDIA_URL') and hasattr(settings, 'MEDIA_ROOT'):
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
+
+urlpatterns += [
+    re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+]

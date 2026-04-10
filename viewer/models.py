@@ -3,11 +3,11 @@ from accounts.models import CustomUser
 
 
 class GalleryPhoto(Model):
-    photo = ImageField(upload_to='static/images/')
+    photo = ImageField(upload_to='images/')
 
 
 class VoucherPhoto(Model):
-    photo = ImageField(upload_to='static/images/')
+    photo = ImageField(upload_to='images/')
 
 
 class TurnedOffDay(Model):

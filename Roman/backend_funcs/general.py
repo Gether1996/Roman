@@ -4,6 +4,7 @@ import json
 from datetime import datetime
 from statistics import mean
 
+from django.conf import settings
 from django.http import JsonResponse
 from django.utils.translation import activate
 from django.utils.translation import gettext_lazy as _
@@ -31,7 +32,12 @@ def static_file_url(file_field):
     value = str(file_field or '')
     if not value:
         return ''
-    return value if value.startswith('/') else f'/{value}'
+    if value.startswith('static/'):
+        return f'/{value}'
+    try:
+        return file_field.url
+    except ValueError:
+        return value if value.startswith('/') else f'/{value}'
 
 
 def switch_language(request, language_code):
@@ -183,7 +189,7 @@ def settings_bootstrap(request):
     if not request.user.is_superuser:
         return JsonResponse({'status': 'error'}, status=403)
 
-    config.read('config.ini')
+    config.read(settings.CONFIG_INI_PATH)
 
     if 'settings-roman' not in config or 'settings-evka' not in config or 'settings' not in config:
         return JsonResponse({'status': 'error', 'message': 'Server configuration missing (config.ini).'}, status=503)

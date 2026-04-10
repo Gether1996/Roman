@@ -1,23 +1,21 @@
-# Use an official Python runtime as a parent image
-FROM python:3.10
+FROM python:3.10-slim
 
-# Set the working directory in the container
 WORKDIR /app
 
-# Install dependencies
-COPY requirements.txt /app/
-RUN pip install -r requirements.txt
-
-# Copy the current directory contents into the container at /app
-COPY . /app/
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 ENV DJANGO_SETTINGS_MODULE=Roman.settings
-# Ensure STATIC_ROOT exists and build hashed assets
-# (this creates /app/staticfiles/** and staticfiles.json)
-RUN mkdir -p /app/staticfiles \
- && python manage.py collectstatic --clear --noinput -v 2
 
-# Expose the port the Django app runs on
+COPY requirements.txt /app/
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . /app/
+RUN mkdir -p /app/staticfiles /data/media \
+    && python manage.py collectstatic --noinput
+
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 EXPOSE 8000
 
-# Run the Django app with gunicorn (production-grade WSGI server)
-CMD ["gunicorn", "Roman.wsgi:application", "--workers", "2", "--bind", "0.0.0.0:8000", "--timeout", "60", "--access-logfile", "-"]
+CMD ["/entrypoint.sh"]

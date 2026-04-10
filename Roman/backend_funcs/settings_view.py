@@ -1,4 +1,5 @@
 import json
+from django.conf import settings
 from django.http import JsonResponse
 import configparser
 from viewer.models import TurnedOffDay
@@ -36,7 +37,7 @@ def save_settings(request):
     if denied:
         return denied
     if request.method == 'POST':
-        config.read('config.ini')
+        config.read(settings.CONFIG_INI_PATH)
         try:
             json_data = json.loads(request.body)
         except (json.JSONDecodeError, ValueError):
@@ -91,7 +92,7 @@ def save_settings(request):
         if selected_days_evka:
             config.set('settings-evka', 'working_days', str(selected_days_evka))
 
-        with open('config.ini', 'w') as config_file:
+        with open(settings.CONFIG_INI_PATH, 'w', encoding='utf-8') as config_file:
             config.write(config_file)
 
         return JsonResponse({'status': 'success'})
@@ -103,7 +104,7 @@ def add_turned_off_day(request):
     if denied:
         return denied
     if request.method == 'POST':
-        config.read('config.ini')
+        config.read(settings.CONFIG_INI_PATH)
         try:
             json_data = json.loads(request.body)
         except (ValueError, KeyError):

@@ -1,4 +1,5 @@
 import configparser
+from django.conf import settings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -12,7 +13,7 @@ config = configparser.ConfigParser()
 def get_all_reservations_data(request):
     if not request.user.is_authenticated or not request.user.is_superuser:
         return JsonResponse({'status': 'error', 'message_sk': 'Prístup zamietnutý.', 'message_en': 'Access denied.'}, status=403)
-    config.read('config.ini')
+    config.read(settings.CONFIG_INI_PATH)
     filters = {
         'name_surname': request.GET.get('name_surname', ''),
         'email': request.GET.get('email', ''),
