@@ -89,7 +89,7 @@ export const messages = {
     reservation: {
       title: 'Rezervácia',
       subtitle: 'Vyberte terapeuta, termín a službu.',
-      pickWorker: 'Vyberte si maséra alebo masérku',
+      pickWorker: 'Vyberte si terapeuta',
       pickDate: 'Vyberte dátum',
       pickTime: 'Vyberte začiatok masáže',
       pickService: 'Vyberte službu',
