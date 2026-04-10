@@ -248,7 +248,7 @@ export const HomeView = defineComponent({
 
       try {
         if (!reviewForm.value.name_surname || !reviewForm.value.message) {
-          throw new Error(locale.value === 'en' ? 'Please complete all review fields.' : 'Prosím vyplňte všetky polia hodnotenia.');
+          throw new Error(t('home.reviewFormError'));
         }
 
         await fetchJSON('/add_review/', {

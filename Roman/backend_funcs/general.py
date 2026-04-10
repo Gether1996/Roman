@@ -36,6 +36,8 @@ def static_file_url(file_field):
 
 def switch_language(request, language_code):
     if request.method == 'POST':
+        if language_code not in ('sk', 'en'):
+            return JsonResponse({"status": "error", "message": "Invalid language code."}, status=400)
         activate(language_code)
         request.session['django_language'] = language_code
         return JsonResponse({"status": "success"})
@@ -253,6 +255,8 @@ def admin_calendar_data(request):
 
 def add_review(request):
     get_request_language(request)
+    if request.method != 'POST':
+        return JsonResponse({'status': 'error', 'message_sk': 'Nesprávna metóda.', 'message_en': 'Invalid method.'}, status=405)
     json_data = json.loads(request.body)
 
     name = json_data.get('name_surname')
@@ -262,6 +266,11 @@ def add_review(request):
 
     if not name or not message or not stars or not worker:
         return JsonResponse({'error': 'Invalid input'}, status=400)
+
+    if len(str(name)) > 150:
+        return JsonResponse({'error': 'Name is too long (max 150 characters).'}, status=400)
+    if len(str(message)) > 1000:
+        return JsonResponse({'error': 'Message is too long (max 1000 characters).'}, status=400)
 
     try:
         stars = int(stars)
@@ -283,6 +292,9 @@ def add_review(request):
 
 def delete_review(request, id):
     get_request_language(request)
+
+    if not request.user.is_authenticated or not request.user.is_superuser:
+        return JsonResponse({'status': 'error', 'message_sk': 'Prístup zamietnutý.', 'message_en': 'Access denied.'}, status=403)
 
     if request.method == 'DELETE':
         try:

@@ -135,7 +135,7 @@ export const ReservationView = defineComponent({
         ...event,
         title: isMobile
           ? String(event.extendedProps?.available_count || '')
-          : (store.language === 'en' ? event.extendedProps?.title_en : event.extendedProps?.title_sk) || event.title,
+          : (locale.value === 'en' ? event.extendedProps?.title_en : event.extendedProps?.title_sk) || event.title,
       }));
       calendar.addEventSource(events);
       markDisabledDays();
@@ -218,32 +218,32 @@ export const ReservationView = defineComponent({
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
       if (!form.name_surname.trim()) {
-        errors.push(locale.value === 'en' ? 'Please enter your full name.' : 'Prosím zadajte meno a priezvisko.');
+        errors.push(t('reservation.errorNoName'));
       }
       if (form.name_surname.trim().length > 150) {
-        errors.push(locale.value === 'en' ? 'Name is too long.' : 'Meno je príliš dlhé.');
+        errors.push(t('reservation.errorNameTooLong'));
       }
 
       if (!store.isSuperuser) {
         if (!form.email.trim()) {
-          errors.push(locale.value === 'en' ? 'Please enter your email.' : 'Prosím zadajte email.');
+          errors.push(t('reservation.errorNoEmail'));
         }
         if (form.email.trim() && !emailPattern.test(form.email.trim())) {
-          errors.push(locale.value === 'en' ? 'Please enter a valid email.' : 'Prosím zadajte platný email.');
+          errors.push(t('reservation.errorInvalidEmail'));
         }
         if (!form.phone.trim()) {
-          errors.push(locale.value === 'en' ? 'Please enter your phone number.' : 'Prosím zadajte telefónne číslo.');
+          errors.push(t('reservation.errorNoPhone'));
         }
       }
 
       if (form.phone.trim().length > 20) {
-        errors.push(locale.value === 'en' ? 'Phone number is too long.' : 'Telefónne číslo je príliš dlhé.');
+        errors.push(t('reservation.errorPhoneTooLong'));
       }
       if (form.note.trim().length > 200) {
-        errors.push(locale.value === 'en' ? 'Note is too long.' : 'Poznámka je príliš dlhá.');
+        errors.push(t('reservation.errorNoteTooLong'));
       }
       if (!selectedService.value) {
-        errors.push(locale.value === 'en' ? 'Please choose a service.' : 'Prosím vyberte službu.');
+        errors.push(t('reservation.errorNoService'));
       }
 
       return errors;
@@ -307,7 +307,7 @@ export const ReservationView = defineComponent({
 
         router.push('/');
       } catch (error) {
-        const message = localizedBackendMessage(error.data, store.language, locale.value === 'en' ? 'Reservation failed.' : 'Rezervácia zlyhala.');
+        const message = localizedBackendMessage(error.data, store.language, t('reservation.failed'));
         errorMessage.value = message;
         await window.Swal.fire({
           icon: 'error',
@@ -493,7 +493,7 @@ export const ReservationView = defineComponent({
                 <!-- Selected chip -->
                 <div v-if="selectedUser" class="user-selected-chip">
                   <span>{{ selectedUser.name_surname }}</span>
-                  <button type="button" class="user-chip-clear" @click="clearSelectedUser()" :aria-label="locale === 'en' ? 'Clear selection' : 'Zrušiť výber'">&#x2715;</button>
+                  <button type="button" class="user-chip-clear" @click="clearSelectedUser()" :aria-label="t('reservation.clearSelection')">&#x2715;</button>
                 </div>
 
                 <!-- Dropdown search (shown when no user selected) -->

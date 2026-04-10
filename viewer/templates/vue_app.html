@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="sk">
+<html lang="{{ language_code }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,9 +17,9 @@
     <script src="{% static 'scripts/sweetalert2@11.js' %}"></script>
     <script src="{% static 'scripts/fullcalendar-6.1.9/dist/index.global.min.js' %}"></script>
     <script src="{% static 'scripts/fullcalendar-6.1.9/packages/core/locales-all.global.min.js' %}"></script>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
-    <script src="https://unpkg.com/vue-router@4/dist/vue-router.global.prod.js"></script>
-    <script src="https://unpkg.com/vue-i18n@9/dist/vue-i18n.global.prod.js"></script>
+    <script src="{% static 'scripts/vue3.global.prod.js' %}"></script>
+    <script src="{% static 'scripts/vue-router4.global.prod.js' %}"></script>
+    <script src="{% static 'scripts/vue-i18n9.global.prod.js' %}"></script>
     <script type="module" src="{% static 'vue/main.js' %}"></script>
 </body>
 </html>

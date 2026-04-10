@@ -252,7 +252,7 @@ export const AllReservationsView = defineComponent({
                 <th>{{ t('admin.worker') }}<br><input v-model.trim="filters.worker" class="th-filter" placeholder="Roman / Evka" /></th>
                 <th>{{ t('admin.name') }}<br><input v-model.trim="filters.name_surname" class="th-filter" placeholder="Meno" /></th>
                 <th>{{ t('admin.service') }}<br><input v-model.trim="filters.type" class="th-filter" :placeholder="t('admin.service')" /></th>
-                <th>{{ t('admin.contact') }}<br><input v-model.trim="filters.phone_number" class="th-filter" :placeholder="locale === 'en' ? 'Phone / Email' : 'Telefón / Email'" /></th>
+                <th>{{ t('admin.contact') }}<br><input v-model.trim="filters.phone_number" class="th-filter" :placeholder="t('admin.phonePlaceholder')" /></th>
                 <th>{{ t('admin.status') }}<br><input v-model.trim="filters.status" class="th-filter" :placeholder="t('admin.status')" /></th>
                 <th class="hide-tablet">{{ t('admin.notes') }}</th>
                 <th>{{ t('admin.actions') }}</th>

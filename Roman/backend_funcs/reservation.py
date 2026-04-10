@@ -253,7 +253,8 @@ def create_reservation(request):
             )
         except Exception as e:
             # Log but don't fail the reservation if AlreadyMadeReservation fails
-            print(f"Failed to save to AlreadyMadeReservation: {e}")
+            import logging
+            logging.getLogger(__name__).error('AlreadyMadeReservation update failed: %s', e)
         
         # Send email notifications
         try:
@@ -283,7 +284,8 @@ def create_reservation(request):
                 send_email(subject, html_message, new_reservation.email)
         except Exception as email_error:
             # Log email error but don't fail the reservation
-            print(f"Email sending failed: {email_error}")
+            import logging
+            logging.getLogger(__name__).error('Email sending failed: %s', email_error)
         
         return JsonResponse({
             'status': 'success',
@@ -295,8 +297,8 @@ def create_reservation(request):
     except Exception as e:
         # Log the error for debugging
         import traceback
-        print(f"Error creating reservation: {str(e)}")
-        print(traceback.format_exc())
+        import logging
+        logging.getLogger(__name__).error('Error creating reservation: %s\n%s', e, traceback.format_exc())
         
         return JsonResponse({
             'status': 'error',
@@ -308,11 +310,21 @@ def create_reservation(request):
 def check_available_slots(request):
     if request.method == 'POST':
         config.read('config.ini')
-        json_data = json.loads(request.body)
+        try:
+            json_data = json.loads(request.body)
+        except (json.JSONDecodeError, ValueError):
+            return JsonResponse({'status': 'error', 'message': 'Invalid JSON.'}, status=400)
 
         worker = json_data.get('worker')
-        selected_date = json_data['selectedDate']
-        selected_date = datetime.strptime(selected_date, '%Y-%m-%d').date()
+        if worker not in ('Roman', 'Evka'):
+            return JsonResponse({'status': 'error', 'message': 'Invalid worker.'}, status=400)
+
+        selected_date_str = json_data.get('selectedDate', '')
+        try:
+            selected_date = datetime.strptime(selected_date_str, '%Y-%m-%d').date()
+        except (ValueError, TypeError):
+            return JsonResponse({'status': 'error', 'message': 'Invalid date format. Expected YYYY-MM-DD.'}, status=400)
+
         weekday_name = selected_date.strftime('%A')
 
         worker_config = config['settings-roman'] if worker == 'Roman' else config['settings-evka']
@@ -385,6 +397,9 @@ def check_available_slots(request):
 
 def check_available_slots_ahead(request, worker):
     if request.method == 'GET':
+        if worker not in ('Roman', 'Evka'):
+            return JsonResponse({'status': 'error', 'message': 'Invalid worker.'}, status=400)
+
         config.read('config.ini')
 
         if 'settings-roman' not in config or 'settings-evka' not in config:
@@ -518,12 +533,25 @@ def check_available_slots_ahead(request, worker):
 
 def check_available_durations(request, worker):
     if request.method == 'POST':
+        if worker not in ('Roman', 'Evka'):
+            return JsonResponse({'status': 'error', 'message': 'Invalid worker.'}, status=400)
+
         config.read('config.ini')
-        json_data = json.loads(request.body)
-        selected_date = json_data.get('pickedDateGeneralData')
-        selected_date = datetime.strptime(selected_date, '%Y-%m-%d').date()
-        time_slot_start_str = json_data.get('timeSlot')  # Time as string (e.g., "15:30")
-        time_slot_start = datetime.strptime(time_slot_start_str, '%H:%M').time()  # Convert to time object
+        try:
+            json_data = json.loads(request.body)
+        except (json.JSONDecodeError, ValueError):
+            return JsonResponse({'status': 'error', 'message': 'Invalid JSON.'}, status=400)
+
+        selected_date_str = json_data.get('pickedDateGeneralData', '')
+        time_slot_start_str = json_data.get('timeSlot', '')
+        try:
+            selected_date = datetime.strptime(selected_date_str, '%Y-%m-%d').date()
+        except (ValueError, TypeError):
+            return JsonResponse({'status': 'error', 'message': 'Invalid date format. Expected YYYY-MM-DD.'}, status=400)
+        try:
+            time_slot_start = datetime.strptime(time_slot_start_str, '%H:%M').time()
+        except (ValueError, TypeError):
+            return JsonResponse({'status': 'error', 'message': 'Invalid time format. Expected HH:MM.'}, status=400)
         weekday_name = selected_date.strftime('%A')
 
         worker_config = config['settings-roman'] if worker == 'Roman' else config['settings-evka']
@@ -569,18 +597,19 @@ def check_available_durations(request, worker):
 
             if not overlaps:
                 available_durations.append(duration)
-            else:
-                print(f"Duration {duration} is not available due to overlap.")
 
-        print("Available durations:", available_durations)
         return JsonResponse({'status': 'success', 'available_durations': available_durations})
     return JsonResponse({'status': 'error'})
 
 def deactivate_reservation(request):
     if request.method == 'DELETE':
+        if not request.user.is_authenticated:
+            return JsonResponse({'status': 'error', 'message_sk': 'Nie ste prihlásený.', 'message_en': 'Not authenticated.'}, status=401)
         json_data = json.loads(request.body)
         try:
             reservation = Reservation.objects.get(id=json_data.get('reservation_id'))
+            if not request.user.is_superuser and reservation.email != request.user.email:
+                return JsonResponse({'status': 'error', 'message_sk': 'Nemáte oprávnenie zrušiť túto rezerváciu.', 'message_en': 'You are not authorized to cancel this reservation.'}, status=403)
             reservation.active = False
             reservation.status = 'Zrušená zákazníkom'
             reservation.cancellation_reason = json_data.get('reason')
@@ -600,6 +629,8 @@ def deactivate_reservation(request):
     return JsonResponse({'status': 'error', 'message': _('Zlý request')})
 
 def approve_reservation(request):
+    if not request.user.is_authenticated or not request.user.is_superuser:
+        return JsonResponse({'status': 'error', 'message_sk': 'Prístup zamietnutý.', 'message_en': 'Access denied.'}, status=403)
     if request.method == 'POST':
         json_data = json.loads(request.body)
         try:
@@ -623,6 +654,8 @@ def approve_reservation(request):
     return JsonResponse({'status': 'error', 'message': _('Zlý request')})
 
 def deactivate_reservation_by_admin(request):
+    if not request.user.is_authenticated or not request.user.is_superuser:
+        return JsonResponse({'status': 'error', 'message_sk': 'Prístup zamietnutý.', 'message_en': 'Access denied.'}, status=403)
     if request.method == 'DELETE':
         json_data = json.loads(request.body)
 
@@ -648,6 +681,8 @@ def deactivate_reservation_by_admin(request):
     return JsonResponse({'status': 'error', 'message': _('Zlý request')})
 
 def delete_reservation(request):
+    if not request.user.is_authenticated or not request.user.is_superuser:
+        return JsonResponse({'status': 'error', 'message_sk': 'Prístup zamietnutý.', 'message_en': 'Access denied.'}, status=403)
     if request.method == 'DELETE':
         json_data = json.loads(request.body)
         try:
@@ -659,6 +694,8 @@ def delete_reservation(request):
     return JsonResponse({'status': 'error', 'message': _('Zlý request')})
 
 def add_personal_note(request):
+    if not request.user.is_authenticated or not request.user.is_superuser:
+        return JsonResponse({'status': 'error', 'message_sk': 'Prístup zamietnutý.', 'message_en': 'Access denied.'}, status=403)
     if request.method == 'POST':
         json_data = json.loads(request.body)
 

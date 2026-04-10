@@ -19,5 +19,5 @@ RUN mkdir -p /app/staticfiles \
 # Expose the port the Django app runs on
 EXPOSE 8000
 
-# Run the Django app
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Run the Django app with gunicorn (production-grade WSGI server)
+CMD ["gunicorn", "Roman.wsgi:application", "--workers", "2", "--bind", "0.0.0.0:8000", "--timeout", "60", "--access-logfile", "-"]

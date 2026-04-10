@@ -98,7 +98,7 @@ export const SettingsView = defineComponent({
 
       await window.Swal.fire({
         icon: 'success',
-        title: locale.value === 'en' ? 'Settings saved.' : 'Nastavenia uložené.',
+        title: t('admin.settingsSaved'),
         confirmButtonColor: '#0f7e7a',
       });
     }
@@ -129,7 +129,7 @@ export const SettingsView = defineComponent({
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: t('common.delete'),
-        cancelButtonText: locale.value === 'en' ? 'Cancel' : 'Zrušiť',
+        cancelButtonText: t('common.cancel'),
         confirmButtonColor: '#b83b5e',
       });
       if (!result.isConfirmed) return;
@@ -151,7 +151,7 @@ export const SettingsView = defineComponent({
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: t('admin.deleteSelected'),
-        cancelButtonText: locale.value === 'en' ? 'Cancel' : 'Zrušiť',
+        cancelButtonText: t('common.cancel'),
         confirmButtonColor: '#b83b5e',
       });
       if (!result.isConfirmed) return;

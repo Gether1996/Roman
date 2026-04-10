@@ -34,7 +34,7 @@ export const ProfileView = defineComponent({
         confirmButtonColor: '#0f7e7a',
         inputValidator: (value) => {
           if (!value) {
-            return locale.value === 'en' ? 'Please enter a reason.' : 'Prosím zadajte dôvod.';
+            return t('profile.enterReason');
           }
           return null;
         },
@@ -67,7 +67,7 @@ export const ProfileView = defineComponent({
 
     function statusLabel(reservation) {
       if (isCancelled(reservation)) {
-        return store.language === 'en' ? 'Cancelled' : 'Zrušená';
+        return t('profile.cancelled');
       }
       return reservation.status;
     }
