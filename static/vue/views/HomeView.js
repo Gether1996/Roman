@@ -153,6 +153,163 @@ const techniques = {
   },
 };
 
+const techniqueCatalog = {
+  classic: {
+    icon: 'fa-spa',
+    sk: {
+      title: 'Klasická masáž',
+      short: 'Relaxačná a regeneračná starostlivosť',
+      body: [
+        'Klasická masáž pomáha uvoľniť svalové napätie, podporuje prekrvenie a prináša telu aj hlave príjemné spomalenie po náročnom dni. Je vhodná pre klientov, ktorí hľadajú kombináciu oddychu, regenerácie a celkového zlepšenia telesného komfortu.',
+        'Veľmi dobre sa hodí pri stuhnutí, únave, psychickom strese aj ako pravidelná starostlivosť o telo. Intenzitu prispôsobujeme tomu, či potrebujete skôr jemné uvoľnenie, alebo dôkladnejšie rozmasírovanie problematických miest.',
+      ],
+    },
+    en: {
+      title: 'Classic massage',
+      short: 'Relaxing and restorative care',
+      body: [
+        'Classic massage helps release muscular tension, improves circulation, and gives both body and mind a welcome reset after demanding days. It is a great option for clients looking for a balanced combination of relaxation, recovery, and overall physical comfort.',
+        'It works especially well for stiffness, fatigue, and stress, but also as part of regular body maintenance. The intensity is adjusted to whether you need a gentler calming treatment or a more thorough release of tense and overloaded areas.',
+      ],
+    },
+  },
+  myofascial: {
+    icon: 'fa-hand-sparkles',
+    sk: {
+      title: 'Myofasciálne techniky',
+      short: 'Uvoľnenie mäkkých tkanív a fascií',
+      body: [
+        'Myofasciálne techniky sa zameriavajú na fascie, svalové obaly a obmedzenia, ktoré môžu znižovať pohyblivosť alebo vytvárať nepríjemné pnutie v tele. Ošetrenie je cielenejšie a často prináša pocit väčšej ľahkosti, voľnejšieho pohybu a lepšieho vnímania vlastného tela.',
+        'Sú vhodné pri preťažení, lokálnom diskomforte, pocite stiahnutia aj pri dlhodobom sedení alebo jednostrannej záťaži. Technika sa volí citlivo podľa toho, kde je tkanivo skrátené, citlivé alebo menej pružné.',
+      ],
+    },
+    en: {
+      title: 'Myofascial techniques',
+      short: 'Soft tissue and fascia release',
+      body: [
+        'Myofascial techniques focus on fascia, soft tissue layers, and restrictions that can reduce mobility or create uncomfortable tension patterns in the body. This type of work is more targeted and often leads to a feeling of lighter movement, better range, and improved body awareness.',
+        'They are especially useful for overload, local discomfort, a feeling of tightness, and issues related to prolonged sitting or one-sided physical stress. The treatment is adapted carefully to the areas where tissue feels shortened, sensitive, or less elastic.',
+      ],
+    },
+  },
+  sport: {
+    icon: 'fa-dumbbell',
+    sk: {
+      title: 'Športová masáž',
+      short: 'Pre aktívnych klientov a športovcov',
+      body: [
+        'Športová masáž je dynamickejšia a cielenejšia technika určená pre aktívnych klientov, športovcov aj ľudí, ktorí svoje telo pravidelne zaťažujú v práci alebo tréningu. Pomáha pripraviť svaly na výkon, ale aj urýchliť regeneráciu po námahe.',
+        'Je vhodná pri stuhnutosti, únave, pocite ťažkých nôh alebo pri opakovanom preťažení konkrétnych partií. Cieľom je zlepšiť komfort pri pohybe, podporiť regeneráciu a uľahčiť návrat k ďalšiemu tréningu alebo bežnej aktivite.',
+      ],
+    },
+    en: {
+      title: 'Sports massage',
+      short: 'For active clients and athletes',
+      body: [
+        'Sports massage is a more dynamic and targeted treatment designed for active clients, athletes, and anyone who puts regular physical stress on the body through work or training. It can help prepare muscles for performance as well as support recovery after exertion.',
+        'It is especially useful for stiffness, fatigue, a feeling of heavy legs, or repeated overload in specific muscle groups. The goal is to improve comfort in movement, support recovery, and make the return to training or normal activity feel easier and smoother.',
+      ],
+    },
+  },
+  cupping: {
+    icon: 'fa-fire-flame-curved',
+    image: '/static/images/cupping.png',
+    sk: {
+      title: 'Bankovanie',
+      short: 'Podpora prekrvenia a uvoľnenia',
+      body: [
+        'Bankovanie je tradičná technika využívajúca podtlak, ktorý podporuje prekrvenie, uvoľnenie povrchových aj hlbších vrstiev tkaniva a prináša citeľný pocit úľavy v preťažených oblastiach. Často sa používa ako doplnok k manuálnej terapii alebo masáži.',
+        'Po ošetrení môžu zostať dočasné kruhové stopy, ktoré sú bežnou reakciou a postupne prirodzene miznú. Technika sa volí podľa citlivosti klienta a stavu tkaniva tak, aby mala zmysluplný efekt a zároveň bola dobre tolerovaná.',
+      ],
+    },
+    en: {
+      title: 'Cupping therapy',
+      short: 'Circulation and tissue release support',
+      body: [
+        'Cupping is a traditional suction-based technique that supports circulation, releases both superficial and deeper tissue layers, and often brings noticeable relief in overloaded areas. It is frequently used as a complementary method alongside manual therapy or massage.',
+        'Temporary circular marks may remain after treatment, which is a normal response and fades naturally over time. The intensity is always chosen according to the client’s sensitivity and the current condition of the tissue so the treatment stays effective and well tolerated.',
+      ],
+    },
+  },
+  stones: {
+    icon: 'fa-gem',
+    sk: {
+      title: 'Lávové kamene',
+      short: 'Teplo a hlboká relaxácia',
+      body: [
+        'Masáž lávovými kameňmi spája príjemné teplo, plynulé ťahy a hlboký relaxačný účinok na telo aj nervový systém. Nahriate kamene pomáhajú uvoľniť stuhnuté partie jemnejším a zároveň veľmi účinným spôsobom.',
+        'Táto technika je vhodná najmä vtedy, keď potrebujete vypnúť, znížiť vnútorné napätie a dopriať si pokojnejšiu, hrejivú formu starostlivosti. Výsledkom býva pocit uvoľnenia, oddychu a celkového príjemného zľahčenia tela.',
+      ],
+    },
+    en: {
+      title: 'Hot stones',
+      short: 'Warmth and deep relaxation',
+      body: [
+        'Hot stone massage combines soothing warmth, flowing strokes, and a deeply calming effect on both the body and the nervous system. Heated stones help release tight areas in a gentler yet still very effective way.',
+        'This technique is ideal when you need to slow down, reduce inner tension, and enjoy a warmer, calmer form of care. The usual outcome is a strong sense of relaxation, rest, and an overall lighter feeling in the body.',
+      ],
+    },
+  },
+  iastm: {
+    icon: 'fa-screwdriver-wrench',
+    image: '/static/images/iastm.png',
+    sk: {
+      title: 'IASTM',
+      short: 'Moderná terapia mäkkých tkanív',
+      body: [
+        'IASTM je modernejší prístup k práci s mäkkými tkanivami pomocou špeciálnych nástrojov, ktoré umožňujú presnejšie zacieliť problematické miesta. Využíva sa najmä tam, kde chceme podporiť kvalitu pohybu, pružnosť tkaniva a celkovú funkciu ošetrovanej oblasti.',
+        'Technika môže byť vhodná pri pocite stiahnutia, po preťažení alebo ako doplnok pri riešení dlhodobejších funkčných obmedzení. Ošetrenie vždy prispôsobujeme tak, aby bolo účelné, bezpečné a primerané aktuálnemu stavu klienta.',
+      ],
+    },
+    en: {
+      title: 'IASTM',
+      short: 'Modern soft tissue therapy',
+      body: [
+        'IASTM is a more modern soft tissue approach using specialized tools that allow more precise work on problematic areas. It is mainly used when the goal is to support movement quality, tissue mobility, and the overall function of the treated region.',
+        'This technique can be helpful for feelings of tightness, overload, or as part of addressing longer-lasting functional restrictions. The treatment is always adapted so that it remains purposeful, safe, and appropriate to the client’s current condition.',
+      ],
+    },
+  },
+  rkt: {
+    icon: 'fa-stethoscope',
+    sk: {
+      title: 'RKT techniky',
+      short: 'Komplexné rehabilitačné postupy',
+      body: [
+        'RKT techniky spájajú manuálnu prácu, mobilizáciu a cielene vedený pohyb do jedného funkčného systému. Ich cieľom nie je len krátkodobá úľava, ale aj lepšie pochopenie toho, ako telo pracuje a kde vzniká zbytočné preťaženie alebo kompenzácia.',
+        'Vhodné sú pri rôznych pohybových obmedzeniach, asymetriách, bolestivých stereotypoch či po dlhšom preťažení. Terapia sa prispôsobuje konkrétnemu problému klienta a často prepája ošetrenie s jednoduchými odporúčaniami pre bežné fungovanie.',
+      ],
+    },
+    en: {
+      title: 'RKT techniques',
+      short: 'Comprehensive rehabilitation approach',
+      body: [
+        'RKT techniques combine manual work, mobilization, and guided movement into one functional system. The goal is not only short-term relief, but also a better understanding of how the body works and where unnecessary overload or compensation patterns develop.',
+        'They are suitable for various movement restrictions, asymmetries, painful movement habits, or prolonged overload. The therapy is always adapted to the client’s specific issue and often connects hands-on treatment with simple recommendations for everyday functioning.',
+      ],
+    },
+  },
+  sm: {
+    icon: 'fa-arrows-spin',
+    sk: {
+      title: 'SM systém',
+      short: 'Stabilizácia chrbtice a držania tela',
+      body: [
+        'SM systém je cielená pohybová metóda zameraná na aktiváciu svalových reťazcov, stabilitu chrbtice a kvalitnejšie držanie tela. Pracuje sa plynulo, kontrolovane a s dôrazom na správne zapojenie tela, nie na bezmyšlienkové opakovanie pohybov.',
+        'Je vhodný pri sedavom spôsobe života, pri pocite oslabeného stredu tela, pri stuhnutí chrbta aj ako doplnok k terapii alebo pravidelnému cvičeniu. Pomáha budovať lepšie pohybové návyky a podporuje istejší, voľnejší pohyb v bežnom živote.',
+      ],
+    },
+    en: {
+      title: 'SM system',
+      short: 'Spinal stability and posture support',
+      body: [
+        'The SM system is a focused movement method aimed at activating muscle chains, improving spinal stability, and supporting healthier posture. It is performed in a smooth and controlled way with emphasis on correct engagement of the body rather than mindless repetition.',
+        'It is especially useful for sedentary lifestyles, feelings of a weak core, back stiffness, or as a complement to therapy and regular exercise. It helps build better movement habits and supports more confident, freer movement in everyday life.',
+      ],
+    },
+  },
+};
+
 const therapists = [
   {
     name: 'Roman Zelník',
@@ -196,13 +353,13 @@ export const HomeView = defineComponent({
       if (!selectedTechnique.value) {
         return null;
       }
-      return techniques[selectedTechnique.value]?.[locale.value] || null;
+      return techniqueCatalog[selectedTechnique.value]?.[locale.value] || null;
     });
     const activeTechniqueImage = computed(() => {
-      if (!selectedTechnique.value || !techniques[selectedTechnique.value]) {
+      if (!selectedTechnique.value || !techniqueCatalog[selectedTechnique.value]) {
         return '';
       }
-      return techniques[selectedTechnique.value].image || '';
+      return techniqueCatalog[selectedTechnique.value].image || '';
     });
 
     async function loadHomepage() {
@@ -307,7 +464,7 @@ export const HomeView = defineComponent({
     return {
       store,
       therapists,
-      techniques,
+      techniques: techniqueCatalog,
       loading,
       homepage,
       selectedTechnique,
@@ -397,7 +554,7 @@ export const HomeView = defineComponent({
       <section class="section-block alt-surface" id="gallery">
         <div class="container-shell">
           <div class="section-header" v-reveal>
-            <h2>{{ t('home.galleryTitle') }}</h2>
+            <h2>{{ locale === 'sk' ? 'Galéria/Cenník' : 'Gallery/Pricing' }}</h2>
           </div>
           <div class="media-grid">
             <button v-for="photo in homepage.photos" :key="photo.id" class="media-card" v-reveal @click="openPhoto(photo.src)">

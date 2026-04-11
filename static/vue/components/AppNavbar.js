@@ -110,7 +110,7 @@ export const AppNavbar = defineComponent({
         <div class="nav-panel" :class="{ open: menuOpen }">
           <div class="nav-links">
             <button class="nav-link-button" @click="goToSection('techniques')">{{ t('nav.techniques') }}</button>
-            <button class="nav-link-button" @click="goToSection('gallery')">{{ t('nav.gallery') }}</button>
+            <button class="nav-link-button" @click="goToSection('gallery')">{{ store.language === 'sk' ? 'Galéria/Cenník' : 'Gallery/Pricing' }}</button>
             <button class="nav-link-button" @click="goToSection('reviews')">{{ t('nav.reviews') }}</button>
             <button class="nav-link-button" @click="goToSection('contact')">{{ t('nav.contact') }}</button>
           </div>
