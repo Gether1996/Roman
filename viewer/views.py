@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.utils.translation import activate
+from django.views.decorators.csrf import ensure_csrf_cookie
 from Roman.backend_funcs.reservation import prepare_reservation_data, send_email
 from viewer.models import Reservation
 
@@ -130,6 +131,7 @@ def approve_reservation_mail(request, reservation_id):
             return render(request, 'error.html', {'message': message})
     message = 'Zlý request'
     return render(request, 'error.html', {'message': message})
+@ensure_csrf_cookie
 def vue_app(request):
     language_code = request.session.get('django_language', 'sk')
     activate(language_code)
