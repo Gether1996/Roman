@@ -48,6 +48,7 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',  # move here
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'Roman.cache_headers.NoCacheForDynamicResponsesMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -142,6 +143,7 @@ STATICFILES_DIRS = [
 STATIC_ROOT = str(Path(os.environ.get('STATIC_ROOT', BASE_DIR / 'staticfiles')).resolve())
 MEDIA_URL = '/media/'
 MEDIA_ROOT = str(Path(os.environ.get('MEDIA_ROOT', DATA_DIR / 'media')).resolve())
+WHITENOISE_MAX_AGE = 0
 if DEBUG:
     STORAGES = {
         "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
