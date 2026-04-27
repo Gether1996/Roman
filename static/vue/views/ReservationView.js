@@ -177,6 +177,10 @@ export const ReservationView = defineComponent({
     async function pickWorker(value) {
       worker.value = value;
       resetAfterWorker();
+      markSelectedDay();
+      if (calendar) {
+        await refreshCalendarEvents();
+      }
       // DOM update for v-if="worker" section is async — watch calendarRoot handles init
       await nextTick();
       scrollToNext('res-step-date');

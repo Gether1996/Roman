@@ -402,6 +402,10 @@ a[x-apple-data-detectors] {
   padding-top: 0.5rem;
 }
 
+.page-section-wide {
+  width: min(calc(100% - 2rem), 1480px);
+}
+
 .section-block {
   padding: 1rem 0;
 }
@@ -1961,12 +1965,15 @@ a[x-apple-data-detectors] {
 .res-table-wrap {
   overflow-x: auto;
   padding: 0;
+  border-radius: var(--radius-xl);
 }
 
 .res-table {
   width: 100%;
+  min-width: 1240px;
   border-collapse: collapse;
   font-size: 0.9rem;
+  table-layout: fixed;
 }
 
 .res-table thead th {
@@ -2023,6 +2030,40 @@ a[x-apple-data-detectors] {
   color: var(--text);
 }
 
+.res-table th.col-date,
+.res-table td.td-date {
+  width: 8.75rem;
+}
+
+.res-table th.col-time,
+.res-table td.td-time {
+  width: 7.25rem;
+}
+
+.res-table th.col-worker {
+  width: 7rem;
+}
+
+.res-table th.col-name {
+  width: 7.5rem;
+}
+
+.res-table th.col-service {
+  width: 6.5rem;
+}
+
+.res-table th.col-contact {
+  width: 15.5rem;
+}
+
+.res-table th.col-status {
+  width: 8.5rem;
+}
+
+.res-table th.col-actions {
+  width: 8rem;
+}
+
 .td-date {
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
@@ -2065,6 +2106,11 @@ a[x-apple-data-detectors] {
 
 .td-actions {
   white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.35rem;
+  padding-right: 1.15rem !important;
 }
 
 .btn-icon {
@@ -2078,7 +2124,8 @@ a[x-apple-data-detectors] {
   cursor: pointer;
   font-size: 0.85rem;
   transition: opacity 0.15s, transform 0.15s;
-  margin-right: 0.25rem;
+  margin-right: 0;
+  flex-shrink: 0;
 }
 
 .btn-icon:hover { opacity: 0.8; transform: scale(1.08); }
@@ -2530,6 +2577,14 @@ a[x-apple-data-detectors] {
     font-size: 0.82rem;
   }
 
+  .page-section-wide {
+    width: calc(100% - 2rem);
+  }
+
+  .res-table {
+    min-width: 980px;
+  }
+
   /* Hide lower-priority columns on tablet */
   .res-table .hide-tablet {
     display: none;
@@ -2587,6 +2642,14 @@ a[x-apple-data-detectors] {
     font-size: 0.78rem;
   }
 
+  .page-section-wide {
+    width: calc(100% - 1.5rem);
+  }
+
+  .res-table {
+    min-width: 880px;
+  }
+
   .th-filter {
     font-size: 0.72rem;
     padding: 0.25rem 0.4rem;
@@ -2601,7 +2664,7 @@ a[x-apple-data-detectors] {
     width: 1.8rem;
     height: 1.8rem;
     font-size: 0.75rem;
-    margin-right: 0.15rem;
+    margin-right: 0;
   }
 
   .res-pagination {

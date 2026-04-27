@@ -204,7 +204,7 @@ export const AllReservationsView = defineComponent({
     };
   },
   template: `
-    <section class="page-section container-shell">
+    <section class="page-section container-shell page-section-wide reservations-page">
       <div class="section-header">
         <span class="section-kicker">Admin</span>
         <h1>{{ t('admin.reservationsTitle') }}</h1>
@@ -247,15 +247,15 @@ export const AllReservationsView = defineComponent({
           <table class="res-table">
             <thead>
               <tr>
-                <th>{{ t('admin.date') }}<br><input v-model.trim="filters.date" class="th-filter" placeholder="DD.MM.YYYY" /></th>
-                <th>{{ t('admin.time') }}<br><input v-model.trim="filters.slot" class="th-filter" placeholder="HH:MM" /></th>
-                <th>{{ t('admin.worker') }}<br><input v-model.trim="filters.worker" class="th-filter" placeholder="Roman / Evka" /></th>
-                <th>{{ t('admin.name') }}<br><input v-model.trim="filters.name_surname" class="th-filter" placeholder="Meno" /></th>
-                <th>{{ t('admin.service') }}<br><input v-model.trim="filters.type" class="th-filter" :placeholder="t('admin.service')" /></th>
-                <th>{{ t('admin.contact') }}<br><input v-model.trim="filters.phone_number" class="th-filter" :placeholder="t('admin.phonePlaceholder')" /></th>
-                <th>{{ t('admin.status') }}<br><input v-model.trim="filters.status" class="th-filter" :placeholder="t('admin.status')" /></th>
+                <th class="col-date">{{ t('admin.date') }}<br><input v-model.trim="filters.date" class="th-filter" placeholder="DD.MM.YYYY" /></th>
+                <th class="col-time">{{ t('admin.time') }}<br><input v-model.trim="filters.slot" class="th-filter" placeholder="HH:MM" /></th>
+                <th class="col-worker">{{ t('admin.worker') }}<br><input v-model.trim="filters.worker" class="th-filter" placeholder="Roman / Evka" /></th>
+                <th class="col-name">{{ t('admin.name') }}<br><input v-model.trim="filters.name_surname" class="th-filter" placeholder="Meno" /></th>
+                <th class="col-service">{{ t('admin.service') }}<br><input v-model.trim="filters.type" class="th-filter" :placeholder="t('admin.service')" /></th>
+                <th class="col-contact">{{ t('admin.contact') }}<br><input v-model.trim="filters.phone_number" class="th-filter" :placeholder="t('admin.phonePlaceholder')" /></th>
+                <th class="col-status">{{ t('admin.status') }}<br><input v-model.trim="filters.status" class="th-filter" :placeholder="t('admin.status')" /></th>
                 <th class="hide-tablet">{{ t('admin.notes') }}</th>
-                <th>{{ t('admin.actions') }}</th>
+                <th class="col-actions">{{ t('admin.actions') }}</th>
               </tr>
             </thead>
             <tbody>
