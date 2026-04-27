@@ -31,7 +31,7 @@ class PaymentQRCodeAdmin(admin.ModelAdmin):
     fieldsets = (
         ('Návod pre administrátora', {
             'fields': ('admin_instructions', 'when_qr_is_created'),
-            'description': 'Túto časť si prečítajte pred prvým vytvorením QR kódu. Je písaná pre bežného používateľa bez technického pozadia.',
+            'description': 'Túto časť si prečítajte pred prvým vytvorením QR kódu.',
         }),
         ('Základné údaje', {
             'fields': ('title', 'is_active', 'beneficiary_name', 'iban', 'swift'),
