@@ -688,7 +688,7 @@ export const HomeView = defineComponent({
             <span>{{ t('reservation.nameSurname') }}</span>
             <input v-model.trim="reviewForm.name_surname" type="text" />
           </label>
-          <label class="field">
+          <div class="field">
             <span>{{ t('home.therapist') }}</span>
             <div class="review-therapist-picker" role="radiogroup" :aria-label="t('home.therapist')">
               <button
@@ -710,12 +710,12 @@ export const HomeView = defineComponent({
                 <strong>Evka</strong>
               </button>
             </div>
-          </label>
+          </div>
           <label class="field">
             <span>{{ t('home.message') }}</span>
             <textarea v-model.trim="reviewForm.message" rows="5"></textarea>
           </label>
-          <label class="field">
+          <div class="field">
             <span>{{ t('home.rating') }}</span>
             <div class="review-star-picker" role="radiogroup" :aria-label="t('home.rating')">
               <button
@@ -731,7 +731,7 @@ export const HomeView = defineComponent({
               </button>
             </div>
             <strong class="review-rating-value">{{ reviewForm.stars }} / 5</strong>
-          </label>
+          </div>
           <p v-if="reviewForm.error" class="form-error">{{ reviewForm.error }}</p>
           <div class="modal-actions">
             <button type="button" class="btn btn-secondary-soft" @click="reviewModalOpen = false">{{ t('common.cancel') }}</button>
