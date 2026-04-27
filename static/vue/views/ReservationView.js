@@ -42,6 +42,7 @@ export const ReservationView = defineComponent({
     const selectedUser = ref(null);
     const smInfoOpen = ref(false);
     const calendarRoot = ref(null);
+    const calendarLoading = ref(false);
     const errorMessage = ref('');
     const form = reactive({
       name_surname: '',
@@ -128,17 +129,22 @@ export const ReservationView = defineComponent({
         return;
       }
 
-      const response = await fetchJSON(`/check_available_slots_ahead/${worker.value}/`);
-      calendar.removeAllEvents();
-      const isMobile = window.innerWidth < 640;
-      const events = (response.events || []).map((event) => ({
-        ...event,
-        title: isMobile
-          ? String(event.extendedProps?.available_count || '')
-          : (locale.value === 'en' ? event.extendedProps?.title_en : event.extendedProps?.title_sk) || event.title,
-      }));
-      calendar.addEventSource(events);
-      markDisabledDays();
+      calendarLoading.value = true;
+      try {
+        const response = await fetchJSON(`/check_available_slots_ahead/${worker.value}/`);
+        calendar.removeAllEvents();
+        const isMobile = window.innerWidth < 640;
+        const events = (response.events || []).map((event) => ({
+          ...event,
+          title: isMobile
+            ? String(event.extendedProps?.available_count || '')
+            : (locale.value === 'en' ? event.extendedProps?.title_en : event.extendedProps?.title_sk) || event.title,
+        }));
+        calendar.addEventSource(events);
+        markDisabledDays();
+      } finally {
+        calendarLoading.value = false;
+      }
     }
 
     function markDisabledDays() {
@@ -400,6 +406,7 @@ export const ReservationView = defineComponent({
       errorMessage,
       currentStep,
       calendarRoot,
+      calendarLoading,
       pickWorker,
       pickSlot,
       markSelectedDay,
@@ -452,7 +459,16 @@ export const ReservationView = defineComponent({
 
             <article class="glass-panel reservation-stage" v-if="worker" id="res-step-date">
               <h2>{{ t('reservation.pickDate') }}</h2>
-              <div ref="calendarRoot" class="calendar-shell booking-calendar"></div>
+              <div class="booking-calendar-wrap" :class="{ loading: calendarLoading }">
+                <div ref="calendarRoot" class="calendar-shell booking-calendar"></div>
+                <div v-if="calendarLoading" class="calendar-loading-overlay" aria-live="polite" aria-busy="true">
+                  <div class="calendar-loading-box">
+                    <span class="calendar-spinner"></span>
+                    <strong>{{ t('common.loading') }}</strong>
+                    <span>{{ locale === 'sk' ? 'Načítavajú sa voľné termíny...' : 'Loading available dates...' }}</span>
+                  </div>
+                </div>
+              </div>
               <div v-if="selectedDate" class="selection-pill">{{ formatDateInput(selectedDate) }}</div>
             </article>
 
