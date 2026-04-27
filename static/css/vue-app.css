@@ -128,6 +128,10 @@ a[x-apple-data-detectors] {
   flex-wrap: wrap;
 }
 
+.section-header-inline .review-add-inline {
+  margin-left: auto;
+}
+
 .section-header h1,
 .section-header h2,
 .hero-copy h1,
@@ -1293,6 +1297,16 @@ a[x-apple-data-detectors] {
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+.field input,
+.field select,
+.select-inline {
+  cursor: pointer;
+}
+
+.field textarea {
+  cursor: text;
+}
+
 .field input:focus,
 .field textarea:focus,
 .field select:focus,
@@ -1329,6 +1343,88 @@ a[x-apple-data-detectors] {
 .form-error {
   color: var(--danger);
   font-weight: 700;
+}
+
+.review-therapist-picker {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.review-therapist-option {
+  border: 1px solid rgba(30, 44, 47, 0.12);
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--text);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  justify-content: flex-start;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.review-therapist-option:hover {
+  border-color: rgba(15, 126, 122, 0.22);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.review-therapist-option.active {
+  border-color: rgba(15, 126, 122, 0.35);
+  background: rgba(15, 126, 122, 0.08);
+  box-shadow: 0 0 0 4px rgba(15, 126, 122, 0.08);
+}
+
+.review-therapist-dot {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.review-therapist-dot.roman {
+  background: #0f7e7a;
+}
+
+.review-therapist-dot.evka {
+  background: #db2777;
+}
+
+.review-star-picker {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.review-star-button {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 999px;
+  border: 1px solid rgba(30, 44, 47, 0.1);
+  background: rgba(255, 255, 255, 0.92);
+  color: #d4d7da;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  transition: transform 0.15s ease, border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+
+.review-star-button:hover {
+  border-color: rgba(224, 164, 58, 0.32);
+  color: #e0a43a;
+  background: rgba(255, 249, 238, 0.98);
+}
+
+.review-star-button.active {
+  color: #e0a43a;
+  border-color: rgba(224, 164, 58, 0.28);
+  background: rgba(255, 246, 228, 0.94);
+}
+
+.review-rating-value {
+  color: var(--text);
 }
 
 .centered-copy {
@@ -2534,6 +2630,10 @@ a[x-apple-data-detectors] {
   .section-header-inline {
     align-items: flex-start;
   }
+
+  .section-header-inline .review-add-inline {
+    margin-left: 0;
+  }
 }
 
 @media (max-width: 560px) {
@@ -2813,6 +2913,15 @@ a[x-apple-data-detectors] {
 
   .calendar-shell-admin .fc-admin-event.is-mobile strong {
     font-size: 0.82rem;
+  }
+
+  .review-therapist-picker {
+    grid-template-columns: 1fr;
+  }
+
+  .review-star-button {
+    width: 2.7rem;
+    height: 2.7rem;
   }
 
   .cal-legend {

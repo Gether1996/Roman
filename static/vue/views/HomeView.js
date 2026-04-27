@@ -582,8 +582,8 @@ export const HomeView = defineComponent({
         <div class="container-shell">
           <div class="section-header" v-reveal>
             <div class="section-header-inline">
-              <button class="btn btn-primary-strong review-add-inline" @click="openReviewModal()">{{ t('home.addReview') }}</button>
               <h2>{{ t('home.reviewsTitle') }}</h2>
+              <button class="btn btn-primary-strong review-add-inline" @click="openReviewModal()">{{ t('home.addReview') }}</button>
             </div>
             <p>{{ t('home.reviewsText') }}</p>
           </div>
@@ -690,10 +690,26 @@ export const HomeView = defineComponent({
           </label>
           <label class="field">
             <span>{{ t('home.therapist') }}</span>
-            <select v-model="reviewForm.worker">
-              <option value="roman">Roman</option>
-              <option value="evka">Evka</option>
-            </select>
+            <div class="review-therapist-picker" role="radiogroup" :aria-label="t('home.therapist')">
+              <button
+                type="button"
+                class="review-therapist-option"
+                :class="{ active: reviewForm.worker === 'roman' }"
+                @click="reviewForm.worker = 'roman'"
+              >
+                <span class="review-therapist-dot roman"></span>
+                <strong>Roman</strong>
+              </button>
+              <button
+                type="button"
+                class="review-therapist-option"
+                :class="{ active: reviewForm.worker === 'evka' }"
+                @click="reviewForm.worker = 'evka'"
+              >
+                <span class="review-therapist-dot evka"></span>
+                <strong>Evka</strong>
+              </button>
+            </div>
           </label>
           <label class="field">
             <span>{{ t('home.message') }}</span>
@@ -701,8 +717,20 @@ export const HomeView = defineComponent({
           </label>
           <label class="field">
             <span>{{ t('home.rating') }}</span>
-            <input v-model.number="reviewForm.stars" type="range" min="1" max="5" />
-            <strong>{{ reviewForm.stars }} / 5</strong>
+            <div class="review-star-picker" role="radiogroup" :aria-label="t('home.rating')">
+              <button
+                v-for="star in 5"
+                :key="star"
+                type="button"
+                class="review-star-button"
+                :class="{ active: star <= reviewForm.stars }"
+                :aria-label="`${star} / 5`"
+                @click="reviewForm.stars = star"
+              >
+                <i class="fa-star" :class="star <= reviewForm.stars ? 'fa-solid' : 'fa-regular'"></i>
+              </button>
+            </div>
+            <strong class="review-rating-value">{{ reviewForm.stars }} / 5</strong>
           </label>
           <p v-if="reviewForm.error" class="form-error">{{ reviewForm.error }}</p>
           <div class="modal-actions">
