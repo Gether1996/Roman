@@ -121,6 +121,13 @@ a[x-apple-data-detectors] {
   margin-bottom: 2rem;
 }
 
+.section-header-inline {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
 .section-header h1,
 .section-header h2,
 .hero-copy h1,
@@ -669,6 +676,8 @@ a[x-apple-data-detectors] {
   background:
     linear-gradient(135deg, rgba(15, 126, 122, 0.14), rgba(255, 255, 255, 0.82)),
     var(--surface);
+  min-height: 20rem;
+  align-content: center;
 }
 
 .business-band {
@@ -682,12 +691,19 @@ a[x-apple-data-detectors] {
 .business-panel-wide {
   width: 100%;
   max-width: none;
-  padding: clamp(1.75rem, 4vw, 3rem);
-  gap: 1.25rem;
+  padding: clamp(2.25rem, 4.8vw, 4rem);
+  gap: 1.5rem;
 }
 
-.business-panel-wide .btn {
-  width: min(100%, 22rem);
+.business-panel-wide p {
+  max-width: 62rem;
+  font-size: 1.08rem;
+  line-height: 1.88;
+}
+
+.review-add-inline {
+  padding-inline: 1.2rem;
+  min-height: 3rem;
 }
 
 /* Contact block */
@@ -750,8 +766,8 @@ a[x-apple-data-detectors] {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.1rem;
-  height: 2.1rem;
+  width: 3rem;
+  height: 3rem;
   border-radius: 999px;
   background: transparent;
   color: var(--muted);
@@ -883,12 +899,14 @@ a[x-apple-data-detectors] {
   color: var(--muted);
   font-weight: 600;
   font-size: 0.95rem;
-  padding: 0.7rem 1rem;
+  padding: 0.7rem 1.05rem;
   border-radius: 999px;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   white-space: nowrap;
+  min-height: 3rem;
   transition: all 0.15s ease;
 }
 
@@ -900,6 +918,8 @@ a[x-apple-data-detectors] {
 .lang-pill {
   border: 1px solid rgba(30, 44, 47, 0.1);
   background: rgba(255, 255, 255, 0.6);
+  min-width: 3rem;
+  padding-inline: 0.95rem;
 }
 
 .lang-pill:hover {
@@ -922,6 +942,8 @@ a[x-apple-data-detectors] {
 
 .nav-reserve-button {
   flex-shrink: 0;
+  min-height: 3.35rem;
+  padding-inline: 1.45rem;
 }
 
 .menu-button {
@@ -954,8 +976,9 @@ a[x-apple-data-detectors] {
 }
 
 .nav-account-trigger {
-  min-width: 3.15rem;
-  padding-inline: 0.9rem;
+  min-width: 3rem;
+  min-height: 3rem;
+  padding-inline: 0.95rem;
   justify-content: center;
 }
 
@@ -2505,6 +2528,10 @@ a[x-apple-data-detectors] {
   .review-topline,
   .settings-card-head {
     flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .section-header-inline {
     align-items: flex-start;
   }
 }

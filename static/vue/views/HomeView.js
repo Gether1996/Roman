@@ -581,9 +581,11 @@ export const HomeView = defineComponent({
       <section class="section-block alt-surface" id="reviews">
         <div class="container-shell">
           <div class="section-header" v-reveal>
-            <h2>{{ t('home.reviewsTitle') }}</h2>
+            <div class="section-header-inline">
+              <button class="btn btn-primary-strong review-add-inline" @click="openReviewModal()">{{ t('home.addReview') }}</button>
+              <h2>{{ t('home.reviewsTitle') }}</h2>
+            </div>
             <p>{{ t('home.reviewsText') }}</p>
-            <button class="btn btn-primary-strong" @click="openReviewModal()">{{ t('home.addReview') }}</button>
           </div>
 
           <div v-if="loading" class="glass-panel centered-copy">{{ t('common.loading') }}</div>
@@ -613,8 +615,13 @@ export const HomeView = defineComponent({
         <div class="container-shell">
           <div class="business-panel business-panel-wide glass-panel" v-reveal>
             <h2>{{ t('home.businessTitle') }}</h2>
-            <p>{{ t('home.businessText') }}</p>
-            <a class="btn btn-primary-strong" href="#contact" @click.prevent="scrollToSection('contact')">{{ t('home.businessAction') }}</a>
+            <p>
+              {{
+                locale === 'sk'
+                  ? 'Jedinečná príležitosť dopriať svojim zamestnancom kvalitný relax a regeneráciu priamo vo vašom pracovnom prostredí alebo formou poukážok pripravených na mieru. Spoluprácu nastavíme podľa veľkosti tímu, cieľa aj rozpočtu tak, aby priniesla reálnu pridanú hodnotu, lepší komfort a príjemnejšiu atmosféru vo firme.'
+                  : 'A unique opportunity to bring high-quality relaxation and recovery to your employees directly in the workplace or through tailored vouchers. We can adapt the cooperation to the size of your team, your goals, and your budget so that it brings real value, greater comfort, and a more positive atmosphere to your company.'
+              }}
+            </p>
           </div>
         </div>
       </section>
