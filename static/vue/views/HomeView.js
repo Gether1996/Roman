@@ -724,7 +724,7 @@ export const HomeView = defineComponent({
                 type="button"
                 class="review-star-button"
                 :class="{ active: star <= reviewForm.stars }"
-                :aria-label="`${star} / 5`"
+                :aria-label="star + ' / 5'"
                 @click="reviewForm.stars = star"
               >
                 <i class="fa-star" :class="star <= reviewForm.stars ? 'fa-solid' : 'fa-regular'"></i>
