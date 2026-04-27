@@ -609,11 +609,13 @@ export const HomeView = defineComponent({
         </div>
       </section>
 
-      <section class="section-block container-shell">
-        <div class="business-panel glass-panel" v-reveal>
-          <h2>{{ t('home.businessTitle') }}</h2>
-          <p>{{ t('home.businessText') }}</p>
-          <a class="btn btn-primary-strong" href="#contact" @click.prevent="scrollToSection('contact')">{{ t('home.businessAction') }}</a>
+      <section class="section-block business-band">
+        <div class="container-shell">
+          <div class="business-panel business-panel-wide glass-panel" v-reveal>
+            <h2>{{ t('home.businessTitle') }}</h2>
+            <p>{{ t('home.businessText') }}</p>
+            <a class="btn btn-primary-strong" href="#contact" @click.prevent="scrollToSection('contact')">{{ t('home.businessAction') }}</a>
+          </div>
         </div>
       </section>
 

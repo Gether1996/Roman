@@ -53,6 +53,9 @@ select {
 
 button {
   cursor: pointer;
+  color: inherit;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 a {
@@ -344,6 +347,7 @@ a[x-apple-data-detectors] {
   border-radius: 999px;
   padding: 0.95rem 1.45rem;
   font-weight: 700;
+  white-space: nowrap;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -515,6 +519,7 @@ a[x-apple-data-detectors] {
   display: grid;
   gap: 0.75rem;
   box-shadow: 0 14px 34px rgba(29, 28, 25, 0.08);
+  color: var(--text);
 }
 
 .technique-card-modern i,
@@ -532,10 +537,13 @@ a[x-apple-data-detectors] {
 
 .technique-card-modern strong {
   font-size: 1.1rem;
+  color: var(--text);
+  -webkit-text-fill-color: var(--text);
 }
 
 .technique-card-modern span {
   color: var(--muted);
+  -webkit-text-fill-color: var(--muted);
 }
 
 .media-grid {
@@ -657,6 +665,25 @@ a[x-apple-data-detectors] {
   background:
     linear-gradient(135deg, rgba(15, 126, 122, 0.14), rgba(255, 255, 255, 0.82)),
     var(--surface);
+}
+
+.business-band {
+  padding: 2.75rem 0;
+  background:
+    linear-gradient(180deg, rgba(15, 126, 122, 0.12), rgba(255, 255, 255, 0.42));
+  border-top: 1px solid rgba(15, 126, 122, 0.08);
+  border-bottom: 1px solid rgba(15, 126, 122, 0.08);
+}
+
+.business-panel-wide {
+  width: 100%;
+  max-width: none;
+  padding: clamp(1.75rem, 4vw, 3rem);
+  gap: 1.25rem;
+}
+
+.business-panel-wide .btn {
+  width: min(100%, 22rem);
 }
 
 /* Contact block */
@@ -827,6 +854,11 @@ a[x-apple-data-detectors] {
   gap: 0.5rem;
 }
 
+.nav-links {
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
 .nav-quick-row {
   display: flex;
   align-items: center;
@@ -836,6 +868,7 @@ a[x-apple-data-detectors] {
 .nav-panel {
   flex: 1;
   justify-content: space-between;
+  gap: 1rem;
 }
 
 .nav-link-button,
@@ -851,6 +884,7 @@ a[x-apple-data-detectors] {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
+  white-space: nowrap;
   transition: all 0.15s ease;
 }
 
@@ -875,6 +909,15 @@ a[x-apple-data-detectors] {
   height: 1rem;
   object-fit: cover;
   border-radius: 4px;
+}
+
+.nav-actions {
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.nav-reserve-button {
+  flex-shrink: 0;
 }
 
 .menu-button {
@@ -904,6 +947,16 @@ a[x-apple-data-detectors] {
   gap: 0.6rem;
   border: 1px solid rgba(30, 44, 47, 0.08);
   transition: all 0.2s ease;
+}
+
+.nav-account-trigger {
+  min-width: 3.15rem;
+  padding-inline: 0.9rem;
+  justify-content: center;
+}
+
+.nav-account-label {
+  display: none;
 }
 
 .user-menu-trigger:hover {
@@ -1508,6 +1561,34 @@ a[x-apple-data-detectors] {
 
 .calendar-shell .fc-day-today .fc-col-header-cell-cushion {
   color: var(--brand);
+}
+
+.calendar-shell-admin {
+  padding: 1rem;
+}
+
+.calendar-shell-admin .fc .fc-toolbar {
+  gap: 0.75rem;
+}
+
+.calendar-shell-admin .fc-timegrid-slot {
+  height: 2.8rem;
+}
+
+.calendar-shell-admin .fc-mobile-event {
+  display: grid;
+  gap: 0.15rem;
+  line-height: 1.2;
+}
+
+.calendar-shell-admin .fc-mobile-event strong {
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.calendar-shell-admin .fc-mobile-event-time {
+  font-size: 0.72rem;
+  opacity: 0.92;
 }
 
 /* Today column background */
@@ -2266,6 +2347,10 @@ a[x-apple-data-detectors] {
     justify-content: space-between;
   }
 
+  .nav-account-label {
+    display: inline;
+  }
+
   .user-menu-dropdown {
     position: static;
     margin-top: 0.5rem;
@@ -2457,6 +2542,12 @@ a[x-apple-data-detectors] {
   .calendar-shell .fc .fc-toolbar-title {
     font-size: 1.4rem;
   }
+
+  .calendar-shell-admin .fc .fc-button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
 }
 
 /* ───── Mobile: phone (≤560px) additions ───── */
@@ -2526,6 +2617,41 @@ a[x-apple-data-detectors] {
 
   .calendar-shell .fc-button {
     padding: 0.45rem 0.7rem !important;
+    font-size: 0.8rem !important;
+  }
+
+  .calendar-shell-admin {
+    padding: 0.85rem;
+  }
+
+  .calendar-shell-admin .fc .fc-toolbar {
+    align-items: stretch;
+  }
+
+  .calendar-shell-admin .fc .fc-toolbar-title {
+    font-size: 1.2rem;
+    line-height: 1.15;
+  }
+
+  .calendar-shell-admin .fc-toolbar-chunk {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    justify-content: flex-start;
+  }
+
+  .calendar-shell-admin .fc-timegrid-slot {
+    height: 3.2rem !important;
+  }
+
+  .calendar-shell-admin .fc-timegrid-slot-label {
+    font-size: 0.82rem;
+    padding-top: 0.65rem !important;
+  }
+
+  .calendar-shell-admin .fc-timegrid-event {
+    min-height: 3rem;
+    padding: 0.35rem 0.45rem !important;
     font-size: 0.8rem !important;
   }
 

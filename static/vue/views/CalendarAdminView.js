@@ -12,6 +12,26 @@ export const CalendarAdminView = defineComponent({
     const loading = ref(true);
     let calendar = null;
 
+    function isMobileCalendar() {
+      return window.innerWidth < 720;
+    }
+
+    function getHeaderToolbar() {
+      if (isMobileCalendar()) {
+        return {
+          left: 'prev,next',
+          center: 'title',
+          right: 'today',
+        };
+      }
+
+      return {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'timeGridDay,timeGridWeek,dayGridMonth',
+      };
+    }
+
     async function loadCalendar() {
       if (!store.isSuperuser) {
         loading.value = false;
@@ -25,12 +45,8 @@ export const CalendarAdminView = defineComponent({
       await nextTick();
 
       calendar = new window.FullCalendar.Calendar(calendarRoot.value, {
-        initialView: window.innerWidth < 720 ? 'timeGridDay' : 'timeGridWeek',
-        headerToolbar: {
-          left: 'prev,next today',
-          center: 'title',
-          right: 'timeGridDay,timeGridWeek,dayGridMonth',
-        },
+        initialView: isMobileCalendar() ? 'timeGridDay' : 'timeGridWeek',
+        headerToolbar: getHeaderToolbar(),
         slotDuration: '01:00:00',
         slotMinTime: '07:00',
         slotMaxTime: '22:00',
@@ -38,15 +54,42 @@ export const CalendarAdminView = defineComponent({
         slotLabelInterval: '01:00',
         allDaySlot: false,
         firstDay: 1,
-        expandRows: window.innerWidth >= 720,
+        expandRows: !isMobileCalendar(),
         nowIndicator: true,
-        height: window.innerWidth < 720 ? 'auto' : 'calc(100vh - 22rem)',
+        height: isMobileCalendar() ? 'calc(100vh - 14rem)' : 'calc(100vh - 22rem)',
+        scrollTime: '14:00:00',
+        eventMinHeight: isMobileCalendar() ? 54 : 28,
+        eventShortHeight: isMobileCalendar() ? 48 : 28,
+        slotEventOverlap: false,
+        eventOverlap: false,
         locale: locale.value,
         events: data.events || [],
+        eventContent(arg) {
+          if (!isMobileCalendar()) {
+            return undefined;
+          }
+
+          const wrapper = document.createElement('div');
+          wrapper.className = 'fc-mobile-event';
+
+          const title = document.createElement('strong');
+          title.textContent = arg.event.title;
+          wrapper.appendChild(title);
+
+          const time = document.createElement('span');
+          time.className = 'fc-mobile-event-time';
+          time.textContent = arg.timeText;
+          wrapper.appendChild(time);
+
+          return { domNodes: [wrapper] };
+        },
         windowResize() {
-          const mobile = window.innerWidth < 720;
-          calendar.setOption('height', mobile ? 'auto' : 'calc(100vh - 22rem)');
+          const mobile = isMobileCalendar();
+          calendar.setOption('headerToolbar', getHeaderToolbar());
+          calendar.setOption('height', mobile ? 'calc(100vh - 14rem)' : 'calc(100vh - 22rem)');
           calendar.setOption('expandRows', !mobile);
+          calendar.setOption('eventMinHeight', mobile ? 54 : 28);
+          calendar.setOption('eventShortHeight', mobile ? 48 : 28);
           if (mobile && calendar.view.type !== 'timeGridDay') {
             calendar.changeView('timeGridDay');
           } else if (!mobile && calendar.view.type === 'timeGridDay') {
@@ -104,7 +147,7 @@ export const CalendarAdminView = defineComponent({
           <span class="cal-dot" style="background:#d97706"></span> {{ t('admin.pending') }}
           <span class="cal-dot" style="background:#9ca3af"></span> {{ t('admin.cancelledLabel') }}
         </div>
-        <div class="glass-panel calendar-shell">
+        <div class="glass-panel calendar-shell calendar-shell-admin">
           <div ref="calendarRoot"></div>
         </div>
       </div>

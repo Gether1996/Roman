@@ -25,6 +25,7 @@ export const AppNavbar = defineComponent({
     function openAuth(mode) {
       store.openAuth(mode);
       menuOpen.value = false;
+      userMenuOpen.value = false;
     }
 
     async function goToSection(sectionId) {
@@ -116,7 +117,7 @@ export const AppNavbar = defineComponent({
           </div>
 
           <div class="nav-actions">
-            <button class="btn btn-primary-strong" @click="goToPath('/reservation/')">
+            <button class="btn btn-primary-strong nav-reserve-button" @click="goToPath('/reservation/')">
               <i class="fa-solid fa-calendar-check"></i>
               <span>{{ t('nav.reserve') }}</span>
             </button>
@@ -135,14 +136,14 @@ export const AppNavbar = defineComponent({
               </button>
             </div>
 
-            <template v-if="store.isAuthenticated">
-              <div class="user-menu-wrapper">
-                <button class="user-menu-trigger" @click="toggleUserMenu()">
-                  <i class="fa-solid fa-user-circle"></i>
-                  <span>{{ store.user.name || t('nav.account') }}</span>
-                  <i class="fa-solid fa-chevron-down" :class="{ rotated: userMenuOpen }"></i>
-                </button>
-                <div class="user-menu-dropdown" v-if="userMenuOpen" @click.stop>
+            <div class="user-menu-wrapper">
+              <button class="user-menu-trigger nav-account-trigger" @click="toggleUserMenu()">
+                <i class="fa-solid fa-user-circle"></i>
+                <span class="nav-account-label">{{ store.isAuthenticated ? (store.user.name || t('nav.account')) : t('nav.account') }}</span>
+                <i class="fa-solid fa-chevron-down" :class="{ rotated: userMenuOpen }"></i>
+              </button>
+              <div class="user-menu-dropdown" v-if="userMenuOpen" @click.stop>
+                <template v-if="store.isAuthenticated">
                   <div class="user-menu-header">
                     <strong>{{ store.user.name }} {{ store.user.surname }}</strong>
                     <span>{{ store.user.email }}</span>
@@ -171,14 +172,19 @@ export const AppNavbar = defineComponent({
                     <i class="fa-solid fa-right-from-bracket"></i>
                     <span>{{ t('nav.logout') }}</span>
                   </button>
-                </div>
+                </template>
+                <template v-else>
+                  <button class="user-menu-item" @click="openAuth('login')">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                    <span>{{ t('nav.login') }}</span>
+                  </button>
+                  <button class="user-menu-item" @click="openAuth('register')">
+                    <i class="fa-solid fa-user-plus"></i>
+                    <span>{{ t('nav.register') }}</span>
+                  </button>
+                </template>
               </div>
-            </template>
-
-            <template v-else>
-              <button class="btn btn-secondary-soft" @click="openAuth('login')">{{ t('nav.login') }}</button>
-              <button class="btn btn-ghost" @click="openAuth('register')">{{ t('nav.register') }}</button>
-            </template>
+            </div>
           </div>
         </div>
       </nav>
