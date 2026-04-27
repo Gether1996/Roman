@@ -1575,18 +1575,19 @@ a[x-apple-data-detectors] {
   height: 2.8rem;
 }
 
-.calendar-shell-admin .fc-mobile-event {
+.calendar-shell-admin .fc-admin-event {
   display: grid;
   gap: 0.15rem;
   line-height: 1.2;
+  color: #fff;
 }
 
-.calendar-shell-admin .fc-mobile-event strong {
+.calendar-shell-admin .fc-admin-event strong {
   font-size: 0.84rem;
   font-weight: 700;
 }
 
-.calendar-shell-admin .fc-mobile-event-time {
+.calendar-shell-admin .fc-admin-event-time {
   font-size: 0.72rem;
   opacity: 0.92;
 }
@@ -1651,6 +1652,13 @@ a[x-apple-data-detectors] {
 .calendar-shell .fc-timegrid-event .fc-event-title {
   white-space: normal;
   overflow: hidden;
+}
+
+.calendar-shell .fc-timegrid-event .fc-event-main,
+.calendar-shell .fc-timegrid-event .fc-event-main-frame,
+.calendar-shell .fc-timegrid-event .fc-event-time,
+.calendar-shell .fc-timegrid-event .fc-event-title {
+  color: #fff !important;
 }
 
 /* Scrollbar inside timegrid */
@@ -2653,6 +2661,10 @@ a[x-apple-data-detectors] {
     min-height: 3rem;
     padding: 0.35rem 0.45rem !important;
     font-size: 0.8rem !important;
+  }
+
+  .calendar-shell-admin .fc-admin-event.is-mobile strong {
+    font-size: 0.82rem;
   }
 
   .cal-legend {

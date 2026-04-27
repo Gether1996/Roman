@@ -65,19 +65,20 @@ export const CalendarAdminView = defineComponent({
         locale: locale.value,
         events: data.events || [],
         eventContent(arg) {
-          if (!isMobileCalendar()) {
+          if (arg.view.type === 'dayGridMonth') {
             return undefined;
           }
 
+          const mobile = isMobileCalendar();
           const wrapper = document.createElement('div');
-          wrapper.className = 'fc-mobile-event';
+          wrapper.className = `fc-admin-event${mobile ? ' is-mobile' : ''}`;
 
           const title = document.createElement('strong');
           title.textContent = arg.event.title;
           wrapper.appendChild(title);
 
           const time = document.createElement('span');
-          time.className = 'fc-mobile-event-time';
+          time.className = 'fc-admin-event-time';
           time.textContent = arg.timeText;
           wrapper.appendChild(time);
 

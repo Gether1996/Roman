@@ -1,14 +1,4 @@
-import base64
-from io import BytesIO
-
 from django.db.models import *
-
-import qrcode
-
-try:
-    import pay_by_square
-except ImportError:  # pragma: no cover - dependency is required in production
-    pay_by_square = None
 from accounts.models import CustomUser
 
 
@@ -90,71 +80,3 @@ class Review(Model):
     message = TextField()
     created_at = DateTimeField()
     stars = IntegerField()
-
-
-class PaymentQRCode(Model):
-    title = CharField(max_length=120)
-    beneficiary_name = CharField(max_length=150)
-    iban = CharField(max_length=34)
-    swift = CharField(max_length=11, blank=True)
-    amount = DecimalField(max_digits=10, decimal_places=2, default=0)
-    currency = CharField(max_length=3, default='EUR')
-    variable_symbol = CharField(max_length=10, blank=True)
-    constant_symbol = CharField(max_length=4, blank=True)
-    specific_symbol = CharField(max_length=10, blank=True)
-    payment_note = CharField(max_length=140, blank=True)
-    beneficiary_address_1 = CharField(max_length=70, blank=True)
-    beneficiary_address_2 = CharField(max_length=70, blank=True)
-    due_date = DateField(blank=True, null=True)
-    is_active = BooleanField(default=True)
-    created_at = DateTimeField(auto_now_add=True)
-    updated_at = DateTimeField(auto_now=True)
-
-    class Meta:
-        ordering = ('title',)
-        verbose_name = 'Payment QR code'
-        verbose_name_plural = 'Payment QR codes'
-
-    def __str__(self):
-        return self.title
-
-    def clean(self):
-        self.iban = ''.join((self.iban or '').split()).upper()
-        self.swift = ''.join((self.swift or '').split()).upper()
-        self.currency = (self.currency or 'EUR').upper()
-        self.variable_symbol = ''.join((self.variable_symbol or '').split())
-        self.constant_symbol = ''.join((self.constant_symbol or '').split())
-        self.specific_symbol = ''.join((self.specific_symbol or '').split())
-
-    def save(self, *args, **kwargs):
-        self.clean()
-        super().save(*args, **kwargs)
-
-    def get_pay_by_square_payload(self):
-        if pay_by_square is None or not self.iban:
-            return ''
-
-        return pay_by_square.generate(
-            amount=float(self.amount),
-            iban=self.iban,
-            swift=self.swift,
-            date=self.due_date,
-            beneficiary_name=self.beneficiary_name,
-            currency=self.currency or 'EUR',
-            variable_symbol=self.variable_symbol,
-            constant_symbol=self.constant_symbol,
-            specific_symbol=self.specific_symbol,
-            note=self.payment_note,
-            beneficiary_address_1=self.beneficiary_address_1,
-            beneficiary_address_2=self.beneficiary_address_2,
-        )
-
-    def get_qr_code_base64(self):
-        payload = self.get_pay_by_square_payload()
-        if not payload:
-            return ''
-
-        image = qrcode.make(payload)
-        buffer = BytesIO()
-        image.save(buffer, format='PNG')
-        return base64.b64encode(buffer.getvalue()).decode('ascii')
