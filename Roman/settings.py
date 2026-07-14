@@ -158,7 +158,12 @@ else:
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# In development, print emails to the console instead of sending real mail
+# (matches the documented behaviour in .env.dev and avoids accidental sends).
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.environ.get('EMAIL_HOST', 'mail.314.sk')
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587

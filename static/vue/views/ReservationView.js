@@ -148,7 +148,7 @@ export const ReservationView = defineComponent({
     }
 
     function markDisabledDays() {
-      if (!calendarRoot.value) {
+      if (!calendarRoot.value || !calendar) {
         return;
       }
 
@@ -337,6 +337,12 @@ export const ReservationView = defineComponent({
         firstDay: 1,
         locale: store.language === 'sk' ? 'sk' : 'en',
         height: 'auto',
+        // Re-apply the disabled/selected day styling whenever the visible range
+        // changes (e.g. navigating to the next month), not only when events load.
+        datesSet: () => {
+          markDisabledDays();
+          markSelectedDay();
+        },
         dateClick: async (info) => {
           const clickedDate = new Date(info.dateStr);
           const today = new Date();

@@ -223,7 +223,58 @@ def create_reservation(request):
         
         # Load config
         config.read(settings.CONFIG_INI_PATH)
-        
+
+        # Server-side availability guard for public bookings. The admin keeps full
+        # freedom (manual/override bookings), but a stale or tampered client must
+        # not be able to book a turned-off day or a time outside working hours.
+        if not is_superuser:
+            # 1) Turned-off day (whole day or an overlapping partial window)
+            turned_off_days = TurnedOffDay.objects.filter(worker=worker, date=date_obj)
+            for off in turned_off_days:
+                if off.whole_day:
+                    return JsonResponse({
+                        'status': 'error',
+                        'error_code': 'TIME_SLOT_TAKEN',
+                        'message_sk': 'Tento termín už nie je dostupný. Prosím, vyberte iný.',
+                        'message_en': 'This time is no longer available. Please choose another.'
+                    }, status=409)
+                if off.time_from and off.time_to:
+                    off_start = datetime.combine(date_obj, off.time_from)
+                    off_end = datetime.combine(date_obj, off.time_to)
+                    if datetime_from_obj < off_end and off_start < date_time_to_obj:
+                        return JsonResponse({
+                            'status': 'error',
+                            'error_code': 'TIME_SLOT_TAKEN',
+                            'message_sk': 'Tento termín už nie je dostupný. Prosím, vyberte iný.',
+                            'message_en': 'This time is no longer available. Please choose another.'
+                        }, status=409)
+
+            # 2) Within configured working hours for that weekday
+            section = 'settings-roman' if worker == 'Roman' else 'settings-evka'
+            if section in config:
+                weekday_name = date_obj.strftime('%A')
+                start_str = config[section].get(f'{weekday_name}_starting_hour')
+                end_str = config[section].get(f'{weekday_name}_ending_hour')
+                if weekday_name not in config[section].get('working_days', '') or not start_str or not end_str:
+                    return JsonResponse({
+                        'status': 'error',
+                        'error_code': 'OUTSIDE_HOURS',
+                        'message_sk': 'Vybraný čas je mimo otváracích hodín.',
+                        'message_en': 'The selected time is outside working hours.'
+                    }, status=400)
+                try:
+                    day_start = datetime.combine(date_obj, datetime.strptime(start_str, '%H:%M').time())
+                    day_end = datetime.combine(date_obj, datetime.strptime(end_str, '%H:%M').time())
+                    if datetime_from_obj < day_start or date_time_to_obj > day_end:
+                        return JsonResponse({
+                            'status': 'error',
+                            'error_code': 'OUTSIDE_HOURS',
+                            'message_sk': 'Vybraný čas je mimo otváracích hodín.',
+                            'message_en': 'The selected time is outside working hours.'
+                        }, status=400)
+                except ValueError:
+                    pass
+
         # Create reservation
         new_reservation = Reservation.objects.create(
             massage_name=massage_name,
@@ -327,17 +378,33 @@ def check_available_slots(request):
 
         weekday_name = selected_date.strftime('%A')
 
-        worker_config = config['settings-roman'] if worker == 'Roman' else config['settings-evka']
+        section = 'settings-roman' if worker == 'Roman' else 'settings-evka'
+        if section not in config:
+            return JsonResponse({'status': 'error', 'message': 'Server configuration missing (config.ini).'}, status=503)
+        worker_config = config[section]
+
+        # If the day is not a working day (or the hours aren't configured), there
+        # are simply no slots — return an empty list instead of crashing.
+        working_days = worker_config.get('working_days', '')
         starting_hour_str = worker_config.get(f'{weekday_name}_starting_hour')
         ending_hour_str = worker_config.get(f'{weekday_name}_ending_hour')
+        if weekday_name not in working_days or not starting_hour_str or not ending_hour_str:
+            return JsonResponse({'status': 'success', 'available_slots': []})
 
         # Determine work hours
-        starting_hour = datetime.strptime(starting_hour_str, '%H:%M').time()
-        ending_hour = datetime.strptime(ending_hour_str, '%H:%M').time()
+        try:
+            starting_hour = datetime.strptime(starting_hour_str, '%H:%M').time()
+            ending_hour = datetime.strptime(ending_hour_str, '%H:%M').time()
+        except ValueError:
+            return JsonResponse({'status': 'success', 'available_slots': []})
 
         # Get all reservations and turned-off days for the worker on the selected date
         reservations = Reservation.objects.filter(datetime_from__date=selected_date, active=True)
         turned_off_days = TurnedOffDay.objects.filter(worker=worker, date=selected_date)
+
+        # Don't offer start times in the past when booking for the current day.
+        now = datetime.now()
+        min_start = now if selected_date == now.date() else None
 
         # Create a list of all possible slots for the day
         available_slots = []
@@ -348,6 +415,9 @@ def check_available_slots(request):
         last_possible_start = end_time - timedelta(minutes=30)  # Adjust for 30-minute reservations
 
         while current_time <= last_possible_start:  # Include last possible starting time
+            if min_start and current_time < min_start:
+                current_time += timedelta(minutes=15)
+                continue
             next_time = current_time + timedelta(minutes=15)  # Assuming 15-minute slots
             slot_start = current_time.time()
             slot_end = next_time.time()
@@ -405,7 +475,8 @@ def check_available_slots_ahead(request, worker):
         if 'settings-roman' not in config or 'settings-evka' not in config:
             return JsonResponse({'status': 'error', 'message': 'Server configuration missing (config.ini).'}, status=503)
 
-        today = datetime.now().date()
+        now = datetime.now()
+        today = now.date()
         tomorrow = today + timedelta(days=1)
         worker_config = config['settings-roman'] if worker == 'Roman' else config['settings-evka']
         admin_logged_in = request.user.is_superuser
@@ -422,8 +493,12 @@ def check_available_slots_ahead(request, worker):
             return start1 < end2 and start2 < end1
 
         slot_duration = timedelta(minutes=30)
-        start_step = timedelta(minutes=15)   # (NEW) match POST
-        buffer = timedelta(minutes=15)       # (NEW) match POST
+        # Count non-overlapping 30-min slots so the number shown on the calendar
+        # reflects how many real appointments fit (a massage is min. 30 min).
+        # Previously this stepped every 15 min, counting overlapping windows and
+        # massively overstating availability (e.g. "45 voľných" for a single day).
+        start_step = timedelta(minutes=30)
+        buffer = timedelta(minutes=15)
         events = []
 
         for single_date in (today + timedelta(n) for n in range((end_date - today).days + 1)):
@@ -483,7 +558,7 @@ def check_available_slots_ahead(request, worker):
                     merged[-1][1] = max(merged[-1][1], b_end)
             blocked = [(s, e) for s, e in merged]
 
-            # 3) Count only full 30-min slots, starting every 15 minutes (CHANGED)
+            # 3) Count non-overlapping full 30-min slots (step == slot duration)
             available_slots_count = 0
             t = day_start
             last_possible_start = day_end - slot_duration
@@ -491,14 +566,23 @@ def check_available_slots_ahead(request, worker):
                 slot_start = t
                 slot_end = t + slot_duration
 
+                # Skip slots already in the past when the day is today (admin can
+                # see today) so the count matches the per-day booking slot list.
+                if single_date == today and slot_start < now:
+                    t += start_step
+                    continue
+
                 overlaps = any(
                     intervals_overlap(slot_start, slot_end, b_start, b_end)
                     for (b_start, b_end) in blocked
                 )
                 if not overlaps:
                     available_slots_count += 1
+                    # jump past this slot so slots never overlap each other
+                    t = slot_end
+                    continue
 
-                t += start_step  # (CHANGED) 15-min step to mirror POST
+                t += start_step
 
             # 4) Format event title for modern display
             if available_slots_count == 1:
@@ -554,13 +638,21 @@ def check_available_durations(request, worker):
             return JsonResponse({'status': 'error', 'message': 'Invalid time format. Expected HH:MM.'}, status=400)
         weekday_name = selected_date.strftime('%A')
 
-        worker_config = config['settings-roman'] if worker == 'Roman' else config['settings-evka']
+        section = 'settings-roman' if worker == 'Roman' else 'settings-evka'
+        if section not in config:
+            return JsonResponse({'status': 'error', 'message': 'Server configuration missing (config.ini).'}, status=503)
+        worker_config = config[section]
         starting_hour_str = worker_config.get(f'{weekday_name}_starting_hour')
         ending_hour_str = worker_config.get(f'{weekday_name}_ending_hour')
+        if not starting_hour_str or not ending_hour_str:
+            return JsonResponse({'status': 'success', 'available_durations': []})
 
         # Determine work hours
-        starting_hour = datetime.strptime(starting_hour_str, '%H:%M').time()
-        ending_hour = datetime.strptime(ending_hour_str, '%H:%M').time()
+        try:
+            starting_hour = datetime.strptime(starting_hour_str, '%H:%M').time()
+            ending_hour = datetime.strptime(ending_hour_str, '%H:%M').time()
+        except ValueError:
+            return JsonResponse({'status': 'success', 'available_durations': []})
 
         turned_off_times = TurnedOffDay.objects.filter(worker=worker, date=selected_date)
         reservations = Reservation.objects.filter(datetime_from__date=selected_date, active=True)
@@ -615,14 +707,18 @@ def deactivate_reservation(request):
             reservation.cancellation_reason = json_data.get('reason')
             reservation.save()
 
-            subject = f'Rezervácia zrušená zákazníkom'
-            html_message = render_to_string('email_template.html',
-                                            {'reservation': prepare_reservation_data(reservation),
-                                                'button': None,
-                                                'accept_link': None,
-                                                'text': f'Dôvod zrušenia: {reservation.cancellation_reason if reservation.cancellation_reason else "Zrušené zákazníkom bez udania dôvodu."}',
-                                                })
-            send_email(subject, html_message, getattr(settings, 'MAIN_EMAIL'))
+            try:
+                subject = f'Rezervácia zrušená zákazníkom'
+                html_message = render_to_string('email_template.html',
+                                                {'reservation': prepare_reservation_data(reservation),
+                                                    'button': None,
+                                                    'accept_link': None,
+                                                    'text': f'Dôvod zrušenia: {reservation.cancellation_reason if reservation.cancellation_reason else "Zrušené zákazníkom bez udania dôvodu."}',
+                                                    })
+                send_email(subject, html_message, getattr(settings, 'MAIN_EMAIL'))
+            except Exception as email_error:
+                import logging
+                logging.getLogger(__name__).error('Cancellation email failed: %s', email_error)
             return JsonResponse({'status': 'success', 'message': _('Rezervácia úspešne zrušená.')})
         except Reservation.DoesNotExist:
             return JsonResponse({'status': 'error', 'message': _('Rezervácia sa nenašla.')})
@@ -639,15 +735,19 @@ def approve_reservation(request):
             reservation.status = 'Schválená'
             reservation.save()
 
-            if reservation.email:
-                subject = f'Rezervácia potvrdená / Reservation accepted'
-                html_message = render_to_string('email_template.html',
-                                                {'reservation': prepare_reservation_data(reservation),
-                                                 'button': None,
-                                                 'accept_link': None,
-                                                 'text': 'Rezervácia potvrdená / Reservation accepted',
-                                                 })
-                send_email(subject, html_message, reservation.email)
+            try:
+                if reservation.email:
+                    subject = f'Rezervácia potvrdená / Reservation accepted'
+                    html_message = render_to_string('email_template.html',
+                                                    {'reservation': prepare_reservation_data(reservation),
+                                                     'button': None,
+                                                     'accept_link': None,
+                                                     'text': 'Rezervácia potvrdená / Reservation accepted',
+                                                     })
+                    send_email(subject, html_message, reservation.email)
+            except Exception as email_error:
+                import logging
+                logging.getLogger(__name__).error('Approval email failed: %s', email_error)
             return JsonResponse({'status': 'success'})
         except Reservation.DoesNotExist:
             return JsonResponse({'status': 'error'})
@@ -666,15 +766,19 @@ def deactivate_reservation_by_admin(request):
             reservation.personal_note = json_data.get('note')
             reservation.save()
 
-            if reservation.email:
-                subject = f'Rezervácia zrušená / Reservation cancelled'
-                html_message = render_to_string('email_template.html',
-                                                {'reservation': prepare_reservation_data(reservation),
-                                                 'button': None,
-                                                 'accept_link': None,
-                                                 'text': f'Poznámka maséra: {json_data.get("note")}' if json_data.get("note") else "",
-                                                 })
-                send_email(subject, html_message, reservation.email)
+            try:
+                if reservation.email:
+                    subject = f'Rezervácia zrušená / Reservation cancelled'
+                    html_message = render_to_string('email_template.html',
+                                                    {'reservation': prepare_reservation_data(reservation),
+                                                     'button': None,
+                                                     'accept_link': None,
+                                                     'text': f'Poznámka maséra: {json_data.get("note")}' if json_data.get("note") else "",
+                                                     })
+                    send_email(subject, html_message, reservation.email)
+            except Exception as email_error:
+                import logging
+                logging.getLogger(__name__).error('Admin cancellation email failed: %s', email_error)
             return JsonResponse({'status': 'success'})
         except Reservation.DoesNotExist:
             return JsonResponse({'status': 'error'})

@@ -44,15 +44,27 @@ export const ProfileView = defineComponent({
         return;
       }
 
-      await fetchJSON('/deactivate_reservation/', {
-        method: 'DELETE',
-        body: JSON.stringify({
-          reservation_id: reservationId,
-          reason: result.value,
-        }),
-      });
-
-      await loadReservations();
+      try {
+        await fetchJSON('/deactivate_reservation/', {
+          method: 'DELETE',
+          body: JSON.stringify({
+            reservation_id: reservationId,
+            reason: result.value,
+          }),
+        });
+        await loadReservations();
+        await window.Swal.fire({
+          icon: 'success',
+          title: t('profile.cancelled'),
+          confirmButtonColor: '#0f7e7a',
+        });
+      } catch (error) {
+        await window.Swal.fire({
+          icon: 'error',
+          title: t('reservation.failed'),
+          confirmButtonColor: '#0f7e7a',
+        });
+      }
     }
 
     function isCancelled(reservation) {

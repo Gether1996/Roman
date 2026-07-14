@@ -12,7 +12,3 @@ export function formatDateInput(date) {
 export function normalizeText(value) {
   return (value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 }
-
-export function workerAccent(worker) {
-  return worker === 'Evka' ? 'accent-rose' : 'accent-sky';
-}

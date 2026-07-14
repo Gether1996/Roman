@@ -132,6 +132,14 @@ def add_turned_off_day(request):
         time_from = json_data.get('time_from') if not whole_day_bool else None
         time_to = json_data.get('time_to') if not whole_day_bool else None
 
+        if not whole_day_bool:
+            if not time_from or not time_to:
+                return JsonResponse({'status': 'error', 'message': 'time_from and time_to are required for a partial restriction.'}, status=400)
+            if not _TIME_RE.match(str(time_from)) or not _TIME_RE.match(str(time_to)):
+                return JsonResponse({'status': 'error', 'message': 'Invalid time format. Expected HH:MM.'}, status=400)
+            if time_to <= time_from:
+                return JsonResponse({'status': 'error', 'message': 'time_to must be after time_from.'}, status=400)
+
         # Iterate through the date range
         current_date = date_from
         while current_date <= date_to:

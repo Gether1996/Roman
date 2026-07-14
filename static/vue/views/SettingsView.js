@@ -104,17 +104,47 @@ export const SettingsView = defineComponent({
     }
 
     async function addRestriction() {
-      await fetchJSON('/add_turned_off_day/', {
-        method: 'POST',
-        body: JSON.stringify({
-          worker: restrictionForm.worker,
-          date_from: restrictionForm.date_from,
-          date_to: restrictionForm.date_to,
-          whole_day: restrictionForm.whole_day,
-          time_from: restrictionForm.whole_day ? null : restrictionForm.time_from,
-          time_to: restrictionForm.whole_day ? null : restrictionForm.time_to,
-        }),
-      });
+      if (!restrictionForm.date_from || !restrictionForm.date_to) {
+        await window.Swal.fire({
+          icon: 'warning',
+          title: locale.value === 'en' ? 'Please choose both dates.' : 'Prosím vyberte obidva dátumy.',
+          confirmButtonColor: '#0f7e7a',
+        });
+        return;
+      }
+      if (restrictionForm.date_to < restrictionForm.date_from) {
+        await window.Swal.fire({
+          icon: 'warning',
+          title: locale.value === 'en' ? 'End date is before start date.' : 'Dátum "do" je pred dátumom "od".',
+          confirmButtonColor: '#0f7e7a',
+        });
+        return;
+      }
+      if (!restrictionForm.whole_day && restrictionForm.time_to <= restrictionForm.time_from) {
+        await window.Swal.fire({
+          icon: 'warning',
+          title: locale.value === 'en' ? 'End time must be after start time.' : 'Čas "do" musí byť po čase "od".',
+          confirmButtonColor: '#0f7e7a',
+        });
+        return;
+      }
+
+      try {
+        await fetchJSON('/add_turned_off_day/', {
+          method: 'POST',
+          body: JSON.stringify({
+            worker: restrictionForm.worker,
+            date_from: restrictionForm.date_from,
+            date_to: restrictionForm.date_to,
+            whole_day: restrictionForm.whole_day,
+            time_from: restrictionForm.whole_day ? null : restrictionForm.time_from,
+            time_to: restrictionForm.whole_day ? null : restrictionForm.time_to,
+          }),
+        });
+      } catch (error) {
+        await window.Swal.fire({ icon: 'error', title: t('reservation.failed'), confirmButtonColor: '#0f7e7a' });
+        return;
+      }
 
       showRestrictionForm.value = false;
       restrictionForm.date_from = '';

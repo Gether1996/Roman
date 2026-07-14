@@ -87,11 +87,15 @@ export const AllReservationsView = defineComponent({
         return;
       }
 
-      await fetchJSON('/deactivate_reservation_by_admin/', {
-        method: 'DELETE',
-        body: JSON.stringify({ id: reservation.id, note: result.value || '' }),
-      });
-      loadReservations(pagination.current_page);
+      try {
+        await fetchJSON('/deactivate_reservation_by_admin/', {
+          method: 'DELETE',
+          body: JSON.stringify({ id: reservation.id, note: result.value || '' }),
+        });
+        loadReservations(pagination.current_page);
+      } catch (error) {
+        window.Swal.fire({ icon: 'error', title: t('reservation.failed'), confirmButtonColor: '#0f7e7a' });
+      }
     }
 
     async function promptApprove(reservation) {
@@ -107,11 +111,15 @@ export const AllReservationsView = defineComponent({
         return;
       }
 
-      await fetchJSON('/approve_reservation/', {
-        method: 'POST',
-        body: JSON.stringify({ id: reservation.id }),
-      });
-      loadReservations(pagination.current_page);
+      try {
+        await fetchJSON('/approve_reservation/', {
+          method: 'POST',
+          body: JSON.stringify({ id: reservation.id }),
+        });
+        loadReservations(pagination.current_page);
+      } catch (error) {
+        window.Swal.fire({ icon: 'error', title: t('reservation.failed'), confirmButtonColor: '#0f7e7a' });
+      }
     }
 
     async function promptDelete(reservation) {
@@ -129,11 +137,15 @@ export const AllReservationsView = defineComponent({
         return;
       }
 
-      await fetchJSON('/delete_reservation/', {
-        method: 'DELETE',
-        body: JSON.stringify({ id: reservation.id }),
-      });
-      loadReservations(pagination.current_page);
+      try {
+        await fetchJSON('/delete_reservation/', {
+          method: 'DELETE',
+          body: JSON.stringify({ id: reservation.id }),
+        });
+        loadReservations(pagination.current_page);
+      } catch (error) {
+        window.Swal.fire({ icon: 'error', title: t('reservation.failed'), confirmButtonColor: '#0f7e7a' });
+      }
     }
 
     async function promptNote(reservation) {
@@ -151,11 +163,15 @@ export const AllReservationsView = defineComponent({
         return;
       }
 
-      await fetchJSON('/add_personal_note/', {
-        method: 'POST',
-        body: JSON.stringify({ id: reservation.id, note: result.value || '' }),
-      });
-      loadReservations(pagination.current_page);
+      try {
+        await fetchJSON('/add_personal_note/', {
+          method: 'POST',
+          body: JSON.stringify({ id: reservation.id, note: result.value || '' }),
+        });
+        loadReservations(pagination.current_page);
+      } catch (error) {
+        window.Swal.fire({ icon: 'error', title: t('reservation.failed'), confirmButtonColor: '#0f7e7a' });
+      }
     }
 
     function resStatusClass(r) {

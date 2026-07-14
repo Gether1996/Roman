@@ -114,14 +114,19 @@ def approve_reservation_mail(request, reservation_id):
                 reserv.active = True
                 reserv.status = 'Schválená'
                 reserv.save()
-                subject = f'Rezervácia potvrdená / Reservation accepted'
-                html_message = render_to_string('email_template.html',
-                                                {'reservation': prepare_reservation_data(reserv),
-                                                 'button': None,
-                                                 'accept_link': None,
-                                                 'text': 'Rezervácia potvrdená / Reservation accepted',
-                                                 })
-                send_email(subject, html_message, reserv.email)
+                try:
+                    if reserv.email:
+                        subject = f'Rezervácia potvrdená / Reservation accepted'
+                        html_message = render_to_string('email_template.html',
+                                                        {'reservation': prepare_reservation_data(reserv),
+                                                         'button': None,
+                                                         'accept_link': None,
+                                                         'text': 'Rezervácia potvrdená / Reservation accepted',
+                                                         })
+                        send_email(subject, html_message, reserv.email)
+                except Exception as email_error:
+                    import logging
+                    logging.getLogger(__name__).error('Approval (mail link) email failed: %s', email_error)
             context = {
                 'reservation': prepare_reservation_data(reserv),
             }
