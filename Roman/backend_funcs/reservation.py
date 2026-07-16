@@ -2,12 +2,15 @@ from django.conf import settings
 from django.http import JsonResponse
 from viewer.models import Reservation, TurnedOffDay, AlreadyMadeReservation
 import json
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from urllib.parse import urlencode
+from zoneinfo import ZoneInfo
 from django.utils.translation import gettext_lazy as _
 import configparser
-from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives, send_mail
 from django.template.loader import render_to_string
+
+LOCAL_TZ = ZoneInfo('Europe/Bratislava')
 
 config = configparser.ConfigParser()
 
@@ -47,15 +50,81 @@ def build_google_calendar_link(reservation):
     }
     return 'https://calendar.google.com/calendar/render?' + urlencode(params)
 
-def send_email(subject, html_message, to_mail):
+
+def _ics_escape(value):
+    """Escape a text value for an iCalendar field."""
+    return (str(value or '')
+            .replace('\\', '\\\\')
+            .replace(';', '\\;')
+            .replace(',', '\\,')
+            .replace('\n', '\\n'))
+
+
+def build_ics(reservation):
+    """Build an iCalendar (.ics) event for a reservation.
+
+    Works with Apple Calendar, Outlook and Google — anything that understands
+    .ics. Naive local times (Europe/Bratislava) are converted to UTC so the
+    event lands at the right moment regardless of the recipient's timezone.
+    """
+    start = getattr(reservation, 'datetime_from', None)
+    end = getattr(reservation, 'datetime_to', None)
+    if not start or not end:
+        return ''
+
+    def to_utc(dt):
+        return dt.replace(tzinfo=LOCAL_TZ).astimezone(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
+
+    massage = (reservation.massage_name or 'Masáž').strip()
+    summary = f'{massage} – {reservation.worker}'
+
+    desc_lines = [f'Masér: {reservation.worker}', f'Typ: {massage}']
+    if reservation.name_surname:
+        desc_lines.append(f'Meno: {reservation.name_surname}')
+    if reservation.phone_number:
+        desc_lines.append(f'Tel.: {reservation.phone_number}')
+    desc_lines.append('Masáže Vlčince')
+
+    created = getattr(reservation, 'created_at', None) or datetime.now()
+    uid = f'reservation-{getattr(reservation, "id", "") or to_utc(start)}@masazevlcince.sk'
+
+    lines = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//Masaze Vlcince//Rezervacia//SK',
+        'CALSCALE:GREGORIAN',
+        'METHOD:PUBLISH',
+        'BEGIN:VEVENT',
+        f'UID:{uid}',
+        f'DTSTAMP:{to_utc(created)}',
+        f'DTSTART:{to_utc(start)}',
+        f'DTEND:{to_utc(end)}',
+        f'SUMMARY:{_ics_escape(summary)}',
+        f'DESCRIPTION:{_ics_escape(chr(10).join(desc_lines))}',
+        f'LOCATION:{_ics_escape(SALON_LOCATION)}',
+        'END:VEVENT',
+        'END:VCALENDAR',
+    ]
+    return '\r\n'.join(lines) + '\r\n'
+
+
+def send_email(subject, html_message, to_mail, ics_content=None, ics_filename='rezervacia.ics'):
+    """Send an HTML e-mail, optionally attaching a calendar (.ics) invite so the
+    recipient can add the appointment to Apple Calendar / Outlook / Google."""
     from_email = getattr(settings, 'EMAIL_HOST_USER')
-    send_mail(
-        subject=subject,
-        message='',
-        from_email=from_email,
-        recipient_list=[to_mail],
-        html_message=html_message,
-    )
+    if ics_content:
+        message = EmailMultiAlternatives(subject=subject, body='', from_email=from_email, to=[to_mail])
+        message.attach_alternative(html_message, 'text/html')
+        message.attach(ics_filename, ics_content, 'text/calendar; charset=utf-8; method=PUBLISH')
+        message.send()
+    else:
+        send_mail(
+            subject=subject,
+            message='',
+            from_email=from_email,
+            recipient_list=[to_mail],
+            html_message=html_message,
+        )
 
 def prepare_reservation_data(reservation):
     data = {
@@ -359,7 +428,7 @@ def create_reservation(request):
                                                  'calendar_link': build_google_calendar_link(new_reservation),
                                                  'text': text,
                                                  })
-                send_email(subject, html_message, getattr(settings, 'MAIN_EMAIL'))
+                send_email(subject, html_message, getattr(settings, 'MAIN_EMAIL'), ics_content=build_ics(new_reservation))
 
             if note == 'admin' and new_reservation.email:
                 subject = f'Rezervácia potvrdená / Reservation accepted'
@@ -371,7 +440,7 @@ def create_reservation(request):
                                                  'calendar_link': build_google_calendar_link(new_reservation),
                                                  'text': 'Rezervácia potvrdená / Reservation accepted',
                                                  })
-                send_email(subject, html_message, new_reservation.email)
+                send_email(subject, html_message, new_reservation.email, ics_content=build_ics(new_reservation))
         except Exception as email_error:
             # Log email error but don't fail the reservation
             import logging
@@ -784,7 +853,7 @@ def approve_reservation(request):
                                                      'calendar_link': build_google_calendar_link(reservation),
                                                      'text': 'Rezervácia potvrdená / Reservation accepted',
                                                      })
-                    send_email(subject, html_message, reservation.email)
+                    send_email(subject, html_message, reservation.email, ics_content=build_ics(reservation))
             except Exception as email_error:
                 import logging
                 logging.getLogger(__name__).error('Approval email failed: %s', email_error)
@@ -822,7 +891,7 @@ def resend_confirmation(request):
                                          'calendar_link': build_google_calendar_link(reservation),
                                          'text': 'Rezervácia potvrdená / Reservation accepted',
                                          })
-        send_email(subject, html_message, reservation.email)
+        send_email(subject, html_message, reservation.email, ics_content=build_ics(reservation))
     except Exception as email_error:
         import logging
         logging.getLogger(__name__).error('Resend confirmation email failed: %s', email_error)

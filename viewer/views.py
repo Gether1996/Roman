@@ -6,7 +6,7 @@ from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.utils.translation import activate
 from django.views.decorators.csrf import ensure_csrf_cookie
-from Roman.backend_funcs.reservation import build_google_calendar_link, prepare_reservation_data, send_email
+from Roman.backend_funcs.reservation import build_google_calendar_link, build_ics, prepare_reservation_data, send_email
 from viewer.models import Reservation
 
 config = configparser.ConfigParser()
@@ -124,7 +124,7 @@ def approve_reservation_mail(request, reservation_id):
                                                          'calendar_link': build_google_calendar_link(reserv),
                                                          'text': 'Rezervácia potvrdená / Reservation accepted',
                                                          })
-                        send_email(subject, html_message, reserv.email)
+                        send_email(subject, html_message, reserv.email, ics_content=build_ics(reserv))
                 except Exception as email_error:
                     import logging
                     logging.getLogger(__name__).error('Approval (mail link) email failed: %s', email_error)
