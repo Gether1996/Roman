@@ -1,7 +1,7 @@
 const { defineComponent, reactive, ref, onMounted, watch } = Vue;
 const { useI18n } = VueI18n;
 
-import { fetchJSON } from '../utils/api.js';
+import { fetchJSON, localizedBackendMessage } from '../utils/api.js';
 import { store } from '../store.js';
 
 export const AllReservationsView = defineComponent({
@@ -174,6 +174,42 @@ export const AllReservationsView = defineComponent({
       }
     }
 
+    async function promptResend(reservation) {
+      if (!reservation.email) {
+        window.Swal.fire({ icon: 'info', title: t('admin.resendNoEmail'), confirmButtonColor: '#0f7e7a' });
+        return;
+      }
+      const result = await window.Swal.fire({
+        title: t('admin.resend'),
+        html: `${t('admin.resendConfirm')}<br><strong>${reservation.email}</strong>`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: t('common.confirm'),
+        cancelButtonText: t('common.cancel'),
+        confirmButtonColor: '#0f7e7a',
+      });
+      if (!result.isConfirmed) {
+        return;
+      }
+      try {
+        const response = await fetchJSON('/resend_confirmation/', {
+          method: 'POST',
+          body: JSON.stringify({ id: reservation.id }),
+        });
+        window.Swal.fire({
+          icon: 'success',
+          title: localizedBackendMessage(response, store.language, t('common.confirm')),
+          confirmButtonColor: '#0f7e7a',
+        });
+      } catch (error) {
+        window.Swal.fire({
+          icon: 'error',
+          title: localizedBackendMessage(error.data, store.language, t('reservation.failed')),
+          confirmButtonColor: '#0f7e7a',
+        });
+      }
+    }
+
     function resStatusClass(r) {
       if (r.cancellation_reason) return 'status-cancelled';
       if (r.status === 'Schválená') return 'status-ok';
@@ -213,6 +249,7 @@ export const AllReservationsView = defineComponent({
       promptApprove,
       promptDelete,
       promptNote,
+      promptResend,
       saveFilesPerPage,
       resStatusClass,
       resStatusLabel,
@@ -316,6 +353,9 @@ export const AllReservationsView = defineComponent({
                   </button>
                   <button class="btn-icon btn-icon--note" :title="t('admin.addNoteFull')" @click="promptNote(r)">
                     <i class="fa-solid fa-pen"></i>
+                  </button>
+                  <button class="btn-icon btn-icon--send" :title="t('admin.resend')" @click="promptResend(r)">
+                    <i class="fa-solid fa-paper-plane"></i>
                   </button>
                   <button class="btn-icon btn-icon--del" :title="t('common.delete')" @click="promptDelete(r)">
                     <i class="fa-solid fa-trash"></i>

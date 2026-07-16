@@ -4,141 +4,191 @@
     <meta charset="utf-8">
     <meta name="x-apple-disable-message-reformatting">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <meta name="supported-color-schemes" content="light">
     <title>Rezervácia / Reservation</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap">
     <style>
       @media (max-width:600px){
         .container{width:100% !important}
         .px{padding-left:16px!important;padding-right:16px!important}
-        .stack{display:block!important;width:100%!important;margin-top:8px!important;}
+        .stack{display:block!important;width:100%!important;margin-top:10px!important;}
         .btn{width:100%!important;display:block!important;}
+        .btn a{display:block!important;}
       }
     </style>
   </head>
-  <body style="margin:0;padding:0;background:#f0f2f5;font-family:Arial,Helvetica,sans-serif;">
+  <body style="margin:0;padding:0;background:#f5f1ea;font-family:'Plus Jakarta Sans',Arial,Helvetica,sans-serif;">
     <div style="display:none;max-height:0;overflow:hidden;opacity:0;">
       Automatická notifikácia o rezervácii / Automatic reservation notification
     </div>
 
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#f0f2f5;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#f5f1ea;">
       <tr>
         <td align="center" style="padding:32px 12px;">
-          <table role="presentation" class="container" width="600" cellspacing="0" cellpadding="0" border="0" style="width:600px;max-width:600px;background:#ffffff;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+          <table role="presentation" class="container" width="600" cellspacing="0" cellpadding="0" border="0" style="width:600px;max-width:600px;background:#fffaf4;border-radius:24px;overflow:hidden;box-shadow:0 10px 40px rgba(29,28,25,0.10);">
+
+            <!-- Header -->
             <tr>
-              <td style="background:#0080ff;padding:40px 24px;text-align:center;">
-                <h1 style="margin:0;font-size:32px;line-height:1.2;font-weight:700;color:#ffffff;font-family:Arial,Helvetica,sans-serif;">{{ text }}</h1>
-                <p style="margin:12px 0 0 0;font-size:14px;color:#e3f2fd;font-family:Arial,Helvetica,sans-serif;">Automatická notifikácia / Automatic notification</p>
+              <td bgcolor="#0f7e7a" style="background:#0f7e7a;background:linear-gradient(135deg,#0f7e7a,#0b5755);padding:44px 28px;text-align:center;">
+                <p style="margin:0 0 10px 0;font-family:'Plus Jakarta Sans',Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:#bfe6e3;">Masáže Vlčince</p>
+                <h1 style="margin:0;font-size:30px;line-height:1.25;font-weight:700;color:#ffffff;font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;">{{ text }}</h1>
+                <p style="margin:14px 0 0 0;font-size:13px;color:#d7efed;font-family:'Plus Jakarta Sans',Arial,Helvetica,sans-serif;">Automatická notifikácia / Automatic notification</p>
               </td>
             </tr>
 
+            <!-- Details card -->
             <tr>
-              <td class="px" style="padding:8px 24px 24px 24px;">
-                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border:2px solid #0080ff;border-radius:12px;">
+              <td class="px" style="padding:26px 28px 8px 28px;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border:1px solid #dde8e6;border-radius:16px;overflow:hidden;">
                   <tr>
-                    <td valign="top" width="40%" style="background:#e3f2fd;padding:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:20px;color:#1e3a5f;border-bottom:1px solid #bbdefb;">
-                      <strong style="font-weight:700;display:block;margin-bottom:4px;">Masér</strong>
-                      <span style="font-size:12px;color:#5c7a99;">Massage therapist</span>
+                    <td valign="top" width="42%" style="background:#f1f7f6;padding:14px 18px;font-family:'Plus Jakarta Sans',Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;color:#1e2c2f;border-bottom:1px solid #e5efed;">
+                      <strong style="font-weight:700;display:block;margin-bottom:2px;">Masér</strong>
+                      <span style="font-size:11px;color:#8a9a95;">Massage therapist</span>
                     </td>
-                    <td valign="top" style="padding:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1e3a5f;font-weight:600;border-bottom:1px solid #e3f2fd;">
+                    <td valign="top" style="padding:14px 18px;font-family:'Plus Jakarta Sans',Arial,Helvetica,sans-serif;font-size:15px;color:#1e2c2f;font-weight:600;border-bottom:1px solid #eef3f1;">
                       {{ reservation.worker }}
                     </td>
                   </tr>
                   <tr>
-                    <td valign="top" width="40%" style="background:#e3f2fd;padding:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:20px;color:#1e3a5f;border-bottom:1px solid #bbdefb;">
-                      <strong style="font-weight:700;display:block;margin-bottom:4px;">Typ</strong>
-                      <span style="font-size:12px;color:#5c7a99;">Type</span>
+                    <td valign="top" width="42%" style="background:#f1f7f6;padding:14px 18px;font-family:'Plus Jakarta Sans',Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;color:#1e2c2f;border-bottom:1px solid #e5efed;">
+                      <strong style="font-weight:700;display:block;margin-bottom:2px;">Typ</strong>
+                      <span style="font-size:11px;color:#8a9a95;">Type</span>
                     </td>
-                    <td valign="top" style="padding:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1e3a5f;font-weight:600;border-bottom:1px solid #e3f2fd;">
+                    <td valign="top" style="padding:14px 18px;font-family:'Plus Jakarta Sans',Arial,Helvetica,sans-serif;font-size:15px;color:#1e2c2f;font-weight:600;border-bottom:1px solid #eef3f1;">
                       {{ reservation.massage_name }}
                     </td>
                   </tr>
                   <tr>
-                    <td valign="top" width="40%" style="background:#e3f2fd;padding:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:20px;color:#1e3a5f;border-bottom:1px solid #bbdefb;">
-                      <strong style="font-weight:700;display:block;margin-bottom:4px;">Meno a priezvisko</strong>
-                      <span style="font-size:12px;color:#5c7a99;">Name and surname</span>
+                    <td valign="top" width="42%" style="background:#f1f7f6;padding:14px 18px;font-family:'Plus Jakarta Sans',Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;color:#1e2c2f;border-bottom:1px solid #e5efed;">
+                      <strong style="font-weight:700;display:block;margin-bottom:2px;">Meno a priezvisko</strong>
+                      <span style="font-size:11px;color:#8a9a95;">Name and surname</span>
                     </td>
-                    <td valign="top" style="padding:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1e3a5f;font-weight:600;border-bottom:1px solid #e3f2fd;">
+                    <td valign="top" style="padding:14px 18px;font-family:'Plus Jakarta Sans',Arial,Helvetica,sans-serif;font-size:15px;color:#1e2c2f;font-weight:600;border-bottom:1px solid #eef3f1;">
                       {{ reservation.name_surname }}
                     </td>
                   </tr>
+                  {% if reservation.email %}
                   <tr>
-                    <td valign="top" width="40%" style="background:#e3f2fd;padding:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:20px;color:#1e3a5f;border-bottom:1px solid #bbdefb;">
-                      <strong style="font-weight:700;display:block;margin-bottom:4px;">Email</strong>
-                      <span style="font-size:12px;color:#5c7a99;">Email</span>
+                    <td valign="top" width="42%" style="background:#f1f7f6;padding:14px 18px;font-family:'Plus Jakarta Sans',Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;color:#1e2c2f;border-bottom:1px solid #e5efed;">
+                      <strong style="font-weight:700;display:block;margin-bottom:2px;">Email</strong>
+                      <span style="font-size:11px;color:#8a9a95;">Email</span>
                     </td>
-                    <td valign="top" style="padding:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:15px;border-bottom:1px solid #e3f2fd;">
-                      <a href="mailto:{{ reservation.email }}" style="color:#0080ff;text-decoration:none;font-weight:600;">{{ reservation.email }}</a>
+                    <td valign="top" style="padding:14px 18px;font-family:'Plus Jakarta Sans',Arial,Helvetica,sans-serif;font-size:15px;border-bottom:1px solid #eef3f1;">
+                      <a href="mailto:{{ reservation.email }}" style="color:#0f7e7a;text-decoration:none;font-weight:600;">{{ reservation.email }}</a>
                     </td>
                   </tr>
+                  {% endif %}
+                  {% if reservation.phone_number %}
                   <tr>
-                    <td valign="top" width="40%" style="background:#e3f2fd;padding:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:20px;color:#1e3a5f;border-bottom:1px solid #bbdefb;">
-                      <strong style="font-weight:700;display:block;margin-bottom:4px;">Tel. číslo</strong>
-                      <span style="font-size:12px;color:#5c7a99;">Phone</span>
+                    <td valign="top" width="42%" style="background:#f1f7f6;padding:14px 18px;font-family:'Plus Jakarta Sans',Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;color:#1e2c2f;border-bottom:1px solid #e5efed;">
+                      <strong style="font-weight:700;display:block;margin-bottom:2px;">Tel. číslo</strong>
+                      <span style="font-size:11px;color:#8a9a95;">Phone</span>
                     </td>
-                    <td valign="top" style="padding:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:15px;border-bottom:1px solid #e3f2fd;">
-                      <a href="tel:{{ reservation.phone_number }}" style="color:#0080ff;text-decoration:none;font-weight:600;">{{ reservation.phone_number }}</a>
+                    <td valign="top" style="padding:14px 18px;font-family:'Plus Jakarta Sans',Arial,Helvetica,sans-serif;font-size:15px;border-bottom:1px solid #eef3f1;">
+                      <a href="tel:{{ reservation.phone_number }}" style="color:#0f7e7a;text-decoration:none;font-weight:600;">{{ reservation.phone_number }}</a>
                     </td>
                   </tr>
+                  {% endif %}
                   <tr>
-                    <td valign="top" width="40%" style="background:#e3f2fd;padding:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:20px;color:#1e3a5f;border-bottom:1px solid #bbdefb;">
-                      <strong style="font-weight:700;display:block;margin-bottom:4px;">Dátum</strong>
-                      <span style="font-size:12px;color:#5c7a99;">Date</span>
+                    <td valign="top" width="42%" style="background:#f1f7f6;padding:14px 18px;font-family:'Plus Jakarta Sans',Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;color:#1e2c2f;border-bottom:1px solid #e5efed;">
+                      <strong style="font-weight:700;display:block;margin-bottom:2px;">Dátum</strong>
+                      <span style="font-size:11px;color:#8a9a95;">Date</span>
                     </td>
-                    <td valign="top" style="padding:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1e3a5f;font-weight:600;border-bottom:1px solid #e3f2fd;">
+                    <td valign="top" style="padding:14px 18px;font-family:'Plus Jakarta Sans',Arial,Helvetica,sans-serif;font-size:15px;color:#1e2c2f;font-weight:700;border-bottom:1px solid #eef3f1;">
                       {{ reservation.date }}
                     </td>
                   </tr>
                   <tr>
-                    <td valign="top" width="40%" style="background:#e3f2fd;padding:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:20px;color:#1e3a5f;border-bottom:1px solid #bbdefb;">
-                      <strong style="font-weight:700;display:block;margin-bottom:4px;">Čas</strong>
-                      <span style="font-size:12px;color:#5c7a99;">Time slot</span>
+                    <td valign="top" width="42%" style="background:#f1f7f6;padding:14px 18px;font-family:'Plus Jakarta Sans',Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;color:#1e2c2f;border-bottom:1px solid #e5efed;">
+                      <strong style="font-weight:700;display:block;margin-bottom:2px;">Čas</strong>
+                      <span style="font-size:11px;color:#8a9a95;">Time slot</span>
                     </td>
-                    <td valign="top" style="padding:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1e3a5f;font-weight:600;border-bottom:1px solid #e3f2fd;">
+                    <td valign="top" style="padding:14px 18px;font-family:'Plus Jakarta Sans',Arial,Helvetica,sans-serif;font-size:15px;color:#0f7e7a;font-weight:700;border-bottom:1px solid #eef3f1;">
                       {{ reservation.slot }}
                     </td>
                   </tr>
+                  {% if reservation.special_request %}
                   <tr>
-                    <td valign="top" width="40%" style="background:#e3f2fd;padding:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:20px;color:#1e3a5f;border-bottom:1px solid #bbdefb;">
-                      <strong style="font-weight:700;display:block;margin-bottom:4px;">Vytvorené</strong>
-                      <span style="font-size:12px;color:#5c7a99;">Created</span>
+                    <td valign="top" width="42%" style="background:#f1f7f6;padding:14px 18px;font-family:'Plus Jakarta Sans',Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;color:#1e2c2f;border-bottom:1px solid #e5efed;">
+                      <strong style="font-weight:700;display:block;margin-bottom:2px;">Poznámka</strong>
+                      <span style="font-size:11px;color:#8a9a95;">Note</span>
                     </td>
-                    <td valign="top" style="padding:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1e3a5f;font-weight:600;border-bottom:1px solid #e3f2fd;">
-                      {{ reservation.created_at }}
+                    <td valign="top" style="padding:14px 18px;font-family:'Plus Jakarta Sans',Arial,Helvetica,sans-serif;font-size:15px;color:#1e2c2f;font-weight:600;border-bottom:1px solid #eef3f1;">
+                      {{ reservation.special_request }}
                     </td>
                   </tr>
+                  {% endif %}
+                  {% if reservation.cancellation_reason %}
                   <tr>
-                    <td valign="top" width="40%" style="background:#e3f2fd;padding:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:20px;color:#1e3a5f;">
-                      <strong style="font-weight:700;display:block;margin-bottom:4px;">Poznámka</strong>
-                      <span style="font-size:12px;color:#5c7a99;">Note</span>
+                    <td valign="top" width="42%" style="background:#f1f7f6;padding:14px 18px;font-family:'Plus Jakarta Sans',Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;color:#1e2c2f;">
+                      <strong style="font-weight:700;display:block;margin-bottom:2px;">Dôvod zrušenia</strong>
+                      <span style="font-size:11px;color:#8a9a95;">Cancellation reason</span>
                     </td>
-                    <td valign="top" style="padding:14px 16px;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1e3a5f;font-weight:600;">
-                      {{ reservation.special_request }}
+                    <td valign="top" style="padding:14px 18px;font-family:'Plus Jakarta Sans',Arial,Helvetica,sans-serif;font-size:15px;color:#b83b5e;font-weight:600;">
+                      {{ reservation.cancellation_reason }}
+                    </td>
+                  </tr>
+                  {% endif %}
+                  <tr>
+                    <td valign="top" width="42%" style="background:#f1f7f6;padding:14px 18px;font-family:'Plus Jakarta Sans',Arial,Helvetica,sans-serif;font-size:13px;line-height:18px;color:#1e2c2f;">
+                      <strong style="font-weight:700;display:block;margin-bottom:2px;">Vytvorené</strong>
+                      <span style="font-size:11px;color:#8a9a95;">Created</span>
+                    </td>
+                    <td valign="top" style="padding:14px 18px;font-family:'Plus Jakarta Sans',Arial,Helvetica,sans-serif;font-size:14px;color:#66757a;font-weight:600;">
+                      {{ reservation.created_at }}
                     </td>
                   </tr>
                 </table>
               </td>
             </tr>
 
-            {% if button %}
+            {% if calendar_link %}
+            <!-- Add to Google Calendar -->
             <tr>
-              <td class="px" style="padding:24px 24px 20px 24px;">
+              <td class="px" style="padding:20px 28px 4px 28px;">
                 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                   <tr>
-                    <td class="stack btn" align="center" style="padding:0 4px 0 0;">
-                      <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                    <td align="center">
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" class="btn" style="margin:0 auto;">
                         <tr>
-                          <td style="border-radius:30px;background:#0080ff;">
-                            <a href="{{ accept_link }}" style="background:#0080ff;border:2px solid #0080ff;border-radius:30px;color:#ffffff;display:inline-block;font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:700;line-height:20px;text-align:center;text-decoration:none;padding:12px 28px;-webkit-text-size-adjust:none;">
+                          <td bgcolor="#0f7e7a" style="border-radius:999px;background:#0f7e7a;background:linear-gradient(135deg,#0f7e7a,#0b5755);">
+                            <a href="{{ calendar_link }}" target="_blank" rel="noopener" style="background:transparent;border:0;border-radius:999px;color:#ffffff;display:inline-block;font-family:'Plus Jakarta Sans',Arial,Helvetica,sans-serif;font-size:15px;font-weight:700;line-height:20px;text-align:center;text-decoration:none;padding:14px 32px;-webkit-text-size-adjust:none;">
+                              📅&nbsp; Pridať do Google kalendára
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+                      <p style="margin:10px 0 0 0;font-family:'Plus Jakarta Sans',Arial,Helvetica,sans-serif;font-size:12px;color:#8a9a95;">Add to Google Calendar</p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            {% endif %}
+
+            {% if button %}
+            <!-- Admin actions -->
+            <tr>
+              <td class="px" style="padding:18px 28px 8px 28px;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                  <tr>
+                    <td class="stack btn" align="center" style="padding:0 5px 0 0;">
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="width:100%;">
+                        <tr>
+                          <td align="center" bgcolor="#0f7e7a" style="border-radius:999px;background:#0f7e7a;background:linear-gradient(135deg,#0f7e7a,#0b5755);">
+                            <a href="{{ accept_link }}" style="background:transparent;border:0;border-radius:999px;color:#ffffff;display:inline-block;font-family:'Plus Jakarta Sans',Arial,Helvetica,sans-serif;font-size:15px;font-weight:700;line-height:20px;text-align:center;text-decoration:none;padding:13px 26px;-webkit-text-size-adjust:none;">
                               Schváliť rezerváciu
                             </a>
                           </td>
                         </tr>
                       </table>
                     </td>
-                    <td class="stack btn" align="center" style="padding:0 0 0 4px;">
-                      <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                    <td class="stack btn" align="center" style="padding:0 0 0 5px;">
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="width:100%;">
                         <tr>
-                          <td style="border-radius:30px;background:#ffffff;">
-                            <a href="{{ all_reservations_link }}" style="background:#ffffff;border:2px solid #0080ff;border-radius:30px;color:#0080ff;display:inline-block;font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:700;line-height:20px;text-align:center;text-decoration:none;padding:12px 28px;-webkit-text-size-adjust:none;">
+                          <td align="center" bgcolor="#ffffff" style="border-radius:999px;background:#ffffff;border:2px solid #0f7e7a;">
+                            <a href="{{ all_reservations_link }}" style="background:#ffffff;border-radius:999px;color:#0f7e7a;display:inline-block;font-family:'Plus Jakarta Sans',Arial,Helvetica,sans-serif;font-size:15px;font-weight:700;line-height:20px;text-align:center;text-decoration:none;padding:13px 26px;-webkit-text-size-adjust:none;">
                               Pozrieť rezervácie
                             </a>
                           </td>
@@ -151,20 +201,22 @@
             </tr>
             {% endif %}
 
+            <!-- Footer -->
             <tr>
-              <td style="background:#f8f9fa;padding:24px;border-top:3px solid #0080ff;">
+              <td style="background:#f1ece3;padding:26px 28px;border-top:3px solid #0f7e7a;">
                 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                   <tr>
-                    <td align="center" style="padding:0 0 16px 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#6c757d;font-style:italic;">
+                    <td align="center" style="padding:0 0 16px 0;font-family:'Plus Jakarta Sans',Arial,Helvetica,sans-serif;font-size:12px;color:#8a938f;font-style:italic;">
                       Automaticky vygenerované, na tento e-mail neodpovedajte.<br>
                       Automatically generated, do not reply to this e-mail.
                     </td>
                   </tr>
                   <tr>
-                    <td align="center" style="padding:8px 0 0 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:22px;color:#1e3a5f;">
-                      <strong>Roman:</strong> <a href="tel:+421902442280" style="color:#0080ff;text-decoration:none;font-weight:600;">+421 902 442 280</a><br>
-                      <strong>Evka:</strong> <a href="tel:+421948953841" style="color:#0080ff;text-decoration:none;font-weight:600;">+421 948 953 841</a><br>
-                      <strong>Email:</strong> <a href="mailto:salonaminask@gmail.com" style="color:#0080ff;text-decoration:none;font-weight:600;">salonaminask@gmail.com</a>
+                    <td align="center" style="padding:8px 0 0 0;font-family:'Plus Jakarta Sans',Arial,Helvetica,sans-serif;font-size:13px;line-height:24px;color:#1e2c2f;">
+                      <strong>Roman:</strong> <a href="tel:+421902442280" style="color:#0f7e7a;text-decoration:none;font-weight:600;">+421 902 442 280</a><br>
+                      <strong>Evka:</strong> <a href="tel:+421948953841" style="color:#0f7e7a;text-decoration:none;font-weight:600;">+421 948 953 841</a><br>
+                      <strong>Email:</strong> <a href="mailto:salonaminask@gmail.com" style="color:#0f7e7a;text-decoration:none;font-weight:600;">salonaminask@gmail.com</a><br>
+                      <span style="color:#66757a;">Matice Slovenskej 6, Vlčince, Žilina</span>
                     </td>
                   </tr>
                 </table>

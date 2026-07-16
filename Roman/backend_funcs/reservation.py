@@ -3,12 +3,49 @@ from django.http import JsonResponse
 from viewer.models import Reservation, TurnedOffDay, AlreadyMadeReservation
 import json
 from datetime import datetime, timedelta
+from urllib.parse import urlencode
 from django.utils.translation import gettext_lazy as _
 import configparser
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 
 config = configparser.ConfigParser()
+
+# Salon location used to prefill the calendar event.
+SALON_LOCATION = 'Matice Slovenskej 6, Vlčince, 010 08 Žilina'
+
+
+def build_google_calendar_link(reservation):
+    """Build an 'Add to Google Calendar' URL prefilled from a reservation.
+
+    Times are naive local time (USE_TZ=False, Europe/Bratislava); we pass them
+    as floating times together with ctz so Google interprets them correctly
+    regardless of the viewer's own timezone.
+    """
+    start = getattr(reservation, 'datetime_from', None)
+    end = getattr(reservation, 'datetime_to', None)
+    if not start or not end:
+        return ''
+
+    massage = (reservation.massage_name or 'Masáž').strip()
+    title = f'{massage} – {reservation.worker}'
+
+    detail_lines = [f'Masér: {reservation.worker}', f'Typ: {massage}']
+    if reservation.name_surname:
+        detail_lines.append(f'Meno: {reservation.name_surname}')
+    if reservation.phone_number:
+        detail_lines.append(f'Tel.: {reservation.phone_number}')
+    detail_lines.append('Masáže Vlčince')
+
+    params = {
+        'action': 'TEMPLATE',
+        'text': title,
+        'dates': f"{start.strftime('%Y%m%dT%H%M%S')}/{end.strftime('%Y%m%dT%H%M%S')}",
+        'details': '\n'.join(detail_lines),
+        'location': SALON_LOCATION,
+        'ctz': 'Europe/Bratislava',
+    }
+    return 'https://calendar.google.com/calendar/render?' + urlencode(params)
 
 def send_email(subject, html_message, to_mail):
     from_email = getattr(settings, 'EMAIL_HOST_USER')
@@ -319,6 +356,7 @@ def create_reservation(request):
                                                  'button': True,
                                                  'accept_link': accept_link,
                                                  'all_reservations_link': all_reservations_link,
+                                                 'calendar_link': build_google_calendar_link(new_reservation),
                                                  'text': text,
                                                  })
                 send_email(subject, html_message, getattr(settings, 'MAIN_EMAIL'))
@@ -330,6 +368,7 @@ def create_reservation(request):
                                                  'button': None,
                                                  'accept_link': None,
                                                  'all_reservations_link': None,
+                                                 'calendar_link': build_google_calendar_link(new_reservation),
                                                  'text': 'Rezervácia potvrdená / Reservation accepted',
                                                  })
                 send_email(subject, html_message, new_reservation.email)
@@ -742,6 +781,7 @@ def approve_reservation(request):
                                                     {'reservation': prepare_reservation_data(reservation),
                                                      'button': None,
                                                      'accept_link': None,
+                                                     'calendar_link': build_google_calendar_link(reservation),
                                                      'text': 'Rezervácia potvrdená / Reservation accepted',
                                                      })
                     send_email(subject, html_message, reservation.email)
@@ -752,6 +792,43 @@ def approve_reservation(request):
         except Reservation.DoesNotExist:
             return JsonResponse({'status': 'error'})
     return JsonResponse({'status': 'error', 'message': _('Zlý request')})
+
+def resend_confirmation(request):
+    """Admin action: re-send the confirmation e-mail (with the Google Calendar
+    button) for a reservation, e.g. to preview/test the template."""
+    if not request.user.is_authenticated or not request.user.is_superuser:
+        return JsonResponse({'status': 'error', 'message_sk': 'Prístup zamietnutý.', 'message_en': 'Access denied.'}, status=403)
+    if request.method != 'POST':
+        return JsonResponse({'status': 'error', 'message_sk': 'Nesprávna metóda.', 'message_en': 'Invalid method.'}, status=405)
+    try:
+        json_data = json.loads(request.body)
+    except (json.JSONDecodeError, ValueError):
+        return JsonResponse({'status': 'error', 'message_sk': 'Neplatný formát dát.', 'message_en': 'Invalid data format.'}, status=400)
+
+    try:
+        reservation = Reservation.objects.get(id=json_data.get('id'))
+    except Reservation.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message_sk': 'Rezervácia sa nenašla.', 'message_en': 'Reservation not found.'}, status=404)
+
+    if not reservation.email:
+        return JsonResponse({'status': 'error', 'message_sk': 'Táto rezervácia nemá e-mailovú adresu.', 'message_en': 'This reservation has no e-mail address.'}, status=400)
+
+    try:
+        subject = 'Rezervácia potvrdená / Reservation accepted'
+        html_message = render_to_string('email_template.html',
+                                        {'reservation': prepare_reservation_data(reservation),
+                                         'button': None,
+                                         'accept_link': None,
+                                         'calendar_link': build_google_calendar_link(reservation),
+                                         'text': 'Rezervácia potvrdená / Reservation accepted',
+                                         })
+        send_email(subject, html_message, reservation.email)
+    except Exception as email_error:
+        import logging
+        logging.getLogger(__name__).error('Resend confirmation email failed: %s', email_error)
+        return JsonResponse({'status': 'error', 'message_sk': 'E-mail sa nepodarilo odoslať.', 'message_en': 'Failed to send the e-mail.'}, status=500)
+
+    return JsonResponse({'status': 'success', 'message_sk': f'Potvrdenie odoslané na {reservation.email}.', 'message_en': f'Confirmation sent to {reservation.email}.'})
 
 def deactivate_reservation_by_admin(request):
     if not request.user.is_authenticated or not request.user.is_superuser:

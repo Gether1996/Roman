@@ -2109,7 +2109,7 @@ a[x-apple-data-detectors] {
 }
 
 .res-table th.col-actions {
-  width: 8rem;
+  width: 10.5rem;
 }
 
 .td-date {
@@ -2181,6 +2181,7 @@ a[x-apple-data-detectors] {
 .btn-icon--ok   { background: rgba(15, 126, 122, 0.12); color: var(--brand); }
 .btn-icon--warn { background: rgba(217, 119,  6, 0.12); color: #d97706; }
 .btn-icon--note { background: rgba(30,  44,  47, 0.08); color: var(--muted); }
+.btn-icon--send { background: rgba(15, 126, 122, 0.12); color: var(--brand); }
 .btn-icon--del  { background: rgba(184, 59,  94, 0.1);  color: var(--danger); }
 
 .worker-dot {

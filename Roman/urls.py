@@ -25,6 +25,7 @@ from Roman.backend_funcs.reservation import (
     deactivate_reservation,
     deactivate_reservation_by_admin,
     delete_reservation,
+    resend_confirmation,
 )
 from Roman.backend_funcs.settings_view import (
     add_turned_off_day,
@@ -70,6 +71,7 @@ urlpatterns = [
     path('deactivate_reservation_by_admin/', deactivate_reservation_by_admin, name='deactivate_reservation_by_admin'),
     path('add_personal_note/', add_personal_note, name='add_personal_note'),
     path('delete_reservation/', delete_reservation, name='delete_reservation'),
+    path('resend_confirmation/', resend_confirmation, name='resend_confirmation'),
     path('approve_reservation_mail/<int:reservation_id>/', approve_reservation_mail, name='approve_reservation_mail'),
     path('delete_saved_person/', delete_saved_person, name='delete_saved_person'),
     path('add_review/', add_review, name='add_review'),
