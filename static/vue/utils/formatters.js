@@ -12,3 +12,14 @@ export function formatDateInput(date) {
 export function normalizeText(value) {
   return (value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 }
+
+// Massage names are stored in Slovak (backend). For the EN UI, translate the
+// couple of Slovak words that appear in them so customers see English.
+export function formatServiceName(name, locale) {
+  if (locale !== 'en' || !name) {
+    return name || '';
+  }
+  return name
+    .replace(/mas\u00e1\u017e/gi, 'massage')
+    .replace(/syst\u00e9m/gi, 'system');
+}

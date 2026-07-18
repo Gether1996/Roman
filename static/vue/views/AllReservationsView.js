@@ -210,14 +210,18 @@ export const AllReservationsView = defineComponent({
       }
     }
 
+    function isCancelledRes(r) {
+      return !!r.cancellation_reason || (typeof r.status === 'string' && r.status.startsWith('Zrušená'));
+    }
+
     function resStatusClass(r) {
-      if (r.cancellation_reason) return 'status-cancelled';
+      if (isCancelledRes(r)) return 'status-cancelled';
       if (r.status === 'Schválená') return 'status-ok';
       return 'status-pending';
     }
 
     function resStatusLabel(r) {
-      if (r.cancellation_reason) return t('admin.cancelledLabel');
+      if (isCancelledRes(r)) return t('admin.cancelledLabel');
       if (r.status === 'Schválená') return t('admin.approved');
       if (r.status === 'Čaká sa schválenie') return t('admin.pending');
       return r.status;

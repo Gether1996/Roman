@@ -17,6 +17,7 @@ from viewer.models import (
     TurnedOffDay,
     VoucherPhoto,
 )
+from Roman.backend_funcs.reservation import CANCELLED_STATUSES
 
 
 config = configparser.ConfigParser()
@@ -237,7 +238,11 @@ def admin_calendar_data(request):
         return JsonResponse({'status': 'error'}, status=403)
 
     current_datetime = datetime.now()
-    future_reservations = Reservation.objects.filter(datetime_from__gt=current_datetime)
+    # Only show reservations that actually occupy a slot (pending or approved).
+    # Cancelled ones have freed the slot, so they must not appear on the calendar.
+    future_reservations = Reservation.objects.filter(
+        datetime_from__gt=current_datetime
+    ).exclude(status__in=CANCELLED_STATUSES)
     events = []
 
     for reservation in future_reservations:

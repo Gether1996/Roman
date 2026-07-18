@@ -2,6 +2,7 @@ const { defineComponent, ref, onMounted, watch } = Vue;
 const { useI18n } = VueI18n;
 
 import { fetchJSON } from '../utils/api.js';
+import { formatServiceName } from '../utils/formatters.js';
 import { store } from '../store.js';
 
 export const ProfileView = defineComponent({
@@ -68,7 +69,9 @@ export const ProfileView = defineComponent({
     }
 
     function isCancelled(reservation) {
-      return !reservation.active && !!reservation.cancellation_reason;
+      return !reservation.active
+        && (!!reservation.cancellation_reason
+          || (typeof reservation.status === 'string' && reservation.status.startsWith('Zrušená')));
     }
 
     function statusClass(reservation) {
@@ -81,7 +84,17 @@ export const ProfileView = defineComponent({
       if (isCancelled(reservation)) {
         return t('profile.cancelled');
       }
+      if (reservation.status === 'Schválená') {
+        return t('profile.statusApproved');
+      }
+      if (reservation.status === 'Čaká sa schválenie') {
+        return t('profile.statusPending');
+      }
       return reservation.status;
+    }
+
+    function serviceName(reservation) {
+      return formatServiceName(reservation.massage_name, locale.value) || '-';
     }
 
     // C4 FIX: Also reload when user logs in while already on profile page
@@ -100,6 +113,7 @@ export const ProfileView = defineComponent({
       cancelReservation,
       statusClass,
       statusLabel,
+      serviceName,
       t,
     };
   },
@@ -137,7 +151,7 @@ export const ProfileView = defineComponent({
             </div>
             <div class="res-history-field">
               <span class="meta-label">{{ t('profile.service') }}</span>
-              <span>{{ reservation.massage_name || '-' }}</span>
+              <span>{{ serviceName(reservation) }}</span>
             </div>
             <div v-if="reservation.special_request" class="res-history-field">
               <span class="meta-label">{{ t('reservation.note') }}</span>

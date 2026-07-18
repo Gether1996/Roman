@@ -1,13 +1,28 @@
 from django.db.models import *
+from django.utils import timezone
 from accounts.models import CustomUser
 
 
 class GalleryPhoto(Model):
     photo = ImageField(upload_to='images/')
 
+    class Meta:
+        verbose_name = 'Fotka galérie'
+        verbose_name_plural = 'Fotky galérie'
+
+    def __str__(self):
+        return f'Fotka #{self.pk}'
+
 
 class VoucherPhoto(Model):
     photo = ImageField(upload_to='images/')
+
+    class Meta:
+        verbose_name = 'Poukážka'
+        verbose_name_plural = 'Poukážky'
+
+    def __str__(self):
+        return f'Poukážka #{self.pk}'
 
 
 class TurnedOffDay(Model):
@@ -16,6 +31,14 @@ class TurnedOffDay(Model):
     whole_day = BooleanField()
     time_from = TimeField(blank=True, null=True)
     time_to = TimeField(blank=True, null=True)
+
+    class Meta:
+        verbose_name = 'Deň voľna / obmedzenie'
+        verbose_name_plural = 'Dni voľna / obmedzenia'
+        ordering = ('-date',)
+
+    def __str__(self):
+        return f'{self.worker} – {self.formatted_date()}'
 
     def formatted_date(self):
         """Returns the date in DD.MM.YYYY format (e.g., '18.08.2024')."""
@@ -39,11 +62,19 @@ class Reservation(Model):
     active = BooleanField(default=False)
     worker = CharField(max_length=100)
     status = CharField(max_length=50)
-    created_at = DateTimeField()
-    updated_at = DateTimeField()
+    created_at = DateTimeField(default=timezone.now)
+    updated_at = DateTimeField(default=timezone.now)
     special_request = CharField(max_length=200, default=None, null=True, blank=True)
     personal_note = CharField(max_length=200, default=None, null=True, blank=True)
     cancellation_reason = CharField(max_length=254, default=None, blank=True, null=True)
+
+    class Meta:
+        verbose_name = 'Rezervácia'
+        verbose_name_plural = 'Rezervácie'
+        ordering = ('-datetime_from',)
+
+    def __str__(self):
+        return f'{self.name_surname} – {self.get_date_string()} {self.get_time_range_string()} ({self.worker})'
 
     def get_date_string(self):
         """Returns the date in DD.MM.YYYY format."""
@@ -60,8 +91,8 @@ class Reservation(Model):
         return self.created_at.strftime('%d.%m.%Y %H:%M:%S')
 
     def get_color(self):
-        if self.cancellation_reason:
-            return '#9ca3af'  # grey - cancelled
+        if self.cancellation_reason or (self.status or '').startswith('Zrušená'):
+            return '#9ca3af'  # grey - cancelled (by customer or therapist)
         if not self.active:
             return '#d97706'  # amber - pending approval
         if self.worker == "Evka":
@@ -73,10 +104,26 @@ class AlreadyMadeReservation(Model):
     email = EmailField(default=None, blank=True, null=True)
     phone_number = CharField(max_length=20, default=None, blank=True, null=True)
 
+    class Meta:
+        verbose_name = 'Uložená osoba'
+        verbose_name_plural = 'Uložené osoby'
+        ordering = ('name_surname',)
+
+    def __str__(self):
+        return self.name_surname
+
 
 class Review(Model):
     name_surname = CharField(max_length=150)
     worker = CharField(max_length=100)
     message = TextField()
-    created_at = DateTimeField()
+    created_at = DateTimeField(default=timezone.now)
     stars = IntegerField()
+
+    class Meta:
+        verbose_name = 'Hodnotenie'
+        verbose_name_plural = 'Hodnotenia'
+        ordering = ('-created_at',)
+
+    def __str__(self):
+        return f'{self.name_surname} – {self.stars}★ ({self.worker})'

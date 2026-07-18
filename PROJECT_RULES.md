@@ -163,11 +163,38 @@ TIME_ZONE = 'UTC'
 - Admin deletes entirely: `DELETE /delete_reservation/`.
 
 ### Slot logic:
-- Time slots are in 15-minute increments.
+- Time slots are offered in 15-minute increments.
 - Minimum reservation: 30 minutes.
-- A 15-minute buffer is enforced before and after each existing reservation.
-- Available slots are filtered by: worker schedule (from `config.ini`), `TurnedOffDay` entries, and existing active reservations.
 - Admin sees 180 days ahead; regular users see only `days_ahead` from config.
+- Available slots are filtered by: worker schedule (from `config.ini`), `TurnedOffDay`
+  entries, and existing slot-blocking reservations.
+
+#### Booking business rules (enforced in `Roman/backend_funcs/reservation.py`)
+These three rules are enforced **consistently** in both the availability endpoints
+(`check_available_slots`, `check_available_slots_ahead`, `check_available_durations`)
+and the write-time conflict check in `create_reservation`. Keep them in sync.
+
+1. **Shared workspace (cross-worker).** Roman and Evka work in the **same room** —
+   only **one client at a time**. A reservation for **either** therapist blocks the
+   slot for **both**. Therefore the reservation queries that compute availability and
+   conflicts are intentionally **NOT** filtered by worker (see
+   `slot_blocking_reservations()` — do not add a `worker=` filter to it).
+   *Working hours and `TurnedOffDay` stay per-worker* (each has their own schedule /
+   days off), only the room occupancy is shared.
+
+2. **15-minute break between reservations.** After a booking ends there must be a
+   15-min gap before the next one may start — e.g. a `16:00–16:45` booking means the
+   next reservation can start at **17:00** (16:45 is blocked). Defined once as the
+   constant `BREAK_BETWEEN_RESERVATIONS = timedelta(minutes=15)`.
+
+3. **Immediate blocking until cancelled.** A slot is taken the moment a reservation is
+   created — **pending** ("Čaká sa schválenie") reservations block just like approved
+   ones. A slot is freed **only** when the reservation is cancelled
+   (`status` in `CANCELLED_STATUSES = ('Zrušená zákazníkom', 'Zrušená Masérom')`).
+   `slot_blocking_reservations()` = all reservations `.exclude(status__in=CANCELLED_STATUSES)`.
+
+Cancelled reservations are also excluded from the admin calendar (freed slot), and are
+shown with the grey "cancelled" badge (both customer- and therapist-cancelled).
 
 ---
 

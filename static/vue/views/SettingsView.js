@@ -2,6 +2,7 @@ const { defineComponent, reactive, ref, onMounted } = Vue;
 const { useI18n } = VueI18n;
 
 import { fetchJSON } from '../utils/api.js';
+import { formatDateInput } from '../utils/formatters.js';
 import { store } from '../store.js';
 
 const dayNames = [
@@ -207,6 +208,14 @@ export const SettingsView = defineComponent({
       }
     }
 
+    // Open the native date/time picker (OS wheel on mobile) from anywhere on the field.
+    function openPicker(event) {
+      const input = event.currentTarget.querySelector('input') || event.currentTarget;
+      if (input && typeof input.showPicker === 'function') {
+        try { input.showPicker(); } catch (e) { /* ignore (not user-activated / unsupported) */ }
+      }
+    }
+
     onMounted(loadSettings);
 
     return {
@@ -219,6 +228,8 @@ export const SettingsView = defineComponent({
       showRestrictionForm,
       restrictionForm,
       dayNames,
+      formatDateInput,
+      openPicker,
       toggleWorkingDay,
       saveWorker,
       addRestriction,
@@ -246,60 +257,49 @@ export const SettingsView = defineComponent({
 
       <template v-else>
         <div class="settings-grid">
-          <article class="glass-panel settings-card">
+          <article
+            v-for="w in [{ key: 'roman', state: roman, name: 'Roman' }, { key: 'evka', state: evka, name: 'Evka' }]"
+            :key="w.key"
+            class="glass-panel settings-card"
+          >
             <div class="settings-card-head">
-              <h2>Roman</h2>
-              <button class="btn btn-primary-strong" @click="saveWorker('roman', roman)">{{ t('common.save') }}</button>
+              <h2>
+                <span class="worker-dot" :style="w.name === 'Evka' ? 'background:#db2777' : 'background:#0f7e7a'"></span>
+                {{ w.name }}
+              </h2>
+              <button class="btn btn-primary-strong" @click="saveWorker(w.key, w.state)">{{ t('common.save') }}</button>
             </div>
-            <label class="field">
-              <span>{{ t('admin.daysAhead') }}</span>
-              <input v-model.number="roman.days_ahead" type="number" min="1" />
-            </label>
-            <div class="working-day-row">
-              <button
-                v-for="[dayKey, dayLabel] in dayNames"
-                :key="dayKey"
-                class="day-toggle"
-                :class="{ active: roman.working_days.includes(dayLabel) }"
-                @click="toggleWorkingDay(roman, dayLabel)"
-              >
-                {{ dayLabel.slice(0, 3) }}
-              </button>
-            </div>
-            <div class="settings-hours-grid">
-              <div v-for="[dayKey, dayLabel] in dayNames" :key="dayKey" class="hours-row">
-                <strong>{{ dayLabel }}</strong>
-                <input v-model="roman.hours[dayKey].start" type="time" />
-                <input v-model="roman.hours[dayKey].end" type="time" />
-              </div>
-            </div>
-          </article>
 
-          <article class="glass-panel settings-card">
-            <div class="settings-card-head">
-              <h2>Evka</h2>
-              <button class="btn btn-primary-strong" @click="saveWorker('evka', evka)">{{ t('common.save') }}</button>
-            </div>
             <label class="field">
               <span>{{ t('admin.daysAhead') }}</span>
-              <input v-model.number="evka.days_ahead" type="number" min="1" />
+              <input class="ctrl" v-model.number="w.state.days_ahead" type="number" min="1" max="365" />
             </label>
+
             <div class="working-day-row">
               <button
                 v-for="[dayKey, dayLabel] in dayNames"
                 :key="dayKey"
                 class="day-toggle"
-                :class="{ active: evka.working_days.includes(dayLabel) }"
-                @click="toggleWorkingDay(evka, dayLabel)"
+                :class="{ active: w.state.working_days.includes(dayLabel) }"
+                @click="toggleWorkingDay(w.state, dayLabel)"
               >
                 {{ dayLabel.slice(0, 3) }}
               </button>
             </div>
+
             <div class="settings-hours-grid">
-              <div v-for="[dayKey, dayLabel] in dayNames" :key="dayKey" class="hours-row">
+              <div
+                v-for="[dayKey, dayLabel] in dayNames"
+                :key="dayKey"
+                class="hours-row"
+                :class="{ off: !w.state.working_days.includes(dayLabel) }"
+              >
                 <strong>{{ dayLabel }}</strong>
-                <input v-model="evka.hours[dayKey].start" type="time" />
-                <input v-model="evka.hours[dayKey].end" type="time" />
+                <div class="hours-fields">
+                  <input class="ctrl ctrl-time" v-model="w.state.hours[dayKey].start" type="time" @click="openPicker($event)" />
+                  <span class="hours-dash">–</span>
+                  <input class="ctrl ctrl-time" v-model="w.state.hours[dayKey].end" type="time" @click="openPicker($event)" />
+                </div>
               </div>
             </div>
           </article>
@@ -307,14 +307,12 @@ export const SettingsView = defineComponent({
 
         <article class="glass-panel settings-card">
           <div class="settings-card-head">
-            <div class="restriction-head-left">
-              <label class="restriction-select-all" :title="t('admin.selectAll')">
-                <input type="checkbox" :checked="allSelected" @change="toggleSelectAll()" :indeterminate.prop="selectedRestrictionIds.length > 0 && !allSelected" />
-              </label>
-              <h2>{{ t('admin.restrictionsTitle') }}</h2>
-            </div>
+            <h2>{{ t('admin.restrictionsTitle') }}</h2>
             <div class="inline-actions">
-              <button class="btn btn-secondary-soft" @click="showRestrictionForm = !showRestrictionForm">{{ t('admin.addRestriction') }}</button>
+              <button class="btn btn-secondary-soft" @click="showRestrictionForm = !showRestrictionForm">
+                <i class="fa-solid" :class="showRestrictionForm ? 'fa-xmark' : 'fa-plus'"></i>
+                {{ t('admin.addRestriction') }}
+              </button>
               <button class="btn btn-danger-soft" @click="removeSelectedRestrictions()" :disabled="!selectedRestrictionIds.length">
                 <i class="fa-solid fa-trash"></i>
                 {{ t('admin.deleteSelected') }}
@@ -324,31 +322,94 @@ export const SettingsView = defineComponent({
           </div>
 
           <div v-if="showRestrictionForm" class="restriction-form">
-            <select v-model="restrictionForm.worker">
-              <option value="Roman">Roman</option>
-              <option value="Evka">Evka</option>
-            </select>
-            <input v-model="restrictionForm.date_from" type="date" />
-            <input v-model="restrictionForm.date_to" type="date" />
-            <label class="checkbox-inline">
-              <input v-model="restrictionForm.whole_day" type="checkbox" />
-              <span>{{ t('admin.wholeDay') }}</span>
-            </label>
-            <input v-if="!restrictionForm.whole_day" v-model="restrictionForm.time_from" type="time" />
-            <input v-if="!restrictionForm.whole_day" v-model="restrictionForm.time_to" type="time" />
-            <button class="btn btn-primary-strong" @click="addRestriction()">{{ t('common.save') }}</button>
+            <div class="rf-field">
+              <label>{{ t('admin.worker') }}</label>
+              <select class="ctrl ctrl-select" v-model="restrictionForm.worker">
+                <option value="Roman">Roman</option>
+                <option value="Evka">Evka</option>
+              </select>
+            </div>
+
+            <div class="rf-field">
+              <label>{{ locale === 'en' ? 'From' : 'Od' }}</label>
+              <div class="date-field" @click="openPicker($event)">
+                <input class="ctrl date-field-native" type="date" v-model="restrictionForm.date_from" />
+                <span class="date-field-display" :class="{ placeholder: !restrictionForm.date_from }">{{ restrictionForm.date_from ? formatDateInput(restrictionForm.date_from) : 'DD.MM.RRRR' }}</span>
+              </div>
+            </div>
+
+            <div class="rf-field">
+              <label>{{ locale === 'en' ? 'To' : 'Do' }}</label>
+              <div class="date-field" @click="openPicker($event)">
+                <input class="ctrl date-field-native" type="date" v-model="restrictionForm.date_to" />
+                <span class="date-field-display" :class="{ placeholder: !restrictionForm.date_to }">{{ restrictionForm.date_to ? formatDateInput(restrictionForm.date_to) : 'DD.MM.RRRR' }}</span>
+              </div>
+            </div>
+
+            <div class="rf-field rf-field-check">
+              <label class="switch-inline">
+                <input type="checkbox" v-model="restrictionForm.whole_day" />
+                <span>{{ t('admin.wholeDay') }}</span>
+              </label>
+            </div>
+
+            <div class="rf-field" v-if="!restrictionForm.whole_day">
+              <label>{{ locale === 'en' ? 'From (time)' : 'Od (čas)' }}</label>
+              <input class="ctrl ctrl-time" type="time" v-model="restrictionForm.time_from" @click="openPicker($event)" />
+            </div>
+            <div class="rf-field" v-if="!restrictionForm.whole_day">
+              <label>{{ locale === 'en' ? 'To (time)' : 'Do (čas)' }}</label>
+              <input class="ctrl ctrl-time" type="time" v-model="restrictionForm.time_to" @click="openPicker($event)" />
+            </div>
+
+            <div class="rf-field rf-actions">
+              <button class="btn btn-primary-strong wide-button" @click="addRestriction()">{{ t('common.save') }}</button>
+            </div>
           </div>
 
-          <div class="stack-grid">
-            <article v-for="item in turnedOffDays" :key="item.id" class="restriction-row">
-              <label class="checkbox-inline">
-                <input v-model="selectedRestrictionIds" :value="String(item.id)" type="checkbox" />
-                <span>{{ item.worker }}</span>
-              </label>
-              <strong>{{ item.date }}</strong>
-              <span>{{ item.whole_day ? t('admin.wholeDay') : item.time_range }}</span>
-              <button class="btn btn-danger-soft" @click="removeRestriction(item.id)">{{ t('common.delete') }}</button>
-            </article>
+          <div class="restriction-table-wrap">
+            <table class="restriction-table">
+              <thead>
+                <tr>
+                  <th class="rt-check">
+                    <input type="checkbox" :checked="allSelected" @change="toggleSelectAll()" :indeterminate.prop="selectedRestrictionIds.length > 0 && !allSelected" :title="t('admin.selectAll')" />
+                  </th>
+                  <th>{{ t('admin.worker') }}</th>
+                  <th>{{ t('admin.date') }}</th>
+                  <th>{{ locale === 'en' ? 'Type' : 'Typ' }}</th>
+                  <th class="rt-action"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-if="!turnedOffDays.length">
+                  <td colspan="5" class="rt-empty">{{ locale === 'en' ? 'No restrictions yet' : 'Zatiaľ žiadne obmedzenia' }}</td>
+                </tr>
+                <tr
+                  v-for="item in turnedOffDays"
+                  :key="item.id"
+                  :class="{ selected: selectedRestrictionIds.includes(String(item.id)) }"
+                >
+                  <td class="rt-check">
+                    <input type="checkbox" v-model="selectedRestrictionIds" :value="String(item.id)" />
+                  </td>
+                  <td class="rt-worker">
+                    <span class="worker-dot" :style="item.worker === 'Evka' ? 'background:#db2777' : 'background:#0f7e7a'"></span>
+                    {{ item.worker }}
+                  </td>
+                  <td class="rt-date">{{ item.date }}</td>
+                  <td>
+                    <span class="rt-type-badge" :class="item.whole_day ? 'whole' : 'partial'">
+                      {{ item.whole_day ? t('admin.wholeDay') : item.time_range }}
+                    </span>
+                  </td>
+                  <td class="rt-action">
+                    <button class="btn-icon btn-icon--del" :title="t('common.delete')" @click="removeRestriction(item.id)">
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </article>
       </template>

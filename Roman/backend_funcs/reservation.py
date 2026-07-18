@@ -12,6 +12,30 @@ from django.template.loader import render_to_string
 
 LOCAL_TZ = ZoneInfo('Europe/Bratislava')
 
+# --- Booking business rules (see PROJECT_RULES.md § Booking) --------------
+# 1) SHARED WORKSPACE: Roman and Evka work in the SAME room — only one client
+#    can be served at a time. A reservation for EITHER therapist therefore blocks
+#    the slot for both. Availability and the conflict-check are cross-worker.
+#    (Working hours and turned-off days stay per-worker — each has their own
+#    schedule and days off.)
+# 2) 15-MINUTE BREAK between reservations: after a booking ends there must be a
+#    15-min gap before the next one can start (e.g. 16:00–16:45 → next from 17:00).
+# 3) A reservation blocks its slot from the moment it is created and stays blocked
+#    until the therapist cancels/rejects it — pending ("awaiting approval")
+#    reservations still block; only cancelled statuses release the slot.
+BREAK_BETWEEN_RESERVATIONS = timedelta(minutes=15)
+CANCELLED_STATUSES = ('Zrušená zákazníkom', 'Zrušená Masérom')
+
+
+def slot_blocking_reservations(**filters):
+    """Reservations that occupy the shared workspace: everything except cancelled
+    ones (i.e. both approved AND pending-awaiting-approval).
+
+    NOTE: intentionally NOT filtered by worker — the room is shared, so a booking
+    for either therapist blocks the slot. Pass only date/time filters.
+    """
+    return Reservation.objects.filter(**filters).exclude(status__in=CANCELLED_STATUSES)
+
 config = configparser.ConfigParser()
 
 # Salon location used to prefill the calendar event.
@@ -308,15 +332,17 @@ def create_reservation(request):
         datetime_from_obj = datetime.combine(date_obj, time_obj)
         date_time_to_obj = datetime_from_obj + timedelta(minutes=duration_int)
         
-        # Check for conflicting reservations
-        conflicting_reservations = Reservation.objects.filter(
-            worker=worker,
+        # Check for conflicting reservations. The workspace is shared by both
+        # therapists (one client at a time), so a booking for EITHER blocks the
+        # slot — and there must be a 15-min break between reservations. A slot is
+        # taken as soon as it is booked (pending or approved) and only frees up
+        # once cancelled, so nobody can grab the same time before it is approved.
+        conflicting_reservations = slot_blocking_reservations(
             datetime_from__date=date_obj,
-            active=True
         ).exclude(
-            datetime_to__lte=datetime_from_obj
+            datetime_to__lte=datetime_from_obj - BREAK_BETWEEN_RESERVATIONS
         ).exclude(
-            datetime_from__gte=date_time_to_obj
+            datetime_from__gte=date_time_to_obj + BREAK_BETWEEN_RESERVATIONS
         )
         
         if conflicting_reservations.exists():
@@ -506,8 +532,9 @@ def check_available_slots(request):
         except ValueError:
             return JsonResponse({'status': 'success', 'available_slots': []})
 
-        # Get all reservations and turned-off days for the worker on the selected date
-        reservations = Reservation.objects.filter(datetime_from__date=selected_date, active=True)
+        # Reservations block the SHARED workspace across both therapists (only one
+        # client at a time). Turned-off days stay per-worker (own days off).
+        reservations = slot_blocking_reservations(datetime_from__date=selected_date)
         turned_off_days = TurnedOffDay.objects.filter(worker=worker, date=selected_date)
 
         # Don't offer start times in the past when booking for the current day.
@@ -553,11 +580,10 @@ def check_available_slots(request):
                         is_available = False
                         break
 
-            # Check against reservations
+            # Check against reservations (with the 15-min break before & after)
             for reservation in reservations:
-                reservation_start_time = (reservation.datetime_from - timedelta(minutes=15)).time()
-                # Adding 15-minute break after each reservation
-                reservation_end_time = (reservation.datetime_to + timedelta(minutes=15)).time()
+                reservation_start_time = (reservation.datetime_from - BREAK_BETWEEN_RESERVATIONS).time()
+                reservation_end_time = (reservation.datetime_to + BREAK_BETWEEN_RESERVATIONS).time()
 
                 # Check if the entire 30-minute duration is available
                 if (slot_start < reservation_end_time and
@@ -606,7 +632,7 @@ def check_available_slots_ahead(request, worker):
         # Previously this stepped every 15 min, counting overlapping windows and
         # massively overstating availability (e.g. "45 voľných" for a single day).
         start_step = timedelta(minutes=30)
-        buffer = timedelta(minutes=15)
+        buffer = BREAK_BETWEEN_RESERVATIONS  # 15-min break between reservations
         events = []
 
         for single_date in (today + timedelta(n) for n in range((end_date - today).days + 1)):
@@ -637,9 +663,10 @@ def check_available_slots_ahead(request, worker):
             # 2) Build blocked intervals (as datetimes)
             blocked = []
 
-            # Reservations (active only) — (CHANGED) apply ±15 min buffer and clip to work window
-            reservations = Reservation.objects.filter(
-                datetime_from__date=single_date, active=True
+            # Reservations block the SHARED workspace across both therapists
+            # — apply the ±15 min break and clip to the work window
+            reservations = slot_blocking_reservations(
+                datetime_from__date=single_date
             )
             for r in reservations:
                 b_start = max(day_start, r.datetime_from - buffer)  # (NEW)
@@ -763,7 +790,8 @@ def check_available_durations(request, worker):
             return JsonResponse({'status': 'success', 'available_durations': []})
 
         turned_off_times = TurnedOffDay.objects.filter(worker=worker, date=selected_date)
-        reservations = Reservation.objects.filter(datetime_from__date=selected_date, active=True)
+        # Shared workspace — a reservation for either therapist blocks the slot.
+        reservations = slot_blocking_reservations(datetime_from__date=selected_date)
 
         # Define possible duration windows in minutes
         duration_options = [30, 45, 60, 90, 120]
@@ -786,10 +814,10 @@ def check_available_durations(request, worker):
                     overlaps = True
                     break
 
-            # Check for overlap with existing reservations, considering a 15-minute buffer
+            # Check for overlap with existing reservations, with the 15-min break
             for reservation in reservations:
-                reservation_start = (reservation.datetime_from - timedelta(minutes=15)).time()
-                reservation_end = (reservation.datetime_to + timedelta(minutes=15)).time()
+                reservation_start = (reservation.datetime_from - BREAK_BETWEEN_RESERVATIONS).time()
+                reservation_end = (reservation.datetime_to + BREAK_BETWEEN_RESERVATIONS).time()
 
                 if reservation_start < end_time and time_slot_start < reservation_end:
                     overlaps = True

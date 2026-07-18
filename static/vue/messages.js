@@ -133,6 +133,8 @@ export const messages = {
       service: 'Služba',
       enterReason: 'Prosím zadajte dôvod.',
       cancelled: 'Zrušená',
+      statusApproved: 'Potvrdená',
+      statusPending: 'Čaká na potvrdenie',
     },
     admin: {
       reservationsTitle: 'Všetky rezervácie',
@@ -321,6 +323,8 @@ export const messages = {
       service: 'Service',
       enterReason: 'Please enter a reason.',
       cancelled: 'Cancelled',
+      statusApproved: 'Confirmed',
+      statusPending: 'Awaiting confirmation',
     },
     admin: {
       reservationsTitle: 'All reservations',
