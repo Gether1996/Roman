@@ -1,5 +1,5 @@
+from datetime import datetime
 from django.db.models import *
-from django.utils import timezone
 from accounts.models import CustomUser
 
 
@@ -62,8 +62,8 @@ class Reservation(Model):
     active = BooleanField(default=False)
     worker = CharField(max_length=100)
     status = CharField(max_length=50)
-    created_at = DateTimeField(default=timezone.now)
-    updated_at = DateTimeField(default=timezone.now)
+    created_at = DateTimeField(default=datetime.now)
+    updated_at = DateTimeField(default=datetime.now)
     special_request = CharField(max_length=200, default=None, null=True, blank=True)
     personal_note = CharField(max_length=200, default=None, null=True, blank=True)
     cancellation_reason = CharField(max_length=254, default=None, blank=True, null=True)
@@ -117,7 +117,7 @@ class Review(Model):
     name_surname = CharField(max_length=150)
     worker = CharField(max_length=100)
     message = TextField()
-    created_at = DateTimeField(default=timezone.now)
+    created_at = DateTimeField(default=datetime.now)
     stars = IntegerField()
 
     class Meta:
