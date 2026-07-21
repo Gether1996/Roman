@@ -1647,21 +1647,27 @@ a[x-apple-data-detectors] {
   height: 2.8rem;
 }
 
+.calendar-shell-admin .fc-timegrid-event {
+  padding: 0.14rem 0.38rem !important;
+}
+
 .calendar-shell-admin .fc-admin-event {
   display: grid;
-  gap: 0.15rem;
-  line-height: 1.2;
+  gap: 0.08rem;
+  line-height: 1.05;
   color: #fff;
 }
 
 .calendar-shell-admin .fc-admin-event strong {
-  font-size: 0.84rem;
+  font-size: 0.76rem;
   font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
 .calendar-shell-admin .fc-admin-event-time {
-  font-size: 0.72rem;
-  opacity: 0.92;
+  font-size: 0.64rem;
+  line-height: 1;
+  opacity: 0.88;
 }
 
 /* Today column background */
