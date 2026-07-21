@@ -1647,13 +1647,39 @@ a[x-apple-data-detectors] {
   height: 2.8rem;
 }
 
+.calendar-shell-admin .fc-direction-ltr .fc-timegrid-col-events {
+  margin: 0 0.12rem 0 1px;
+}
+
+.calendar-shell-admin .fc-direction-rtl .fc-timegrid-col-events {
+  margin: 0 1px 0 0.12rem;
+}
+
 .calendar-shell-admin .fc-timegrid-event {
   padding: 0.14rem 0.38rem !important;
+  margin-bottom: 0 !important;
+}
+
+.calendar-shell-admin .fc-timegrid-event .fc-event-main {
+  padding: 0 !important;
+}
+
+.calendar-shell-admin .fc-timegrid-event .fc-event-main-frame {
+  justify-content: flex-start;
+}
+
+.calendar-shell-admin .fc-timegrid-event-short .fc-event-main-frame {
+  flex-direction: column !important;
+}
+
+.calendar-shell-admin .fc-timegrid-event-short .fc-event-time::after {
+  content: none !important;
 }
 
 .calendar-shell-admin .fc-admin-event {
   display: grid;
   gap: 0.08rem;
+  align-content: start;
   line-height: 1.05;
   color: #fff;
 }

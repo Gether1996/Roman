@@ -32,6 +32,18 @@ export const CalendarAdminView = defineComponent({
       };
     }
 
+    function getSlotDuration() {
+      return isMobileCalendar() ? '01:00:00' : '00:30:00';
+    }
+
+    function getEventMinHeight() {
+      return isMobileCalendar() ? 54 : 28;
+    }
+
+    function getEventShortHeight() {
+      return isMobileCalendar() ? 48 : 0;
+    }
+
     async function loadCalendar() {
       if (!store.isSuperuser) {
         loading.value = false;
@@ -47,7 +59,7 @@ export const CalendarAdminView = defineComponent({
       calendar = new window.FullCalendar.Calendar(calendarRoot.value, {
         initialView: isMobileCalendar() ? 'timeGridDay' : 'timeGridWeek',
         headerToolbar: getHeaderToolbar(),
-        slotDuration: '01:00:00',
+        slotDuration: getSlotDuration(),
         slotMinTime: '07:00',
         slotMaxTime: '22:00',
         slotLabelFormat: { hour: '2-digit', minute: '2-digit', hour12: false },
@@ -58,8 +70,8 @@ export const CalendarAdminView = defineComponent({
         nowIndicator: true,
         height: isMobileCalendar() ? 'calc(100vh - 14rem)' : 'calc(100vh - 22rem)',
         scrollTime: '14:00:00',
-        eventMinHeight: isMobileCalendar() ? 54 : 28,
-        eventShortHeight: isMobileCalendar() ? 48 : 28,
+        eventMinHeight: getEventMinHeight(),
+        eventShortHeight: getEventShortHeight(),
         slotEventOverlap: false,
         eventOverlap: false,
         locale: locale.value,
@@ -87,10 +99,11 @@ export const CalendarAdminView = defineComponent({
         windowResize() {
           const mobile = isMobileCalendar();
           calendar.setOption('headerToolbar', getHeaderToolbar());
+          calendar.setOption('slotDuration', getSlotDuration());
           calendar.setOption('height', mobile ? 'calc(100vh - 14rem)' : 'calc(100vh - 22rem)');
           calendar.setOption('expandRows', !mobile);
-          calendar.setOption('eventMinHeight', mobile ? 54 : 28);
-          calendar.setOption('eventShortHeight', mobile ? 48 : 28);
+          calendar.setOption('eventMinHeight', getEventMinHeight());
+          calendar.setOption('eventShortHeight', getEventShortHeight());
           if (mobile && calendar.view.type !== 'timeGridDay') {
             calendar.changeView('timeGridDay');
           } else if (!mobile && calendar.view.type === 'timeGridDay') {
