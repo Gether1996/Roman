@@ -248,13 +248,14 @@ def admin_calendar_data(request):
     for reservation in future_reservations:
         events.append({
             'id': reservation.id,
-            'title': f"{reservation.worker} - {reservation.name_surname}",
+            'title': reservation.name_surname,
             'start': reservation.datetime_from.isoformat(),
             'end': reservation.datetime_to.isoformat(),
             'borderColor': reservation.get_color(),
             'backgroundColor': reservation.get_color(),
             'textColor': 'white',
             'extendedProps': {
+                'worker': reservation.worker,
                 'phone': reservation.phone_number,
                 'email': reservation.email,
                 'active': "True" if reservation.active else "False",
