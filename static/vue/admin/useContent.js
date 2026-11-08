@@ -128,18 +128,32 @@ export function useSections(sections) {
         await window.Swal.fire({ title: 'História verzií', text: 'Zatiaľ nie sú uložené žiadne staršie verzie.', confirmButtonColor: '#0f7e7a', confirmButtonText: 'Zavrieť' });
         return;
       }
-      const options = {};
-      items.forEach((r) => { options[r.id] = `${fmtDateTime(r.created_at)}${r.created_by ? ' – ' + r.created_by : ''}${sections.length > 1 ? ' (' + r.section + ')' : ''}`; });
+      const esc = (v) => String(v || '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+      let chosen = null;
       const result = await window.Swal.fire({
         title: 'Obnoviť staršiu verziu',
-        text: 'Vyberte verziu, ktorá platila pred danou zmenou:',
-        input: 'select',
-        inputOptions: options,
+        html: `<p class="adm-swal-text">Vyberte verziu, ktorá platila pred danou zmenou:</p><div class="adm-swal-list">${items.map((r) => `
+          <button type="button" class="adm-swal-option" data-id="${r.id}">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <span><b>${esc(fmtDateTime(r.created_at))}</b>${r.created_by || sections.length > 1 ? `<small>${esc(r.created_by)}${sections.length > 1 ? ' · ' + esc(r.section) : ''}</small>` : ''}</span>
+          </button>`).join('')}</div>`,
         showCancelButton: true,
         confirmButtonText: 'Obnoviť',
         cancelButtonText: 'Zrušiť',
         confirmButtonColor: '#0f7e7a',
         reverseButtons: true,
+        customClass: { popup: 'adm-swal' },
+        didOpen: (popup) => {
+          const confirmBtn = window.Swal.getConfirmButton();
+          confirmBtn.disabled = true;
+          popup.querySelectorAll('.adm-swal-option').forEach((btn) => btn.addEventListener('click', () => {
+            popup.querySelectorAll('.adm-swal-option').forEach((b) => b.classList.remove('is-selected'));
+            btn.classList.add('is-selected');
+            chosen = btn.dataset.id;
+            confirmBtn.disabled = false;
+          }));
+        },
+        preConfirm: () => chosen,
       });
       if (!result.isConfirmed || !result.value) return;
       const response = await api.post(`/api/admin/revisions/${result.value}/restore/`);

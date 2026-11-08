@@ -9,8 +9,6 @@
 .adm-banner-preview > i { font-size: 1.05rem; }
 .adm-banner-preview-text { flex: 1; min-width: 180px; }
 .adm-banner-preview-btn { background: #fff; color: #1e2c2f; border: 1px solid rgba(30, 44, 47, .12); border-radius: 999px; padding: .45rem 1rem; font-weight: 700; font-size: .85rem; }
-.adm-banner-preview.is-festive { background: linear-gradient(135deg, #7f1d1d, #b91c1c 55%, #166534); color: #fff; border-color: transparent; }
-.adm-banner-preview.is-festive .adm-banner-preview-btn { background: #fde68a; color: #7f1d1d; border-color: transparent; }
 .adm-banner-preview.is-highlight { background: #0f7e7a; color: #fff; border-color: transparent; }
 .adm-banner-preview.is-highlight .adm-banner-preview-btn { background: #fff; color: #0b5755; border-color: transparent; }
 @media (max-width: 680px) { .adm-banner-preview { border-radius: 18px; } }
@@ -32,3 +30,7 @@
 
 /* Legal tabs – icons inside the button group */
 .adm-btn-group button i { margin-right: .3rem; }
+
+/* preview reuses the public .promo-banner styles */
+.adm-promo-preview { margin: 0; }
+.adm-promo-preview .btn { pointer-events: none; }

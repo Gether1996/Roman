@@ -100,13 +100,8 @@ export const TextsView = defineComponent({
             <i class="fa-solid fa-magnifying-glass"></i>
             <input type="search" v-model="search" placeholder="Hľadať text…" />
           </div>
-          <select v-model="group">
-            <option value="all">Všetky časti</option>
-            <option v-for="g in GROUPS" :key="g.key" :value="g.key">{{ g.label }}</option>
-          </select>
-          <label class="adm-en-switch" style="color:var(--a-text)">
-            <input type="checkbox" v-model="onlyChanged" /> Len upravené ({{ changedCount }})
-          </label>
+          <a-select v-model="group" :options="[{ value: 'all', label: 'Všetky časti' }, ...GROUPS.map(g => ({ value: g.key, label: g.label }))]" />
+          <a-checkbox v-model="onlyChanged">Len upravené ({{ changedCount }})</a-checkbox>
         </div>
 
         <a-card>

@@ -3131,11 +3131,52 @@ a[x-apple-data-detectors] {
    cookie notice, consent checkboxes, footer
    ========================================================================== */
 .promo-text { display: inline-flex; align-items: center; gap: .55rem; }
+/* Christmas banner: calm pine green, cream text, gold accents, trees + gentle snow */
 .promo-banner.promo-style-festive {
-  background: linear-gradient(120deg, #7f1d1d 0%, #b91c1c 45%, #166534 100%);
-  border-color: transparent; color: #fff; box-shadow: 0 14px 34px rgba(127, 29, 29, .25);
+  position: relative; overflow: hidden; isolation: isolate;
+  background: linear-gradient(115deg, #17392d 0%, #1f4a3a 45%, #2b5a46 100%);
+  border: 1px solid rgba(226, 192, 120, .45); color: #f8f1e1;
+  box-shadow: 0 16px 36px rgba(23, 57, 45, .22), inset 0 1px 0 rgba(255, 255, 255, .06);
+  padding-left: 1.1rem; letter-spacing: .01em;
 }
-.promo-banner.promo-style-festive .btn-secondary-soft { background: #fff; color: #7f1d1d; border-color: #fff; }
+.promo-banner.promo-style-festive::before {
+  content: ""; position: absolute; inset: -60px 0 0; z-index: -1; pointer-events: none;
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, .55) 1.3px, transparent 1.9px),
+    radial-gradient(circle, rgba(255, 255, 255, .32) 1px, transparent 1.5px),
+    radial-gradient(circle, rgba(255, 255, 255, .22) 1.6px, transparent 2.2px);
+  background-size: 54px 54px, 33px 33px, 81px 81px;
+  background-position: 0 0, 14px 19px, 40px 7px;
+  animation: promo-snow 14s linear infinite;
+}
+.promo-banner.promo-style-festive::after {
+  /* warm glow on the left + a soft string of lights along the top edge */
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(circle at 9px 7px, rgba(242, 208, 128, .95) 2.2px, rgba(242, 208, 128, .25) 4px, transparent 6px) 0 0 / 44px 14px repeat-x,
+    radial-gradient(circle at 31px 9px, rgba(224, 112, 104, .85) 2px, rgba(224, 112, 104, .2) 3.6px, transparent 5.5px) 0 0 / 44px 14px repeat-x,
+    radial-gradient(120% 140% at 0% 50%, rgba(226, 192, 120, .18), transparent 55%);
+  animation: promo-lights 3.2s ease-in-out infinite alternate;
+}
+@keyframes promo-lights { from { opacity: .75; } to { opacity: 1; } }
+@keyframes promo-snow { to { background-position: 0 54px, 14px 52px, 40px 88px; } }
+@media (prefers-reduced-motion: reduce) { .promo-banner.promo-style-festive::before, .promo-banner.promo-style-festive::after { animation: none; } }
+.promo-banner.promo-style-festive .promo-text { color: #f8f1e1; font-weight: 600; font-size: .92rem; flex: 1; min-width: 0; }
+.promo-banner.promo-style-festive .btn-secondary-soft {
+  background: #f3e3bb; color: #17392d; border-color: #f3e3bb; box-shadow: 0 6px 16px rgba(0, 0, 0, .18); position: relative;
+}
+.promo-banner.promo-style-festive .btn-secondary-soft:hover { background: #f8ecd0; }
+.promo-xmas { display: inline-flex; align-items: flex-end; gap: .15rem; flex: none; margin: .25rem .35rem 0 0; line-height: 1; }
+.promo-tree { color: #8fbf9a; font-size: 2rem; filter: drop-shadow(0 2px 2px rgba(0, 0, 0, .25)); }
+.promo-tree.is-small { font-size: 1.3rem; color: #6fa47e; }
+.promo-tree-main { position: relative; display: inline-flex; flex-direction: column; align-items: center; }
+.promo-tree-main .promo-tree { color: #a9d1b0; position: relative; }
+.promo-tree-main .promo-tree::after {
+  /* two little red berries / baubles */
+  content: ""; position: absolute; left: 32%; top: 56%; width: 4px; height: 4px; border-radius: 50%;
+  background: #e07068; box-shadow: 9px 5px 0 #f2d080, 4px -8px 0 #f2d080, -2px 9px 0 #e07068;
+}
+.promo-star { color: #e9c46a; font-size: .75rem; margin-bottom: -.2rem; filter: drop-shadow(0 0 4px rgba(233, 196, 106, .8)); }
 .promo-banner.promo-style-highlight { background: var(--brand); border-color: var(--brand); color: #fff; }
 .promo-banner.promo-style-highlight .btn-secondary-soft { background: #fff; color: var(--brand-deep); border-color: #fff; }
 
@@ -3202,6 +3243,8 @@ a[x-apple-data-detectors] {
   .cookie-banner { flex-direction: column; align-items: stretch; text-align: left; bottom: .6rem; }
   .cookie-banner > i { display: none; }
   .promo-banner.promo-style-festive, .promo-banner.promo-style-highlight { border-radius: 24px; }
+  .promo-banner.promo-style-festive { flex-wrap: wrap; }
+  .promo-banner.promo-style-festive .promo-text { flex: 1 1 60%; }
 }
 
 .footer-inner-rich { flex-wrap: wrap; align-items: flex-start; }

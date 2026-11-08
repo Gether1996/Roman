@@ -58,10 +58,7 @@ export const TherapistsView = defineComponent({
               </a-field>
               <div class="adm-field">
                 <span class="adm-label">Farba v kalendári a prehľadoch</span>
-                <div class="adm-catalog-color">
-                  <input type="color" :value="isValidHex(person.color) ? person.color : '#0f7e7a'" @input="person.color = $event.target.value" />
-                  <input type="text" v-model="person.color" maxlength="7" placeholder="#0f7e7a" />
-                </div>
+                <a-color v-model="person.color" />
                 <small v-if="person.color && !isValidHex(person.color)" class="adm-hint" style="color:var(--a-red)">Farba musí byť v tvare #RRGGBB.</small>
               </div>
               <a-toggle v-model="person.visible" label="Zobraziť na úvodnej stránke" hint="Skrytý terapeut sa nezobrazí v sekcii terapeutov na webe." />

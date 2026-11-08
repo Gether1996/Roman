@@ -167,7 +167,7 @@ export const CalendarView = defineComponent({
               <span class="adm-dot" :style="{ background: t.color }"></span> {{ t.key }}
             </button>
           </div>
-          <label class="adm-en-switch"><input type="checkbox" v-model="showCancelled" /> Zobraziť zrušené</label>
+          <a-checkbox v-model="showCancelled">Zobraziť zrušené</a-checkbox>
           <div class="adm-legend" style="margin-left:auto">
             <span v-for="t in therapists" :key="t.key"><span class="adm-dot" :style="{ background: t.color }"></span> {{ t.key }}</span>
             <span><span class="adm-dot" style="background:#d97706"></span> čaká na schválenie</span>

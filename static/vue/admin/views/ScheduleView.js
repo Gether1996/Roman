@@ -161,7 +161,7 @@ export const ScheduleView = defineComponent({
             </template>
             <p v-if="isDirty(key)" class="adm-alert is-warning"><i class="fa-solid fa-circle-exclamation"></i> Neuložené zmeny v rozvrhu.</p>
             <a-field label="Koľko dní dopredu sa dá rezervovať online" hint="Napr. 30 = klienti vidia voľné termíny na najbližších 30 dní.">
-              <input v-model.number="workers[key].days_ahead" type="number" min="1" max="365" style="max-width:140px" />
+              <a-number v-model="workers[key].days_ahead" :min="1" :max="365" suffix="dní" />
             </a-field>
             <div class="adm-week">
               <div v-for="[day, label, name] in DAYS" :key="day" class="adm-week-row" :class="{ 'is-off': !workers[key].working_days.includes(label) }">
@@ -187,14 +187,14 @@ export const ScheduleView = defineComponent({
               <button :class="{ active: !offWorker }" @click="offWorker = ''">Obaja</button>
               <button v-for="t in therapists" :key="t.key" :class="{ active: offWorker === t.key }" @click="offWorker = t.key">{{ t.key }}</button>
             </div>
-            <label class="adm-en-switch"><input type="checkbox" v-model="showPast" /> Zobraziť aj minulé</label>
+            <a-checkbox v-model="showPast">Zobraziť aj minulé</a-checkbox>
           </div>
           <a-empty v-if="!visibleOff.length" icon="fa-calendar-check" text="Žiadne naplánované voľno." />
           <table v-else class="adm-table adm-table-cards">
             <thead><tr><th style="width:36px"></th><th>Dátum</th><th>Terapeut</th><th>Rozsah</th><th></th></tr></thead>
             <tbody>
               <tr v-for="item in visibleOff" :key="item.id" :style="{ opacity: item.date_iso < todayISO() ? .55 : 1 }">
-                <td><input type="checkbox" v-model="selected" :value="item.id" aria-label="Vybrať" /></td>
+                <td><a-checkbox v-model="selected" :value="item.id" /></td>
                 <td><span class="adm-strong">{{ fmtDate(item.date_iso) }}</span> <span class="adm-muted">{{ weekday(item.date_iso) }}</span></td>
                 <td><span class="adm-dot" :style="{ background: colorOf(item.worker) }"></span> {{ item.worker }}</td>
                 <td><span class="adm-badge" :class="item.whole_day ? 'is-pending' : 'is-blue'">{{ item.whole_day ? 'Celý deň' : item.time_from + ' – ' + item.time_to }}</span></td>

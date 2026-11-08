@@ -107,13 +107,13 @@ export const SettingsAdminView = defineComponent({
               <div v-if="rulesLoading" class="adm-loading"><i class="fa-solid fa-spinner fa-spin"></i></div>
               <template v-else>
                 <a-field label="Prestávka medzi rezerváciami (minúty)" hint="Čas na upratanie a prípravu medzi dvoma klientmi. Platí pre oboch terapeutov (spoločná miestnosť).">
-                  <input type="number" min="0" max="120" step="5" v-model.number="rules.break_minutes" />
+                  <a-number v-model="rules.break_minutes" :min="0" :max="120" :step="5" suffix="min" />
                 </a-field>
                 <a-field label="Koľko dní dopredu je online rezervácia zatvorená" :hint="leadLabel(rules.public_lead_days)">
-                  <input type="number" min="0" max="30" v-model.number="rules.public_lead_days" />
+                  <a-number v-model="rules.public_lead_days" :min="0" :max="30" suffix="dní" />
                 </a-field>
                 <a-field label="Koľko dní dopredu vidí administrátor voľné termíny" hint="Pre klientov sa počet dní nastavuje pri každom terapeutovi v sekcii Rozvrh a voľno.">
-                  <input type="number" min="7" max="730" v-model.number="rules.admin_days_ahead" />
+                  <a-number v-model="rules.admin_days_ahead" :min="7" :max="730" :step="10" suffix="dní" />
                 </a-field>
               </template>
             </a-card>

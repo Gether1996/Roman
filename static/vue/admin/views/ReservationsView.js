@@ -206,18 +206,15 @@ const ReservationDetail = defineComponent({
             <a-field label="Dátum"><date-input v-model="form.date" /></a-field>
             <a-field label="Začiatok"><time-input v-model="form.time_from" /></a-field>
             <a-field label="Dĺžka">
-              <select v-model.number="form.duration">
-                <option v-for="d in (durations.includes(Number(form.duration)) ? durations : [Number(form.duration), ...durations])" :key="d" :value="d">{{ minutesLabel(d) }}</option>
-              </select>
+              <a-select v-model="form.duration" :options="(durations.includes(Number(form.duration)) ? durations : [Number(form.duration), ...durations]).map(d => ({ value: d, label: minutesLabel(d) }))" />
             </a-field>
           </div>
           <div class="adm-grid-2">
             <a-field label="Terapeut">
-              <select v-model="form.worker"><option v-for="w in ['Roman', 'Evka']" :key="w" :value="w">{{ w }}</option></select>
+              <a-select v-model="form.worker" :options="['Roman', 'Evka'].map(w => ({ value: w, label: w, color: workerColors[w] }))" />
             </a-field>
             <a-field label="Služba" hint="Výberom zo zoznamu sa nastaví aj dĺžka.">
-              <input v-model="form.massage_name" type="text" list="adm-service-list" maxlength="250" />
-              <datalist id="adm-service-list"><option v-for="s in services" :key="s.id" :value="s.backend_name">{{ s.duration }} min</option></datalist>
+              <input v-model="form.massage_name" type="text" maxlength="250" />
             </a-field>
           </div>
           <div class="adm-chip-row" style="margin:-.4rem 0 1rem">
@@ -383,9 +380,7 @@ const NewReservation = defineComponent({
         </div>
         <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap">
           <time-input v-model="form.time" />
-          <select v-model.number="form.duration" style="width:auto">
-            <option v-for="d in durations" :key="d" :value="d">{{ minutesLabel(d) }}</option>
-          </select>
+          <a-select v-model="form.duration" :options="durations.map(d => ({ value: d, label: minutesLabel(d) }))" aria-label="Dĺžka" />
         </div>
       </a-field>
 
@@ -521,7 +516,16 @@ export const ReservationsView = defineComponent({
 
     onMounted(() => load(1));
 
+    const statusOptions = [
+      { value: '', label: 'Všetky stavy' },
+      { value: 'pending', label: 'Čakajúce na schválenie', color: '#d97706' },
+      { value: 'approved', label: 'Schválené', color: '#0f7e7a' },
+      { value: 'active', label: 'Nezrušené' },
+      { value: 'cancelled', label: 'Zrušené', color: '#9ca3af' },
+    ];
+
     return {
+      statusOptions,
       loading, rows, meta, filters, groups, detailId, creating, workerColors, hasFilters,
       load, setWhen, quickRange, clearFilters, exportCsv, openDetail, closeModal, approve,
       fmtDate, relativeDay, weekday, plural, formatPrice, STATUS_META, todayISO,
@@ -544,18 +548,8 @@ export const ReservationsView = defineComponent({
           </div>
         </div>
         <div class="adm-toolbar">
-          <select v-model="filters.status">
-            <option value="">Všetky stavy</option>
-            <option value="pending">Čakajúce na schválenie</option>
-            <option value="approved">Schválené</option>
-            <option value="active">Nezrušené</option>
-            <option value="cancelled">Zrušené</option>
-          </select>
-          <select v-model="filters.worker">
-            <option value="">Obaja terapeuti</option>
-            <option value="Roman">Roman</option>
-            <option value="Evka">Evka</option>
-          </select>
+          <a-select v-model="filters.status" :options="statusOptions" aria-label="Stav" />
+          <a-select v-model="filters.worker" :options="[{ value: '', label: 'Obaja terapeuti' }, ...['Roman', 'Evka'].map(w => ({ value: w, label: w, color: workerColors[w] }))]" aria-label="Terapeut" />
           <date-input v-model="filters.date_from" placeholder="Od dátumu" />
           <date-input v-model="filters.date_to" placeholder="Do dátumu" />
           <button class="adm-btn is-ghost is-sm" @click="quickRange('today')">Dnes</button>
@@ -601,9 +595,7 @@ export const ReservationsView = defineComponent({
         <div class="adm-pagination">
           <span>Strana {{ meta.page }} z {{ meta.pages }} · {{ meta.total }} spolu</span>
           <div style="display:flex;gap:.5rem;align-items:center">
-            <select v-model.number="meta.per_page" @change="load(1)" style="width:auto">
-              <option :value="25">25 na stranu</option><option :value="50">50 na stranu</option><option :value="100">100 na stranu</option>
-            </select>
+            <a-select v-model="meta.per_page" size="sm" :options="[25, 50, 100].map(n => ({ value: n, label: n + ' na stranu' }))" @change="load(1)" />
             <button class="adm-btn is-soft is-sm" :disabled="meta.page <= 1" @click="load(meta.page - 1)"><i class="fa-solid fa-chevron-left"></i></button>
             <button class="adm-btn is-soft is-sm" :disabled="meta.page >= meta.pages" @click="load(meta.page + 1)"><i class="fa-solid fa-chevron-right"></i></button>
           </div>

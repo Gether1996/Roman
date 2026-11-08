@@ -149,9 +149,7 @@ export const ServicesView = defineComponent({
                   </a-field>
                   <div class="adm-grid-2">
                     <a-field label="Dĺžka" hint="Podľa dĺžky sa overuje voľný čas v kalendári.">
-                      <select v-model.number="item.duration">
-                        <option v-for="d in durations" :key="d" :value="d">{{ minutesLabel(d) }}</option>
-                      </select>
+                      <a-select v-model="item.duration" :options="durations.map(d => ({ value: d, label: minutesLabel(d) }))" />
                     </a-field>
                     <a-field label="Cena" hint="Napíšte presne tak, ako sa má zobraziť, napr. „25 €“.">
                       <input type="text" v-model="item.price" maxlength="40" placeholder="25 €" />
@@ -167,10 +165,7 @@ export const ServicesView = defineComponent({
                     <small v-if="!(item.workers || []).length" class="adm-hint" style="color:var(--a-red)">Vyberte aspoň jedného terapeuta.</small>
                   </div>
                   <a-field label="Informačné okno pri výbere" hint="Po výbere služby sa zákazníkovi zobrazí okno s cenníkom vybranej permanentky.">
-                    <select v-model="item.pass_id">
-                      <option value="">Žiadne</option>
-                      <option v-for="p in passes" :key="p.id" :value="p.id">{{ p.title?.sk || p.id }}</option>
-                    </select>
+                    <a-select v-model="item.pass_id" :options="[{ value: '', label: 'Žiadne' }, ...passes.map(p => ({ value: p.id, label: p.title?.sk || p.id, icon: p.icon }))]" />
                   </a-field>
                   <a-toggle v-model="item.active" label="Zobrazovať v rezervácii a v cenníku" hint="Vypnutú službu si zákazník nemôže vybrať." />
                 </div>

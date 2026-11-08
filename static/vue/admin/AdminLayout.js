@@ -201,11 +201,15 @@ export const AdminLayout = defineComponent({
           </div>
           <div class="adm-topbar-right">
             <span class="adm-today hide-sm"><i class="fa-regular fa-calendar"></i> {{ todayLabel }}</span>
-            <label class="adm-en-switch hide-sm" title="Zobraziť polia pre anglickú verziu webu">
+            <label class="adm-mini-toggle hide-sm" title="Zobraziť polia pre anglickú verziu webu">
               <input type="checkbox" :checked="ui.showEnglish" @change="setShowEnglish($event.target.checked)" />
+              <span class="adm-toggle-track"><span class="adm-toggle-thumb"></span></span>
               <span>EN preklady</span>
             </label>
             <router-link to="/sprava/rezervacie/nova" class="adm-btn is-primary is-sm"><i class="fa-solid fa-plus"></i><span class="hide-sm"> Nová rezervácia</span></router-link>
+            <router-link to="/" class="adm-btn is-soft is-sm adm-back-web" title="Späť na web">
+              <i class="fa-solid fa-arrow-left"></i><span class="hide-sm"> Späť na web</span>
+            </router-link>
             <button class="adm-user" @click="logout" title="Odhlásiť sa">
               <span class="adm-avatar">{{ (store.user.name || store.user.email || 'A').slice(0, 1).toUpperCase() }}</span>
               <i class="fa-solid fa-right-from-bracket"></i>

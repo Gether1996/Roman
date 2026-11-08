@@ -163,7 +163,10 @@ export const HomeView = defineComponent({
 
       <section v-if="promo.active" class="promo-bar container-shell">
         <div class="promo-banner" :class="'promo-style-' + (promo.style || 'default')" v-reveal>
-          <span class="promo-text"><i v-if="promo.icon" class="fa-solid" :class="promo.icon"></i> {{ tr(promo.text) }}</span>
+<span v-if="promo.style === 'festive'" class="promo-xmas" aria-hidden="true">
+            <i class="fa-solid fa-tree promo-tree is-small"></i><span class="promo-tree-main"><i class="fa-solid fa-star promo-star"></i><i class="fa-solid fa-tree promo-tree"></i></span><i class="fa-solid fa-tree promo-tree is-small"></i>
+          </span>
+          <span class="promo-text"><i v-if="promo.icon && promo.style !== 'festive'" class="fa-solid" :class="promo.icon"></i> {{ tr(promo.text) }}</span>
           <template v-if="tr(promo.button) && promo.target">
             <router-link v-if="isInternal(promo.target)" class="btn btn-secondary-soft" :to="promo.target">{{ tr(promo.button) }}</router-link>
             <a v-else class="btn btn-secondary-soft" :href="promo.target" @click="followTarget($event, promo.target)"

@@ -70,8 +70,8 @@ export const ReviewsView = defineComponent({
 
       <div class="adm-toolbar">
         <div class="adm-search"><i class="fa-solid fa-magnifying-glass"></i><input v-model.trim="filters.q" type="search" placeholder="Hľadať v menách a texte…" /></div>
-        <select v-model="filters.worker"><option value="">Obaja terapeuti</option><option value="roman">Roman</option><option value="evka">Evka</option></select>
-        <select v-model="filters.visibility"><option value="">Všetky</option><option value="hidden">Len skryté</option></select>
+        <a-select v-model="filters.worker" :options="[{ value: '', label: 'Obaja terapeuti' }, { value: 'roman', label: 'Roman' }, { value: 'evka', label: 'Evka' }]" />
+        <a-select v-model="filters.visibility" :options="[{ value: '', label: 'Všetky hodnotenia' }, { value: 'hidden', label: 'Len skryté' }]" />
       </div>
 
       <div v-if="loading" class="adm-loading"><i class="fa-solid fa-spinner fa-spin"></i></div>

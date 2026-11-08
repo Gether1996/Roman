@@ -16,7 +16,7 @@ const TARGETS = [
 
 const STYLES = [
   { value: 'default', label: 'Štandardný' },
-  { value: 'festive', label: 'Sviatočný (vianočný)' },
+  { value: 'festive', label: 'Vianočný (stromčeky a sneh)', icon: 'fa-tree' },
   { value: 'highlight', label: 'Výrazný' },
 ];
 
@@ -65,10 +65,7 @@ const TargetInput = defineComponent({
   },
   template: `
     <a-field label="Kam tlačidlo vedie" hint="Sekcia na úvodnej stránke, stránka webu alebo vlastný odkaz (https://…, mailto:…).">
-      <select :value="selectValue" @change="onSelect($event.target.value)">
-        <option v-for="t in TARGETS" :key="t.value" :value="t.value">{{ t.label }}</option>
-        <option value="__custom">Vlastný odkaz…</option>
-      </select>
+      <a-select :model-value="selectValue" :options="[...TARGETS, { value: '__custom', label: 'Vlastný odkaz…' }]" @update:model-value="onSelect" />
       <input v-if="selectValue === '__custom'" type="text" style="margin-top:.4rem" :value="modelValue" placeholder="https://… alebo #sekcia" @input="$emit('update:modelValue', $event.target.value.trim())" />
     </a-field>
   `,
@@ -136,10 +133,12 @@ export const BannerView = defineComponent({
         <a-card title="Ako to teraz vyzerá na webe" icon="fa-eye">
           <div class="adm-preview">
             <span class="adm-preview-label">Náhľad – {{ preview ? preview.from : 'banner je skrytý' }}</span>
-            <div v-if="preview" class="adm-banner-preview" :class="'is-' + preview.style">
-              <i class="fa-solid" :class="preview.icon"></i>
-              <span class="adm-banner-preview-text">{{ preview.text || '(bez textu)' }}</span>
-              <span v-if="preview.button" class="adm-banner-preview-btn">{{ preview.button }}</span>
+            <div v-if="preview" class="promo-banner adm-promo-preview" :class="'promo-style-' + (preview.style || 'default')">
+              <span v-if="preview.style === 'festive'" class="promo-xmas" aria-hidden="true">
+            <i class="fa-solid fa-tree promo-tree is-small"></i><span class="promo-tree-main"><i class="fa-solid fa-star promo-star"></i><i class="fa-solid fa-tree promo-tree"></i></span><i class="fa-solid fa-tree promo-tree is-small"></i>
+          </span>
+              <span class="promo-text"><i v-if="preview.icon && preview.style !== 'festive'" class="fa-solid" :class="preview.icon"></i> {{ preview.text || '(bez textu)' }}</span>
+              <span v-if="preview.button" class="btn btn-secondary-soft">{{ preview.button }}</span>
             </div>
             <p v-else class="adm-muted adm-small" style="margin:0">Banner sa momentálne na webe nezobrazuje.</p>
           </div>
@@ -159,9 +158,7 @@ export const BannerView = defineComponent({
           <div class="adm-grid-2">
             <icon-picker v-model="draft.promo.icon" />
             <a-field label="Vzhľad">
-              <select v-model="draft.promo.style">
-                <option v-for="s in STYLES" :key="s.value" :value="s.value">{{ s.label }}</option>
-              </select>
+              <a-select v-model="draft.promo.style" :options="STYLES" />
             </a-field>
           </div>
         </a-card>
@@ -215,9 +212,7 @@ export const BannerView = defineComponent({
               <div class="adm-grid-2">
                 <icon-picker v-model="campaign.icon" />
                 <a-field label="Vzhľad">
-                  <select v-model="campaign.style">
-                    <option v-for="s in STYLES" :key="s.value" :value="s.value">{{ s.label }}</option>
-                  </select>
+                  <a-select v-model="campaign.style" :options="STYLES" />
                 </a-field>
               </div>
             </div>

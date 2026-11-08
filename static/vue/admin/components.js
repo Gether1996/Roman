@@ -1,8 +1,11 @@
 // Reusable form components for the admin panel.
 const { defineComponent, ref, computed } = Vue;
 
-import { api, ui, toast, toastError, fmtDate, MONTHS } from './ui.js';
+import { api, ui, toast, toastError } from './ui.js';
 import { contentState } from './useContent.js';
+import { controlComponents, DateInput, TimeInput, MonthDayInput } from './controls.js';
+
+export { DateInput, TimeInput, MonthDayInput };
 
 /** Card with a title, optional description and actions slot. */
 export const ACard = defineComponent({
@@ -172,68 +175,8 @@ export const IconPicker = defineComponent({
   `,
 });
 
-/** Date input that always displays DD. MM. YYYY but uses the native picker. */
-export const DateInput = defineComponent({
-  name: 'DateInput',
-  props: { modelValue: String, min: String, max: String, placeholder: { type: String, default: 'DD. MM. RRRR' } },
-  emits: ['update:modelValue'],
-  setup() {
-    const input = ref(null);
-    function open() {
-      try { input.value?.showPicker?.(); } catch (e) { input.value?.focus(); }
-    }
-    return { input, open, fmtDate };
-  },
-  template: `
-    <div class="adm-date" @click="open">
-      <i class="fa-regular fa-calendar"></i>
-      <span :class="{ 'is-placeholder': !modelValue }">{{ modelValue ? fmtDate(modelValue) : placeholder }}</span>
-      <input ref="input" type="date" :value="modelValue" :min="min" :max="max" @input="$emit('update:modelValue', $event.target.value)" />
-    </div>
-  `,
-});
 
-/** Time input HH:MM (24h). */
-export const TimeInput = defineComponent({
-  name: 'TimeInput',
-  props: { modelValue: String, step: { type: Number, default: 300 } },
-  emits: ['update:modelValue'],
-  setup() {
-    function openPicker(event) {
-      try { event.target.showPicker?.(); } catch (e) { /* unsupported */ }
-    }
-    return { openPicker };
-  },
-  template: `
-    <input class="adm-time" type="time" :step="step" :value="modelValue" @input="$emit('update:modelValue', $event.target.value)" @click="openPicker" />
-  `,
-});
 
-/** Recurring day of year 'MM-DD' (day + month selects). */
-export const MonthDayInput = defineComponent({
-  name: 'MonthDayInput',
-  props: { modelValue: String },
-  emits: ['update:modelValue'],
-  setup(props, { emit }) {
-    const day = computed(() => Number(String(props.modelValue || '').split('-')[1]) || 1);
-    const month = computed(() => Number(String(props.modelValue || '').split('-')[0]) || 1);
-    function set(d, m) {
-      const maxDay = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][m - 1];
-      emit('update:modelValue', `${String(m).padStart(2, '0')}-${String(Math.min(d, maxDay)).padStart(2, '0')}`);
-    }
-    return { day, month, set, MONTHS };
-  },
-  template: `
-    <div class="adm-monthday">
-      <select :value="day" @change="set(Number($event.target.value), month)">
-        <option v-for="d in 31" :key="d" :value="d">{{ d }}.</option>
-      </select>
-      <select :value="month" @change="set(day, Number($event.target.value))">
-        <option v-for="(m, i) in MONTHS" :key="m" :value="i + 1">{{ m }}</option>
-      </select>
-    </div>
-  `,
-});
 
 /** Sticky bar with save / discard + history & reset menu. */
 export const SaveBar = defineComponent({
@@ -327,5 +270,6 @@ export const ListActions = defineComponent({
 });
 
 export const adminComponents = {
-  ACard, AField, AToggle, BiInput, ImageInput, IconPicker, DateInput, TimeInput, MonthDayInput, SaveBar, AModal, AEmpty, APageHead, ListActions,
+  ACard, AField, AToggle, BiInput, ImageInput, IconPicker, SaveBar, AModal, AEmpty, APageHead, ListActions,
+  ...controlComponents,
 };
