@@ -423,3 +423,12 @@ body.adm-body { background: #f3f4f1; }
   .adm-list-item-head strong { white-space: normal; line-height: 1.25; font-size: .92rem; }
   .adm-list-actions .adm-icon-btn { width: 30px; height: 30px; }
 }
+
+/* schedule: put Roman / Evka under each other when the two cards would be too narrow */
+@media (max-width: 1280px) {
+  .adm-schedule-grid { grid-template-columns: minmax(0, 1fr); }
+}
+.adm-week-hours { flex-wrap: nowrap; }
+@media (max-width: 420px) {
+  .adm-week-hours { flex-wrap: wrap; }
+}

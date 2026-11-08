@@ -147,13 +147,11 @@ export const ScheduleView = defineComponent({
   },
   template: `
     <div>
-      <a-page-head title="Rozvrh a voľno" subtitle="Pracovné hodiny určujú, kedy si klienti môžu online rezervovať termín. Voľno (dovolenka, lekár…) dané časy zablokuje." >
-        <button class="adm-btn is-primary" @click="openForm"><i class="fa-solid fa-umbrella-beach"></i> Pridať voľno</button>
-      </a-page-head>
+      <a-page-head title="Rozvrh a voľno" subtitle="Pracovné hodiny určujú, kedy si klienti môžu online rezervovať termín. Voľno (dovolenka, lekár…) dané časy zablokuje." />
 
       <div v-if="loading" class="adm-loading"><i class="fa-solid fa-spinner fa-spin"></i> Načítavam…</div>
       <template v-else>
-        <div class="adm-grid-2" style="align-items:start">
+        <div class="adm-grid-2 adm-schedule-grid" style="align-items:start">
           <a-card v-for="key in ['Roman', 'Evka']" :key="key" :title="key" icon="fa-user-clock">
             <template #actions>
               <button class="adm-btn is-ghost is-sm" @click="copyFrom(key, key === 'Roman' ? 'Evka' : 'Roman')" :title="'Skopírovať hodiny od ' + (key === 'Roman' ? 'Evky' : 'Romana')"><i class="fa-regular fa-copy"></i></button>
@@ -182,6 +180,7 @@ export const ScheduleView = defineComponent({
         <a-card title="Voľno a obmedzenia" icon="fa-umbrella-beach" description="Celé dni alebo len časť dňa, kedy terapeut nepracuje. Existujúce rezervácie sa tým nezrušia.">
           <template #actions>
             <button v-if="selected.length" class="adm-btn is-soft is-danger is-sm" @click="removeSelected"><i class="fa-solid fa-trash"></i> Odstrániť vybrané ({{ selected.length }})</button>
+            <button class="adm-btn is-primary is-sm" @click="openForm"><i class="fa-solid fa-plus"></i> Pridať voľno</button>
           </template>
           <div class="adm-toolbar">
             <div class="adm-btn-group">
