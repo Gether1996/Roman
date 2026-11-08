@@ -119,4 +119,6 @@ def import_ini(path=None, force=False):
         if force:
             ConfigEntry.objects.all().delete()
         save_config(parser)
+    from Roman.backend_funcs.audit import log_change
+    log_change(None, 'import', 'schedule', f'Import nastavení rozvrhu z {source} ({ConfigEntry.objects.count()} hodnôt)', object_type='Config')
     return True, f'Importované z: {source} ({ConfigEntry.objects.count()} hodnôt).'

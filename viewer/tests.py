@@ -213,3 +213,50 @@ class SystemConfigTests(BaseTest):
         self.assertEqual(ConfigEntry.objects.get(section='settings-evka', key='days_ahead').value, '21')
         self.assertEqual(self.client.get('/api/settings-bootstrap/').json()['rules']['break_minutes'], 10)
         self.assertEqual(CONFIG.read_text(encoding='utf-8'), before)  # config.ini untouched
+
+
+class AuditLogTests(BaseTest):
+    def test_changes_are_logged_with_diffs(self):
+        from viewer.models import AuditLog
+        # public booking -> logged as visitor
+        self.post('/create_reservation/', self.booking())
+        entry = AuditLog.objects.get(area='reservation', action='create')
+        self.assertEqual(entry.actor_type, 'visitor')
+        self.assertIn('Ján Test', entry.summary)
+
+        self.client.force_login(self.admin)
+        reservation = Reservation.objects.get()
+        self.post(f'/api/admin/reservations/{reservation.id}/update/', {'time_from': '11:00', 'personal_note': 'VIP'})
+        update = AuditLog.objects.filter(action='update', area='reservation').first()
+        fields = {c['field'] for c in json.loads(update.changes)}
+        self.assertEqual(fields, {'time', 'personal_note'})
+        self.assertEqual(update.actor_type, 'admin')
+
+        self.post('/api/admin/content/hero/', {'data': {'subtitle': {'sk': 'Iný text', 'en': ''}}})
+        content = AuditLog.objects.get(area='content')
+        self.assertIn('Úvodná stránka', content.summary)
+        self.assertTrue(any(c['field'] == 'subtitle.sk' and c['new'] == 'Iný text' for c in json.loads(content.changes)))
+
+        self.post('/save_settings/', {'days_ahead_evka': 20})
+        schedule = AuditLog.objects.get(area='schedule')
+        self.assertIn('Evka', schedule.summary)
+
+        self.client.delete('/delete_reservation/', json.dumps({'id': reservation.id}), content_type='application/json')
+        self.assertTrue(AuditLog.objects.filter(action='delete', area='reservation').exists())
+
+        data = self.client.get('/api/admin/history/?area=reservation').json()
+        self.assertEqual(data['total'], 3)
+        per_object = self.client.get(f'/api/admin/history/?object_type=Reservation&object_id={reservation.id}').json()
+        self.assertEqual(per_object['total'], 3)
+
+    def test_history_requires_superuser(self):
+        self.assertEqual(self.client.get('/api/admin/history/').status_code, 403)
+
+    def test_django_admin_changes_are_mirrored(self):
+        from django.contrib.admin.models import CHANGE, LogEntry
+        from django.contrib.contenttypes.models import ContentType
+        from viewer.models import AuditLog, Review
+        review = Review.objects.create(name_surname='X', worker='roman', message='m', stars=5)
+        LogEntry.objects.log_action(self.admin.id, ContentType.objects.get_for_model(Review).id, review.id, str(review), CHANGE, 'Zmenené Hviezdičky')
+        entry = AuditLog.objects.get(area='system')
+        self.assertIn('Pokročilá správa dát', entry.summary)

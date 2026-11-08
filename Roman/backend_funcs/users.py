@@ -6,6 +6,7 @@ from django.contrib.auth import logout as django_logout
 from django.shortcuts import redirect
 from accounts.models import CustomUser
 from viewer.models import AlreadyMadeReservation
+from Roman.backend_funcs.audit import log_change
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import activate
 import re
@@ -27,6 +28,8 @@ def login_api(request):
             user = authenticate(request, email=email, password=password)
             if user is not None:
                 login(request, user)
+                if user.is_superuser:
+                    log_change(request, 'login', 'account', 'Prihlásenie do administrácie')
                 return JsonResponse({'status': 'success', 'message_sk': 'Prihlásenie úspešné.', 'message_en': 'Login successful.'})
             else:
                 return JsonResponse({'status': 'error', 'message_sk': 'Nesprávne heslo.', 'message_en': 'Incorrect password.'}, status=400)
@@ -83,6 +86,7 @@ def registration(request):
             )
 
             login(request, user)
+            log_change(request, 'create', 'account', f'Nová registrácia: {name} {surname} ({email})', obj=user)
             return JsonResponse({'status': 'success', 'message_sk': 'Registrácia úspešná.', 'message_en': 'Registration successful.'})
 
         except Exception as e:
@@ -100,7 +104,10 @@ def delete_saved_person(request):
     if request.method == 'DELETE':
         try:
             json_data = json.loads(request.body.decode('utf-8'))
-            AlreadyMadeReservation.objects.filter(id=int(json_data['id'])).delete()
+            person = AlreadyMadeReservation.objects.filter(id=int(json_data['id'])).first()
+            if person:
+                log_change(request, 'delete', 'client', f'Odstránený uložený klient: {person.name_surname}', obj=person)
+                person.delete()
         except (ValueError, KeyError, TypeError):
             return JsonResponse({'status': 'error'}, status=400)
         return JsonResponse({'status': 'success'})
@@ -126,6 +133,7 @@ def delete_account(request):
     if not user.check_password(json_data.get('password', '')):
         return JsonResponse({'status': 'error', 'message_sk': 'Nesprávne heslo.', 'message_en': 'Incorrect password.'}, status=400)
     Reservation.objects.filter(user=user).update(user=None)
+    log_change(request, 'delete', 'account', f'Klient zrušil svoj účet: {user.email}', obj=user)
     django_logout(request)
     user.delete()
     return JsonResponse({'status': 'success', 'message_sk': 'Účet bol zrušený.', 'message_en': 'Your account was deleted.'})

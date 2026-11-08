@@ -11,6 +11,7 @@ from django.core.mail import EmailMultiAlternatives, send_mail
 from django.template.loader import render_to_string
 from django.core import signing
 from Roman.backend_funcs.system_config import load_config, reload_config
+from Roman.backend_funcs.audit import change, diff_dicts, diff_snapshots, log_change, reservation_label, reservation_snapshot, RESERVATION_FIELDS, SECTION_LABELS, config_label
 
 from Roman.backend_funcs.content import booking_enabled, find_service, get_section, notification_email, salon_location
 
@@ -500,6 +501,11 @@ def create_reservation(request):
             consent_at=datetime.now() if json_data.get('consent') else None,
         )
         
+        log_change(request, 'create', 'reservation',
+                   (f'Nová rezervácia (vytvoril admin): ' if is_superuser else 'Nová rezervácia od klienta: ') + reservation_label(new_reservation),
+                   obj=new_reservation, actor_name=name_surname,
+                   changes=[change(k, RESERVATION_FIELDS[k], '', v) for k, v in reservation_snapshot(new_reservation).items() if v])
+
         # Save to AlreadyMadeReservation (using update_or_create for safety)
         try:
             already_created_reservation, created = AlreadyMadeReservation.objects.update_or_create(
@@ -922,10 +928,13 @@ def deactivate_reservation(request):
             reservation = Reservation.objects.get(id=json_data.get('reservation_id'))
             if not request.user.is_superuser and reservation.email != request.user.email:
                 return JsonResponse({'status': 'error', 'message_sk': 'Nemáte oprávnenie zrušiť túto rezerváciu.', 'message_en': 'You are not authorized to cancel this reservation.'}, status=403)
+            before = reservation_snapshot(reservation)
             reservation.active = False
             reservation.status = 'Zrušená zákazníkom'
             reservation.cancellation_reason = json_data.get('reason')
             reservation.save()
+            log_change(request, 'cancel', 'reservation', 'Klient zrušil rezerváciu: ' + reservation_label(reservation), obj=reservation,
+                       changes=diff_snapshots(before, reservation_snapshot(reservation), RESERVATION_FIELDS))
 
             try:
                 subject = f'Rezervácia zrušená zákazníkom'
@@ -951,9 +960,12 @@ def approve_reservation(request):
         json_data = json.loads(request.body)
         try:
             reservation = Reservation.objects.get(id=json_data.get('id'))
+            before = reservation_snapshot(reservation)
             reservation.active = True
             reservation.status = 'Schválená'
             reservation.save()
+            log_change(request, 'approve', 'reservation', 'Schválená rezervácia: ' + reservation_label(reservation), obj=reservation,
+                       changes=diff_snapshots(before, reservation_snapshot(reservation), RESERVATION_FIELDS))
 
             try:
                 if reservation.email:
@@ -1004,6 +1016,7 @@ def resend_confirmation(request):
                                          'text': 'Rezervácia potvrdená / Reservation accepted',
                                          })
         send_email(subject, html_message, reservation.email, ics_content=build_ics(reservation))
+        log_change(request, 'email', 'reservation', f'Znovu odoslané potvrdenie na {reservation.email}: ' + reservation_label(reservation), obj=reservation)
     except Exception as email_error:
         import logging
         logging.getLogger(__name__).error('Resend confirmation email failed: %s', email_error)
@@ -1019,10 +1032,13 @@ def deactivate_reservation_by_admin(request):
 
         try:
             reservation = Reservation.objects.get(id=json_data.get('id'))
+            before = reservation_snapshot(reservation)
             reservation.active = False
             reservation.status = 'Zrušená Masérom'
             reservation.personal_note = json_data.get('note')
             reservation.save()
+            log_change(request, 'cancel', 'reservation', 'Zrušená rezervácia (admin): ' + reservation_label(reservation), obj=reservation,
+                       changes=diff_snapshots(before, reservation_snapshot(reservation), RESERVATION_FIELDS))
 
             try:
                 if reservation.email:
@@ -1049,7 +1065,10 @@ def delete_reservation(request):
         json_data = json.loads(request.body)
         try:
             reservation = Reservation.objects.get(id=json_data.get('id'))
+            snapshot, label, rid = reservation_snapshot(reservation), reservation_label(reservation), reservation.id
             reservation.delete()
+            log_change(request, 'delete', 'reservation', 'Natrvalo vymazaná rezervácia: ' + label, object_type='Reservation', object_id=rid,
+                       changes=[change(k, RESERVATION_FIELDS[k], v, '') for k, v in snapshot.items() if v])
             return JsonResponse({'status': 'success'})
         except Reservation.DoesNotExist:
             return JsonResponse({'status': 'error'})
@@ -1063,8 +1082,11 @@ def add_personal_note(request):
 
         try:
             reservation = Reservation.objects.get(id=json_data.get('id'))
+            old_note = reservation.personal_note or ''
             reservation.personal_note = json_data.get('note')
             reservation.save()
+            log_change(request, 'update', 'reservation', 'Upravená interná poznámka: ' + reservation_label(reservation), obj=reservation,
+                       changes=[change('personal_note', 'Interná poznámka', old_note, reservation.personal_note or '')])
             return JsonResponse({'status': 'success'})
 
         except Reservation.DoesNotExist:

@@ -21,6 +21,8 @@ from django.template.loader import render_to_string
 
 from accounts.models import CustomUser
 from Roman.backend_funcs import content as content_store
+from Roman.backend_funcs.audit import (AREA_LABELS, RESERVATION_FIELDS, SECTION_LABELS, change, diff_dicts, diff_snapshots,
+                                       log_change, reservation_label, reservation_snapshot)
 from Roman.backend_funcs.content_defaults import VALID_DURATIONS, WORKERS
 from Roman.backend_funcs.reservation import (
     CANCELLED_STATUSES,
@@ -33,6 +35,7 @@ from Roman.backend_funcs.reservation import (
 )
 from viewer.models import (
     AlreadyMadeReservation,
+    AuditLog,
     GalleryPhoto,
     MediaAsset,
     Reservation,
@@ -366,6 +369,7 @@ def reservation_update(request, reservation_id):
         return error('Rezervácia sa nenašla.', 404)
 
     old_start, old_end, old_worker = reservation.datetime_from, reservation.datetime_to, reservation.worker
+    before = reservation_snapshot(reservation)
 
     date_value = parse_date(data.get('date')) or reservation.datetime_from.date()
     try:
@@ -413,6 +417,9 @@ def reservation_update(request, reservation_id):
     reservation.worker = worker
     reservation.updated_at = datetime.now()
     reservation.save()
+    diffs = diff_snapshots(before, reservation_snapshot(reservation), RESERVATION_FIELDS)
+    if diffs:
+        log_change(request, 'update', 'reservation', 'Upravená rezervácia: ' + reservation_label(reservation), obj=reservation, changes=diffs)
 
     moved = new_start != old_start or new_end != old_end or worker != old_worker
     mail_sent = False
@@ -483,10 +490,15 @@ def content_save(request, section):
     data = read_json(request)
     if data is None or 'data' not in data:
         return error('Neplatné dáta.')
+    before = content_store.get_content().get(section) if section in SECTION_LABELS else None
     try:
         saved = content_store.save_section(section, data['data'], request.user.email)
     except content_store.ContentError as exc:
         return error(str(exc))
+    diffs = diff_dicts(before, saved)
+    if diffs:
+        log_change(request, 'update', 'content', f'Upravený obsah: {SECTION_LABELS.get(section, section)} ({len(diffs)} {"zmena" if len(diffs) == 1 else "zmeny" if len(diffs) < 5 else "zmien"})',
+                   object_type='SiteContent', object_id=section, changes=diffs)
     return JsonResponse({'status': 'success', 'data': saved})
 
 
@@ -494,10 +506,13 @@ def content_save(request, section):
 def content_reset(request, section):
     if request.method != 'POST':
         return error('Nesprávna metóda.', 405)
+    before = content_store.get_content().get(section) if section in SECTION_LABELS else None
     try:
         saved = content_store.reset_section(section, request.user.email)
     except content_store.ContentError as exc:
         return error(str(exc))
+    log_change(request, 'reset', 'content', f'Obnovený pôvodný obsah: {SECTION_LABELS.get(section, section)}',
+               object_type='SiteContent', object_id=section, changes=diff_dicts(before, saved))
     return JsonResponse({'status': 'success', 'data': saved})
 
 
@@ -514,7 +529,12 @@ def content_restore(request, revision_id):
     if request.method != 'POST':
         return error('Nesprávna metóda.', 405)
     try:
+        revision = SiteContentRevision.objects.get(id=revision_id)
+        before = content_store.get_content().get(revision.section)
         section, saved = content_store.restore_revision(revision_id, request.user.email)
+        log_change(request, 'restore', 'content',
+                   f'Obnovená staršia verzia ({revision.created_at:%d. %m. %Y %H:%M}): {SECTION_LABELS.get(section, section)}',
+                   object_type='SiteContent', object_id=section, changes=diff_dicts(before, saved))
     except SiteContentRevision.DoesNotExist:
         return error('Verzia sa nenašla.', 404)
     except content_store.ContentError as exc:
@@ -571,6 +591,9 @@ def media_upload(request, kind):
         obj.photo.save(filename, file_content, save=True)
         next_order += 1
         created.append(_media_item(obj))
+    if created:
+        log_change(request, 'create', 'media', f'Nahrané obrázky ({"galéria" if kind == "gallery" else "poukážky"}): {len(created)} ks',
+                   object_type=model.__name__, changes=[change('photo', 'Obrázok', '', item['src']) for item in created])
     return JsonResponse({'status': 'success' if created else 'error', 'items': created, 'errors': errors,
                          'message': '; '.join(errors)}, status=200 if created else 400)
 
@@ -584,16 +607,24 @@ def media_item(request, kind, item_id):
         obj = model.objects.get(id=item_id)
     except model.DoesNotExist:
         return error('Položka sa nenašla.', 404)
+    label = 'galéria' if kind == 'gallery' else 'poukážky'
     if request.method == 'DELETE':
+        log_change(request, 'delete', 'media', f'Vymazaný obrázok ({label}) #{obj.id}', obj=obj,
+                   changes=[change('photo', 'Obrázok', media_url(obj.photo), '')])
         obj.delete()
         return JsonResponse({'status': 'success'})
     if request.method == 'POST':
         data = read_json(request) or {}
+        before = {'caption': obj.caption, 'is_visible': 'áno' if obj.is_visible else 'nie'}
         if 'caption' in data:
             obj.caption = str(data.get('caption') or '')[:200]
         if 'is_visible' in data:
             obj.is_visible = bool(data.get('is_visible'))
         obj.save()
+        diffs = diff_snapshots(before, {'caption': obj.caption, 'is_visible': 'áno' if obj.is_visible else 'nie'},
+                               {'caption': 'Popis', 'is_visible': 'Zobrazený na webe'})
+        if diffs:
+            log_change(request, 'update', 'media', f'Upravený obrázok ({label}) #{obj.id}', obj=obj, changes=diffs)
         return JsonResponse({'status': 'success', 'item': _media_item(obj)})
     return error('Nesprávna metóda.', 405)
 
@@ -606,6 +637,7 @@ def media_reorder(request, kind):
         return error('Neplatná požiadavka.')
     for index, item_id in enumerate(data['ids']):
         model.objects.filter(id=item_id).update(order=index)
+    log_change(request, 'reorder', 'media', f'Zmenené poradie obrázkov ({"galéria" if kind == "gallery" else "poukážky"})', object_type=model.__name__)
     return JsonResponse({'status': 'success'})
 
 
@@ -635,11 +667,15 @@ def review_item(request, review_id):
     except Review.DoesNotExist:
         return error('Hodnotenie sa nenašlo.', 404)
     if request.method == 'DELETE':
+        log_change(request, 'delete', 'review', f'Vymazané hodnotenie od {review.name_surname}: „{review.message[:120]}“', obj=review)
         review.delete()
         return JsonResponse({'status': 'success'})
     if request.method != 'POST':
         return error('Nesprávna metóda.', 405)
     data = read_json(request) or {}
+    labels = {'name_surname': 'Meno', 'message': 'Text', 'stars': 'Hviezdičky', 'is_visible': 'Zobrazené na webe'}
+    snap = lambda r: {'name_surname': r.name_surname, 'message': r.message, 'stars': str(r.stars), 'is_visible': 'áno' if r.is_visible else 'nie'}
+    before = snap(review)
     if 'is_visible' in data:
         review.is_visible = bool(data['is_visible'])
     if 'name_surname' in data:
@@ -652,6 +688,11 @@ def review_item(request, review_id):
         except (TypeError, ValueError):
             pass
     review.save()
+    diffs = diff_snapshots(before, snap(review), labels)
+    if diffs:
+        action = 'hide' if before['is_visible'] == 'áno' and not review.is_visible else 'show' if before['is_visible'] == 'nie' and review.is_visible else 'update'
+        text = {'hide': 'Skryté hodnotenie', 'show': 'Zobrazené hodnotenie', 'update': 'Upravené hodnotenie'}[action]
+        log_change(request, action, 'review', f'{text} od {review.name_surname}', obj=review, changes=diffs)
     return JsonResponse({'status': 'success'})
 
 
@@ -688,7 +729,10 @@ def clients(request):
 @superuser_required
 def client_save(request, client_id=None):
     if request.method == 'DELETE' and client_id:
-        AlreadyMadeReservation.objects.filter(id=client_id).delete()
+        person = AlreadyMadeReservation.objects.filter(id=client_id).first()
+        if person:
+            log_change(request, 'delete', 'client', f'Odstránený uložený klient: {person.name_surname}', obj=person)
+            person.delete()
         return JsonResponse({'status': 'success'})
     if request.method != 'POST':
         return error('Nesprávna metóda.', 405)
@@ -711,8 +755,14 @@ def client_save(request, client_id=None):
             return error('Klient sa nenašiel.', 404)
     else:
         person = AlreadyMadeReservation()
+    labels = {'name_surname': 'Meno', 'email': 'E-mail', 'phone_number': 'Telefón'}
+    before = {'name_surname': person.name_surname or '', 'email': person.email or '', 'phone_number': person.phone_number or ''}
+    is_new = not person.pk
     person.name_surname, person.email, person.phone_number = name, email or None, phone or None
     person.save()
+    diffs = diff_snapshots(before, {'name_surname': name, 'email': email, 'phone_number': phone}, labels)
+    if diffs:
+        log_change(request, 'create' if is_new else 'update', 'client', f'{"Nový" if is_new else "Upravený"} uložený klient: {name}', obj=person, changes=diffs)
     return JsonResponse({'status': 'success', 'id': person.id})
 
 
@@ -725,6 +775,7 @@ def user_item(request, user_id):
     if request.method == 'DELETE':
         # keep the reservation history – just detach it from the account
         Reservation.objects.filter(user=user).update(user=None)
+        log_change(request, 'delete', 'account', f'Zrušený účet používateľa: {user.email}', obj=user)
         user.delete()
         return JsonResponse({'status': 'success'})
     if request.method == 'POST':
@@ -732,5 +783,64 @@ def user_item(request, user_id):
         if 'is_active' in data:
             user.is_active = bool(data['is_active'])
             user.save()
+            log_change(request, 'update', 'account', f'{"Odblokovaný" if user.is_active else "Zablokovaný"} účet: {user.email}', obj=user)
         return JsonResponse({'status': 'success'})
     return error('Nesprávna metóda.', 405)
+
+
+# ------------------------------------------------------------------ history
+ACTION_LABELS = {
+    'create': 'Vytvorené', 'update': 'Upravené', 'delete': 'Vymazané', 'approve': 'Schválené', 'cancel': 'Zrušené',
+    'restore': 'Obnovená verzia', 'reset': 'Obnovené pôvodné', 'reorder': 'Zmenené poradie', 'hide': 'Skryté',
+    'show': 'Zobrazené', 'email': 'E-mail', 'login': 'Prihlásenie', 'import': 'Import',
+}
+
+
+def _serialize_log(entry):
+    try:
+        changes = json.loads(entry.changes) if entry.changes else []
+    except ValueError:
+        changes = []
+    return {
+        'id': entry.id, 'created_at': entry.created_at.strftime('%Y-%m-%dT%H:%M:%S'),
+        'actor': entry.actor, 'actor_type': entry.actor_type, 'action': entry.action,
+        'action_label': ACTION_LABELS.get(entry.action, entry.action), 'area': entry.area,
+        'area_label': AREA_LABELS.get(entry.area, entry.area), 'object_type': entry.object_type,
+        'object_id': entry.object_id, 'summary': entry.summary, 'changes': changes,
+    }
+
+
+@superuser_required
+def history(request):
+    qs = AuditLog.objects.all()
+    area = request.GET.get('area')
+    if area:
+        qs = qs.filter(area=area)
+    actor_type = request.GET.get('actor_type')
+    if actor_type:
+        qs = qs.filter(actor_type=actor_type)
+    if request.GET.get('object_type') and request.GET.get('object_id'):
+        qs = qs.filter(object_type=request.GET['object_type'], object_id=request.GET['object_id'])
+    q = (request.GET.get('q') or '').strip()
+    if q:
+        qs = qs.filter(Q(summary__icontains=q) | Q(actor__icontains=q) | Q(changes__icontains=q))
+    date_from = parse_date(request.GET.get('date_from'))
+    date_to = parse_date(request.GET.get('date_to'))
+    if date_from:
+        qs = qs.filter(created_at__date__gte=date_from)
+    if date_to:
+        qs = qs.filter(created_at__date__lte=date_to)
+    try:
+        per_page = max(10, min(200, int(request.GET.get('per_page', 50))))
+    except ValueError:
+        per_page = 50
+    paginator = Paginator(qs.order_by('-created_at', '-id'), per_page)
+    try:
+        page = paginator.page(int(request.GET.get('page', 1)))
+    except (EmptyPage, ValueError):
+        page = paginator.page(paginator.num_pages or 1)
+    return JsonResponse({
+        'entries': [_serialize_log(e) for e in page.object_list],
+        'page': page.number, 'pages': paginator.num_pages, 'total': paginator.count,
+        'areas': [{'value': k, 'label': v} for k, v in AREA_LABELS.items()],
+    })

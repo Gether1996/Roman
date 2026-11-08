@@ -204,3 +204,25 @@ class ConfigEntry(Model):
 
     def __str__(self):
         return f'[{self.section}] {self.key}'
+
+
+class AuditLog(Model):
+    """History of all changes (shown in the admin panel: Systém → História zmien)."""
+    created_at = DateTimeField(default=datetime.now, db_index=True)
+    user = ForeignKey(CustomUser, on_delete=SET_NULL, null=True, blank=True)
+    actor = CharField(max_length=200, blank=True, default='')       # name/e-mail snapshot
+    actor_type = CharField(max_length=20, default='admin')          # admin / client / visitor / system
+    action = CharField(max_length=30, db_index=True)                # create / update / delete / approve / cancel / ...
+    area = CharField(max_length=30, db_index=True)                  # reservation / content / schedule / ...
+    object_type = CharField(max_length=50, blank=True, default='')
+    object_id = CharField(max_length=50, blank=True, default='', db_index=True)
+    summary = CharField(max_length=500)
+    changes = TextField(blank=True, default='')                     # JSON list [{field, label, old, new}]
+
+    class Meta:
+        ordering = ('-created_at', '-id')
+        verbose_name = 'Záznam histórie'
+        verbose_name_plural = 'História zmien'
+
+    def __str__(self):
+        return f'{self.created_at:%d.%m.%Y %H:%M} {self.actor}: {self.summary}'

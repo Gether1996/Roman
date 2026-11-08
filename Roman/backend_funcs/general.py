@@ -20,6 +20,7 @@ from viewer.models import (
 from Roman.backend_funcs.reservation import CANCELLED_STATUSES, admin_days_ahead, booking_break, public_lead_days
 from Roman.backend_funcs.content import public_content, get_section
 from Roman.backend_funcs.system_config import reload_config
+from Roman.backend_funcs.audit import log_change
 
 
 config = configparser.ConfigParser()
@@ -321,13 +322,15 @@ def add_review(request):
     except ValueError:
         return JsonResponse({'error': 'Rating must be a number'}, status=400)
 
-    Review.objects.create(
+    review = Review.objects.create(
         name_surname=name,
         message=message,
         stars=stars,
         worker=worker.lower(),
         created_at=datetime.now(),
     )
+    log_change(request, 'create', 'review', f'Nové hodnotenie ({stars}★, {worker.capitalize()}) od {name}: „{str(message)[:120]}“',
+               obj=review, actor_name=name)
 
     return JsonResponse({'message': 'Review submitted successfully'}, status=200)
 
@@ -341,6 +344,7 @@ def delete_review(request, id):
     if request.method == 'DELETE':
         try:
             review = Review.objects.get(id=id)
+            log_change(request, 'delete', 'review', f'Vymazané hodnotenie od {review.name_surname}: „{review.message[:120]}“', obj=review)
             review.delete()
             return JsonResponse({'status': 'success'})
         except Review.DoesNotExist:

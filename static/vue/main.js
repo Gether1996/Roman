@@ -78,6 +78,7 @@ const routes = [
       { path: 'hodnotenia', component: admin('ReviewsView', 'ReviewsView'), meta: { admin: true, title: 'Hodnotenia' } },
       { path: 'klienti', component: admin('ClientsView', 'ClientsView'), meta: { admin: true, title: 'Klienti a účty' } },
       { path: 'nastavenia', component: admin('SettingsAdminView', 'SettingsAdminView'), meta: { admin: true, title: 'Nastavenia' } },
+      { path: 'historia', component: admin('HistoryView', 'HistoryView'), meta: { admin: true, title: 'História zmien' } },
       { path: ':pathMatch(.*)*', redirect: '/sprava' },
     ],
   },

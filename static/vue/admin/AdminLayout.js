@@ -45,6 +45,7 @@ export const ADMIN_NAV = [
   {
     group: 'Systém',
     items: [
+      { to: '/sprava/historia', label: 'História zmien', icon: 'fa-clock-rotate-left' },
       { to: '/sprava/nastavenia', label: 'Nastavenia', icon: 'fa-gear' },
     ],
   },

@@ -10,6 +10,7 @@ from django.utils.translation import activate
 from django.views.decorators.csrf import ensure_csrf_cookie
 from Roman.backend_funcs.content import get_content
 from Roman.backend_funcs.system_config import reload_config
+from Roman.backend_funcs.audit import log_change, reservation_label
 from Roman.backend_funcs.reservation import (
     CANCELLED_STATUSES,
     build_google_calendar_link,
@@ -156,6 +157,8 @@ def approve_reservation_mail(request, reservation_id):
         reserv.active = True
         reserv.status = 'Schválená'
         reserv.save()
+        log_change(request, 'approve', 'reservation', 'Schválená rezervácia (odkazom z e-mailu): ' + reservation_label(reserv),
+                   obj=reserv, actor_name='Odkaz zo schvaľovacieho e-mailu')
         try:
             if reserv.email:
                 subject = 'Rezervácia potvrdená / Reservation accepted'

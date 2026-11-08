@@ -4,6 +4,7 @@ from django.http import JsonResponse
 import configparser
 from viewer.models import TurnedOffDay
 from Roman.backend_funcs.system_config import reload_config, save_config
+from Roman.backend_funcs.audit import change, diff_dicts, diff_snapshots, log_change, reservation_label, reservation_snapshot, RESERVATION_FIELDS, SECTION_LABELS, config_label
 from datetime import datetime, timedelta
 
 config = configparser.ConfigParser()
@@ -40,6 +41,7 @@ def save_settings(request):
         return denied
     if request.method == 'POST':
         reload_config(config)
+        before = {s: dict(config.items(s)) for s in config.sections()}
         try:
             json_data = json.loads(request.body)
         except (json.JSONDecodeError, ValueError):
@@ -109,6 +111,14 @@ def save_settings(request):
 
         # Settings live in the database now (formerly config.ini, which was lost on container rebuilds).
         save_config(config)
+        after = {s: dict(config.items(s)) for s in config.sections()}
+        diffs = [change(f'{s}.{k}', config_label(s, k), before.get(s, {}).get(k, ''), v)
+                 for s, values in after.items() for k, v in values.items() if before.get(s, {}).get(k) != v]
+        if diffs:
+            area = 'settings' if all(d['field'].startswith('settings.') for d in diffs) else 'schedule'
+            who = sorted({d['label'].split(':')[0] for d in diffs})
+            log_change(request, 'update', area, ('Zmenené rezervačné pravidlá' if area == 'settings' else 'Zmenený rozvrh – ' + ', '.join(who)),
+                       object_type='Config', changes=diffs)
 
         return JsonResponse({'status': 'success'})
     return JsonResponse({'status': 'error'})
@@ -155,6 +165,9 @@ def add_turned_off_day(request):
             if time_to <= time_from:
                 return JsonResponse({'status': 'error', 'message': 'time_to must be after time_from.'}, status=400)
 
+        log_change(request, 'create', 'days_off',
+                   f"Pridané voľno – {worker}: {date_from:%d. %m. %Y}" + (f" – {date_to:%d. %m. %Y}" if date_to != date_from else '')
+                   + (' (celý deň)' if whole_day_bool else f' ({time_from} – {time_to})'), object_type='TurnedOffDay')
         # Iterate through the date range
         current_date = date_from
         while current_date <= date_to:
@@ -180,6 +193,8 @@ def delete_turned_off_day(request):
 
         try:
             turned_off_day = TurnedOffDay.objects.get(id=json_data.get('turnedOffDayId'))
+            log_change(request, 'delete', 'days_off', f'Odstránené voľno – {turned_off_day.worker}: {turned_off_day.date:%d. %m. %Y}'
+                       + ('' if turned_off_day.whole_day else f' ({turned_off_day.formatted_time_range()})'), obj=turned_off_day)
             turned_off_day.delete()
             return JsonResponse({'status': 'success', 'message': 'Obmedzenie vymazané'})
         except TurnedOffDay.DoesNotExist:
@@ -197,6 +212,8 @@ def delete_turned_off_days(request):
         for day_id in json_data.get('ids'):
             try:
                 turned_off_day = TurnedOffDay.objects.get(id=day_id)
+                log_change(request, 'delete', 'days_off', f'Odstránené voľno – {turned_off_day.worker}: {turned_off_day.date:%d. %m. %Y}'
+                           + ('' if turned_off_day.whole_day else f' ({turned_off_day.formatted_time_range()})'), obj=turned_off_day)
                 turned_off_day.delete()
             except TurnedOffDay.DoesNotExist:
                 return JsonResponse({'status': 'error', 'message': 'Obmedzenie sa nenašlo.'})

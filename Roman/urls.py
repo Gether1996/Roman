@@ -81,6 +81,7 @@ urlpatterns = [
     path('api/admin/clients/save/', admin_api.client_save),
     path('api/admin/clients/<int:client_id>/', admin_api.client_save),
     path('api/admin/users/<int:user_id>/', admin_api.user_item),
+    path('api/admin/history/', admin_api.history),
     path('api/delete-account/', delete_account, name='delete_account'),
 
     path('login_api/', login_api, name='login_api'),

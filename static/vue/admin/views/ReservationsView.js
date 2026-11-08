@@ -8,6 +8,7 @@ import { adminComponents } from '../components.js';
 import { loadContent, contentState } from '../useContent.js';
 import { store } from '../../store.js';
 import { normalizeText } from '../../utils/formatters.js';
+import { HistoryEntry } from './HistoryView.js';
 
 function escapeHtml(value) {
   return String(value || '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -16,7 +17,7 @@ function escapeHtml(value) {
 /* ------------------------------------------------------------------ detail */
 const ReservationDetail = defineComponent({
   name: 'ReservationDetail',
-  components: { ...adminComponents },
+  components: { ...adminComponents, HistoryEntry },
   props: { id: { type: [String, Number], required: true } },
   emits: ['close', 'changed'],
   setup(props, { emit }) {
@@ -27,6 +28,15 @@ const ReservationDetail = defineComponent({
     const saving = ref(false);
     const form = reactive({});
     const conflicts = ref([]);
+    const changes = ref([]);
+    const changesOpen = ref(false);
+
+    async function loadChanges() {
+      try {
+        const data = await api.get(`/api/admin/history/?object_type=Reservation&object_id=${props.id}&per_page=100`);
+        changes.value = data.entries || [];
+      } catch (e) { changes.value = []; }
+    }
 
     const services = computed(() => (contentState.content?.services || []));
     const workerColors = computed(() => Object.fromEntries((store.content?.therapists || []).map((t) => [t.key, t.color])));
@@ -37,6 +47,7 @@ const ReservationDetail = defineComponent({
         const data = await api.get(`/api/admin/reservations/${props.id}/`);
         reservation.value = data.reservation;
         history.value = data.history || [];
+        loadChanges();
       } catch (error) {
         toastError(error, 'Rezerváciu sa nepodarilo načítať.');
         emit('close');
@@ -150,7 +161,7 @@ const ReservationDetail = defineComponent({
     onMounted(load);
 
     return {
-      loading, reservation, history, editing, saving, form, conflicts, services, workerColors, moved,
+      loading, reservation, history, editing, saving, form, conflicts, services, workerColors, moved, changes, changesOpen,
       startEdit, pickService, save, approve, cancel, remove, resend, editNote,
       fmtDate, fmtDateTime, relativeDay, weekday, minutesLabel, formatPrice, STATUS_META, durations: [30, 45, 60, 75, 90, 105, 120, 150, 180],
     };
@@ -179,6 +190,17 @@ const ReservationDetail = defineComponent({
             <template v-if="reservation.updated_at && reservation.updated_at !== reservation.created_at"><dt>Upravená</dt><dd>{{ fmtDateTime(reservation.updated_at) }}</dd></template>
             <template v-if="reservation.consent_at"><dt>Súhlas s podmienkami</dt><dd>{{ fmtDateTime(reservation.consent_at) }}</dd></template>
           </dl>
+
+          <template v-if="changes.length">
+            <hr class="adm-divider" />
+            <button type="button" class="adm-subtitle adm-hist-section-toggle" @click="changesOpen = !changesOpen">
+              <i class="fa-solid fa-clock-rotate-left"></i> História tejto rezervácie ({{ changes.length }})
+              <i class="fa-solid" :class="changesOpen ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+            </button>
+            <div v-if="changesOpen">
+              <history-entry v-for="entry in changes" :key="entry.id" :entry="entry" compact show-date />
+            </div>
+          </template>
 
           <template v-if="history.length">
             <hr class="adm-divider" />
