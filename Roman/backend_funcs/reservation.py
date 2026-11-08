@@ -9,6 +9,10 @@ from django.utils.translation import gettext_lazy as _
 import configparser
 from django.core.mail import EmailMultiAlternatives, send_mail
 from django.template.loader import render_to_string
+from django.core import signing
+from Roman.backend_funcs.system_config import load_config, reload_config
+
+from Roman.backend_funcs.content import booking_enabled, find_service, get_section, notification_email, salon_location
 
 LOCAL_TZ = ZoneInfo('Europe/Bratislava')
 
@@ -23,7 +27,10 @@ LOCAL_TZ = ZoneInfo('Europe/Bratislava')
 # 3) A reservation blocks its slot from the moment it is created and stays blocked
 #    until the therapist cancels/rejects it — pending ("awaiting approval")
 #    reservations still block; only cancelled statuses release the slot.
-BREAK_BETWEEN_RESERVATIONS = timedelta(minutes=15)
+BREAK_BETWEEN_RESERVATIONS = timedelta(minutes=15)  # default, configurable in the admin panel
+DEFAULT_PUBLIC_LEAD_DAYS = 2      # customers can't book today + tomorrow (default)
+DEFAULT_ADMIN_DAYS_AHEAD = 180
+APPROVE_SALT = 'approve-reservation'
 CANCELLED_STATUSES = ('Zrušená zákazníkom', 'Zrušená Masérom')
 
 
@@ -38,8 +45,44 @@ def slot_blocking_reservations(**filters):
 
 config = configparser.ConfigParser()
 
-# Salon location used to prefill the calendar event.
-SALON_LOCATION = 'Matice Slovenskej 6, Vlčince, 010 08 Žilina'
+
+def _settings_int(key, default, minimum=0, maximum=10000):
+    """Read an int from the [settings] section (DB) with a safe fallback."""
+    parser = load_config()
+    try:
+        value = int(parser.get('settings', key, fallback=str(default)))
+    except (TypeError, ValueError):
+        return default
+    return max(minimum, min(maximum, value))
+
+
+def booking_break():
+    """Break between reservations (admin-configurable, default 15 min)."""
+    return timedelta(minutes=_settings_int('break_minutes', 15, 0, 120))
+
+
+def public_lead_days():
+    """How many days from today are closed for online booking (2 = today + tomorrow)."""
+    return _settings_int('public_lead_days', DEFAULT_PUBLIC_LEAD_DAYS, 0, 30)
+
+
+def admin_days_ahead():
+    return _settings_int('admin_days_ahead', DEFAULT_ADMIN_DAYS_AHEAD, 7, 730)
+
+
+def site_url():
+    return getattr(settings, 'SITE_URL', 'https://masazevlcince.sk').rstrip('/')
+
+
+def approve_token(reservation_id):
+    return signing.dumps(int(reservation_id), salt=APPROVE_SALT)
+
+
+def check_approve_token(reservation_id, token):
+    try:
+        return signing.loads(token or '', salt=APPROVE_SALT, max_age=60 * 60 * 24 * 90) == int(reservation_id)
+    except (signing.BadSignature, TypeError, ValueError):
+        return False
 
 
 def build_google_calendar_link(reservation):
@@ -69,7 +112,7 @@ def build_google_calendar_link(reservation):
         'text': title,
         'dates': f"{start.strftime('%Y%m%dT%H%M%S')}/{end.strftime('%Y%m%dT%H%M%S')}",
         'details': '\n'.join(detail_lines),
-        'location': SALON_LOCATION,
+        'location': salon_location(),
         'ctz': 'Europe/Bratislava',
     }
     return 'https://calendar.google.com/calendar/render?' + urlencode(params)
@@ -125,7 +168,7 @@ def build_ics(reservation):
         f'DTEND:{to_utc(end)}',
         f'SUMMARY:{_ics_escape(summary)}',
         f'DESCRIPTION:{_ics_escape(chr(10).join(desc_lines))}',
-        f'LOCATION:{_ics_escape(SALON_LOCATION)}',
+        f'LOCATION:{_ics_escape(salon_location())}',
         'END:VEVENT',
         'END:VCALENDAR',
     ]
@@ -328,6 +371,36 @@ def create_reservation(request):
                 'message_en': 'Cannot create reservation in the past'
             }, status=400)
         
+        if not is_superuser:
+            if (date_obj - today).days < public_lead_days():
+                return JsonResponse({
+                    'status': 'error',
+                    'error_code': 'TOO_SOON',
+                    'message_sk': 'Na tento deň už nie je možné rezervovať online. Zavolajte nám prosím.',
+                    'message_en': 'Online booking for this day is closed. Please call us.'
+                }, status=400)
+            if not booking_enabled(worker):
+                return JsonResponse({
+                    'status': 'error',
+                    'error_code': 'WORKER_UNAVAILABLE',
+                    'message_sk': 'U tohto terapeuta momentálne nie je možné rezervovať online.',
+                    'message_en': 'Online booking is currently not available for this therapist.'
+                }, status=400)
+            if not find_service(worker, massage_name, duration_int):
+                return JsonResponse({
+                    'status': 'error',
+                    'error_code': 'INVALID_SERVICE',
+                    'message_sk': 'Vybraná služba už nie je dostupná. Obnovte prosím stránku.',
+                    'message_en': 'The selected service is no longer available. Please refresh the page.'
+                }, status=400)
+            if get_section('booking').get('require_consent') and not json_data.get('consent'):
+                return JsonResponse({
+                    'status': 'error',
+                    'error_code': 'CONSENT_REQUIRED',
+                    'message_sk': 'Pre dokončenie rezervácie je potrebný súhlas s obchodnými podmienkami.',
+                    'message_en': 'Please agree to the terms and conditions to complete the reservation.'
+                }, status=400)
+
         # Create datetime objects
         datetime_from_obj = datetime.combine(date_obj, time_obj)
         date_time_to_obj = datetime_from_obj + timedelta(minutes=duration_int)
@@ -337,12 +410,13 @@ def create_reservation(request):
         # slot — and there must be a 15-min break between reservations. A slot is
         # taken as soon as it is booked (pending or approved) and only frees up
         # once cancelled, so nobody can grab the same time before it is approved.
+        brk = booking_break()
         conflicting_reservations = slot_blocking_reservations(
             datetime_from__date=date_obj,
         ).exclude(
-            datetime_to__lte=datetime_from_obj - BREAK_BETWEEN_RESERVATIONS
+            datetime_to__lte=datetime_from_obj - brk
         ).exclude(
-            datetime_from__gte=date_time_to_obj + BREAK_BETWEEN_RESERVATIONS
+            datetime_from__gte=date_time_to_obj + brk
         )
         
         if conflicting_reservations.exists():
@@ -354,7 +428,7 @@ def create_reservation(request):
             }, status=409)
         
         # Load config
-        config.read(settings.CONFIG_INI_PATH)
+        reload_config(config)
 
         # Server-side availability guard for public bookings. The admin keeps full
         # freedom (manual/override bookings), but a stale or tampered client must
@@ -423,6 +497,7 @@ def create_reservation(request):
             datetime_to=date_time_to_obj,
             created_at=datetime.now(),
             updated_at=datetime.now(),
+            consent_at=datetime.now() if json_data.get('consent') else None,
         )
         
         # Save to AlreadyMadeReservation (using update_or_create for safety)
@@ -443,8 +518,8 @@ def create_reservation(request):
         try:
             if note == 'user':
                 subject = f'Nová rezervácia ({new_reservation.worker})'
-                accept_link = f'https://masazevlcince.sk/approve_reservation_mail/{new_reservation.id}/'
-                all_reservations_link = f'https://masazevlcince.sk/all_reservations/'
+                accept_link = f'{site_url()}/approve_reservation_mail/{new_reservation.id}/?t={approve_token(new_reservation.id)}'
+                all_reservations_link = f'{site_url()}/sprava/rezervacie'
                 text = f'Nová rezervácia pre maséra {new_reservation.worker}'
                 html_message = render_to_string('email_template.html',
                                                 {'reservation': prepare_reservation_data(new_reservation),
@@ -454,7 +529,7 @@ def create_reservation(request):
                                                  'calendar_link': build_google_calendar_link(new_reservation),
                                                  'text': text,
                                                  })
-                send_email(subject, html_message, getattr(settings, 'MAIN_EMAIL'), ics_content=build_ics(new_reservation))
+                send_email(subject, html_message, notification_email(), ics_content=build_ics(new_reservation))
 
             if note == 'admin' and new_reservation.email:
                 subject = f'Rezervácia potvrdená / Reservation accepted'
@@ -494,7 +569,7 @@ def create_reservation(request):
 
 def check_available_slots(request):
     if request.method == 'POST':
-        config.read(settings.CONFIG_INI_PATH)
+        reload_config(config)
         try:
             json_data = json.loads(request.body)
         except (json.JSONDecodeError, ValueError):
@@ -514,7 +589,7 @@ def check_available_slots(request):
 
         section = 'settings-roman' if worker == 'Roman' else 'settings-evka'
         if section not in config:
-            return JsonResponse({'status': 'error', 'message': 'Server configuration missing (config.ini).'}, status=503)
+            return JsonResponse({'status': 'error', 'message': 'Server configuration missing.'}, status=503)
         worker_config = config[section]
 
         # If the day is not a working day (or the hours aren't configured), there
@@ -536,6 +611,11 @@ def check_available_slots(request):
         # client at a time). Turned-off days stay per-worker (own days off).
         reservations = slot_blocking_reservations(datetime_from__date=selected_date)
         turned_off_days = TurnedOffDay.objects.filter(worker=worker, date=selected_date)
+        brk = booking_break()
+
+        if not request.user.is_superuser:
+            if not booking_enabled(worker) or (selected_date - datetime.now().date()).days < public_lead_days():
+                return JsonResponse({'status': 'success', 'available_slots': []})
 
         # Don't offer start times in the past when booking for the current day.
         now = datetime.now()
@@ -582,8 +662,8 @@ def check_available_slots(request):
 
             # Check against reservations (with the 15-min break before & after)
             for reservation in reservations:
-                reservation_start_time = (reservation.datetime_from - BREAK_BETWEEN_RESERVATIONS).time()
-                reservation_end_time = (reservation.datetime_to + BREAK_BETWEEN_RESERVATIONS).time()
+                reservation_start_time = (reservation.datetime_from - brk).time()
+                reservation_end_time = (reservation.datetime_to + brk).time()
 
                 # Check if the entire 30-minute duration is available
                 if (slot_start < reservation_end_time and
@@ -604,10 +684,10 @@ def check_available_slots_ahead(request, worker):
         if worker not in ('Roman', 'Evka'):
             return JsonResponse({'status': 'error', 'message': 'Invalid worker.'}, status=400)
 
-        config.read(settings.CONFIG_INI_PATH)
+        reload_config(config)
 
         if 'settings-roman' not in config or 'settings-evka' not in config:
-            return JsonResponse({'status': 'error', 'message': 'Server configuration missing (config.ini).'}, status=503)
+            return JsonResponse({'status': 'error', 'message': 'Server configuration missing.'}, status=503)
 
         now = datetime.now()
         today = now.date()
@@ -616,9 +696,12 @@ def check_available_slots_ahead(request, worker):
         admin_logged_in = request.user.is_superuser
 
         if admin_logged_in:
-            days_to_check_ahead = 180
+            days_to_check_ahead = admin_days_ahead()
         else:
+            if not booking_enabled(worker):
+                return JsonResponse({'status': 'success', 'events': []})
             days_to_check_ahead = int(worker_config['days_ahead'])
+        lead_days = public_lead_days()
         working_days = worker_config['working_days']
         end_date = today + timedelta(days=days_to_check_ahead)
 
@@ -632,11 +715,11 @@ def check_available_slots_ahead(request, worker):
         # Previously this stepped every 15 min, counting overlapping windows and
         # massively overstating availability (e.g. "45 voľných" for a single day).
         start_step = timedelta(minutes=30)
-        buffer = BREAK_BETWEEN_RESERVATIONS  # 15-min break between reservations
+        buffer = booking_break()  # break between reservations (default 15 min)
         events = []
 
         for single_date in (today + timedelta(n) for n in range((end_date - today).days + 1)):
-            if not admin_logged_in and (single_date == today or single_date == tomorrow):
+            if not admin_logged_in and (single_date - today).days < lead_days:
                 continue
             weekday_name = single_date.strftime('%A')
 
@@ -755,7 +838,7 @@ def check_available_durations(request, worker):
         if worker not in ('Roman', 'Evka'):
             return JsonResponse({'status': 'error', 'message': 'Invalid worker.'}, status=400)
 
-        config.read(settings.CONFIG_INI_PATH)
+        reload_config(config)
         try:
             json_data = json.loads(request.body)
         except (json.JSONDecodeError, ValueError):
@@ -775,7 +858,7 @@ def check_available_durations(request, worker):
 
         section = 'settings-roman' if worker == 'Roman' else 'settings-evka'
         if section not in config:
-            return JsonResponse({'status': 'error', 'message': 'Server configuration missing (config.ini).'}, status=503)
+            return JsonResponse({'status': 'error', 'message': 'Server configuration missing.'}, status=503)
         worker_config = config[section]
         starting_hour_str = worker_config.get(f'{weekday_name}_starting_hour')
         ending_hour_str = worker_config.get(f'{weekday_name}_ending_hour')
@@ -790,6 +873,7 @@ def check_available_durations(request, worker):
             return JsonResponse({'status': 'success', 'available_durations': []})
 
         turned_off_times = TurnedOffDay.objects.filter(worker=worker, date=selected_date)
+        brk = booking_break()
         # Shared workspace — a reservation for either therapist blocks the slot.
         reservations = slot_blocking_reservations(datetime_from__date=selected_date)
 
@@ -816,8 +900,8 @@ def check_available_durations(request, worker):
 
             # Check for overlap with existing reservations, with the 15-min break
             for reservation in reservations:
-                reservation_start = (reservation.datetime_from - BREAK_BETWEEN_RESERVATIONS).time()
-                reservation_end = (reservation.datetime_to + BREAK_BETWEEN_RESERVATIONS).time()
+                reservation_start = (reservation.datetime_from - brk).time()
+                reservation_end = (reservation.datetime_to + brk).time()
 
                 if reservation_start < end_time and time_slot_start < reservation_end:
                     overlaps = True
@@ -851,7 +935,7 @@ def deactivate_reservation(request):
                                                     'accept_link': None,
                                                     'text': f'Dôvod zrušenia: {reservation.cancellation_reason if reservation.cancellation_reason else "Zrušené zákazníkom bez udania dôvodu."}',
                                                     })
-                send_email(subject, html_message, getattr(settings, 'MAIN_EMAIL'))
+                send_email(subject, html_message, notification_email())
             except Exception as email_error:
                 import logging
                 logging.getLogger(__name__).error('Cancellation email failed: %s', email_error)

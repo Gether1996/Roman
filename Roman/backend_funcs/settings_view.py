@@ -3,6 +3,7 @@ from django.conf import settings
 from django.http import JsonResponse
 import configparser
 from viewer.models import TurnedOffDay
+from Roman.backend_funcs.system_config import reload_config, save_config
 from datetime import datetime, timedelta
 
 config = configparser.ConfigParser()
@@ -17,6 +18,7 @@ def _require_superuser(request):
 import re as _re
 
 _TIME_RE = _re.compile(r'^([01]\d|2[0-3]):[0-5]\d$')
+VALID_DAY_LABELS = ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')
 
 
 def _validate_positive_int(value, max_val=None):
@@ -37,7 +39,7 @@ def save_settings(request):
     if denied:
         return denied
     if request.method == 'POST':
-        config.read(settings.CONFIG_INI_PATH)
+        reload_config(config)
         try:
             json_data = json.loads(request.body)
         except (json.JSONDecodeError, ValueError):
@@ -53,6 +55,19 @@ def save_settings(request):
 
         files_per_page = json_data.get('files_per_page')
 
+        for key, minimum, maximum in (('break_minutes', 0, 120), ('public_lead_days', 0, 30), ('admin_days_ahead', 7, 730)):
+            if json_data.get(key) is not None:
+                try:
+                    value = int(json_data.get(key))
+                except (TypeError, ValueError):
+                    value = None
+                if value is None or value < minimum or value > maximum:
+                    return JsonResponse({'status': 'error', 'message': f'{key} must be between {minimum} and {maximum}.',
+                                         'message_sk': f'Hodnota musí byť medzi {minimum} a {maximum}.'}, status=400)
+                if 'settings' not in config:
+                    config.add_section('settings')
+                config.set('settings', key, str(value))
+
         if files_per_page is not None:
             validated = _validate_positive_int(files_per_page, max_val=500)
             if validated is None:
@@ -64,8 +79,8 @@ def save_settings(request):
             if validated is None:
                 return JsonResponse({'status': 'error', 'message': 'days_ahead_roman must be an integer between 1 and 365.'}, status=400)
             config.set('settings-roman', 'days_ahead', str(validated))
-        if selected_days_roman:
-            config.set('settings-roman', 'working_days', str(selected_days_roman))
+        if selected_days_roman is not None and isinstance(selected_days_roman, list):
+            config.set('settings-roman', 'working_days', str([d for d in selected_days_roman if d in VALID_DAY_LABELS]))
 
         for day in days_of_week:
             time_from_key_roman = f'time_from_roman_{day}'
@@ -89,11 +104,11 @@ def save_settings(request):
             if validated is None:
                 return JsonResponse({'status': 'error', 'message': 'days_ahead_evka must be an integer between 1 and 365.'}, status=400)
             config.set('settings-evka', 'days_ahead', str(validated))
-        if selected_days_evka:
-            config.set('settings-evka', 'working_days', str(selected_days_evka))
+        if selected_days_evka is not None and isinstance(selected_days_evka, list):
+            config.set('settings-evka', 'working_days', str([d for d in selected_days_evka if d in VALID_DAY_LABELS]))
 
-        with open(settings.CONFIG_INI_PATH, 'w', encoding='utf-8') as config_file:
-            config.write(config_file)
+        # Settings live in the database now (formerly config.ini, which was lost on container rebuilds).
+        save_config(config)
 
         return JsonResponse({'status': 'success'})
     return JsonResponse({'status': 'error'})
@@ -104,7 +119,7 @@ def add_turned_off_day(request):
     if denied:
         return denied
     if request.method == 'POST':
-        config.read(settings.CONFIG_INI_PATH)
+        reload_config(config)
         try:
             json_data = json.loads(request.body)
         except (ValueError, KeyError):

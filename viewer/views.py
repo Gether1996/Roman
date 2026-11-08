@@ -1,4 +1,6 @@
 import configparser
+import logging
+
 from django.conf import settings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import JsonResponse
@@ -6,15 +8,25 @@ from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.utils.translation import activate
 from django.views.decorators.csrf import ensure_csrf_cookie
-from Roman.backend_funcs.reservation import build_google_calendar_link, build_ics, prepare_reservation_data, send_email
+from Roman.backend_funcs.content import get_content
+from Roman.backend_funcs.system_config import reload_config
+from Roman.backend_funcs.reservation import (
+    CANCELLED_STATUSES,
+    build_google_calendar_link,
+    build_ics,
+    check_approve_token,
+    prepare_reservation_data,
+    send_email,
+)
 from viewer.models import Reservation
 
 config = configparser.ConfigParser()
+logger = logging.getLogger(__name__)
 
 def get_all_reservations_data(request):
     if not request.user.is_authenticated or not request.user.is_superuser:
         return JsonResponse({'status': 'error', 'message_sk': 'Prístup zamietnutý.', 'message_en': 'Access denied.'}, status=403)
-    config.read(settings.CONFIG_INI_PATH)
+    reload_config(config)
     filters = {
         'name_surname': request.GET.get('name_surname', ''),
         'email': request.GET.get('email', ''),
@@ -31,6 +43,8 @@ def get_all_reservations_data(request):
     reservations_per_page = int(config['settings']['reservations_per_page'])
     all_reservations_obj = Reservation.objects.all()
     sort_by = request.GET.get('sort_by', 'datetime_from')
+    if sort_by not in ('datetime_from', 'created_at', 'name_surname', 'worker', 'status'):
+        sort_by = 'datetime_from'
     order = request.GET.get('order', 'asc')
 
     if filters['name_surname']:
@@ -46,7 +60,7 @@ def get_all_reservations_data(request):
         all_reservations_obj = all_reservations_obj.filter(worker__icontains=filters['worker'])
 
     if filters['type']:
-        all_reservations_obj = all_reservations_obj.filter(massage_name__icontains=filters['type'])    
+        all_reservations_obj = all_reservations_obj.filter(massage_name__icontains=filters['type'])
 
     if filters['special_request']:
         all_reservations_obj = all_reservations_obj.filter(special_request__icontains=filters['special_request'])
@@ -106,39 +120,78 @@ def get_all_reservations_data(request):
     }
     return JsonResponse(response_data, safe=False)
 
+
 def approve_reservation_mail(request, reservation_id):
-    if request.method == 'GET':
+    """Approve a reservation from the link in the notification e-mail.
+
+    Works with one click exactly like before. Security: new e-mails carry a
+    signed token, so reservations can't be approved by guessing IDs. Links from
+    e-mails sent before this change (no token) keep working for reservations
+    created before the change (those have no consent timestamp).
+    """
+    token = request.GET.get('t') or request.POST.get('t') or ''
+
+    try:
+        reserv = Reservation.objects.get(id=reservation_id)
+    except Reservation.DoesNotExist:
+        return render(request, 'error.html', {'message': 'Rezervácia sa nenašla.'}, status=404)
+
+    allowed = (
+        (request.user.is_authenticated and request.user.is_superuser)
+        or check_approve_token(reservation_id, token)
+        or (not token and reserv.consent_at is None)  # legacy link from an older e-mail
+    )
+
+    if not allowed:
+        return render(request, 'error.html', {
+            'message': 'Odkaz na schválenie je neplatný alebo vypršal.',
+            'detail': 'Prihláste sa ako administrátor a schváľte rezerváciu v administrácii.',
+            'show_admin_link': True,
+        }, status=403)
+
+    cancelled = reserv.status in CANCELLED_STATUSES
+    context = {'reservation': prepare_reservation_data(reserv), 'token': token, 'cancelled': cancelled}
+
+    if request.method in ('GET', 'POST') and not reserv.active and not cancelled:
+        reserv.active = True
+        reserv.status = 'Schválená'
+        reserv.save()
         try:
-            reserv = Reservation.objects.get(id=reservation_id)
-            if not reserv.active:
-                reserv.active = True
-                reserv.status = 'Schválená'
-                reserv.save()
-                try:
-                    if reserv.email:
-                        subject = f'Rezervácia potvrdená / Reservation accepted'
-                        html_message = render_to_string('email_template.html',
-                                                        {'reservation': prepare_reservation_data(reserv),
-                                                         'button': None,
-                                                         'accept_link': None,
-                                                         'calendar_link': build_google_calendar_link(reserv),
-                                                         'text': 'Rezervácia potvrdená / Reservation accepted',
-                                                         })
-                        send_email(subject, html_message, reserv.email, ics_content=build_ics(reserv))
-                except Exception as email_error:
-                    import logging
-                    logging.getLogger(__name__).error('Approval (mail link) email failed: %s', email_error)
-            context = {
-                'reservation': prepare_reservation_data(reserv),
-            }
-            return render(request, 'approved_reservation.html', context)
-        except Reservation.DoesNotExist:
-            message = 'Rezervácia sa nenašla.'
-            return render(request, 'error.html', {'message': message})
-    message = 'Zlý request'
-    return render(request, 'error.html', {'message': message})
+            if reserv.email:
+                subject = 'Rezervácia potvrdená / Reservation accepted'
+                html_message = render_to_string('email_template.html', {
+                    'reservation': prepare_reservation_data(reserv),
+                    'button': None,
+                    'accept_link': None,
+                    'calendar_link': build_google_calendar_link(reserv),
+                    'text': 'Rezervácia potvrdená / Reservation accepted',
+                })
+                send_email(subject, html_message, reserv.email, ics_content=build_ics(reserv))
+        except Exception as email_error:
+            logger.error('Approval (mail link) email failed: %s', email_error)
+        context['reservation'] = prepare_reservation_data(reserv)
+        context['just_approved'] = True
+
+    context['approved'] = reserv.active
+    return render(request, 'approved_reservation.html', context)
+
+
 @ensure_csrf_cookie
 def vue_app(request):
     language_code = request.session.get('django_language', 'sk')
+    if language_code not in ('sk', 'en'):
+        language_code = 'sk'
     activate(language_code)
-    return render(request, 'vue_app.html', {'language_code': language_code})
+    meta = {'title': 'Masáže Vlčince', 'description': ''}
+    try:
+        general = get_content()['general']
+        meta['title'] = general['seo_title'].get(language_code) or general['seo_title'].get('sk') or general['site_name']
+        meta['description'] = general['seo_description'].get(language_code) or general['seo_description'].get('sk') or ''
+        meta['site_name'] = general['site_name']
+    except Exception as exc:  # never break the page because of content
+        logger.error('Content load failed: %s', exc)
+    return render(request, 'vue_app.html', {
+        'language_code': language_code,
+        'meta': meta,
+        'canonical': f"{getattr(settings, 'SITE_URL', '').rstrip('/')}{request.path}",
+    })

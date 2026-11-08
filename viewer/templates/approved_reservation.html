@@ -1,51 +1,43 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block extra_head %}
-    <title>Schválená rezervácia</title>
-{% endblock %}
-
-{% block content %}
-
-    {% include 'navbar.html' %}
-
-    <div class="top-margin-reservation"></div>
-
-    <div class="table-container-profile">
-        <h1>Rezervácia schválená pre maséra {{ reservation.worker }} <i style="color: green;" class="fa-solid fa-check"></i></h1>
-
-        <table border="1" cellpadding="10" cellspacing="0" style="border-collapse: collapse; width: 50%;">
-            <tbody>
-                <tr>
-                    <td>Meno a Priezvisko</td>
-                    <td>{{ reservation.name_surname }}</td>
-                </tr>
-                <tr>
-                    <td>Email</td>
-                    <td>{{ reservation.email }}</td>
-                </tr>
-                <tr>
-                    <td>Číslo</td>
-                    <td>{{ reservation.phone_number }}</td>
-                </tr>
-                <tr>
-                    <td>Dátum</td>
-                    <td>{{ reservation.date }}</td>
-                </tr>
-                <tr>
-                    <td>Slot</td>
-                    <td>{{ reservation.slot }}</td>
-                </tr>
-                <tr>
-                    <td>Vytvorené</td>
-                    <td>{{ reservation.created_at }}</td>
-                </tr>
-                <tr>
-                    <td>Poznámka</td>
-                    <td>{{ reservation.special_request }}</td>
-                </tr>
-            </tbody>
-        </table>
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    {% include '_standalone_head.html' %}
+    <title>Schválenie rezervácie – Masáže Vlčince</title>
+</head>
+<body>
+<main class="card">
+    {% if cancelled %}
+        <div class="icon err"><i class="fa-solid fa-ban"></i></div>
+        <h1>Rezervácia je zrušená</h1>
+        <p>Túto rezerváciu už nie je možné schváliť.</p>
+    {% elif approved %}
+        <div class="icon ok"><i class="fa-solid fa-check"></i></div>
+        <h1>{% if just_approved %}Rezervácia bola schválená{% else %}Rezervácia je už schválená{% endif %}</h1>
+        {% if just_approved and reservation.email %}<p>Klientovi bol odoslaný potvrdzovací e-mail.</p>{% endif %}
+    {% else %}
+        <div class="icon warn"><i class="fa-solid fa-hourglass-half"></i></div>
+        <h1>Schváliť rezerváciu?</h1>
+        <p>Po schválení sa klientovi odošle potvrdzovací e-mail.</p>
+    {% endif %}
+    <dl>
+        <dt>Terapeut</dt><dd>{{ reservation.worker }}</dd>
+        <dt>Klient</dt><dd>{{ reservation.name_surname }}</dd>
+        <dt>Dátum</dt><dd>{{ reservation.date }}</dd>
+        <dt>Čas</dt><dd>{{ reservation.slot }}</dd>
+        <dt>Služba</dt><dd>{{ reservation.massage_name|default:"–" }}</dd>
+        <dt>E-mail</dt><dd>{{ reservation.email|default:"–" }}</dd>
+        <dt>Telefón</dt><dd>{{ reservation.phone_number|default:"–" }}</dd>
+        {% if reservation.special_request %}<dt>Poznámka</dt><dd>{{ reservation.special_request }}</dd>{% endif %}
+    </dl>
+    <div class="actions">
+        {% if not approved and not cancelled %}
+            <form method="post">{% csrf_token %}
+                <input type="hidden" name="t" value="{{ token }}">
+                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check"></i> Schváliť rezerváciu</button>
+            </form>
+        {% endif %}
+        <a class="btn btn-soft" href="/sprava/rezervacie">Otvoriť administráciu</a>
     </div>
-
-{% endblock %}
+</main>
+</body>
+</html>

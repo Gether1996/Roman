@@ -1,4 +1,10 @@
 export function formatDateInput(date) {
+  // Parse 'YYYY-MM-DD' directly – new Date('YYYY-MM-DD') is UTC and could show
+  // the previous day in time zones west of UTC.
+  const match = String(date || '').match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (match) {
+    return `${match[3]}.${match[2]}.${match[1]}`;
+  }
   const parsed = new Date(date);
   if (Number.isNaN(parsed.getTime())) {
     return date;

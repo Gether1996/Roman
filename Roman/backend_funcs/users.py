@@ -62,6 +62,9 @@ def registration(request):
             if not re.match(email_pattern, email):
                 return JsonResponse({'status': 'error', 'message_sk': 'Neplatný formát emailu.', 'message_en': 'Invalid email format.'}, status=400)
 
+            if not json_data.get('consent'):
+                return JsonResponse({'status': 'error', 'message_sk': 'Pre registráciu je potrebný súhlas s podmienkami a spracovaním osobných údajov.', 'message_en': 'Please accept the terms and privacy policy to register.'}, status=400)
+
             # Validate password length
             if len(password) < 8:
                 return JsonResponse({'status': 'error', 'message_sk': 'Heslo musí obsahovať aspoň 8 znakov.', 'message_en': 'Password must contain at least 8 characters.'}, status=400)
@@ -83,7 +86,9 @@ def registration(request):
             return JsonResponse({'status': 'success', 'message_sk': 'Registrácia úspešná.', 'message_en': 'Registration successful.'})
 
         except Exception as e:
-            return JsonResponse({'status': 'error', 'message_sk': str(e), 'message_en': str(e)}, status=500)
+            import logging
+            logging.getLogger(__name__).error('Registration failed: %s', e)
+            return JsonResponse({'status': 'error', 'message_sk': 'Registrácia zlyhala. Skúste to prosím znova.', 'message_en': 'Registration failed. Please try again.'}, status=500)
 
     return JsonResponse({'status': 'error', 'message_sk': 'Zlý request.', 'message_en': 'Bad request.'}, status=405)
 
@@ -93,9 +98,34 @@ def delete_saved_person(request):
     if not request.user.is_authenticated or not request.user.is_superuser:
         return JsonResponse({'status': 'error', 'message_sk': 'Prístup zamietnutý.', 'message_en': 'Access denied.'}, status=403)
     if request.method == 'DELETE':
-        json_data = json.loads(request.body.decode('utf-8'))
-
-        saved_person = AlreadyMadeReservation.objects.get(id=int(json_data['id']))
-        saved_person.delete()
+        try:
+            json_data = json.loads(request.body.decode('utf-8'))
+            AlreadyMadeReservation.objects.filter(id=int(json_data['id'])).delete()
+        except (ValueError, KeyError, TypeError):
+            return JsonResponse({'status': 'error'}, status=400)
         return JsonResponse({'status': 'success'})
     return JsonResponse({'status': 'error'})
+
+
+def delete_account(request):
+    """GDPR: a regular user can delete their own account. Reservation history is
+    kept (needed for the salon's records) but detached from the account."""
+    from viewer.models import Reservation
+    if not request.user.is_authenticated:
+        return JsonResponse({'status': 'error', 'message_sk': 'Nie ste prihlásený.', 'message_en': 'Not authenticated.'}, status=401)
+    if request.method != 'POST':
+        return JsonResponse({'status': 'error', 'message_sk': 'Zlý request.', 'message_en': 'Bad request.'}, status=405)
+    if request.user.is_superuser:
+        return JsonResponse({'status': 'error', 'message_sk': 'Administrátorský účet nie je možné zrušiť týmto spôsobom.',
+                             'message_en': 'Admin accounts cannot be deleted this way.'}, status=400)
+    try:
+        json_data = json.loads(request.body.decode('utf-8') or '{}')
+    except (json.JSONDecodeError, ValueError):
+        json_data = {}
+    user = request.user
+    if not user.check_password(json_data.get('password', '')):
+        return JsonResponse({'status': 'error', 'message_sk': 'Nesprávne heslo.', 'message_en': 'Incorrect password.'}, status=400)
+    Reservation.objects.filter(user=user).update(user=None)
+    django_logout(request)
+    user.delete()
+    return JsonResponse({'status': 'success', 'message_sk': 'Účet bol zrušený.', 'message_en': 'Your account was deleted.'})

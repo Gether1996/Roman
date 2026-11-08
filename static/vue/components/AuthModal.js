@@ -16,6 +16,7 @@ export const AuthModal = defineComponent({
       phone_number: '',
       password: '',
       confirmPassword: '',
+      consent: false,
       error: '',
       loading: false,
     });
@@ -29,6 +30,7 @@ export const AuthModal = defineComponent({
       form.phone_number = '';
       form.password = '';
       form.confirmPassword = '';
+      form.consent = false;
       form.error = '';
       form.loading = false;
     }
@@ -69,6 +71,11 @@ export const AuthModal = defineComponent({
           if (form.password.length < 8) {
             throw new Error(t('auth.passwordTooShort'));
           }
+          if (!form.consent) {
+            throw new Error(store.language === 'en'
+              ? 'Please accept the terms and privacy policy.'
+              : 'Pre registráciu je potrebný súhlas s podmienkami a spracovaním osobných údajov.');
+          }
 
           const response = await fetchJSON('/registration/', {
             method: 'POST',
@@ -78,6 +85,7 @@ export const AuthModal = defineComponent({
               email: form.email,
               phone_number: form.phone_number,
               password: form.password,
+              consent: form.consent,
             }),
           });
 
@@ -145,6 +153,12 @@ export const AuthModal = defineComponent({
           <label v-if="!isLogin" class="field">
             <span>{{ t('auth.confirmPassword') }}</span>
             <input v-model="form.confirmPassword" type="password" required />
+          </label>
+
+          <label v-if="!isLogin" class="consent-check">
+            <input type="checkbox" v-model="form.consent" />
+            <span v-if="store.language === 'en'">I agree to the <router-link to="/obchodne-podmienky/" target="_blank">terms</router-link> and acknowledge the <router-link to="/ochrana-osobnych-udajov/" target="_blank">privacy policy</router-link>.</span>
+            <span v-else>Súhlasím s <router-link to="/obchodne-podmienky/" target="_blank">obchodnými podmienkami</router-link> a beriem na vedomie <router-link to="/ochrana-osobnych-udajov/" target="_blank">spracovanie osobných údajov</router-link>.</span>
           </label>
 
           <p v-if="form.error" class="form-error">{{ form.error }}</p>

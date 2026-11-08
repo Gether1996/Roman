@@ -128,3 +128,14 @@ class AlreadyMadeReservationAdmin(admin.ModelAdmin):
     list_display = ('name_surname', 'phone_number', 'email')
     search_fields = ('name_surname', 'email', 'phone_number')
     ordering = ('name_surname',)
+
+
+from .models import ConfigEntry  # noqa: E402
+
+
+@admin.register(ConfigEntry)
+class ConfigEntryAdmin(admin.ModelAdmin):
+    list_display = ('section', 'key', 'value', 'updated_at')
+    list_filter = ('section',)
+    search_fields = ('section', 'key', 'value')
+    ordering = ('section', 'key')

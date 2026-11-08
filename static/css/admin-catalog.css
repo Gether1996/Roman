@@ -1,0 +1,23 @@
+/* Extra styles for admin views: services, therapists, techniques, media */
+.adm-catalog-preview-row { display: flex; justify-content: space-between; gap: 1rem; padding: .45rem 0; border-top: 1px solid rgba(30, 44, 47, .08); font-size: .9rem; }
+.adm-catalog-preview-row:first-child { border-top: 0; padding-top: 0; }
+.adm-catalog-preview-row strong { white-space: nowrap; color: #0b5755; }
+
+.adm-catalog-row { display: grid; grid-template-columns: minmax(0, 1fr) 140px auto; gap: .75rem; align-items: start; padding: .6rem 0 0; border-top: 1px dashed var(--a-line, #e5e7e3); }
+.adm-catalog-row:first-of-type { border-top: 0; }
+.adm-catalog-row.is-note { grid-template-columns: minmax(0, 1fr) auto; }
+.adm-catalog-row .adm-list-actions { padding-top: 1.6rem; }
+
+.adm-catalog-color { display: flex; gap: .5rem; align-items: center; }
+.adm-catalog-color input[type=color] { width: 46px; height: 40px; padding: 2px; border: 1px solid var(--a-line-strong, #d4d8d2); border-radius: 10px; background: #fff; cursor: pointer; flex: none; }
+.adm-catalog-color input[type=text] { max-width: 140px; font-family: ui-monospace, monospace; }
+
+.adm-dropzone .adm-small { margin-top: .35rem; }
+.adm-media-img a { display: block; width: 100%; height: 100%; }
+.adm-media-body .adm-toggle { margin: 0; }
+.adm-media-body .adm-toggle-text strong { font-size: .82rem; }
+
+@media (max-width: 680px) {
+  .adm-catalog-row { grid-template-columns: minmax(0, 1fr); }
+  .adm-catalog-row .adm-list-actions { padding-top: 0; }
+}

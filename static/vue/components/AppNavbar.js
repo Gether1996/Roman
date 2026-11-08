@@ -1,7 +1,7 @@
 const { defineComponent, ref, computed } = Vue;
 const { useI18n } = VueI18n;
 
-import { store } from '../store.js';
+import { store, section } from '../store.js';
 import { fetchJSON } from '../utils/api.js';
 
 export const AppNavbar = defineComponent({
@@ -14,6 +14,8 @@ export const AppNavbar = defineComponent({
     const userMenuOpen = ref(false);
 
     const isHome = computed(() => route.path === '/');
+    const contact = computed(() => section('contact'));
+    const sections = computed(() => section('sections'));
 
     async function switchLanguage(language) {
       await fetchJSON(`/switch_language/${language}/`, { method: 'POST' });
@@ -83,6 +85,8 @@ export const AppNavbar = defineComponent({
 
     return {
       store,
+      contact,
+      sections,
       isHome,
       handleBrandClick,
       menuOpen,
@@ -110,10 +114,11 @@ export const AppNavbar = defineComponent({
 
         <div class="nav-panel" :class="{ open: menuOpen }">
           <div class="nav-links">
-            <button class="nav-link-button" @click="goToSection('techniques')">{{ t('nav.techniques') }}</button>
-            <button class="nav-link-button" @click="goToSection('gallery')">{{ store.language === 'sk' ? 'Galéria/Cenník' : 'Gallery/Pricing' }}</button>
-            <button class="nav-link-button" @click="goToSection('reviews')">{{ t('nav.reviews') }}</button>
-            <button class="nav-link-button" @click="goToSection('contact')">{{ t('nav.contact') }}</button>
+            <button v-if="sections.techniques?.visible !== false" class="nav-link-button" @click="goToSection('techniques')">{{ t('nav.techniques') }}</button>
+            <button v-if="sections.pricing?.visible !== false" class="nav-link-button" @click="goToSection('pricing')">{{ store.language === 'sk' ? 'Cenník' : 'Pricing' }}</button>
+            <button v-if="sections.gallery?.visible !== false" class="nav-link-button" @click="goToSection('gallery')">{{ t('nav.gallery') }}</button>
+            <button v-if="sections.reviews?.visible !== false" class="nav-link-button" @click="goToSection('reviews')">{{ t('nav.reviews') }}</button>
+            <button v-if="sections.contact?.visible !== false" class="nav-link-button" @click="goToSection('contact')">{{ t('nav.contact') }}</button>
           </div>
 
           <div class="nav-actions">
@@ -123,10 +128,10 @@ export const AppNavbar = defineComponent({
             </button>
 
             <div class="nav-quick-row">
-              <a href="https://www.instagram.com/masazevlcince/" target="_blank" rel="noopener" class="social-pill" aria-label="Instagram">
+              <a v-if="contact.instagram" :href="contact.instagram" target="_blank" rel="noopener" class="social-pill" aria-label="Instagram">
                 <i class="fa-brands fa-instagram"></i>
               </a>
-              <a href="https://www.facebook.com/salonAminaSK" target="_blank" rel="noopener" class="social-pill" aria-label="Facebook">
+              <a v-if="contact.facebook" :href="contact.facebook" target="_blank" rel="noopener" class="social-pill" aria-label="Facebook">
                 <i class="fa-brands fa-facebook-f"></i>
               </a>
 
@@ -154,17 +159,17 @@ export const AppNavbar = defineComponent({
                     <span>{{ t('nav.profile') }}</span>
                   </button>
                   <template v-if="store.isSuperuser">
-                    <button class="user-menu-item" @click="goToPath('/all_reservations/')">
+                    <button class="user-menu-item" @click="goToPath('/sprava')">
+                      <i class="fa-solid fa-gauge-high"></i>
+                      <span>Administrácia</span>
+                    </button>
+                    <button class="user-menu-item" @click="goToPath('/sprava/rezervacie')">
                       <i class="fa-solid fa-list"></i>
                       <span>{{ t('nav.reservations') }}</span>
                     </button>
-                    <button class="user-menu-item" @click="goToPath('/calendar_view_admin/')">
+                    <button class="user-menu-item" @click="goToPath('/sprava/kalendar')">
                       <i class="fa-solid fa-calendar"></i>
                       <span>{{ t('nav.calendar') }}</span>
-                    </button>
-                    <button class="user-menu-item" @click="goToPath('/settings_view/')">
-                      <i class="fa-solid fa-cog"></i>
-                      <span>{{ t('nav.settings') }}</span>
                     </button>
                   </template>
                   <div class="user-menu-divider"></div>

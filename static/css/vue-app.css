@@ -3125,3 +3125,91 @@ a[x-apple-data-detectors] {
     padding: 0.2rem 0.55rem;
   }
 }
+
+/* ==========================================================================
+   Content from the admin panel: promo styles, pricing, notices, legal pages,
+   cookie notice, consent checkboxes, footer
+   ========================================================================== */
+.promo-text { display: inline-flex; align-items: center; gap: .55rem; }
+.promo-banner.promo-style-festive {
+  background: linear-gradient(120deg, #7f1d1d 0%, #b91c1c 45%, #166534 100%);
+  border-color: transparent; color: #fff; box-shadow: 0 14px 34px rgba(127, 29, 29, .25);
+}
+.promo-banner.promo-style-festive .btn-secondary-soft { background: #fff; color: #7f1d1d; border-color: #fff; }
+.promo-banner.promo-style-highlight { background: var(--brand); border-color: var(--brand); color: #fff; }
+.promo-banner.promo-style-highlight .btn-secondary-soft { background: #fff; color: var(--brand-deep); border-color: #fff; }
+
+.site-notice, .booking-notice {
+  display: flex; align-items: flex-start; gap: .6rem; margin-top: 1rem;
+  padding: .85rem 1.1rem; border-radius: 16px; background: #fff7e6; border: 1px solid #f6d79a;
+  color: #7c4a03; font-weight: 600; font-size: .92rem; line-height: 1.5;
+}
+.site-notice i, .booking-notice i { margin-top: .2rem; }
+.booking-notice { margin: 0 0 1.25rem; }
+.booking-notice-inline { margin: 1rem 0 0; font-weight: 500; }
+
+.therapist-bio { margin: 1rem .4rem 0; color: var(--muted); line-height: 1.6; font-size: .95rem; }
+
+.pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 1.25rem; }
+.pricing-card { padding: 1.5rem; }
+.pricing-card h3 { display: flex; gap: .6rem; align-items: center; font-size: 1.25rem; margin: 0 0 1rem; }
+.pricing-card h3 i { color: var(--brand); }
+.pricing-sub { color: var(--muted); margin: -.5rem 0 1rem; }
+.pricing-row { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding: .65rem 0; border-bottom: 1px dashed var(--line); }
+.pricing-row:last-of-type { border-bottom: 0; }
+.pricing-row strong { color: var(--brand-deep); white-space: nowrap; font-size: 1.02rem; }
+.pricing-worker { display: inline-block; margin-left: .4rem; padding: .05rem .5rem; border-radius: 999px; background: var(--brand-soft); color: var(--brand-deep); font-size: .72rem; font-weight: 700; vertical-align: middle; }
+.pricing-note { color: var(--muted); font-size: .85rem; margin: .8rem 0 0; line-height: 1.5; }
+.pricing-footnote { text-align: center; color: var(--muted); font-size: .85rem; margin-top: 1rem; }
+
+.voucher-caption { margin: .2rem 0 0; text-align: center; color: var(--muted); font-size: .9rem; }
+.business-cta { margin-top: 1.25rem; }
+.contact-intro, .contact-note { color: var(--muted); text-align: center; max-width: 60ch; margin: 0 auto 1rem; }
+.contact-note { margin-top: 1rem; }
+
+.worker-card.disabled { opacity: .5; cursor: not-allowed; }
+.worker-card-note { font-size: .72rem; color: var(--muted); }
+
+.consent-check { display: flex; gap: .65rem; align-items: flex-start; margin: .4rem 0 1rem; font-size: .88rem; line-height: 1.5; color: var(--text); cursor: pointer; }
+.consent-check input { width: 18px; height: 18px; margin-top: .15rem; flex: none; accent-color: var(--brand); }
+.consent-check a { color: var(--brand); text-decoration: underline; }
+.hp-field { position: absolute !important; left: -9999px !important; width: 1px; height: 1px; opacity: 0; }
+
+.rich-text p { line-height: 1.7; margin: 0 0 1rem; }
+.rich-text h2, .rich-text h3 { font-size: 1.2rem; margin: 1.6rem 0 .6rem; }
+.rich-text ul { margin: 0 0 1rem; padding-left: 1.2rem; line-height: 1.7; }
+.technique-modal-text .rich-text h3 { font-size: 1.05rem; }
+
+.legal-page { padding-top: 1rem; }
+.legal-card { max-width: 860px; margin: 0 auto; padding: clamp(1.25rem, 4vw, 2.5rem); }
+.legal-card h1 { font-size: clamp(1.8rem, 5vw, 2.6rem); margin: .3rem 0 .4rem; }
+.legal-updated { color: var(--muted); font-size: .9rem; margin: 0 0 1.25rem; }
+.legal-operator { display: flex; flex-direction: column; gap: .15rem; padding: 1rem 1.2rem; border-radius: 16px; background: var(--surface-alt); margin-bottom: 1.5rem; font-size: .92rem; }
+.legal-operator a, .legal-links a { color: var(--brand); }
+.legal-links { display: flex; gap: 1.2rem; flex-wrap: wrap; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--line); font-weight: 600; font-size: .92rem; }
+
+.cookie-banner {
+  position: fixed; left: 50%; bottom: 1rem; transform: translateX(-50%); z-index: 1200;
+  width: min(760px, calc(100% - 2rem)); display: flex; align-items: center; gap: 1rem;
+  padding: .9rem 1.1rem; border-radius: 20px; background: rgba(255, 252, 247, .97);
+  border: 1px solid var(--line); box-shadow: var(--shadow); backdrop-filter: blur(8px);
+}
+.cookie-banner > i { font-size: 1.4rem; color: var(--accent); flex: none; }
+.cookie-banner p { margin: 0; font-size: .86rem; line-height: 1.5; color: var(--text); flex: 1; }
+.cookie-banner a { color: var(--brand); text-decoration: underline; margin-left: .25rem; }
+.cookie-banner .btn { flex: none; padding: .55rem 1.2rem; }
+@media (max-width: 640px) {
+  .cookie-banner { flex-direction: column; align-items: stretch; text-align: left; bottom: .6rem; }
+  .cookie-banner > i { display: none; }
+  .promo-banner.promo-style-festive, .promo-banner.promo-style-highlight { border-radius: 24px; }
+}
+
+.footer-inner-rich { flex-wrap: wrap; align-items: flex-start; }
+.footer-col { display: flex; flex-direction: column; gap: .2rem; }
+.footer-company { font-size: .8rem; color: var(--muted); }
+.footer-links { display: flex; gap: 1.1rem; flex-wrap: wrap; }
+.footer-links a { color: var(--muted); font-size: .86rem; }
+.footer-links a:hover { color: var(--brand); }
+
+.profile-danger-zone { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; margin-top: 2.5rem; padding: 1rem 1.2rem; border: 1px dashed var(--line); border-radius: 18px; color: var(--muted); font-size: .9rem; }
+.profile-danger-zone a { color: var(--brand); margin-left: .3rem; }

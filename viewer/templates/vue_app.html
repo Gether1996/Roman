@@ -5,15 +5,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="format-detection" content="telephone=no,date=no,email=no,address=no">
-    <title>Masáže Vlčince</title>
+    <title>{{ meta.title }}</title>
+    {% if meta.description %}<meta name="description" content="{{ meta.description }}">{% endif %}
+    <meta name="theme-color" content="#0f7e7a">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ meta.title }}">
+    {% if meta.description %}<meta property="og:description" content="{{ meta.description }}">{% endif %}
+    <meta property="og:site_name" content="{{ meta.site_name|default:'Masáže Vlčince' }}">
+    <meta property="og:locale" content="{% if language_code == 'en' %}en_GB{% else %}sk_SK{% endif %}">
+    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'images/mandala.png' %}">
+    {% if canonical %}<link rel="canonical" href="{{ canonical }}">{% endif %}
     <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.png' %}">
     <link rel="stylesheet" href="{% static 'fontawesome/css/all.css' %}">
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@500;600;700&display=swap">
     <link rel="stylesheet" href="{% static 'css/vue-app.css' %}">
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+    <link rel="stylesheet" href="{% static 'css/admin-catalog.css' %}">
+    <link rel="stylesheet" href="{% static 'css/admin-content.css' %}">
 </head>
 <body>
     <div id="app"></div>
+    <noscript>Pre správne fungovanie stránky je potrebné povoliť JavaScript.</noscript>
 
     <script src="{% static 'scripts/sweetalert2@11.js' %}"></script>
     <script src="{% static 'scripts/fullcalendar-6.1.9/dist/index.global.min.js' %}"></script>

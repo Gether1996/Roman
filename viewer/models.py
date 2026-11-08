@@ -5,8 +5,12 @@ from accounts.models import CustomUser
 
 class GalleryPhoto(Model):
     photo = ImageField(upload_to='images/')
+    caption = CharField(max_length=200, blank=True, default='')
+    order = IntegerField(default=0)
+    is_visible = BooleanField(default=True)
 
     class Meta:
+        ordering = ('order', 'id')
         verbose_name = 'Fotka galérie'
         verbose_name_plural = 'Fotky galérie'
 
@@ -16,8 +20,12 @@ class GalleryPhoto(Model):
 
 class VoucherPhoto(Model):
     photo = ImageField(upload_to='images/')
+    caption = CharField(max_length=200, blank=True, default='')
+    order = IntegerField(default=0)
+    is_visible = BooleanField(default=True)
 
     class Meta:
+        ordering = ('order', 'id')
         verbose_name = 'Poukážka'
         verbose_name_plural = 'Poukážky'
 
@@ -67,6 +75,7 @@ class Reservation(Model):
     special_request = CharField(max_length=200, default=None, null=True, blank=True)
     personal_note = CharField(max_length=200, default=None, null=True, blank=True)
     cancellation_reason = CharField(max_length=254, default=None, blank=True, null=True)
+    consent_at = DateTimeField(default=None, blank=True, null=True)
 
     class Meta:
         verbose_name = 'Rezervácia'
@@ -119,6 +128,7 @@ class Review(Model):
     message = TextField()
     created_at = DateTimeField(default=datetime.now)
     stars = IntegerField()
+    is_visible = BooleanField(default=True)
 
     class Meta:
         verbose_name = 'Hodnotenie'
@@ -127,3 +137,70 @@ class Review(Model):
 
     def __str__(self):
         return f'{self.name_surname} – {self.stars}★ ({self.worker})'
+
+
+class SiteContent(Model):
+    """Editable website content (texts, prices, therapists, legal pages, ...).
+
+    One row per section; `data` holds JSON text (TextField instead of JSONField
+    so it works on every DB backend incl. mysql-connector)."""
+    section = CharField(max_length=50, unique=True)
+    data = TextField(default='{}')
+    updated_at = DateTimeField(default=datetime.now)
+
+    class Meta:
+        verbose_name = 'Obsah webu'
+        verbose_name_plural = 'Obsah webu'
+
+    def __str__(self):
+        return self.section
+
+
+class SiteContentRevision(Model):
+    """Previous versions of a content section so the admin can undo changes."""
+    section = CharField(max_length=50, db_index=True)
+    data = TextField(default='{}')
+    created_at = DateTimeField(default=datetime.now)
+    created_by = CharField(max_length=254, blank=True, default='')
+
+    class Meta:
+        ordering = ('-created_at', '-id')
+        verbose_name = 'Verzia obsahu'
+        verbose_name_plural = 'Verzie obsahu'
+
+
+class MediaAsset(Model):
+    """Images uploaded from the admin panel (therapist photos, technique images...)."""
+    file = ImageField(upload_to='uploads/')
+    name = CharField(max_length=200, blank=True, default='')
+    created_at = DateTimeField(default=datetime.now)
+
+    class Meta:
+        ordering = ('-created_at',)
+        verbose_name = 'Obrázok'
+        verbose_name_plural = 'Obrázky'
+
+    def __str__(self):
+        return self.name or f'Obrázok #{self.pk}'
+
+
+class ConfigEntry(Model):
+    """System settings (therapists' schedules, booking rules, …).
+
+    Same structure as the former config.ini: section / key / value, so the
+    booking logic reads it exactly like before. Imported once from config.ini
+    by `python manage.py import_config_ini` (run automatically on deploy).
+    """
+    section = CharField(max_length=50)
+    key = CharField(max_length=80)
+    value = TextField(blank=True, default='')
+    updated_at = DateTimeField(default=datetime.now)
+
+    class Meta:
+        unique_together = ('section', 'key')
+        ordering = ('section', 'key')
+        verbose_name = 'Systémové nastavenie'
+        verbose_name_plural = 'Systémové nastavenia'
+
+    def __str__(self):
+        return f'[{self.section}] {self.key}'

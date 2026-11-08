@@ -28,6 +28,11 @@ CSRF_TRUSTED_ORIGINS = env_list(
 )
 
 MAIN_EMAIL = os.environ.get('MAIN_EMAIL', 'salonaminask@gmail.com')
+SITE_URL = os.environ.get('SITE_URL', 'https://masazevlcince.sk')
+
+# Uploaded images from the admin panel (max size in bytes)
+DATA_UPLOAD_MAX_MEMORY_SIZE = 12 * 1024 * 1024
+FILE_UPLOAD_MAX_MEMORY_SIZE = 12 * 1024 * 1024
 CONFIG_INI_PATH = Path(os.environ.get('CONFIG_INI_PATH', BASE_DIR / 'config.ini')).resolve()
 
 LOGIN_URL = '/admin/login/'

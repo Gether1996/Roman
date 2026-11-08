@@ -17,7 +17,9 @@ from viewer.models import (
     TurnedOffDay,
     VoucherPhoto,
 )
-from Roman.backend_funcs.reservation import CANCELLED_STATUSES
+from Roman.backend_funcs.reservation import CANCELLED_STATUSES, admin_days_ahead, booking_break, public_lead_days
+from Roman.backend_funcs.content import public_content, get_section
+from Roman.backend_funcs.system_config import reload_config
 
 
 config = configparser.ConfigParser()
@@ -59,6 +61,9 @@ def bootstrap(request):
         'is_authenticated': user.is_authenticated,
         'is_superuser': user.is_superuser if user.is_authenticated else False,
         'language': language_code,
+        'content': public_content(),
+        'booking_rules': {'lead_days': public_lead_days()},
+        'server_now': datetime.now().strftime('%Y-%m-%dT%H:%M:%S'),
         'user': {
             'email': user.email if user.is_authenticated else '',
             'name': getattr(user, 'name', '') if user.is_authenticated else '',
@@ -75,20 +80,22 @@ def homepage_data(request):
         {
             'id': photo.id,
             'src': static_file_url(photo.photo),
-            'alt': getattr(photo, 'alt', '') or 'Foto',
+            'alt': photo.caption or 'Foto',
+            'caption': photo.caption,
         }
-        for photo in GalleryPhoto.objects.all()
+        for photo in GalleryPhoto.objects.filter(is_visible=True).order_by('order', 'id')
     ]
     vouchers = [
         {
             'id': voucher.id,
             'src': static_file_url(voucher.photo),
-            'alt': getattr(voucher, 'alt', '') or 'Poukazka',
+            'alt': voucher.caption or 'Poukážka',
+            'caption': voucher.caption,
         }
-        for voucher in VoucherPhoto.objects.all()
+        for voucher in VoucherPhoto.objects.filter(is_visible=True).order_by('order', 'id')
     ]
 
-    reviews = Review.objects.all().order_by('-created_at')[:15]
+    reviews = Review.objects.filter(is_visible=True).order_by('-created_at')[:15]
     enriched_reviews = []
 
     for review in reviews:
@@ -116,15 +123,18 @@ def homepage_data(request):
 def reservation_bootstrap(request):
     get_request_language(request)
 
-    user_options = [
-        {
-            'id': str(user.id),
-            'name_surname': user.name_surname,
-            'email': user.email if user.email else '',
-            'phone': user.phone_number if user.phone_number else '',
-        }
-        for user in AlreadyMadeReservation.objects.all().order_by('name_surname')
-    ]
+    # Saved customers contain personal data – only the admin may see them.
+    user_options = []
+    if request.user.is_authenticated and request.user.is_superuser:
+        user_options = [
+            {
+                'id': str(user.id),
+                'name_surname': user.name_surname,
+                'email': user.email if user.email else '',
+                'phone': user.phone_number if user.phone_number else '',
+            }
+            for user in AlreadyMadeReservation.objects.all().order_by('name_surname')
+        ]
 
     prefill = {
         'name_surname': '',
@@ -190,10 +200,10 @@ def settings_bootstrap(request):
     if not request.user.is_superuser:
         return JsonResponse({'status': 'error'}, status=403)
 
-    config.read(settings.CONFIG_INI_PATH)
+    reload_config(config)
 
     if 'settings-roman' not in config or 'settings-evka' not in config or 'settings' not in config:
-        return JsonResponse({'status': 'error', 'message': 'Server configuration missing (config.ini).'}, status=503)
+        return JsonResponse({'status': 'error', 'message': 'Server configuration missing.'}, status=503)
 
     days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
 
@@ -217,6 +227,9 @@ def settings_bootstrap(request):
             'date': day.formatted_date(),
             'whole_day': day.whole_day,
             'time_range': day.formatted_time_range(),
+            'date_iso': day.date.strftime('%Y-%m-%d'),
+            'time_from': day.time_from.strftime('%H:%M') if day.time_from else '',
+            'time_to': day.time_to.strftime('%H:%M') if day.time_to else '',
         }
         for day in TurnedOffDay.objects.all().order_by('-date')
     ]
@@ -226,6 +239,11 @@ def settings_bootstrap(request):
         'evka': worker_payload('settings-evka'),
         'turned_off_days': turned_off_days,
         'reservations_per_page': int(config['settings']['reservations_per_page']),
+        'rules': {
+            'break_minutes': int(booking_break().total_seconds() // 60),
+            'public_lead_days': public_lead_days(),
+            'admin_days_ahead': admin_days_ahead(),
+        },
     })
 
 
@@ -269,7 +287,15 @@ def add_review(request):
     get_request_language(request)
     if request.method != 'POST':
         return JsonResponse({'status': 'error', 'message_sk': 'Nesprávna metóda.', 'message_en': 'Invalid method.'}, status=405)
-    json_data = json.loads(request.body)
+    try:
+        json_data = json.loads(request.body)
+    except (json.JSONDecodeError, ValueError):
+        return JsonResponse({'error': 'Invalid input'}, status=400)
+
+    if not get_section('sections').get('reviews', {}).get('allow_new', True):
+        return JsonResponse({'error': 'Pridávanie hodnotení je momentálne vypnuté.'}, status=403)
+    if json_data.get('website'):  # honeypot field – bots fill it, humans never see it
+        return JsonResponse({'message': 'Review submitted successfully'}, status=200)
 
     name = json_data.get('name_surname')
     message = json_data.get('message')
@@ -278,6 +304,10 @@ def add_review(request):
 
     if not name or not message or not stars or not worker:
         return JsonResponse({'error': 'Invalid input'}, status=400)
+    if str(worker).lower() not in ('roman', 'evka'):
+        return JsonResponse({'error': 'Invalid therapist'}, status=400)
+    if not json_data.get('consent'):
+        return JsonResponse({'error': 'Pre zverejnenie hodnotenia je potrebný súhlas. / Consent is required.'}, status=400)
 
     if len(str(name)) > 150:
         return JsonResponse({'error': 'Name is too long (max 150 characters).'}, status=400)

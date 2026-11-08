@@ -3,26 +3,13 @@ const { useI18n } = VueI18n;
 
 import { fetchJSON, localizedBackendMessage } from '../utils/api.js';
 import { formatDateInput, normalizeText } from '../utils/formatters.js';
-import { store } from '../store.js';
+import { store, tr, section } from '../store.js';
 
-const serviceCatalog = {
-  Roman: [
-    { id: '30-basic', duration: 30, price: '25 EUR', backendName: '30 min masáž', sk: '30 min masáž', en: '30 min massage' },
-    { id: '45-basic', duration: 45, price: '30 EUR', backendName: '45 min masáž', sk: '45 min masáž', en: '45 min massage' },
-    { id: '45-sm', duration: 45, price: '20 EUR', backendName: '45 min SM systém', sk: '45 min SM individualne cvičenie', en: '45 min SM individual training' },
-    { id: '60-basic', duration: 60, price: '35 EUR', backendName: '60 min masáž', sk: '60 min masáž', en: '60 min massage' },
-    { id: '90-basic', duration: 90, price: '60 EUR', backendName: '90 min masáž', sk: '90 min masáž', en: '90 min massage' },
-    { id: '90-sm', duration: 90, price: '60 EUR', backendName: '90 min masáž + SM systém', sk: '90 min masáž + SM systém', en: '90 min massage + SM system' },
-    { id: '120-basic', duration: 120, price: '80 EUR', backendName: '120 min masáž', sk: '120 min masáž', en: '120 min massage' },
-  ],
-  Evka: [
-    { id: '30-basic', duration: 30, price: '25 EUR', backendName: '30 min masáž', sk: '30 min masáž', en: '30 min massage' },
-    { id: '45-basic', duration: 45, price: '30 EUR', backendName: '45 min masáž', sk: '45 min masáž', en: '45 min massage' },
-    { id: '60-basic', duration: 60, price: '35 EUR', backendName: '60 min masáž', sk: '60 min masáž', en: '60 min massage' },
-    { id: '90-basic', duration: 90, price: '60 EUR', backendName: '90 min masáž', sk: '90 min masáž', en: '90 min massage' },
-    { id: '120-basic', duration: 120, price: '80 EUR', backendName: '120 min masáž', sk: '120 min masáž', en: '120 min massage' },
-  ],
-};
+// Services, prices, therapists and pass info come from the admin panel (/sprava/sluzby).
+
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
 
 export const ReservationView = defineComponent({
   name: 'ReservationView',
@@ -44,12 +31,20 @@ export const ReservationView = defineComponent({
     const calendarRoot = ref(null);
     const calendarLoading = ref(false);
     const errorMessage = ref('');
+    const consent = ref(false);
+    const activePassId = ref('');
     const form = reactive({
       name_surname: '',
       email: '',
       phone: '',
       note: '',
     });
+
+    const booking = computed(() => section('booking'));
+    const therapists = computed(() => section('therapists', []).filter((item) => item.visible !== false || store.isSuperuser));
+    const currentTherapist = computed(() => section('therapists', []).find((item) => item.key === worker.value) || null);
+    const activePass = computed(() => section('passes', []).find((item) => item.id === activePassId.value && item.enabled !== false) || null);
+    const needsConsent = computed(() => !store.isSuperuser && booking.value.require_consent !== false);
 
     let calendar = null;
 
@@ -65,7 +60,10 @@ export const ReservationView = defineComponent({
       if (!worker.value) {
         return [];
       }
-      return (serviceCatalog[worker.value] || []).filter((service) => availableDurations.value.includes(service.duration));
+      return section('services', [])
+        .filter((service) => service.active !== false && (service.workers || []).includes(worker.value))
+        .filter((service) => availableDurations.value.includes(Number(service.duration)))
+        .map((service) => ({ ...service, duration: Number(service.duration), backendName: service.backend_name }));
     });
 
     const selectedService = computed(() => availableServices.value.find((service) => service.id === selectedServiceId.value) || null);
@@ -255,6 +253,11 @@ export const ReservationView = defineComponent({
       if (!selectedService.value) {
         errors.push(t('reservation.errorNoService'));
       }
+      if (needsConsent.value && !consent.value) {
+        errors.push(locale.value === 'en'
+          ? 'Please agree to the terms and conditions.'
+          : 'Prosím, potvrďte súhlas s obchodnými podmienkami.');
+      }
 
       return errors;
     }
@@ -269,7 +272,7 @@ export const ReservationView = defineComponent({
       const summaryRows = [
         [t('admin.date'), formatDateInput(selectedDate.value)],
         [t('admin.time'), selectedSlot.value],
-        [t('admin.service'), `${selectedService.value[locale.value]} - ${selectedService.value.price}`],
+        [t('admin.service'), `${tr(selectedService.value.name)} - ${selectedService.value.price}`],
         [t('reservation.nameSurname'), form.name_surname],
         ['Email', form.email || '-'],
         [t('reservation.phone'), form.phone || '-'],
@@ -280,7 +283,7 @@ export const ReservationView = defineComponent({
         title: t('reservation.summary'),
         html: `
           <div class="summary-list">
-            ${summaryRows.map(([label, value]) => `<div class="summary-row"><strong>${label}</strong><span>${value}</span></div>`).join('')}
+            ${summaryRows.map(([label, value]) => `<div class="summary-row"><strong>${escapeHtml(label)}</strong><span>${escapeHtml(value)}</span></div>`).join('')}
           </div>
         `,
         showCancelButton: true,
@@ -306,12 +309,15 @@ export const ReservationView = defineComponent({
             email: form.email,
             phone: form.phone,
             note: form.note,
+            consent: needsConsent.value ? consent.value : undefined,
           }),
         });
 
+        const successText = !store.isSuperuser ? tr(booking.value.success_message) : '';
         await window.Swal.fire({
           icon: 'success',
           title: localizedBackendMessage(response, store.language, t('reservation.success')),
+          text: successText || undefined,
           confirmButtonColor: '#0f7e7a',
         });
 
@@ -393,8 +399,32 @@ export const ReservationView = defineComponent({
       }
     });
 
+    function chooseService(service) {
+      selectedServiceId.value = service.id;
+      if (service.pass_id && section('passes', []).some((item) => item.id === service.pass_id && item.enabled !== false)) {
+        activePassId.value = service.pass_id;
+        smInfoOpen.value = true;
+      } else {
+        nextTick(() => scrollToNext('res-step-details'));
+      }
+    }
+
+    function closePass() {
+      smInfoOpen.value = false;
+      nextTick(() => scrollToNext('res-step-details'));
+    }
+
     return {
       store,
+      tr,
+      booking,
+      therapists,
+      currentTherapist,
+      activePass,
+      needsConsent,
+      consent,
+      chooseService,
+      closePass,
       loading,
       worker,
       selectedDate,
@@ -429,8 +459,12 @@ export const ReservationView = defineComponent({
     <section class="page-section">
       <div class="container-shell reservation-shell">
         <div class="reservation-header">
-          <h1>{{ t('reservation.title') }}</h1>
-          <p>{{ t('reservation.subtitle') }}</p>
+          <h1>{{ tr(booking.title) || t('reservation.title') }}</h1>
+          <p>{{ tr(booking.subtitle) || t('reservation.subtitle') }}</p>
+        </div>
+        <div v-if="tr(booking.notice)" class="booking-notice" role="status">
+          <i class="fa-solid fa-circle-info"></i>
+          <span>{{ tr(booking.notice) }}</span>
         </div>
 
         <div v-if="loading" class="glass-panel centered-copy">{{ t('common.loading') }}</div>
@@ -452,15 +486,24 @@ export const ReservationView = defineComponent({
             <article class="glass-panel reservation-stage">
               <h2>{{ t('reservation.pickWorker') }}</h2>
               <div class="worker-grid">
-                <button class="worker-card" :class="{ active: worker === 'Roman' }" @click="pickWorker('Roman')">
-                  <img src="/static/images/roman-mini.jpg" alt="Roman" />
-                  <strong>Roman</strong>
-                </button>
-                <button class="worker-card" :class="{ active: worker === 'Evka' }" @click="pickWorker('Evka')">
-                  <img src="/static/images/evka-mini.jpg" alt="Evka" />
-                  <strong>Evka</strong>
+                <button
+                  v-for="therapist in therapists"
+                  :key="therapist.key"
+                  class="worker-card"
+                  :class="{ active: worker === therapist.key, disabled: therapist.booking_enabled === false && !store.isSuperuser }"
+                  :disabled="therapist.booking_enabled === false && !store.isSuperuser"
+                  @click="pickWorker(therapist.key)"
+                >
+                  <img :src="therapist.photo_small || therapist.photo" :alt="therapist.key" />
+                  <strong>{{ therapist.key }}</strong>
+                  <small v-if="therapist.booking_enabled === false" class="worker-card-note">
+                    {{ locale === 'en' ? 'Online booking unavailable' : 'Online rezervácia nedostupná' }}
+                  </small>
                 </button>
               </div>
+              <p v-if="currentTherapist && tr(currentTherapist.booking_note)" class="booking-notice booking-notice-inline">
+                <i class="fa-solid fa-circle-info"></i> <span>{{ tr(currentTherapist.booking_note) }}</span>
+              </p>
             </article>
 
             <article class="glass-panel reservation-stage" v-if="worker" id="res-step-date">
@@ -502,9 +545,9 @@ export const ReservationView = defineComponent({
                   :key="service.id"
                   class="service-card"
                   :class="{ active: selectedServiceId === service.id }"
-                  @click="() => { selectedServiceId = service.id; if (service.id === '45-sm') { smInfoOpen = true; } else { $nextTick(() => scrollToNext('res-step-details')); } }"
+                  @click="chooseService(service)"
                 >
-                  <strong>{{ service[locale] }}</strong>
+                  <strong>{{ tr(service.name) }}</strong>
                   <span>{{ service.price }}</span>
                 </button>
               </div>
@@ -568,6 +611,18 @@ export const ReservationView = defineComponent({
                 <textarea v-model.trim="form.note" rows="4"></textarea>
               </label>
 
+              <label v-if="needsConsent" class="consent-check">
+                <input type="checkbox" v-model="consent" />
+                <span v-if="locale === 'en'">
+                  I agree to the <router-link to="/obchodne-podmienky/" target="_blank">terms and booking conditions</router-link>
+                  and acknowledge the <router-link to="/ochrana-osobnych-udajov/" target="_blank">privacy policy</router-link>.*
+                </span>
+                <span v-else>
+                  Súhlasím s <router-link to="/obchodne-podmienky/" target="_blank">obchodnými a rezervačnými podmienkami</router-link>
+                  a beriem na vedomie <router-link to="/ochrana-osobnych-udajov/" target="_blank">spracovanie osobných údajov</router-link>.*
+                </span>
+              </label>
+
               <p class="form-helper">{{ t('reservation.formHint') }}</p>
               <p v-if="errorMessage" class="form-error">{{ errorMessage }}</p>
 
@@ -580,43 +635,34 @@ export const ReservationView = defineComponent({
       </div>
     </section>
 
-    <!-- SM system info modal -->
-    <div v-if="smInfoOpen" class="modal-shell" @click.self="smInfoOpen = false; $nextTick(() => scrollToNext('res-step-details'))">
+    <!-- Pass (permanentka) info modal – content from the admin panel -->
+    <div v-if="smInfoOpen && activePass" class="modal-shell" @click.self="closePass()">
       <div class="modal-card sm-info-card">
-        <button type="button" class="modal-close" @click="smInfoOpen = false; $nextTick(() => scrollToNext('res-step-details'))" :aria-label="t('common.close')">
+        <button type="button" class="modal-close" @click="closePass()" :aria-label="t('common.close')">
           <i class="fa-solid fa-xmark"></i>
         </button>
 
         <div class="sm-info-icon">
-          <i class="fa-solid fa-arrows-spin"></i>
+          <i class="fa-solid" :class="activePass.icon || 'fa-ticket'"></i>
         </div>
 
-        <h2 class="sm-info-title">{{ locale === 'en' ? 'SM system — pass' : 'SM systém „permanentka"' }}</h2>
-        <p class="sm-info-sub">{{ locale === 'en' ? 'Current pass options' : 'Aktuálne možnosti permanentky' }}</p>
+        <h2 class="sm-info-title">{{ tr(activePass.title) }}</h2>
+        <p v-if="tr(activePass.subtitle)" class="sm-info-sub">{{ tr(activePass.subtitle) }}</p>
 
         <span class="sm-info-badge">{{ locale === 'en' ? 'PRICE LIST' : 'CENNÍK' }}</span>
 
         <div class="sm-price-table">
-          <div class="sm-price-row">
-            <span>{{ locale === 'en' ? 'Single entry' : 'Jeden vstup' }}</span>
-            <span class="sm-price-tag">20 €</span>
-          </div>
-          <div class="sm-price-row">
-            <span>{{ locale === 'en' ? '3 entries' : '3 vstupy' }}</span>
-            <span class="sm-price-tag">45 €</span>
-          </div>
-          <div class="sm-price-row">
-            <span>{{ locale === 'en' ? '5 entries' : '5 vstupov' }}</span>
-            <span class="sm-price-tag">75 €</span>
+          <div v-for="(row, index) in activePass.rows" :key="index" class="sm-price-row">
+            <span>{{ tr(row.label) }}</span>
+            <span class="sm-price-tag">{{ row.price }}</span>
           </div>
         </div>
 
-        <div class="sm-info-notes">
-          <p><i class="fa-solid fa-circle-info"></i> {{ locale === 'en' ? 'On your first visit we will issue you a physical pass card.' : 'Pri prvej návšteve Vám vystavíme papierovú permanentku.' }}</p>
-          <p><i class="fa-solid fa-phone"></i> {{ locale === 'en' ? 'This notice is informational. For more details, feel free to contact us in person or by phone.' : 'Toto oznámenie má informatívny charakter. Podrobnejšie informácie vám radi poskytneme osobne alebo telefonicky.' }}</p>
+        <div v-if="activePass.notes && activePass.notes.length" class="sm-info-notes">
+          <p v-for="(note, index) in activePass.notes" :key="index"><i class="fa-solid fa-circle-info"></i> {{ tr(note) }}</p>
         </div>
 
-        <button type="button" class="btn btn-primary-strong" style="margin-top:0.5rem" @click="smInfoOpen = false; $nextTick(() => scrollToNext('res-step-details'))">
+        <button type="button" class="btn btn-primary-strong" style="margin-top:0.5rem" @click="closePass()">
           {{ t('common.close') }}
         </button>
       </div>

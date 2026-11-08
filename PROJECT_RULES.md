@@ -198,9 +198,17 @@ shown with the grey "cancelled" badge (both customer- and therapist-cancelled).
 
 ---
 
-## 10. Schedule Configuration (`config.ini`)
+## 10. Schedule Configuration (database, formerly `config.ini`)
 
-Worker schedules are **not** stored in the database. They live in `config.ini` at the project root (read at request time via `configparser`).
+Worker schedules and booking rules are stored in the database table `viewer.ConfigEntry`
+(section / key / value – the same structure `config.ini` had). `Roman/backend_funcs/system_config.py`
+exposes them as a normal `configparser.ConfigParser` (`load_config()` / `reload_config(config)` /
+`save_config(config)`), so the booking logic reads them exactly as before.
+
+`config.ini` is only an **import source**: `python manage.py import_config_ini` copies it into the DB once
+(runs automatically in `entrypoint.sh` and is skipped when the DB already has settings; `--force` overwrites,
+`--show` prints the current values). Reason: the container used to write admin changes into `/app/config.ini`,
+which was lost on every `docker compose up --build`.
 
 Config sections:
 - `[settings]` — `reservations_per_page`
@@ -210,7 +218,7 @@ Config sections:
 Working days stored as a string list, e.g. `['Monday', 'Tuesday', 'Friday']`.  
 Hours stored as `HH:MM` strings.
 
-**Rule:** Never hardcode schedule times. Always read from `config.ini`. The admin can change them via `POST /save_settings/`.
+**Rule:** Never hardcode schedule times. Always read them via `system_config` (DB). The admin changes them in `/sprava/rozvrh` (`POST /save_settings/`).
 
 ---
 
@@ -316,7 +324,7 @@ Worker name is validated server-side on reservation creation (`valid_workers = [
 - Dates in Python: `date.strftime('%d.%m.%Y')` for display, `'%Y-%m-%d'` for API exchange, `'%H:%M'` for times.
 - All string literals shown to users must go through `_()` (Python) or `{% trans %}` (templates).
 - API error messages always have both `message_sk` and `message_en`.
-- Config values always read from `config.ini` — never cached at module load time; always `config.read('config.ini')` at the start of the function.
+- Config values are always read from the DB via `reload_config(config)` / `load_config()` at the start of the function — never cached at module load time.
 - `AlreadyMadeReservation` is always updated via `update_or_create` (keyed by `name_surname`).
 - Reviews: `worker` field is stored **lowercase** (`"roman"` / `"evka"`); `Reservation.worker` is **capitalized** (`"Roman"` / `"Evka"`).
 
@@ -327,7 +335,7 @@ Worker name is validated server-side on reservation creation (`valid_workers = [
 - Do **not** use `timezone.now()` or aware datetimes anywhere.
 - Do **not** add a new `urls.py` in an app — all routes are in `Roman/urls.py`.
 - Do **not** put API logic inside `viewer/views.py` — that file is for page views only.
-- Do **not** store worker schedules in the database — use `config.ini`.
+- Do **not** read or write `config.ini` directly at runtime — use `system_config` (DB).
 - Do **not** skip bilingual error messages on API endpoints.
 - Do **not** make reservations outside the validated duration list `[30, 45, 60, 90, 120]`.
 - Do **not** ignore the 15-minute buffer between reservations in slot calculations.
@@ -347,3 +355,30 @@ Worker name is validated server-side on reservation creation (`valid_workers = [
 - Do **not** modify the email system or `email_template.html` for frontend migration purposes.
 - New backend work is limited to **additive** changes only (new endpoints, new fields if a feature demands it).
 - Any future frontend migration (e.g. Vue 3 — see `VUE_MIGRATION_PLAN.md`) must treat the backend as a stable, complete API layer.
+
+---
+
+## 21. Admin panel (/sprava/) and editable content
+
+The superadmin panel is a Vue section of the SPA at **`/sprava/`** (Slovak only, dates `DD. MM. YYYY`,
+all times are Slovak local time). Old URLs `/all_reservations/`, `/calendar_view_admin/`,
+`/settings_view/` redirect there. Django admin (`/admin/`) is kept as "Pokročilá správa dát".
+
+- Frontend: `static/vue/admin/` (`AdminLayout.js`, `ui.js`, `components.js`, `useContent.js`, `views/*`),
+  styles `static/css/admin.css` (+ `admin-catalog.css`, `admin-content.css`). Admin views are lazy-loaded.
+- API: `Roman/backend_funcs/admin_api.py`, all under `/api/admin/…`, superuser only.
+- **Editable content** (texts, prices/services, passes, therapists, techniques, banner + yearly seasonal
+  campaigns, contact/company info, legal pages, cookie notice, UI label overrides) is stored per section in
+  `viewer.SiteContent` (JSON text) and deep-merged over `DEFAULT_CONTENT` in
+  `Roman/backend_funcs/content_defaults.py`. Defaults equal the original website, so a fresh deploy needs
+  no admin action. Every save keeps a revision (`SiteContentRevision`, last 30 per section).
+- Public site receives the content in `/api/bootstrap/` (`store.content`, helpers `tr()` / `section()`).
+- Workers stay fixed (`Roman`, `Evka`) – the panel edits them but cannot add/remove.
+- Booking rules in the `[settings]` section of the DB config (all optional, defaults = previous behaviour):
+  `break_minutes` (15), `public_lead_days` (2 = today + tomorrow closed online), `admin_days_ahead` (180).
+- Public bookings must match an active service (name + duration) and, if enabled, include `consent`
+  (stored in `Reservation.consent_at`). Registration and reviews also require consent.
+- E-mail approve links are signed (`?t=` token). Links without token keep working only for reservations
+  created before this change (`consent_at` is NULL).
+- The panel intentionally shows **no earnings / revenue** and no per-therapist comparison.
+- Tests: `DEBUG=True python manage.py test viewer`.

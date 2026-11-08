@@ -106,8 +106,35 @@ export const ProfileView = defineComponent({
 
     onMounted(loadReservations);
 
+    async function deleteAccount() {
+      const en = store.language === 'en';
+      const result = await window.Swal.fire({
+        title: en ? 'Delete your account?' : 'Zrušiť účet?',
+        text: en
+          ? 'Your account will be permanently deleted. Reservations already made stay valid. Enter your password to confirm.'
+          : 'Váš účet bude natrvalo zrušený. Už vytvorené rezervácie zostávajú platné. Pre potvrdenie zadajte heslo.',
+        input: 'password',
+        inputPlaceholder: en ? 'Password' : 'Heslo',
+        showCancelButton: true,
+        confirmButtonText: en ? 'Delete account' : 'Zrušiť účet',
+        cancelButtonText: t('common.cancel'),
+        confirmButtonColor: '#b83b5e',
+        inputValidator: (value) => (!value ? (en ? 'Enter your password.' : 'Zadajte heslo.') : null),
+      });
+      if (!result.isConfirmed) return;
+      try {
+        await fetchJSON('/api/delete-account/', { method: 'POST', body: JSON.stringify({ password: result.value }) });
+        await window.Swal.fire({ icon: 'success', title: en ? 'Your account was deleted.' : 'Účet bol zrušený.', confirmButtonColor: '#0f7e7a' });
+        window.location.href = '/';
+      } catch (error) {
+        const data = error?.data || {};
+        await window.Swal.fire({ icon: 'error', title: (en ? data.message_en : data.message_sk) || t('reservation.failed'), confirmButtonColor: '#0f7e7a' });
+      }
+    }
+
     return {
       store,
+      deleteAccount,
       loading,
       reservations,
       cancelReservation,
@@ -178,6 +205,13 @@ export const ProfileView = defineComponent({
       </div>
 
       <div v-else class="glass-panel centered-copy">{{ t('profile.noReservations') }}</div>
+
+      <div v-if="store.isAuthenticated && !store.isSuperuser" class="profile-danger-zone">
+        <span>{{ store.language === 'en' ? 'Want to delete your account and personal data?' : 'Chcete zrušiť účet a svoje osobné údaje?' }}
+          <router-link to="/ochrana-osobnych-udajov/">{{ store.language === 'en' ? 'Privacy policy' : 'Ochrana osobných údajov' }}</router-link>
+        </span>
+        <button class="btn btn-danger-soft" @click="deleteAccount()">{{ store.language === 'en' ? 'Delete account' : 'Zrušiť účet' }}</button>
+      </div>
     </section>
   `,
 });
