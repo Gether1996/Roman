@@ -159,18 +159,23 @@ export const AppNavbar = defineComponent({
                     <span>{{ t('nav.profile') }}</span>
                   </button>
                   <template v-if="store.isSuperuser">
-                    <button class="user-menu-item" @click="goToPath('/sprava')">
-                      <i class="fa-solid fa-gauge-high"></i>
-                      <span>Administrácia</span>
-                    </button>
-                    <button class="user-menu-item" @click="goToPath('/sprava/rezervacie')">
+                    <button class="user-menu-item" @click="goToPath('/all_reservations/')">
                       <i class="fa-solid fa-list"></i>
                       <span>{{ t('nav.reservations') }}</span>
                     </button>
-                    <button class="user-menu-item" @click="goToPath('/sprava/kalendar')">
+                    <button class="user-menu-item" @click="goToPath('/calendar_view_admin/')">
                       <i class="fa-solid fa-calendar"></i>
                       <span>{{ t('nav.calendar') }}</span>
                     </button>
+                    <button class="user-menu-item" @click="goToPath('/settings_view/')">
+                      <i class="fa-solid fa-cog"></i>
+                      <span>{{ t('nav.settings') }}</span>
+                    </button>
+                    <div class="user-menu-divider"></div>
+                    <a class="user-menu-item" href="/sprava" title="Texty, ceny, fotky, banner a ďalšie nastavenia webu">
+                      <i class="fa-solid fa-pen-to-square"></i>
+                      <span>{{ store.language === 'en' ? 'Website administration' : 'Správa webu' }}</span>
+                    </a>
                   </template>
                   <div class="user-menu-divider"></div>
                   <button class="user-menu-item danger" @click="confirmLogout()">

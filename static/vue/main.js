@@ -10,6 +10,10 @@ import { HomeView } from './views/HomeView.js';
 import { ReservationView } from './views/ReservationView.js';
 import { ProfileView } from './views/ProfileView.js';
 import { LegalView } from './views/LegalView.js';
+// Everyday admin pages (simple, inside the normal website layout)
+import { AllReservationsView } from './views/AllReservationsView.js';
+import { CalendarAdminView } from './views/CalendarAdminView.js';
+import { SettingsView } from './views/SettingsView.js';
 
 const i18n = VueI18n.createI18n({
   legacy: false,
@@ -51,10 +55,10 @@ const routes = [
   { path: '/obchodne-podmienky/', component: LegalView, props: { page: 'terms' }, meta: { title: { sk: 'Obchodné podmienky', en: 'Terms' } } },
   { path: '/ochrana-osobnych-udajov/', component: LegalView, props: { page: 'privacy' }, meta: { title: { sk: 'Ochrana osobných údajov', en: 'Privacy policy' } } },
   { path: '/cookies/', component: LegalView, props: { page: 'cookies' }, meta: { title: { sk: 'Cookies', en: 'Cookies' } } },
-  // Old admin URLs (used in e-mails / bookmarks) → new admin panel
-  { path: '/all_reservations/', redirect: '/sprava/rezervacie' },
-  { path: '/calendar_view_admin/', redirect: '/sprava/kalendar' },
-  { path: '/settings_view/', redirect: '/sprava/rozvrh' },
+  // Everyday admin pages (as before). The full web administration lives separately under /sprava.
+  { path: '/all_reservations/', component: AllReservationsView, meta: { title: { sk: 'Prehľad rezervácií', en: 'Reservations' } } },
+  { path: '/calendar_view_admin/', component: CalendarAdminView, meta: { title: { sk: 'Kalendár', en: 'Calendar' } } },
+  { path: '/settings_view/', component: SettingsView, meta: { title: { sk: 'Nastavenia', en: 'Settings' } } },
   {
     path: '/sprava',
     component: AdminLayout,

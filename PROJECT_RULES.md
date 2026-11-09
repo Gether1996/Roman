@@ -361,8 +361,11 @@ Worker name is validated server-side on reservation creation (`valid_workers = [
 ## 21. Admin panel (/sprava/) and editable content
 
 The superadmin panel is a Vue section of the SPA at **`/sprava/`** (Slovak only, dates `DD. MM. YYYY`,
-all times are Slovak local time). Old URLs `/all_reservations/`, `/calendar_view_admin/`,
-`/settings_view/` redirect there. Django admin (`/admin/`) is kept as "Pokročilá správa dát".
+all times are Slovak local time). It is meant for occasional changes (texts, prices, photos…) and is opened
+via "Správa webu" in the user menu. Everyday work stays on the original simple pages inside the website
+layout: `/all_reservations/`, `/calendar_view_admin/`, `/settings_view/` (static/vue/views/AllReservationsView.js,
+CalendarAdminView.js, SettingsView.js) – the user menu links there, e-mails link to `/all_reservations/`.
+Django admin (`/admin/`) is kept as "Pokročilá správa dát".
 
 - Frontend: `static/vue/admin/` (`AdminLayout.js`, `ui.js`, `components.js`, `useContent.js`, `views/*`),
   styles `static/css/admin.css` (+ `admin-catalog.css`, `admin-content.css`). Admin views are lazy-loaded.

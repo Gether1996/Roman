@@ -525,7 +525,7 @@ def create_reservation(request):
             if note == 'user':
                 subject = f'Nová rezervácia ({new_reservation.worker})'
                 accept_link = f'{site_url()}/approve_reservation_mail/{new_reservation.id}/?t={approve_token(new_reservation.id)}'
-                all_reservations_link = f'{site_url()}/sprava/rezervacie'
+                all_reservations_link = f'{site_url()}/all_reservations/'
                 text = f'Nová rezervácia pre maséra {new_reservation.worker}'
                 html_message = render_to_string('email_template.html',
                                                 {'reservation': prepare_reservation_data(new_reservation),
